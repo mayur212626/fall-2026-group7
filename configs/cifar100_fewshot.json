@@ -1,0 +1,6 @@
+{
+  "split_seed": 42,
+  "validation_per_class": 50,
+  "shots_per_class": [5, 10, 20, 50],
+  "training_seeds": [0, 1, 2, 3, 4]
+}
