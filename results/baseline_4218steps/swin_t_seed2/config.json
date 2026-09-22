@@ -1,0 +1,86 @@
+{
+  "mode": "development",
+  "model": "swin_t",
+  "augmentation": "real_only",
+  "shots": null,
+  "full_data": true,
+  "seed": 2,
+  "weights": null,
+  "all_layers_trainable": true,
+  "training": {
+    "stage": "development",
+    "image_size": 224,
+    "normalization_mean": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "normalization_std": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "batch_size": 64,
+    "workers": 2,
+    "steps": 4218,
+    "validation_interval": 703,
+    "warmup_steps": 211,
+    "gradient_clip": 1.0,
+    "randaugment": {
+      "num_ops": 2,
+      "magnitude": 9
+    },
+    "mixup_alpha": 0.2,
+    "cutmix_alpha": 1.0,
+    "models": {
+      "resnet50": {
+        "optimizer": "sgd",
+        "lr": 0.01,
+        "momentum": 0.9,
+        "weight_decay": 0.0001
+      },
+      "convnext_tiny": {
+        "optimizer": "adamw",
+        "lr": 0.0005,
+        "weight_decay": 0.05
+      },
+      "vit_b_16": {
+        "optimizer": "adamw",
+        "lr": 0.0003,
+        "weight_decay": 0.05
+      },
+      "swin_t": {
+        "optimizer": "adamw",
+        "lr": 0.0005,
+        "weight_decay": 0.05
+      }
+    }
+  },
+  "effective_steps": 4218,
+  "validation_interval": 703,
+  "train_images": 45000,
+  "validation_images": 5000,
+  "steps_per_epoch": 703,
+  "resumable": true,
+  "epoch_shuffle_seed": "training_seed + zero_based_epoch",
+  "persistent_workers": false,
+  "train_indices_sha256": "81cab03e149943d7450e134defb7053c5f9819a1970cba1f6ab348cfbffd7c37",
+  "evaluation_split": "validation",
+  "split_manifest_sha256": "2ab6035f6630f27eba44d875375da4fae53911905bb709ad7552353236ec30b7",
+  "initial_weights_sha256": "896a349a88611669a97375a92866a87fb4b6800ec9d93d2b8b8759e050d008de",
+  "source_sha256": {
+    "scripts/train_classifier.py": "9d89a5f7cd93321290081e92c9ff8884d3e860f6337047b0033240d07639e93a",
+    "scripts/checkpoint.py": "49a5bb001a4a201937a36cfc3e14ae8baf4f9c8a0d9124e84f771ac55cb19c78",
+    "scripts/metrics.py": "17f440bedbe42436d2905ce943e41d6d764bce0254963b4d1adf50b6d5cb042e",
+    "scripts/prepare_cifar100.py": "33fde9aa03cee4d0f230d569ca971d80afa90a7e1898ef5e2eec8d85e64a8f68"
+  },
+  "torch": "2.12.1+cu126",
+  "torchvision": "0.27.1+cu126",
+  "numpy": "2.5.2",
+  "cuda_runtime": "12.6",
+  "gpu": "NVIDIA A10G",
+  "precision": "float32",
+  "deterministic_algorithms": false,
+  "cudnn_benchmark": false,
+  "cudnn_allow_tf32": false
+}
