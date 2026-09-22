@@ -9,7 +9,7 @@
 
 This project follows the original classification proposal and the advisor's feedback on object detection, image captioning, pretrained features, and hybrid modeling. The classification study retains all four data tiers and all four CNN/Transformer architectures. MS COCO 2017 is selected for the detection and captioning studies. These are two task tracks using the same dataset release.
 
-This README describes the research plan. Dataset preparation, training code, and experimental results will be added in later stages.
+This README describes the research plan. The Python environment and a GPU calculation with gradients have been checked on the A10G. CIFAR-100 has been downloaded and checked for image dimensions, class counts, and split sizes. The classification baselines have not been trained yet.
 
 ## 1. Objective
 
@@ -25,7 +25,7 @@ The original classification benchmark remains required. The COCO studies will te
 
 1. Implement the five original augmentation families: conventional augmentation, class-conditional StyleGAN2-ADA, a small class-conditional DDPM, pretrained Stable Diffusion with class prompts and textual-inversion tokens, and LoRA-adapted Stable Diffusion with a defined DreamBooth-style objective.
 2. Complete the four classification data-scarcity tiers, preserving every named dataset and regime in the original proposal.
-3. Compare ResNet-50, ConvNeXt-Tiny, ViT-B/16, and Swin-T on real-only, conventionally augmented, and real-plus-synthetic training data.
+3. Train ResNet-50, ConvNeXt-Tiny, ViT-B/16, and Swin-T from scratch and establish measured baselines before comparing synthetic augmentation. Each model will have real-only, RandAugment, Mixup, and CutMix results under the same recorded evaluation protocol.
 4. Measure generated-sample quality with FID and Improved Precision & Recall, then evaluate whether these measurements predict downstream benefit. Generator families will not be assigned a quality ranking in advance.
 5. Release a config-driven benchmark with experiment records, reproducible notebooks, and a single-GPU reproduction guide.
 6. Evaluate generative augmentation for object detection and image captioning on MS COCO 2017, using valid task-specific annotations, controls, and metrics.
@@ -37,7 +37,7 @@ The original classification benchmark remains required. The COCO studies will te
 | ID | Research question | Planned evidence |
 |---|---|---|
 | RQ1 / H1 | As measured generator fidelity improves, does classification benefit increase, plateau, or reverse? | Performance changes across generator conditions within the same dataset, real-data budget, classifier, and synthetic ratio |
-| RQ2 / H2 | Do ResNet-50 and ConvNeXt-Tiny respond differently to synthetic data than ViT-B/16 and Swin-T? | Paired changes from each architecture's own controls, using the same real splits and generated sets |
+| RQ2 / H2 | How do ResNet-50, ConvNeXt-Tiny, ViT-B/16, and Swin-T perform before synthetic augmentation, and do the tested CNNs and Transformers differ in the benefit they receive from it? | Baseline results for all four models, followed by paired changes from each model's own real-only and conventional controls, using the same real splits and generated sets |
 | RQ3 / H3 | Do FID and Improved Precision & Recall predict downstream augmentation value? | Quality-to-utility regression within compatible settings, with held-out settings for any predictive claim |
 | RQ4 / H4 | Which data-scarcity, generator, and synthetic-ratio settings reduce classification performance relative to conventional augmentation? | Negative and inconclusive changes reported with uncertainty, including rare-class and HAM10000 results |
 | RQ5 | Do the augmentation methods tested across classification, detection, and captioning produce consistent benefits across tasks? | Changes from each task's controls, considered alongside annotation validity, training-data quantity, and computational cost |
@@ -74,9 +74,13 @@ For COCO, synthetic:real ratios will count unique training images. Caption pairs
 
 We will use fixed training, validation, and test splits, with recorded seeds for few-shot and long-tail sampling. Official test splits will be preserved where provided. Any validation subset created from official training data will be reserved before low-data sampling or generator fitting. We will report the validation-data budget separately from the number of real images used for training. Classification loaders will share a common interface. Detection and captioning loaders will retain their task-specific annotations while using a shared provenance format.
 
+For the first CIFAR-100 few-shot experiments, the current split configuration uses seed 42, reserves 50 validation images per class from the official training pool, and selects 5, 10, 20, or 50 training images per class from the remainder. We will save the image indices and use nested training subsets, so each larger budget contains the smaller one. The validation set has 5,000 labelled images, separate from the training budget. For example, the 5-shot setting uses 500 training images plus those 5,000 validation images. We will report both counts and will not compare this directly with a protocol that permits only five labelled images per class in total. The official 10,000-image test set stays unchanged.
+
+The long-tail split needs its own recorded class counts and validation design. Reserving validation images changes the available training pool, so the few-shot split will not automatically be reused as an exact reproduction of a published CIFAR-100-LT protocol. We will settle and record that construction before the Tier B runs while retaining all three imbalance ratios and the reweighting comparison.
+
 For each dataset and generator condition, we will record the real and synthetic sample counts, synthetic:real ratio, fitting time, generation time, preprocessing, prompts, checkpoint revision, and quality measurements. Generator adaptation, learned embeddings, and source images or captions for synthetic training data will use training data only. Tuning data may guide method selection, but will not be added to the training pool. Final evaluation data will remain held out until the protocol is fixed.
 
-Preprocessing will be documented in a notebook for each tier and task. HAM10000 preparation will include lesion-group and duplicate checks; lesion grouping does not establish patient-level independence when patient identifiers are unavailable. CUB-200-2011 has documented overlap with ImageNet, so we will record classifier and encoder pretraining and investigate identifiable overlaps. Unknown pretraining overlap will remain a limitation. [HAM10000 paper](https://arxiv.org/abs/1803.10417), [CUB-200-2011 notice](https://www.vision.caltech.edu/datasets/cub_200_2011/)
+Preprocessing will be documented in a notebook for each tier and task. HAM10000 preparation will include lesion-group and duplicate checks; lesion grouping does not establish patient-level independence when patient identifiers are unavailable. The four classifier baselines will use random initialization. CUB-200-2011 has documented overlap with ImageNet, so we will still investigate exposure through any pretrained auxiliary encoder or generator and record the pretraining of task models used in the added tracks. Unknown pretraining overlap will remain a limitation. [HAM10000 paper](https://arxiv.org/abs/1803.10417), [CUB-200-2011 notice](https://www.vision.caltech.edu/datasets/cub_200_2011/)
 
 Detection samples will be checked for valid boxes and object labels. Captioning samples will be checked for agreement between the image and its description. A generation prompt is not automatically a correct annotation. Synthetic records will include source training-image or training-caption IDs when those inputs are used, class conditions where applicable, generation settings, and annotation-review records.
 
@@ -100,7 +104,60 @@ Prepare the four-tier classification pipeline, the COCO detection and captioning
 
 Implement real-only training, RandAugment, Mixup, and CutMix for classification. Evaluate the three named conventional policies with separately recorded settings and results. Train all four classification architectures and include the long-tail reweighting comparison. Establish separate COCO task controls, the evaluation metrics below, and the five-seed statistical reporting protocol.
 
-Within a task and data budget, use the same real splits, model initialization policy, optimizer-step budget, and tuning procedure for comparable conditions. Record batch size, real/synthetic sampling probability, image exposures, and any unavoidable differences. Reuse generated sets across classifiers when the split and generation settings match. A fixed epoch count alone will not be treated as equal training effort when dataset sizes differ.
+#### Four-classifier baseline
+
+We will start the baseline on CIFAR-100 and include both CNNs and both Transformers from the first stage. A working ResNet-50 run alone does not complete this baseline.
+
+| Model | Family | Initialization | Required controls |
+|---|---|---|---|
+| ResNet-50 | CNN | Random, train all layers | Real-only, RandAugment, Mixup, CutMix |
+| ConvNeXt-Tiny | CNN | Random, train all layers | Real-only, RandAugment, Mixup, CutMix |
+| ViT-B/16 | Transformer | Random, train all layers | Real-only, RandAugment, Mixup, CutMix |
+| Swin-T | Transformer | Random, train all layers | Real-only, RandAugment, Mixup, CutMix |
+
+For this study, the real-only control will use deterministic image preprocessing without stochastic image augmentation. RandAugment, Mixup, and CutMix will each be a separate condition added to that preprocessing. Their settings and application probabilities will be recorded. Mixing these policies will require a separate named condition rather than changing a baseline silently.
+
+The first development pass will use 50 training images per class to check the loader, classifier head, gradients, validation scores, saved checkpoint, and measured runtime for each model. These checks will use training and validation data. The complete CIFAR-100 few-shot baseline then covers all four shot counts and training seeds 0, 1, 2, 3, and 4. Four models, four shot counts, four controls, and five seeds give 320 planned downstream training runs, excluding development runs and tuning. Real-only runs account for 80 of these. We will measure runtime before scheduling the full set on the single GPU.
+
+We will use the same shared training and evaluation code for all four models, with the model and augmentation policy selected through configuration. The baseline does not need four separate training scripts or a custom model framework. We will extend that pipeline to the remaining classification datasets, retaining the required long-tail, fine-grained, and medical comparisons. Finishing CIFAR-100 completes one baseline stage, not all four data tiers.
+
+All four classifier baselines will train from scratch. We will instantiate them with `weights=None`, set the output layer to the dataset's class count, and train every layer. No ImageNet checkpoint will initialize these classifiers. For a given model and training seed, its real-only, conventional, and synthetic-data runs will start from identical randomly initialized weights. Each condition will train independently; a synthetic-data run will not continue training from its completed real-only control. We will record the model implementation version, initialization seed, input resolution, interpolation, normalization, optimizer, and schedule. [Torchvision model initialization](https://docs.pytorch.org/vision/stable/models.html)
+
+Random initialization applies to these four classifier baselines and their matched augmentation comparisons. The original pretrained diffusion generators and the required pretrained-feature/hybrid study remain in the project. We will record their external training data separately so a result using pretrained generated images or auxiliary features is not described as a study with no outside knowledge.
+
+We will allow model-specific optimizer settings under the same predefined tuning budget. Fairness does not require forcing one learning rate onto all four architectures. The tuning space, selection rule, effective batch size, optimizer steps, and training resolution will be fixed before the main comparisons. We will keep the named architectures intact and document any input resizing; changing ViT-B/16's patch size, for example, would change the model under study. Differences in parameter count and training recipes will be reported when comparing models. Four tested architectures do not establish a universal ranking of CNNs and Transformers.
+
+#### Metrics fixed before comparison
+
+We will define and check the classification metrics before the baseline runs. All four models and all later augmentation conditions will use the same metric implementation, class order, and evaluation split.
+
+| Measure | Definition and use |
+|---|---|
+| Top-1 accuracy | Fraction of evaluation images assigned the correct class. This is the primary classification measure. |
+| Macro-F1 | Calculate F1 for each class, then take the unweighted mean. This shows performance across classes without weighting the average toward frequent classes. |
+| Balanced accuracy | Mean recall across the evaluation classes. This helps interpret results when the evaluation set is imbalanced. |
+| Per-class recall and class counts | Fraction of each class identified correctly, reported with training and evaluation counts. These results show whether classes with little training data benefit or lose performance. |
+| Confusion matrix | Counts of true classes against predicted classes, using a fixed class order. This identifies recurring classification errors. |
+| Validation loss | Mean cross-entropy on real validation images with their original labels. We will use it to inspect training and break checkpoint-selection ties, not as a replacement for the primary measure. |
+| Runtime and GPU memory | Elapsed training and evaluation time, peak allocated GPU memory, and the hardware and measurement settings. These show the cost of each result. |
+
+We will report accuracy, balanced accuracy, macro-F1, and recall on a 0-100 scale in result tables. Macro-F1 will be the mean of the class-level F1 scores, not F1 computed from averaged precision and recall. We will retain the full expected class list, set undefined F1 contributions to zero, and report any missing evaluation class. Evaluation splits should contain all classes; a missing class requires an explicit limitation rather than an apparently complete score. [Macro-F1 definition](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html), [balanced accuracy definition](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.balanced_accuracy_score.html)
+
+On CIFAR-100's balanced official test set, top-1 accuracy and balanced accuracy are equal. This also holds when training uses a long-tail subset but evaluation still uses the balanced test set. We will not treat the two scores as independent evidence of improvement. Per-class recall and macro-F1 provide additional information about errors and the classes affected.
+
+For each training run, we will select the checkpoint with the highest validation top-1 accuracy. Ties will use lower validation cross-entropy, then the earlier checkpoint. All conditions will use the same evaluation frequency and checkpoint rule. Training loss from Mixup or CutMix uses mixed labels, so we will not rank models by comparing those training losses directly with ordinary real-only training loss.
+
+We will save one result record per run with the model, dataset, split identifier, training budget, initialization, augmentation policy, seed, checkpoint, scores, and measured cost. Saved predictions will include image IDs and true and predicted labels so the classification scores and paired analyses can be checked again. Metric checks will include a small hand-calculated example, perfect predictions, and a class that receives no correct predictions. These are checks to implement, not baseline results.
+
+#### Measuring improvement
+
+Every synthetic-data condition will be compared with that same classifier's real-only result and its conventional controls at the same real-data budget. We will report the separate RandAugment, Mixup, and CutMix results. If one policy is used as the main conventional reference, we will select it from the mean validation accuracy across the five seeds for that model and data budget, before examining final test scores. A tie will use the fixed order RandAugment, Mixup, then CutMix.
+
+For accuracy, the paired change is the augmented score minus the control score for the same training seed, expressed in percentage points. We will use the same pairing for other classification scores on their declared scale. We will summarize the five paired changes with their mean, sample standard deviation, and a 95% percentile bootstrap interval using 10,000 resamples of the seed pairs and a recorded analysis seed. That interval measures training-seed variation conditional on the chosen split and generated data. Five seeds give limited evidence about small effects; a bootstrap interval alone will not support a universal claim across the full experiment matrix.
+
+The test set will be used only after the training and selection protocol is fixed. If the protocol changes after we inspect test results, the change and the earlier test exposure will be recorded. We will report negative and uncertain changes as well as gains. A higher raw score from one architecture does not show that synthetic augmentation helped it more; the comparison must use the change from its own matched control.
+
+Within a task and data budget, use the same real splits, model initialization policy, optimizer-step budget, and tuning procedure for comparable conditions. Record batch size, real/synthetic sampling probability, image exposures, and any unavoidable differences. Keep a conventional policy unchanged when adding synthetic data to it, so that comparison measures the contribution of the added images. Reuse generated sets across classifiers when the split and generation settings match. A fixed epoch count alone will not be treated as equal training effort when dataset sizes differ.
 
 The planned software includes PyTorch, Hugging Face diffusers/transformers/accelerate/peft, timm, StyleGAN2-ADA, clean-fid, pycocotools, and a compatible COCO caption-evaluation implementation. Tested versions will be pinned during environment setup. The original hardware target is one NVIDIA A10G with 24 GB VRAM on AWS g5.2xlarge. Runtime and memory must be measured before claiming that the expanded study fits the available budget.
 
@@ -154,7 +211,7 @@ Assemble the master benchmarking DataFrame and answer RQ1-RQ6, including all fou
 
 | Task or analysis | Primary measure | Supporting measures and checks |
 |---|---|---|
-| Classification | Top-1 accuracy | Balanced accuracy, macro-F1, per-class recall, and confusion matrices, with rare-class analysis for imbalanced settings |
+| Classification | Top-1 accuracy | Balanced accuracy, macro-F1, per-class recall, and confusion matrices; validation loss for diagnostics and selection ties; paired changes from all four models' controls as defined in Phase 1 |
 | COCO object detection | Bounding-box AP averaged over IoU thresholds 0.50 to 0.95 in steps of 0.05 | AP50, AP75, AP by object size, and per-category analysis |
 | COCO image captioning | CIDEr, with the scoring variant and implementation recorded | SPICE, BLEU-4, METEOR, ROUGE-L, and blinded factual-agreement review |
 | Generated-image quality | FID and Improved Precision & Recall | Reference and generated counts, preprocessing, feature extractor, and sample-count limitations |
@@ -181,7 +238,7 @@ Write the 8-10-page paper-format report with motivation, related work, methods, 
 
 Release the config-driven benchmark with the generator registry, complete run matrix, master results, experiment records, split manifests, annotation-audit records, a full-study execution command, notebooks per phase and tier, COCO task notebooks, a cross-condition analysis notebook, pinned tested dependencies, README, and single-GPU setup and reproduction instructions. Dataset access instructions will respect each source's terms. Prepare the demonstration and final presentation.
 
-The original Week 16 paper-submission milestone remains part of the delivery plan, with destination and timing to be confirmed with the advisor. A completed manuscript and a submission are separate from publication acceptance. The current stage is README preparation; dataset downloads, training, and submission will follow in later steps.
+The original Week 16 paper-submission milestone remains part of the delivery plan, with destination and timing to be confirmed with the advisor. A completed manuscript and a submission are separate from publication acceptance. The next implementation stage is to save and check the classification splits, implement the shared metrics and baseline runner, and measure all four classifiers before the synthetic-data comparisons.
 
 ## 5. Timeline
 
@@ -189,7 +246,7 @@ The original target is 16 weeks. COCO detection, COCO captioning, and the featur
 
 | Weeks | Original study | Integrated feedback work |
 |---|---|---|
-| 1-3 | Environment, all classification tiers, four-classifier controls, registry, full matrix, metrics, and five-seed protocol | Fix COCO split manifests, low-data budgets, task models and controls, annotation audits, and the feature/hybrid design |
+| 1-3 | Environment, all classification tiers, fixed metric definitions, four-classifier real-only/RandAugment/Mixup/CutMix baselines, registry, full matrix, and five-seed comparisons | Fix COCO split manifests, low-data budgets, task models and controls, annotation audits, and the feature/hybrid design |
 | 4-5 | StyleGAN2-ADA training, generation, and classifier comparisons | Validate COCO boxes, caption consistency, and task evaluation; checkpoint and monitor failures |
 | 6-7 | Small DDPM training and matched GAN/DDPM comparisons | Prepare task-specific generation and provenance checks |
 | 8-9 | DA-Fusion reproduction and pretrained augmentation, including fine-grained and medical data | Run pretrained diffusion comparisons for COCO detection and captioning |
@@ -233,4 +290,4 @@ Hold weekly integration meetings so every method uses the same recorded training
 
 **Generator applicability to clarify:** The original objectives describe all five families across all four tiers, while the detailed methods restrict from-scratch GAN/DDPM to Tiers A/B. Both statements remain recorded. We will begin with the shared A/B requirement and resolve C/D applicability with the advisor before declaring the full run matrix final.
 
-**Implementation decisions to finish in Phase 1:** COCO subset sizes, task models and checkpoint revisions, task-specific generator settings, the auxiliary encoder and fusion rule, feature-study coverage, exact metric implementations, and measured run costs. These decisions will be documented before the main study. They do not make any original dataset or required feedback task optional.
+**Implementation decisions to finish in Phase 1:** Classifier input resolution, normalization and optimizer settings, the tuning and optimizer-step budgets, CIFAR-100-LT construction, COCO subset sizes, task models and checkpoint revisions, task-specific generator settings, the auxiliary encoder and fusion rule, feature-study coverage, exact metric implementations, and measured run costs. Random initialization for all four classifiers and the classification measures above are settled. The remaining decisions will be documented before the main study. They do not make any original dataset or required feedback task optional.
