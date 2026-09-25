@@ -6,3 +6,12 @@
 *.jsonl text eol=lf
 *.csv text eol=lf
 *.sh text eol=lf
+*.tex text eol=lf
+*.bib text eol=lf
+
+# Raster images and video go through Git LFS. Results figures are SVG or PDF and stay in Git.
+*.png filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.jpeg filter=lfs diff=lfs merge=lfs -text
+*.gif filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
