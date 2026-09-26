@@ -16,11 +16,13 @@ The manifest also stores a SHA-256 fingerprint of the training labels, so a run 
 
 ## Build the manifest
 
-From the repository root, with CIFAR-100 already downloaded to `data/`:
+From the repository root, with CIFAR-100 already downloaded to `data/cifar100/cifar-100-python/`:
 
 ```bash
-python -m src.component.cifar_splits --data-root data --output src/component/configs/splits/cifar100.json
+python -m src.component.cifar_splits --output src/component/configs/splits/cifar100.json
 ```
+
+Use `--data-root` if the dataset is somewhere else.
 
 Expected output:
 

@@ -6,8 +6,7 @@ and then read by every run, so all conditions use the same images.
 
 Run from the repository root:
 
-    python -m src.component.cifar_splits --data-root data \
-        --output src/component/configs/splits/cifar100.json
+    python -m src.component.cifar_splits --output src/component/configs/splits/cifar100.json
 """
 
 import argparse
@@ -93,7 +92,7 @@ def main() -> None:
     from torchvision.datasets import CIFAR100
 
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--data-root", type=Path, default=Path("data"))
+    parser.add_argument("--data-root", type=Path, default=Path("data/cifar100"))
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
