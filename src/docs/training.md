@@ -27,7 +27,7 @@ The step budgets in the config files are empty until the pilot runs fix them. Un
 `src/shellscripts/pilot_pretrained.sh` fixes the step budgets and confirms the learning rates of the pretrained arm. It uses validation data only and pilot seed 100, which is not one of the main training seeds.
 
 1. One long real-only run per model and data budget (600, 800, 1,000, 1,500 and 6,000 steps for 5, 10, 20, 50 per class and full).
-2. Two more learning rates per model at 50 images per class: 3e-5 and 3e-4 for ResNet-50, 2e-5 and 1e-4 for ViT-B/16.
+2. More learning rates per model at 50 images per class: 3e-5, 3e-4 and 1e-3 for ResNet-50, 2e-5 and 1e-4 for ViT-B/16.
 
 ```bash
 bash src/shellscripts/pilot_pretrained.sh

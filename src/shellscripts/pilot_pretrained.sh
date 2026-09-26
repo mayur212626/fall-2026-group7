@@ -33,7 +33,7 @@ for budget in 5 10 20 50; do
   done
 done
 
-for lr in 3e-5 3e-4; do run resnet50 50 "$ROOT/lr_$lr" --lr "$lr"; done
+for lr in 3e-5 3e-4 1e-3; do run resnet50 50 "$ROOT/lr_$lr" --lr "$lr"; done
 for lr in 2e-5 1e-4; do run vit_b_16 50 "$ROOT/lr_$lr" --lr "$lr"; done
 
 for model in resnet50 vit_b_16; do
