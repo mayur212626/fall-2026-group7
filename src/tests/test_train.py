@@ -14,6 +14,7 @@ from src.component.train import (
     is_better,
     load_checkpoint,
     lr_factor,
+    make_settings,
     new_state,
     run_training,
     save_checkpoint,
@@ -39,6 +40,39 @@ def settings(**overrides: object) -> dict:
         "label_smoothing": 0.1, "workers": 0, "recipe": RECIPE,
     }
     return {**base, **overrides}
+
+
+CONFIG = {
+    "image_size": 224, "batch_size": 128, "evaluations": 20, "warmup_fraction": 0.05,
+    "grad_clip": 1.0, "label_smoothing": 0.1,
+    "steps": {"5": 600, "full": None},
+    "models": {"resnet50": {"optimizer": "adamw", "lr": 1e-4, "weight_decay": 0.05}},
+}
+
+
+class MakeSettingsTest(unittest.TestCase):
+    def make(self, **overrides: object) -> dict:
+        args = {"model": "resnet50", "init": "pretrained", "condition": "real_only",
+                "budget": "5", "seed": 0, "workers": 4, **overrides}
+        return make_settings(CONFIG, **args)
+
+    def test_takes_recipe_and_steps_from_config(self) -> None:
+        run = self.make()
+        self.assertEqual(run["steps"], 600)
+        self.assertEqual(run["recipe"], CONFIG["models"]["resnet50"])
+        self.assertEqual((run["batch_size"], run["num_classes"]), (128, 100))
+
+    def test_steps_override(self) -> None:
+        self.assertEqual(self.make(steps=50)["steps"], 50)
+
+    def test_lr_override_changes_only_the_learning_rate(self) -> None:
+        run = self.make(lr=3e-4)
+        self.assertEqual(run["recipe"], {"optimizer": "adamw", "lr": 3e-4, "weight_decay": 0.05})
+        self.assertEqual(CONFIG["models"]["resnet50"]["lr"], 1e-4)
+
+    def test_rejects_budget_without_steps(self) -> None:
+        with self.assertRaises(ValueError):
+            self.make(budget="full")
 
 
 class LrFactorTest(unittest.TestCase):

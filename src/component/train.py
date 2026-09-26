@@ -318,6 +318,51 @@ def run_training(
     return result
 
 
+def make_settings(
+    config: dict,
+    model: str,
+    init: str,
+    condition: str,
+    budget: str,
+    seed: int,
+    workers: int,
+    steps: int | None = None,
+    lr: float | None = None,
+) -> dict:
+    """Combine a training config with one run's choices into run settings.
+
+    ``steps`` and ``lr`` override the config (used by pilot runs); the
+    values actually used are stored in the settings and saved with the run.
+
+    Raises:
+        ValueError: If the config has no step budget for ``budget`` and
+            ``steps`` is not given.
+    """
+    steps = steps or config["steps"].get(budget)
+    if not steps:
+        raise ValueError(f"no step budget for budget {budget}; set it in the config or pass steps")
+    recipe = dict(config["models"][model])
+    if lr is not None:
+        recipe["lr"] = lr
+    return {
+        "model": model,
+        "init": init,
+        "condition": condition,
+        "budget": budget,
+        "seed": seed,
+        "num_classes": 100,
+        "image_size": config["image_size"],
+        "batch_size": config["batch_size"],
+        "steps": steps,
+        "evaluations": config["evaluations"],
+        "warmup_fraction": config["warmup_fraction"],
+        "grad_clip": config["grad_clip"],
+        "label_smoothing": config["label_smoothing"],
+        "workers": workers,
+        "recipe": recipe,
+    }
+
+
 def _git_commit() -> dict:
     """Return the current commit and whether the working tree has changes."""
 
@@ -339,6 +384,7 @@ def main() -> None:
     parser.add_argument("--budget", choices=["5", "10", "20", "50", "full"], required=True)
     parser.add_argument("--seed", type=int, required=True)
     parser.add_argument("--steps", type=int, help="override the config's step budget (pilot runs)")
+    parser.add_argument("--lr", type=float, help="override the config's learning rate (pilot runs)")
     parser.add_argument("--data-root", type=Path, default=Path("data/cifar100"))
     parser.add_argument("--manifest", type=Path, default=Path("src/component/configs/splits/cifar100.json"))
     parser.add_argument("--runs-root", type=Path, default=Path("runs"))
@@ -346,26 +392,13 @@ def main() -> None:
     args = parser.parse_args()
 
     config = json.loads(args.config.read_text(encoding="utf-8"))
-    steps = args.steps or config["steps"][args.budget]
-    if not steps:
-        parser.error(f"no step budget for budget {args.budget} in {args.config}; set it or pass --steps")
-    settings = {
-        "model": args.model,
-        "init": args.init,
-        "condition": args.condition,
-        "budget": args.budget,
-        "seed": args.seed,
-        "num_classes": 100,
-        "image_size": config["image_size"],
-        "batch_size": config["batch_size"],
-        "steps": steps,
-        "evaluations": config["evaluations"],
-        "warmup_fraction": config["warmup_fraction"],
-        "grad_clip": config["grad_clip"],
-        "label_smoothing": config["label_smoothing"],
-        "workers": args.workers,
-        "recipe": config["models"][args.model],
-    }
+    try:
+        settings = make_settings(
+            config, args.model, args.init, args.condition, args.budget, args.seed,
+            args.workers, steps=args.steps, lr=args.lr,
+        )
+    except ValueError as error:
+        parser.error(str(error))
 
     images, labels = load_cifar100(args.data_root, train=True)
     manifest = load_manifest(args.manifest)

@@ -11,6 +11,7 @@
 | `--budget` | `5`, `10`, `20`, `50`, `full` (images per class, from the split manifest) |
 | `--seed` | training seed, e.g. `0`, `1`, `2` |
 | `--steps` | overrides the config's step budget; used for pilot runs |
+| `--lr` | overrides the config's learning rate; used for pilot runs |
 
 Example, from the repository root:
 
@@ -20,6 +21,25 @@ python -m src.component.train --config src/component/configs/train_pretrained.js
 ```
 
 The step budgets in the config files are empty until the pilot runs fix them. Until then, pass `--steps`.
+
+## Pilot runs
+
+`src/shellscripts/pilot_pretrained.sh` fixes the step budgets and confirms the learning rates of the pretrained arm. It uses validation data only and pilot seed 100, which is not one of the main training seeds.
+
+1. One long real-only run per model and data budget (600, 800, 1,000, 1,500 and 6,000 steps for 5, 10, 20, 50 per class and full).
+2. Two more learning rates per model at 50 images per class: 3e-5 and 3e-4 for ResNet-50, 2e-5 and 1e-4 for ViT-B/16.
+
+```bash
+bash src/shellscripts/pilot_pretrained.sh
+```
+
+Finished runs are skipped and an interrupted run resumes, so the script can be started again. At the end it prints a summary; to print it at any time:
+
+```bash
+python -m src.component.summarize_pilot --root runs/pilot-pretrained
+```
+
+The plateau step is the first validation within 0.5 percentage points of the best accuracy. The step budget for each data size is set from it and written into the config file before the main runs.
 
 ## Protocol
 
