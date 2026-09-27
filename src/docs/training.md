@@ -28,6 +28,14 @@ The step budgets in the config files are empty until the pilot runs fix them. Un
 
 1. One long real-only run per model and data budget (600, 800, 1,000, 1,500 and 6,000 steps for 5, 10, 20, 50 per class and full).
 2. More learning rates per model at 50 images per class: 3e-5, 3e-4 and 1e-3 for ResNet-50, 2e-5 and 1e-4 for ViT-B/16.
+3. ResNet-50 step budgets again at its chosen learning rate.
+
+Validation accuracy at 50 images per class chose the learning rates in `train_pretrained.json`:
+
+| Model | Learning rates tried | Chosen |
+|---|---|---|
+| ResNet-50 | 3e-5: 61.76, 1e-4: 68.90, **3e-4: 71.44**, 1e-3: 68.38 | 3e-4 |
+| ViT-B/16 | 2e-5: 77.02, **5e-5: 79.92**, 1e-4: 80.48 | 5e-5; 1e-4 was within single-seed variation |
 
 ```bash
 bash src/shellscripts/pilot_pretrained.sh
