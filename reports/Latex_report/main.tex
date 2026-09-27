@@ -1,0 +1,172 @@
+% SynthAug-Bench capstone report.
+% Structure follows the course's Sample_Report.tex; setup is in File_Setup.tex.
+% Compile: pdflatex main, bibtex main, pdflatex main, pdflatex main.
+
+\documentclass{scrartcl}
+\input{File_Setup.tex}
+\usepackage{graphicx,epsfig}
+\usepackage{booktabs}
+\hypersetup{
+   colorlinks   = true,
+   urlcolor     = blue,
+   linkcolor    = blue,
+   citecolor    = red,
+   setpagesize  = false,
+   linktocpage  = true,
+}
+\graphicspath{ {fig/} }
+
+\renewenvironment{abstract}{
+    \centering
+    \textbf{Abstract}
+    \vspace{0.5cm}
+    \par\itshape
+    \begin{minipage}{0.7\linewidth}}{\end{minipage}
+    \noindent\ignorespaces
+}
+% ------------------------------------------------------------------------------------------------------------------------
+
+\begin{document}
+\begin{titlepage}
+	\centering
+	\includegraphics[width=0.6\textwidth]{GW_logo.eps}\par
+	\vspace{2cm}
+	{\scshape\LARGE Data Science Program \par}
+	\vspace{1cm}
+	{\scshape\Large Capstone Report - Fall 2026\par}
+	\vspace{1.5cm}
+	{\huge\bfseries SynthAug-Bench: When Does Diffusion-Based Synthetic Data Augmentation Help?\par}
+	\vspace{2cm}
+	% Complete the second author's full name.
+	{\Large\itshape Mayur Patil,\\ Manoj\\}\par
+	\vspace{1.5cm}
+	supervised by\par
+	Amir Jafari
+
+	\vfill
+	\begin{abstract}
+	    % Write last, once results exist. Five sentences: (1) what this study shows, (2) why the question
+	    % is hard and matters, (3) how it is tested, (4) the evidence, (5) the most important number.
+	    % Every claim here must be supported by a result in Section 5.
+	    Text-to-image diffusion models can generate unlimited class-conditioned training images, but
+	    it is unclear when adding them improves a classifier. This project builds a controlled benchmark
+	    that compares pretrained and adapted diffusion augmentation against real-only training and
+	    conventional augmentation across data budgets, classifier architectures, and initializations.
+	\end{abstract}
+	\vfill
+\end{titlepage}
+\tableofcontents
+\newpage
+% ------------------------------------------------------------------------------------------------------------------------
+\section{Introduction}
+
+% The problem, why it matters, what this project does, and what it found.
+% Draw on proposal.md, Sections 1 and 3. End with 2-4 contribution bullets, one or two lines each.
+% Use one term per concept throughout (e.g. "real-only", "data budget", "generated images").
+
+% ------------------------------------------------------------------------------------------------------------------------
+\section{Problem Statement}
+
+% The research questions (proposal.md, RQ1-RQ6) and the challenges: data scarcity, generated images
+% that change class-defining details, resolution mismatch between real and generated images,
+% seed variation, and compute limits.
+
+% ------------------------------------------------------------------------------------------------------------------------
+\section{Related Work}
+\label{sec:related}
+
+% Literature review: at least ten works, each summarised in your own words, with an explicit
+% statement of how this project differs. Compare and contrast; do not list abstracts.
+% Organise by approach, not paper by paper: "One line of work ... [refs], whereas this study ...".
+% Every cited work must be in references.bib, with details taken from the paper itself.
+
+\subsection{Diffusion models and their adaptation}
+% Latent diffusion / Stable Diffusion \cite{rombach2022high}; denoising diffusion models \cite{ho2020denoising};
+% adapting a pretrained generator: textual inversion \cite{gal2023image}, DreamBooth \cite{ruiz2023dreambooth},
+% LoRA \cite{hu2022lora}.
+
+\subsection{Diffusion-based augmentation for classification}
+% DA-Fusion \cite{trabucco2024effective}; ALIA \cite{dunlap2023diversify}.
+
+\subsection{Synthetic images as training data}
+% He et al. \cite{he2023synthetic}; Sariyildiz et al. \cite{sariyildiz2023fake};
+% Azizi et al. \cite{azizi2023synthetic}; StableRep \cite{tian2023stablerep}.
+
+\subsection{Conventional augmentation and generators trained from scratch}
+% RandAugment \cite{cubuk2020randaugment}; StyleGAN2-ADA \cite{karras2020training}.
+
+\subsection{Measuring generated-image quality}
+% FID \cite{heusel2017gans}; improved precision and recall \cite{kynkaanniemi2019improved};
+% Clean-FID and resizing effects \cite{parmar2022aliased}.
+
+\subsection{Beyond classification}
+% Diffusion augmentation for object detection \cite{fang2024data} and image captioning \cite{xiao2023multimodal}.
+
+\subsection{How this study differs}
+% State explicitly what this benchmark adds relative to the works above: the same protocol across
+% data budgets, pretrained vs. adapted generators, CNN vs. Transformer, pretrained vs. random
+% initialization, matched step budgets, and resolution-matched generated images.
+
+% ------------------------------------------------------------------------------------------------------------------------
+\section{Solution and Methodology}
+
+\subsection{Dataset and splits}
+% CIFAR-100 \cite{krizhevsky2009learning}: 50 validation images per class (split seed 42), nested
+% training budgets of 5, 10, 20, 50 images per class and the full 45,000; official test set held out.
+% See src/docs/data-splits.md.
+
+\subsection{Classifiers and training protocol}
+% ResNet-50 \cite{he2016deep} and ViT-B/16 \cite{dosovitskiy2021image}; ImageNet-pretrained and randomly
+% initialized arms; recipe, step budgets and checkpoint rule from the pilot. See src/docs/training.md.
+
+\subsection{Augmentation conditions}
+% Real-only, RandAugment, pretrained Stable Diffusion, LoRA-adapted Stable Diffusion; generated images
+% resized to 32x32 before the shared preprocessing.
+
+\subsection{Evaluation}
+% Top-1 accuracy, macro-F1, per-class recall; paired changes per seed; bootstrap intervals.
+
+% Pipeline diagram: add the exported SVG from fig/ once the .drawio source exists.
+
+% ------------------------------------------------------------------------------------------------------------------------
+\section{Results and Discussion}
+
+% Before each experiment, state the claim it tests. Report mean and standard deviation over seeds
+% (say which), the number of runs, and the paired changes. Tables use booktabs with consistent
+% decimals; figures are vector (SVG or PDF) with self-contained captions and colorblind-safe colors.
+
+\subsection{Experimentation protocol}
+% Hardware (NVIDIA A10G, 24 GB), software versions, total GPU hours, number of runs, seeds,
+% and how the learning rates and step budgets were chosen (pilot, seed 100, validation only).
+
+\subsection{Baselines}
+% Real-only and RandAugment results per model and data budget.
+
+\subsection{Synthetic-data augmentation}
+% Pretrained and adapted diffusion conditions, as paired changes from the matched baselines.
+
+% ------------------------------------------------------------------------------------------------------------------------
+\section{Discussion}
+
+% Challenges, where the approach helps or fails, and what to try next.
+
+% ------------------------------------------------------------------------------------------------------------------------
+\section{Limitations}
+
+% State the weaknesses before a reader finds them, and why they do not undermine the main claims:
+% one dataset in Stage 1, 32x32 images upsampled to 224, three seeds, pretraining overlap
+% (ImageNet, Stable Diffusion training data), single-GPU compute, stages not completed.
+
+% ------------------------------------------------------------------------------------------------------------------------
+\section{Conclusion}
+
+% Short answer to each research question.
+
+% Lists every reference in references.bib while the text above is being written.
+% Remove once all works are cited in the text.
+\nocite{*}
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}
