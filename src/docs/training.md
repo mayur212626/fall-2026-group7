@@ -37,6 +37,18 @@ Validation accuracy at 50 images per class chose the learning rates in `train_pr
 | ResNet-50 | 3e-5: 61.76, 1e-4: 68.90, **3e-4: 71.44**, 1e-3: 68.38 | 3e-4 |
 | ViT-B/16 | 2e-5: 77.02, **5e-5: 79.92**, 1e-4: 80.48 | 5e-5; 1e-4 was within single-seed variation |
 
+The step budget of each data size is the pilot's own length. At the chosen learning rates, both models reached their plateau well before the end of every pilot run:
+
+| Images per class | Steps | Plateau step, ResNet-50 | Plateau step, ViT-B/16 | Best validation accuracy, ResNet-50 / ViT-B/16 |
+|---|---|---|---|---|
+| 5 | 600 | 270 | 90 | 35.60 / 47.68 |
+| 10 | 800 | 480 | 120 | 49.54 / 62.54 |
+| 20 | 1,000 | 600 | 250 | 59.94 / 73.12 |
+| 50 | 1,500 | 750 | 450 | 71.44 / 79.92 |
+| full | 6,000 | 3,600 | 3,600 | 83.84 / 88.88 |
+
+These are pilot values from seed 100 on validation data; they are not results of the study.
+
 ```bash
 bash src/shellscripts/pilot_pretrained.sh
 ```
