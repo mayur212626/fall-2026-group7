@@ -61,6 +61,20 @@ python -m src.component.summarize_pilot --root runs/pilot-pretrained
 
 The plateau step is the first validation within 0.5 percentage points of the best accuracy. The step budget for each data size is set from it and written into the config file before the main runs.
 
+## Stage 1 baselines, pretrained arm
+
+`src/shellscripts/run_pretrained_baselines.sh` trains real-only and RandAugment runs for both models at every data budget with training seeds 0, 1 and 2, using the learning rates and step budgets in `train_pretrained.json`. That is 60 runs, about 12–13 GPU hours on the A10G. Each seed finishes before the next one starts, runs that are already complete are skipped, and an interrupted run resumes.
+
+```bash
+bash src/shellscripts/run_pretrained_baselines.sh
+```
+
+Runs are written to `runs/stage1-pretrained/`. To see progress and the best validation accuracy of each run so far:
+
+```bash
+python -m src.component.summarize_pilot --root runs/stage1-pretrained
+```
+
 ## Protocol
 
 - Images are 32×32 CIFAR-100 images, upsampled to 224×224 (bilinear) and normalized with the ImageNet mean and standard deviation.
