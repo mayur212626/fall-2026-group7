@@ -28,7 +28,8 @@ class SummarizeTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             run_dir = Path(tmp) / "steps" / "pretrained_resnet50_real_only_b5_s100"
             run_dir.mkdir(parents=True)
-            settings = {"model": "resnet50", "budget": "5", "steps": 40, "recipe": {"lr": 1e-4}}
+            settings = {"model": "resnet50", "budget": "5", "steps": 40, "recipe": {"lr": 1e-4},
+                        "condition": "real_only", "seed": 100}
             (run_dir / "config.json").write_text(json.dumps({"settings": settings}))
             (run_dir / "history.jsonl").write_text("".join(json.dumps(h) + "\n" for h in HISTORY))
 
@@ -37,6 +38,7 @@ class SummarizeTest(unittest.TestCase):
         self.assertEqual(len(rows), 1)
         row = rows[0]
         self.assertEqual((row["model"], row["budget"], row["lr"]), ("resnet50", "5", 1e-4))
+        self.assertEqual((row["condition"], row["seed"]), ("real_only", 100))
         self.assertEqual((row["best_step"], row["best_accuracy"], row["plateau_step"]), (40, 60.2, 20))
         self.assertEqual((row["done_steps"], row["steps"], row["minutes"]), (40, 40, 2.0))
 

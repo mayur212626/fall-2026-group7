@@ -34,6 +34,8 @@ def summarize(root: Path, tolerance: float) -> list[dict]:
         rows.append({
             "run": str(run_dir.relative_to(root)),
             "model": settings["model"],
+            "condition": settings["condition"],
+            "seed": settings["seed"],
             "budget": settings["budget"],
             "lr": settings["recipe"]["lr"],
             "steps": settings["steps"],
@@ -44,7 +46,10 @@ def summarize(root: Path, tolerance: float) -> list[dict]:
             "minutes": history[-1]["elapsed_seconds"] / 60,
         })
     budget_order = {"5": 0, "10": 1, "20": 2, "50": 3, "full": 4}
-    return sorted(rows, key=lambda r: (r["model"], budget_order.get(r["budget"], 9), r["lr"]))
+    return sorted(
+        rows,
+        key=lambda r: (r["model"], budget_order.get(r["budget"], 9), r["lr"], r["condition"], r["seed"]),
+    )
 
 
 def main() -> None:
@@ -54,13 +59,17 @@ def main() -> None:
     parser.add_argument("--tolerance", type=float, default=0.5, help="percentage points below the best")
     args = parser.parse_args()
 
-    header = f"{'model':<9} {'budget':>6} {'lr':>8} {'steps':>11} {'best acc':>8} {'best step':>9} {'plateau':>7} {'min':>6}"
+    header = (
+        f"{'model':<9} {'condition':<11} {'seed':>4} {'budget':>6} {'lr':>8} {'steps':>11} "
+        f"{'best acc':>8} {'best step':>9} {'plateau':>7} {'min':>6}"
+    )
     print(header)
     for r in summarize(args.root, args.tolerance):
         progress = f"{r['done_steps']}/{r['steps']}"
         print(
-            f"{r['model']:<9} {r['budget']:>6} {r['lr']:>8.0e} {progress:>11} {r['best_accuracy']:>8.2f} "
-            f"{r['best_step']:>9} {r['plateau_step']:>7} {r['minutes']:>6.1f}"
+            f"{r['model']:<9} {r['condition']:<11} {r['seed']:>4} {r['budget']:>6} {r['lr']:>8.0e} "
+            f"{progress:>11} {r['best_accuracy']:>8.2f} {r['best_step']:>9} {r['plateau_step']:>7} "
+            f"{r['minutes']:>6.1f}"
         )
 
 
