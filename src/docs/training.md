@@ -61,6 +61,18 @@ python -m src.component.summarize_pilot --root runs/pilot-pretrained
 
 The plateau step is the first validation within 0.5 percentage points of the best accuracy. The step budget for each data size is set from it and written into the config file before the main runs.
 
+## Pilot runs, random-initialization arm
+
+`src/shellscripts/pilot_scratch.sh` does the same for classifiers trained from random weights, with pilot seed 100 and validation data only. Training from scratch needs far more steps, so the pilot runs in two phases.
+
+1. Learning rates at 50 images per class, 8,000 steps (about 205 epochs): SGD with momentum 0.9 at 0.03, 0.1 and 0.3 for ResNet-50, and AdamW at 1e-4, 3e-4 and 1e-3 for ViT-B/16. About 5 GPU hours.
+2. Step budgets for the other data sizes at the chosen learning rates, added to the script after phase 1.
+
+```bash
+bash src/shellscripts/pilot_scratch.sh
+python -m src.component.summarize_pilot --root runs/pilot-scratch
+```
+
 ## Stage 1 baselines, pretrained arm
 
 `src/shellscripts/run_pretrained_baselines.sh` trains real-only and RandAugment runs for both models at every data budget with training seeds 0, 1 and 2, using the learning rates and step budgets in `train_pretrained.json`. That is 60 runs, about 12–13 GPU hours on the A10G. Each seed finishes before the next one starts, runs that are already complete are skipped, and an interrupted run resumes.
