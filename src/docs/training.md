@@ -126,7 +126,19 @@ python -m src.component.analyze_results --root runs/stage1-pretrained \
     --figure reports/Latex_report/fig/stage1_pretrained_accuracy
 ```
 
-`--metric` selects `accuracy` (default), `macro_f1` or `balanced_accuracy`. The scores are best validation scores; test-set results are evaluated separately once the protocol is fixed.
+`--metric` selects `accuracy` (default), `macro_f1` or `balanced_accuracy`. `--split test` uses the test-set scores described below instead of the best validation scores.
+
+## Test-set evaluation
+
+The official 10,000-image CIFAR-100 test set is scored once per run, after the training and selection protocol is fixed. `src/component/evaluate_test.py` rebuilds each completed run's model from its settings, loads `best.pt` (the best validation checkpoint) and scores it with the same evaluation code used for validation. It writes `test_result.json` next to `result.json`, with the test scores, per-image predictions and a fingerprint of the test labels.
+
+```bash
+python -m src.component.evaluate_test --root runs/stage1-pretrained --confirm-protocol-frozen
+python -m src.component.analyze_results --root runs/stage1-pretrained --split test \
+    --figure reports/Latex_report/fig/stage1_pretrained_test_accuracy
+```
+
+Run it when no training job is using the GPU. The command refuses to run without `--confirm-protocol-frozen`. It evaluates only completed runs, skips runs that already have `test_result.json` and never overwrites one. If the protocol changes after test scores have been seen, record the change and the earlier test exposure.
 
 ## Protocol
 

@@ -15,7 +15,8 @@ It also saves an accuracy-versus-data-size figure as SVG and PDF.
     python -m src.component.analyze_results --root runs/stage1-pretrained \
         --figure reports/Latex_report/fig/stage1_pretrained_accuracy
 
-Scores are the best validation scores of each run.
+Scores are the best validation scores of each run, or with ``--split test``
+the one-time test scores written by ``evaluate_test``.
 """
 
 import argparse
@@ -36,14 +37,24 @@ def images_per_class(budget: str) -> int:
     return FULL_IMAGES_PER_CLASS if budget == "full" else int(budget)
 
 
-def load_runs(root: Path) -> list[dict]:
-    """Return one row per completed run below ``root`` with its settings and best scores."""
+def load_runs(root: Path, split: str = "validation") -> list[dict]:
+    """Return one row per completed run below ``root`` with its settings and scores.
+
+    ``split="validation"`` uses the best validation scores from ``result.json``;
+    ``split="test"`` uses ``test_result.json`` and leaves out runs without one.
+    """
     rows = []
     for result_path in sorted(Path(root).rglob("result.json")):
         run_dir = result_path.parent
         settings = json.loads((run_dir / "config.json").read_text(encoding="utf-8"))["settings"]
         result = json.loads(result_path.read_text(encoding="utf-8"))
-        best = result["best_validation"]
+        if split == "test":
+            test_path = run_dir / "test_result.json"
+            if not test_path.exists():
+                continue
+            best = json.loads(test_path.read_text(encoding="utf-8"))["test"]
+        else:
+            best = result["best_validation"]
         rows.append({
             "init": settings["init"],
             "model": settings["model"],
@@ -116,7 +127,7 @@ def paired_changes(rows: list[dict], treatment: str, control: str, metric: str) 
     return sorted(result, key=lambda c: (c["init"], c["model"], _budget_key(c["budget"])))
 
 
-def plot_accuracy(aggregates: list[dict], out_stem: Path, init: str) -> list[Path]:
+def plot_accuracy(aggregates: list[dict], out_stem: Path, init: str, split: str = "validation") -> list[Path]:
     """Plot mean accuracy (±1 SD over seeds) against images per class.
 
     Color identifies the model and line style the condition. Saves
@@ -153,7 +164,7 @@ def plot_accuracy(aggregates: list[dict], out_stem: Path, init: str) -> list[Pat
     ax.set_xticklabels([f"{t}" if t != FULL_IMAGES_PER_CLASS else f"full ({t})" for t in ticks])
     ax.minorticks_off()
     ax.set_xlabel("Training images per class (log scale)")
-    ax.set_ylabel("Validation top-1 accuracy (%)")
+    ax.set_ylabel(f"{split.capitalize()} top-1 accuracy (%)")
     ax.grid(True, color="#e0e0e0", linewidth=0.6)
     ax.set_axisbelow(True)
     for side in ("top", "right"):
@@ -179,12 +190,17 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Aggregate training runs.")
     parser.add_argument("--root", type=Path, default=Path("runs/stage1-pretrained"))
     parser.add_argument("--metric", default="accuracy", choices=["accuracy", "macro_f1", "balanced_accuracy"])
+    parser.add_argument("--split", default="validation", choices=["validation", "test"])
     parser.add_argument("--figure", type=Path, help="figure path without extension; saves .svg and .pdf")
     args = parser.parse_args()
 
-    rows = load_runs(args.root)
+    rows = load_runs(args.root, args.split)
     groups = aggregate(rows, args.metric)
-    print(f"{len(rows)} runs, metric: validation {args.metric}\n")
+    print(f"{len(rows)} runs, metric: {args.split} {args.metric}\n")
+    if args.split == "test":
+        missing = len(load_runs(args.root, "validation")) - len(rows)
+        if missing:
+            print(f"WARNING: {missing} completed runs have no test scores yet; the tables below leave them out.\n")
     print("| init | model | images/class | condition | seeds | mean ± SD |")
     print("|---|---|---|---|---|---|")
     for g in groups:
@@ -203,7 +219,7 @@ def main() -> None:
         inits = sorted({g["init"] for g in groups})
         for init in inits:
             stem = args.figure if len(inits) == 1 else args.figure.with_name(f"{args.figure.name}_{init}")
-            for path in plot_accuracy(groups, stem, init):
+            for path in plot_accuracy(groups, stem, init, args.split):
                 print(f"saved {path}")
 
 
