@@ -65,13 +65,15 @@ The plateau step is the first validation within 0.5 percentage points of the bes
 
 `src/shellscripts/pilot_scratch.sh` does the same for classifiers trained from random weights, with pilot seed 100 and validation data only. Training from scratch needs far more steps, so the pilot runs in two phases.
 
-1. Learning rates at 50 images per class, 8,000 steps (about 205 epochs): SGD with momentum 0.9 at 0.03, 0.1, 0.3 and 1.0 for ResNet-50, and AdamW at 1e-4, 3e-4 and 1e-3 for ViT-B/16.
+1. Learning rates at 50 images per class, 8,000 steps (about 205 epochs): SGD with momentum 0.9 at 0.03, 0.1, 0.3, 1.0 and 3.0 for ResNet-50, and AdamW at 1e-4, 3e-4 and 1e-3 for ViT-B/16.
 2. Step budgets for the other data sizes at the chosen learning rates: 2,000, 3,000, 4,000 and 50,000 steps for 5, 10, 20 per class and full.
 
 | Model | Learning rates tried, validation accuracy at 50 images per class | Chosen |
 |---|---|---|
 | ViT-B/16 | 1e-4: 19.38, **3e-4: 19.58**, 1e-3: 11.30 (unstable) | 3e-4 |
-| ResNet-50 | 0.03: about 21, 0.1: 22.44, 0.3: 28.00, 1.0: pending | pending |
+| ResNet-50 | 0.03: 21.88, 0.1: 22.44, 0.3: 28.00, 1.0: 30.50, 3.0: pending | pending |
+
+With gradients clipped at norm 1.0, the SGD update size is close to the learning rate, which is why ResNet-50 from scratch prefers learning rates far above the usual 0.1.
 
 ```bash
 bash src/shellscripts/pilot_scratch.sh
