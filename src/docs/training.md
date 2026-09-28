@@ -87,13 +87,25 @@ Runs are written to `runs/stage1-pretrained/`. To see progress and the best vali
 python -m src.component.summarize_pilot --root runs/stage1-pretrained
 ```
 
+## Result tables and figures
+
+`src/component/analyze_results.py` aggregates completed runs. It prints the mean and sample standard deviation over seeds for each model, data budget and condition, and the paired change of RandAugment over real-only per seed. A change is a gain or a loss only when every seed agrees in sign; otherwise it is inconclusive. It also saves an accuracy-versus-data-size figure as SVG and PDF.
+
+```bash
+python -m src.component.analyze_results --root runs/stage1-pretrained \
+    --figure reports/Latex_report/fig/stage1_pretrained_accuracy
+```
+
+`--metric` selects `accuracy` (default), `macro_f1` or `balanced_accuracy`. The scores are best validation scores; test-set results are evaluated separately once the protocol is fixed.
+
 ## Protocol
 
 - Images are 32×32 CIFAR-100 images, upsampled to 224×224 (bilinear) and normalized with the ImageNet mean and standard deviation.
 - `real_only` applies no augmentation. `randaugment` applies RandAugment (2 operations, magnitude 9) to the 32×32 image before upsampling.
 - Training runs for a fixed number of optimizer steps: linear warmup over 5% of the steps, then cosine decay; gradient norm clipped at 1.0; label smoothing 0.1; bf16 mixed precision on the GPU.
 - The validation set is scored 20 times at equal step intervals. The best checkpoint has the highest validation accuracy; ties go to the lower validation loss, then the earlier step.
-- Seeds, cuDNN determinism and a fixed sample order make each run reproducible. The order depends only on the seed and the step, so a resumed run sees the same batches and augmentations as an uninterrupted one.
+- Every run is seeded (Python, NumPy, PyTorch, deterministic cuDNN), and the sample order and the augmentation of each sample depend only on the seed and the step. A resumed run therefore sees the same batches and augmentations as an uninterrupted one, which the unit tests check on the CPU. On the GPU, some kernels (for example the attention backward pass of ViT-B/16) are not guaranteed to be deterministic, so repeated GPU runs with the same seed can differ slightly; the differences between seeds are measured by the three training seeds.
+- Augmentation seeds come from the run seed and the sample position through NumPy's SeedSequence. Runs made before this change, including the Stage 1 pretrained baselines, used the seed plus the sample position (`seed * 1000003 + k`), which gives the same stream as long as a run stays below one million samples; their git commit is recorded in `config.json`.
 - The official test set is not used by the runner.
 
 ## Output

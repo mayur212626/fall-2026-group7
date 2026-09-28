@@ -87,6 +87,8 @@ class StepBatchSampler(Sampler[list[tuple[int, int]]]):
     of all positions drawn from ``(seed, e)``. Step ``s`` takes stream items
     ``s * batch_size`` to ``(s + 1) * batch_size - 1``, so batches may cross
     epoch boundaries and a run started at any step sees the same stream.
+    The visit seed of stream item ``k`` is derived from ``(seed, k)`` with
+    NumPy's SeedSequence, so different run seeds never share augmentations.
     """
 
     def __init__(
@@ -109,7 +111,8 @@ class StepBatchSampler(Sampler[list[tuple[int, int]]]):
                 if k // self.num_items != epoch:
                     epoch = k // self.num_items
                     order = np.random.default_rng([self.seed, epoch]).permutation(self.num_items)
-                batch.append((int(order[k % self.num_items]), self.seed * 1_000_003 + k))
+                visit_seed = int(np.random.SeedSequence([self.seed, k]).generate_state(1, np.uint64)[0])
+                batch.append((int(order[k % self.num_items]), visit_seed))
             yield batch
 
 

@@ -248,29 +248,36 @@ def run_training(
 ) -> dict:
     """Train one run to completion, resuming from ``run_dir/last.pt`` if present.
 
+    A directory with a matching ``config.json`` but no ``last.pt`` (a run that
+    stopped before its first checkpoint) is restarted from step 0.
+
     Raises:
         FileExistsError: If the run already finished, or the directory holds
-            files but no checkpoint to resume.
-        ValueError: If resuming with settings that differ from the saved ones.
+            files but no ``config.json``.
+        ValueError: If the saved settings differ from ``settings``.
     """
     run_dir = Path(run_dir)
+    config_path = run_dir / "config.json"
     last_path = run_dir / "last.pt"
     history_path = run_dir / "history.jsonl"
     if (run_dir / "result.json").exists():
         raise FileExistsError(f"{run_dir} is already complete")
+    if config_path.exists():
+        saved = json.loads(config_path.read_text(encoding="utf-8"))["settings"]
+        if saved != settings:
+            raise ValueError(f"settings differ from the saved run in {run_dir}")
+    elif run_dir.exists() and any(run_dir.iterdir()):
+        raise FileExistsError(f"{run_dir} has files but no config.json")
 
     state = new_state(settings, device)
     if last_path.exists():
-        saved = json.loads((run_dir / "config.json").read_text(encoding="utf-8"))["settings"]
-        if saved != settings:
-            raise ValueError(f"settings differ from the saved run in {run_dir}")
         extra = load_checkpoint(state, last_path)
         _trim_history(history_path, state.step)
     else:
-        if run_dir.exists() and any(run_dir.iterdir()):
-            raise FileExistsError(f"{run_dir} has files but no checkpoint to resume")
         run_dir.mkdir(parents=True, exist_ok=True)
-        _write_json(run_dir / "config.json", {"settings": settings, "metadata": metadata})
+        if not config_path.exists():
+            _write_json(config_path, {"settings": settings, "metadata": metadata})
+        _trim_history(history_path, 0)
         extra = {"elapsed": 0.0, "peak_memory_mb": 0.0}
 
     if device.type == "cuda":

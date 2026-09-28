@@ -152,6 +152,30 @@ class RunTrainingResumeTest(unittest.TestCase):
             run_training(settings(steps=6), {}, fake_dataset(10), fake_dataset(6), self.run_dir, torch.device("cpu"))
 
 
+class RunTrainingEarlyCrashTest(unittest.TestCase):
+    """A run directory with config.json and history but no checkpoint, as after a crash before the first save."""
+
+    def setUp(self) -> None:
+        self.tmp = tempfile.TemporaryDirectory()
+        self.run_dir = Path(self.tmp.name) / "run"
+        self.run_dir.mkdir()
+        (self.run_dir / "config.json").write_text(json.dumps({"settings": settings(), "metadata": {}}))
+        (self.run_dir / "history.jsonl").write_text(json.dumps({"step": 2}) + "\n")
+
+    def tearDown(self) -> None:
+        self.tmp.cleanup()
+
+    def test_restarts_from_step_zero(self) -> None:
+        run_training(settings(), {}, fake_dataset(10), fake_dataset(6), self.run_dir, torch.device("cpu"))
+        lines = (self.run_dir / "history.jsonl").read_text().splitlines()
+        self.assertEqual([json.loads(line)["step"] for line in lines], [2, 4])
+        self.assertTrue((self.run_dir / "result.json").exists())
+
+    def test_refuses_to_restart_with_different_settings(self) -> None:
+        with self.assertRaises(ValueError):
+            run_training(settings(steps=6), {}, fake_dataset(10), fake_dataset(6), self.run_dir, torch.device("cpu"))
+
+
 class RunTrainingTest(unittest.TestCase):
     def setUp(self) -> None:
         self.tmp = tempfile.TemporaryDirectory()

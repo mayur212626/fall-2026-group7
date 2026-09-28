@@ -68,6 +68,12 @@ class StepBatchSamplerTest(unittest.TestCase):
         resumed = stream(StepBatchSampler(10, 4, seed=3, start_step=2, end_step=6))
         self.assertEqual(resumed, full[8:])
 
+    def test_visit_seeds_of_different_run_seeds_never_coincide(self) -> None:
+        # Stream positions past one million samples, where seed * 1_000_003 + k used to collide.
+        late = stream(StepBatchSampler(10, 4, seed=0, start_step=250_001, end_step=250_002))
+        early = stream(StepBatchSampler(10, 4, seed=1, start_step=0, end_step=1))
+        self.assertFalse({v for _, v in late} & {v for _, v in early})
+
     def test_seed_changes_the_order(self) -> None:
         first = stream(StepBatchSampler(10, 5, seed=0, start_step=0, end_step=2))
         second = stream(StepBatchSampler(10, 5, seed=1, start_step=0, end_step=2))
