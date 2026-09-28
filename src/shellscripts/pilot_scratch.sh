@@ -5,7 +5,9 @@
 #            epochs): SGD 0.03, 0.1, 0.3, 1.0, 3.0 for ResNet-50 and AdamW 1e-4,
 #            3e-4, 1e-3 for ViT-B/16.
 #   Phase 2: step budgets for the other data sizes at the chosen learning
-#            rate; ViT-B/16 at 3e-4.
+#            rates, ViT-B/16 at 3e-4 and ResNet-50 at 1.0, plus ResNet-50 at
+#            50 images per class with 16,000 steps to check the 8,000-step
+#            budget.
 # Learning rates are passed explicitly, so each run keeps the settings it
 # was trained with. Completed runs are skipped and an interrupted run
 # resumes, so the script can be started again at any time. Run from the
@@ -34,5 +36,8 @@ for lr in 0.03 0.1 0.3 1.0 3.0; do run resnet50 50 "$ROOT/lr_$lr" --lr "$lr"; do
 for lr in 1e-4 3e-4 1e-3; do run vit_b_16 50 "$ROOT/lr_$lr" --lr "$lr"; done
 
 for budget in 5 10 20 full; do run vit_b_16 "$budget" "$ROOT/lr_3e-4" --lr 3e-4; done
+
+run resnet50 50 "$ROOT/lr_1.0_steps16000" --lr 1.0 --steps 16000
+for budget in 5 10 20 full; do run resnet50 "$budget" "$ROOT/lr_1.0" --lr 1.0; done
 
 python -m src.component.summarize_pilot --root "$ROOT"

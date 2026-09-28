@@ -71,7 +71,9 @@ The plateau step is the first validation within 0.5 percentage points of the bes
 | Model | Learning rates tried, validation accuracy at 50 images per class | Chosen |
 |---|---|---|
 | ViT-B/16 | 1e-4: 19.38, **3e-4: 19.58**, 1e-3: 11.30 (unstable) | 3e-4 |
-| ResNet-50 | 0.03: 21.88, 0.1: 22.44, 0.3: 28.00, 1.0: 30.50, 3.0: pending | pending |
+| ResNet-50 | 0.03: 21.88, 0.1: 22.44, 0.3: 28.00, **1.0: 30.50**, 3.0: 2.76 (diverged) | 1.0 |
+
+ViT-B/16 at 3e-4 reached its plateau well before the end of every step pilot: step 300 of 2,000 at 5 images per class (7.22), 600 of 3,000 at 10 (10.02), 1,000 of 4,000 at 20 (13.14), 2,000 of 8,000 at 50 (19.58) and 40,000 of 50,000 with the full data (43.92). ResNet-50 reached its best at step 7,600 of 8,000 at 50 images per class, so its phase 2 also trains that budget for 16,000 steps to check whether 8,000 is enough.
 
 With gradients clipped at norm 1.0, the SGD update size is close to the learning rate, which is why ResNet-50 from scratch prefers learning rates far above the usual 0.1.
 
