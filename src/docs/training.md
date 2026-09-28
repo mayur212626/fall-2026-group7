@@ -73,7 +73,28 @@ The plateau step is the first validation within 0.5 percentage points of the bes
 | ViT-B/16 | 1e-4: 19.38, **3e-4: 19.58**, 1e-3: 11.30 (unstable) | 3e-4 |
 | ResNet-50 | 0.03: 21.88, 0.1: 22.44, 0.3: 28.00, **1.0: 30.50**, 3.0: 2.76 (diverged) | 1.0 |
 
-ViT-B/16 at 3e-4 reached its plateau well before the end of every step pilot: step 300 of 2,000 at 5 images per class (7.22), 600 of 3,000 at 10 (10.02), 1,000 of 4,000 at 20 (13.14), 2,000 of 8,000 at 50 (19.58) and 40,000 of 50,000 with the full data (43.92). ResNet-50 reached its best at step 7,600 of 8,000 at 50 images per class, so its phase 2 also trains that budget for 16,000 steps to check whether 8,000 is enough.
+ViT-B/16 at 3e-4 reached its plateau well before the end of every step pilot: step 300 of 2,000 at 5 images per class (7.22), 600 of 3,000 at 10 (10.02), 1,000 of 4,000 at 20 (13.14), 2,000 of 8,000 at 50 (19.58) and 40,000 of 50,000 with the full data (43.92). ResNet-50 reached its best at step 7,600 of 8,000 at 50 images per class, so its phase 2 also trained that budget for 16,000 steps: 28.24 against 30.50 with 8,000 steps, so the longer schedule overfits and 8,000 is kept.
+
+The step budgets in `train_scratch.json` are the pilot lengths:
+
+| Images per class | Steps | Best validation accuracy, ResNet-50 / ViT-B/16 |
+|---|---|---|
+| 5 | 2,000 | 9.52 / 7.22 |
+| 10 | 3,000 | 12.28 / 10.02 |
+| 20 | 4,000 | 20.40 / 13.14 |
+| 50 | 8,000 | 30.50 / 19.58 |
+| full | 50,000 | 55.70 / 43.92 |
+
+These are pilot values from seed 100 on validation data; they are not results of the study.
+
+## Stage 1 baselines, random-initialization arm
+
+`src/shellscripts/run_scratch_baselines.sh` trains the same 60 real-only and RandAugment runs as the pretrained arm, from random weights, with the learning rates and step budgets in `train_scratch.json`. It takes about 3 GPU days on the A10G and writes to `runs/stage1-scratch/`.
+
+```bash
+bash src/shellscripts/run_scratch_baselines.sh
+python -m src.component.summarize_pilot --root runs/stage1-scratch
+```
 
 With gradients clipped at norm 1.0, the SGD update size is close to the learning rate, which is why ResNet-50 from scratch prefers learning rates far above the usual 0.1.
 

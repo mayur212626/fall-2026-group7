@@ -6,11 +6,11 @@
   "grad_clip": 1.0,
   "label_smoothing": 0.1,
   "steps": {
-    "5": null,
-    "10": null,
-    "20": null,
-    "50": null,
-    "full": null
+    "5": 2000,
+    "10": 3000,
+    "20": 4000,
+    "50": 8000,
+    "full": 50000
   },
   "models": {
     "resnet50": {"optimizer": "sgd", "lr": 1.0, "momentum": 0.9, "weight_decay": 0.0005},
