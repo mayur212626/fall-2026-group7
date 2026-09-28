@@ -62,6 +62,18 @@
 
 % The problem, why it matters, what this project does, and what it found.
 % Draw on proposal.md, Sections 1 and 3. End with 2-4 contribution bullets, one or two lines each.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{pipeline-1-architecture.pdf}
+	\caption{Overview of SynthAug-Bench. Real images from the classification datasets and MS COCO 2017 feed
+	the augmentation families; generated images are resized to the dataset's resolution before training,
+	and the boxes and captions of generated COCO images are audited. Task models are scored on held-out
+	real images, and the analysis answers the six research questions. Boxes with a bold border are part of
+	Stage 1; dashed arrows are used for evaluation only, never for training.}
+	\label{fig:overview}
+\end{figure}
+% Editable source: fig/pipeline.drawio (page 1); SVG export: fig/pipeline-1-architecture.drawio.svg.
 % Use one term per concept throughout (e.g. "real-only", "data budget", "generated images").
 
 % ------------------------------------------------------------------------------------------------------------------------
@@ -126,7 +138,17 @@
 \subsection{Evaluation}
 % Top-1 accuracy, macro-F1, per-class recall; paired changes per seed; bootstrap intervals.
 
-% Pipeline diagram: add the exported SVG from fig/ once the .drawio source exists.
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{pipeline-2-classification.pdf}
+	\caption{Classification study design. Each data tier is split once with recorded seeds, and the official
+	test set is held out until the final evaluation. Every classifier, pretrained and randomly initialized,
+	is trained under three conditions: real images only, real images with conventional augmentation, and
+	real images with generated images, which are resized to the dataset's resolution first. Boxes with a
+	bold border are part of Stage 1.}
+	\label{fig:classification-design}
+\end{figure}
+% Editable source: fig/pipeline.drawio (page 2); SVG export: fig/pipeline-2-classification.drawio.svg.
 
 % ------------------------------------------------------------------------------------------------------------------------
 \section{Results and Discussion}
