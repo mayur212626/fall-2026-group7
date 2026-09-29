@@ -1,5 +1,6 @@
 """Tests for the results analysis."""
 
+import csv
 import json
 import tempfile
 import unittest
@@ -8,9 +9,11 @@ from pathlib import Path
 from src.component.analyze_results import (
     aggregate,
     images_per_class,
+    latex_table,
     load_runs,
     paired_changes,
     plot_accuracy,
+    write_csv,
 )
 
 
@@ -83,6 +86,47 @@ class ImagesPerClassTest(unittest.TestCase):
     def test_full_budget_is_450_images_per_class(self) -> None:
         self.assertEqual(images_per_class("full"), 450)
         self.assertEqual(images_per_class("20"), 20)
+
+
+class WriteCsvTest(unittest.TestCase):
+    def test_one_row_per_record_with_lists_joined_by_spaces(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "table.csv"
+            write_csv(aggregate(ROWS, "accuracy"), path)
+            with path.open(encoding="utf-8", newline="") as f:
+                records = list(csv.DictReader(f))
+        by_condition = {r["condition"]: r for r in records}
+        self.assertEqual(len(records), 2)
+        self.assertEqual(by_condition["real_only"]["seeds"], "0 1 2")
+        self.assertEqual(float(by_condition["real_only"]["mean"]), 32.0)
+        self.assertEqual(float(by_condition["real_only"]["sd"]), 2.0)
+
+    def test_floats_are_rounded_to_four_decimals(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = write_csv([{"changes": [0.1 + 0.2], "mean": 2 / 3}], Path(tmp) / "t.csv")
+            text = path.read_text(encoding="utf-8")
+        self.assertEqual(text.splitlines()[1], "0.3,0.6667")
+
+
+class LatexTableTest(unittest.TestCase):
+    def table(self, rows: list[dict], init: str = "pretrained") -> str:
+        return latex_table(aggregate(rows, "accuracy"), paired_changes(rows, "randaugment", "real_only", "accuracy"),
+                           init=init, metric="accuracy", split="validation")
+
+    def test_row_has_both_conditions_and_the_paired_change(self) -> None:
+        self.assertIn(r"ResNet-50 & 5 & 32.00 $\pm$ 2.00 & 37.00 $\pm$ 2.65 & +5.00 $\pm$ 1.00 & gain \\",
+                      self.table(ROWS))
+
+    def test_uses_booktabs_and_states_seeds_and_split_in_the_caption(self) -> None:
+        table = self.table(ROWS)
+        for part in (r"\toprule", r"\midrule", r"\bottomrule", "validation", "3 seeds"):
+            self.assertIn(part, table)
+
+    def test_leaves_out_other_initializations(self) -> None:
+        scratch = [dict(r, init="scratch", accuracy=r["accuracy"] - 20) for r in ROWS]
+        table = self.table(ROWS + scratch)
+        self.assertIn("32.00", table)
+        self.assertNotIn("12.00", table)
 
 
 class PlotAccuracyTest(unittest.TestCase):

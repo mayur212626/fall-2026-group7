@@ -123,8 +123,11 @@ python -m src.component.summarize_pilot --root runs/stage1-pretrained
 
 ```bash
 python -m src.component.analyze_results --root runs/stage1-pretrained \
-    --figure reports/Latex_report/fig/stage1_pretrained_accuracy
+    --figure reports/Latex_report/fig/stage1_pretrained_accuracy \
+    --table reports/Latex_report/tables/stage1_pretrained_accuracy
 ```
+
+`--table` saves both tables as CSV (`stage1_pretrained_accuracy.csv` and `stage1_pretrained_accuracy_paired.csv`, floats rounded to 4 decimals) and a booktabs LaTeX table (`stage1_pretrained_accuracy.tex`, one per initialization when the root holds both) that the report includes with `\input`.
 
 `--metric` selects `accuracy` (default), `macro_f1` or `balanced_accuracy`. `--split test` uses the test-set scores described below instead of the best validation scores.
 
