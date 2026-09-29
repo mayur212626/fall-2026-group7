@@ -1,0 +1,21 @@
+init,model,budget,condition,n,seeds,mean,sd
+pretrained,resnet50,5,randaugment,3,0 1 2,43.0267,0.993
+pretrained,resnet50,5,real_only,3,0 1 2,35.1733,0.8603
+pretrained,resnet50,10,randaugment,3,0 1 2,53.4933,0.45
+pretrained,resnet50,10,real_only,3,0 1 2,49.5067,0.9601
+pretrained,resnet50,20,randaugment,3,0 1 2,63.1133,0.5178
+pretrained,resnet50,20,real_only,3,0 1 2,59.48,0.3305
+pretrained,resnet50,50,randaugment,3,0 1 2,72.1867,0.2928
+pretrained,resnet50,50,real_only,3,0 1 2,71.36,0.3857
+pretrained,resnet50,full,randaugment,3,0 1 2,85.1733,0.0987
+pretrained,resnet50,full,real_only,3,0 1 2,84.1733,0.1943
+pretrained,vit_b_16,5,randaugment,3,0 1 2,57.0267,2.113
+pretrained,vit_b_16,5,real_only,3,0 1 2,46.9333,1.6115
+pretrained,vit_b_16,10,randaugment,3,0 1 2,69.2467,1.4883
+pretrained,vit_b_16,10,real_only,3,0 1 2,61.08,1.403
+pretrained,vit_b_16,20,randaugment,3,0 1 2,76.2067,0.5155
+pretrained,vit_b_16,20,real_only,3,0 1 2,72.0533,1.0782
+pretrained,vit_b_16,50,randaugment,3,0 1 2,82.0267,0.5194
+pretrained,vit_b_16,50,real_only,3,0 1 2,80.2867,0.0945
+pretrained,vit_b_16,full,randaugment,3,0 1 2,89.8933,0.2774
+pretrained,vit_b_16,full,real_only,3,0 1 2,88.64,0.02

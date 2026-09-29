@@ -10,16 +10,19 @@ Reads every run below ``--root`` (directories with ``config.json`` and
   a verdict. A change counts as a gain or a loss only when every seed agrees
   in sign; otherwise it is inconclusive.
 
-It also saves an accuracy-versus-data-size figure as SVG and PDF.
+It also saves an accuracy-versus-data-size figure as SVG and PDF, and with
+``--table`` both tables as CSV plus a LaTeX table (one per initialization).
 
     python -m src.component.analyze_results --root runs/stage1-pretrained \
-        --figure reports/Latex_report/fig/stage1_pretrained_accuracy
+        --figure reports/Latex_report/fig/stage1_pretrained_accuracy \
+        --table reports/Latex_report/tables/stage1_pretrained_accuracy
 
 Scores are the best validation scores of each run, or with ``--split test``
 the one-time test scores written by ``evaluate_test``.
 """
 
 import argparse
+import csv
 import json
 import statistics
 from pathlib import Path
@@ -30,6 +33,7 @@ MODEL_NAMES = {"resnet50": "ResNet-50", "vit_b_16": "ViT-B/16"}
 MODEL_COLORS = {"resnet50": "#2a78d6", "vit_b_16": "#eb6834"}  # categorical slots 1-2, validated
 CONDITION_NAMES = {"real_only": "real-only", "randaugment": "RandAugment"}
 CONDITION_LINES = {"real_only": "-", "randaugment": "--"}
+METRIC_NAMES = {"accuracy": "top-1 accuracy", "macro_f1": "macro-F1", "balanced_accuracy": "balanced accuracy"}
 
 
 def images_per_class(budget: str) -> int:
@@ -181,6 +185,60 @@ def plot_accuracy(aggregates: list[dict], out_stem: Path, init: str, split: str 
     return paths
 
 
+def write_csv(records: list[dict], path: Path) -> Path:
+    """Write one CSV row per record; floats are rounded to 4 decimals and lists joined by spaces."""
+    def cell(value: object) -> object:
+        if isinstance(value, list):
+            return " ".join(str(cell(v)) for v in value)
+        return round(value, 4) if isinstance(value, float) else value
+
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=list(records[0]))
+        writer.writeheader()
+        for record in records:
+            writer.writerow({k: cell(v) for k, v in record.items()})
+    return path
+
+
+def _tex(mean: float, sd: float | None, sign: str = "") -> str:
+    return f"{mean:{sign}.2f}" if sd is None else f"{mean:{sign}.2f} $\\pm$ {sd:.2f}"
+
+
+def latex_table(aggregates: list[dict], changes: list[dict], init: str, metric: str, split: str) -> str:
+    """Booktabs table of real-only, RandAugment and their paired change for one initialization."""
+    means = {(g["model"], g["budget"], g["condition"]): g for g in aggregates if g["init"] == init}
+    paired = {(c["model"], c["budget"]): c for c in changes if c["init"] == init}
+    seeds = sorted({g["n"] for g in means.values()})
+    lines = [
+        r"\begin{table}[H]",
+        r"\centering",
+        rf"\caption{{Stage 1 baselines, {init} initialization: {split} {METRIC_NAMES[metric]} (\%), mean $\pm$ "
+        rf"sample SD over {' or '.join(map(str, seeds))} seeds. The change is RandAugment minus real-only per seed "
+        r"(percentage points); it is a gain or a loss only when every seed agrees in sign.}",
+        rf"\label{{tab:stage1-{init}-{metric}}}",
+        r"\begin{tabular}{llrrrl}",
+        r"\toprule",
+        r"Model & Images/class & Real-only & RandAugment & Change & Verdict \\",
+    ]
+    for model in MODEL_NAMES:
+        budgets = sorted({b for m, b, _ in means if m == model}, key=_budget_key)
+        if not budgets:
+            continue
+        lines.append(r"\midrule")
+        for budget in budgets:
+            cells = [MODEL_NAMES[model], budget]
+            for condition in CONDITION_NAMES:
+                g = means.get((model, budget, condition))
+                cells.append(_tex(g["mean"], g["sd"]) if g else "--")
+            c = paired.get((model, budget))
+            cells += [_tex(c["mean"], c["sd"], "+"), c["verdict"]] if c else ["--", "--"]
+            lines.append(" & ".join(cells) + r" \\")
+    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
+    return "\n".join(lines)
+
+
 def _fmt(mean: float, sd: float | None) -> str:
     return f"{mean:.2f}" if sd is None else f"{mean:.2f} ± {sd:.2f}"
 
@@ -192,6 +250,8 @@ def main() -> None:
     parser.add_argument("--metric", default="accuracy", choices=["accuracy", "macro_f1", "balanced_accuracy"])
     parser.add_argument("--split", default="validation", choices=["validation", "test"])
     parser.add_argument("--figure", type=Path, help="figure path without extension; saves .svg and .pdf")
+    parser.add_argument("--table", type=Path,
+                        help="table path without extension; saves .csv, _paired.csv and LaTeX .tex")
     args = parser.parse_args()
 
     rows = load_runs(args.root, args.split)
@@ -210,7 +270,8 @@ def main() -> None:
     print("\nPaired change, RandAugment minus real-only (percentage points):\n")
     print("| init | model | images/class | per-seed changes | mean ± SD | verdict |")
     print("|---|---|---|---|---|---|")
-    for c in paired_changes(rows, "randaugment", "real_only", args.metric):
+    changes = paired_changes(rows, "randaugment", "real_only", args.metric)
+    for c in changes:
         per_seed = ", ".join(f"{v:+.2f}" for v in c["changes"])
         print(f"| {c['init']} | {MODEL_NAMES.get(c['model'], c['model'])} | {c['budget']} | {per_seed} | "
               f"{_fmt(c['mean'], c['sd'])} | {c['verdict']} |")
@@ -221,6 +282,16 @@ def main() -> None:
             stem = args.figure if len(inits) == 1 else args.figure.with_name(f"{args.figure.name}_{init}")
             for path in plot_accuracy(groups, stem, init, args.split):
                 print(f"saved {path}")
+
+    if args.table:
+        print(f"saved {write_csv(groups, args.table.with_suffix('.csv'))}")
+        print(f"saved {write_csv(changes, args.table.with_name(args.table.name + '_paired.csv'))}")
+        inits = sorted({g["init"] for g in groups})
+        for init in inits:
+            stem = args.table.name if len(inits) == 1 else f"{args.table.name}_{init}"
+            path = args.table.with_name(f"{stem}.tex")
+            path.write_text(latex_table(groups, changes, init, args.metric, args.split), encoding="utf-8")
+            print(f"saved {path}")
 
 
 if __name__ == "__main__":
