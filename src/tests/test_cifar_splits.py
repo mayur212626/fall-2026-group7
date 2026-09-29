@@ -50,7 +50,7 @@ class BuildSplitManifestTest(unittest.TestCase):
 
     def test_budgets_are_nested(self) -> None:
         budgets = [str(shots) for shots in SHOTS] + ["full"]
-        for smaller, larger in zip(budgets, budgets[1:]):
+        for smaller, larger in zip(budgets, budgets[1:], strict=False):
             small = set(self.manifest["train_indices"][smaller])
             large = set(self.manifest["train_indices"][larger])
             self.assertTrue(small <= large, f"{smaller} not inside {larger}")

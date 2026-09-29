@@ -83,7 +83,7 @@ class LrFactorTest(unittest.TestCase):
     def test_cosine_decays_towards_zero(self) -> None:
         factors = [lr_factor(step, 100, 5) for step in range(5, 100)]
         self.assertAlmostEqual(factors[0], 1.0)
-        self.assertTrue(all(a > b for a, b in zip(factors, factors[1:])))
+        self.assertTrue(all(a > b for a, b in zip(factors, factors[1:], strict=False)))
         self.assertAlmostEqual(factors[-1], 0.5 * (1 + math.cos(math.pi * 94 / 95)))
 
 
@@ -121,7 +121,7 @@ class ResumeTest(unittest.TestCase):
 
         self.assertEqual(extra, {"elapsed": 1.0})
         self.assertEqual(resumed.step, 4)
-        for a, b in zip(straight.model.state_dict().values(), resumed.model.state_dict().values()):
+        for a, b in zip(straight.model.state_dict().values(), resumed.model.state_dict().values(), strict=True):
             self.assertTrue(torch.equal(a, b))
 
 
@@ -146,6 +146,12 @@ class RunTrainingResumeTest(unittest.TestCase):
         lines = (self.run_dir / "history.jsonl").read_text().splitlines()
         self.assertEqual([json.loads(line)["step"] for line in lines], [4])
         self.assertTrue((self.run_dir / "result.json").exists())
+
+    def test_logs_the_resumed_step(self) -> None:
+        run_training(settings(), {}, fake_dataset(10), fake_dataset(6), self.run_dir, torch.device("cpu"))
+        log = (self.run_dir / "train.log").read_text(encoding="utf-8")
+        self.assertIn("resuming from step 2 of 4", log)
+        self.assertNotIn("step 2/4", log)
 
     def test_refuses_to_resume_with_different_settings(self) -> None:
         with self.assertRaises(ValueError):
@@ -188,6 +194,14 @@ class RunTrainingTest(unittest.TestCase):
     def test_logs_one_history_line_per_evaluation(self) -> None:
         lines = (self.run_dir / "history.jsonl").read_text().splitlines()
         self.assertEqual([json.loads(line)["step"] for line in lines], [2, 4])
+
+    def test_logs_each_validation_and_the_result_to_train_log(self) -> None:
+        lines = (self.run_dir / "train.log").read_text(encoding="utf-8").splitlines()
+        self.assertIn("starting at step 0 of 4", lines[0])
+        self.assertIn("step 2/4: train loss", lines[1])
+        self.assertIn("step 4/4: train loss", lines[2])
+        self.assertIn("done: best step", lines[3])
+        self.assertEqual(len(lines), 4)
 
     def test_saves_result_with_validation_predictions(self) -> None:
         result = json.loads((self.run_dir / "result.json").read_text())

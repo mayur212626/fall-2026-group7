@@ -11,6 +11,7 @@ and is never overwritten. Runs that already have one are skipped.
 
 import argparse
 import json
+import logging
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -19,7 +20,7 @@ import torch
 from src.component.cifar_splits import labels_sha256
 from src.component.data import CifarImages, load_cifar100
 from src.component.models import build_model
-from src.component.train import evaluate
+from src.component.train import LOG_FORMAT, evaluate
 
 
 def evaluate_run(run_dir: Path, test_set: CifarImages, device: torch.device, labels_hash: str) -> dict:
@@ -66,6 +67,7 @@ def main() -> None:
     parser.add_argument("--confirm-protocol-frozen", action="store_true",
                         help="required: confirms the training and selection protocol is final")
     args = parser.parse_args()
+    logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
     if not args.confirm_protocol_frozen:
         parser.error("the test set is used once, after the protocol is fixed; pass --confirm-protocol-frozen")
 
@@ -77,10 +79,11 @@ def main() -> None:
     for result_path in sorted(args.root.rglob("result.json")):
         run_dir = result_path.parent
         if (run_dir / "test_result.json").exists():
-            print(f"skip {run_dir.name} (already evaluated)")
+            logging.info("skip %s (already evaluated)", run_dir.name)
             continue
         out = evaluate_run(run_dir, test_set, device, labels_hash)
-        print(f"{run_dir.name}: test accuracy {out['test']['accuracy']:.2f}, macro-F1 {out['test']['macro_f1']:.2f}")
+        logging.info("%s: test accuracy %.2f, macro-F1 %.2f", run_dir.name, out["test"]["accuracy"],
+                     out["test"]["macro_f1"])
 
 
 if __name__ == "__main__":

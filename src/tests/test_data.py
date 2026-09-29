@@ -52,7 +52,7 @@ class CifarImagesTest(unittest.TestCase):
         dataset = CifarImages(self.images, self.labels, [4], randaugment=True)
         first = [dataset[(0, seed)][0] for seed in range(5)]
         again = [dataset[(0, seed)][0] for seed in range(5)]
-        self.assertTrue(all(torch.equal(a, b) for a, b in zip(first, again)))
+        self.assertTrue(all(torch.equal(a, b) for a, b in zip(first, again, strict=True)))
         self.assertTrue(any(not torch.equal(first[0], other) for other in first[1:]))
 
 
@@ -85,7 +85,7 @@ class ToModelInputTest(unittest.TestCase):
         white = torch.full((2, 3, 32, 32), 255, dtype=torch.uint8)
         result = to_model_input(white, 64)
         self.assertEqual(tuple(result.shape), (2, 3, 64, 64))
-        expected = [(1 - mean) / std for mean, std in zip(IMAGENET_MEAN, IMAGENET_STD)]
+        expected = [(1 - mean) / std for mean, std in zip(IMAGENET_MEAN, IMAGENET_STD, strict=True)]
         for channel, value in enumerate(expected):
             self.assertTrue(torch.allclose(result[:, channel], torch.tensor(value), atol=1e-5))
 

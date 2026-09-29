@@ -20,6 +20,8 @@ python -m src.component.train --config src/component/configs/train_pretrained.js
     --model resnet50 --init pretrained --condition real_only --budget 50 --seed 0 --steps 500
 ```
 
+Progress goes to the console and to `train.log` in the run directory: one line when the run starts or resumes, one per validation (step, training loss, validation accuracy and loss, elapsed minutes) and one with the selected checkpoint at the end. `history.jsonl` and `result.json` remain the records used for analysis.
+
 The step budgets in the config files are empty until the pilot runs fix them. Until then, pass `--steps`.
 
 ## Pilot runs
@@ -163,5 +165,6 @@ Each run writes to `runs/<init>_<model>_<condition>_b<budget>_s<seed>/`:
 | `history.jsonl` | Per validation: step, training loss, learning rate, validation accuracy, macro-F1, balanced accuracy, loss, elapsed time |
 | `best.pt` | Weights of the best validation checkpoint |
 | `result.json` | Best validation scores, per-class recall, confusion matrix, validation predictions with image IDs, training time and peak GPU memory |
+| `train.log` | Timestamped progress: the start or resume step, one line per validation (training loss, validation accuracy and loss, minutes) and the final best step. The same lines go to the console |
 
 `last.pt` holds the full training state while the run is in progress and is removed when it completes. If a run is interrupted, run the same command again to resume. The runner refuses to resume with different settings and refuses to overwrite a completed run.

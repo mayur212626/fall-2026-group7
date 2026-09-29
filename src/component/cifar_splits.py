@@ -12,6 +12,7 @@ Run from the repository root:
 import argparse
 import hashlib
 import json
+import logging
 from pathlib import Path
 from typing import Sequence
 
@@ -95,6 +96,7 @@ def main() -> None:
     parser.add_argument("--data-root", type=Path, default=Path("data/cifar100"))
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
 
     dataset = CIFAR100(args.data_root, train=True, download=False)
     manifest = build_split_manifest(
@@ -113,8 +115,8 @@ def main() -> None:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     sizes = {name: len(indices) for name, indices in manifest["train_indices"].items()}
-    print(f"validation: {len(manifest['validation_indices'])}, training: {sizes}")
-    print(f"saved {args.output}")
+    logging.info("validation: %d, training: %s", len(manifest["validation_indices"]), sizes)
+    logging.info("saved %s", args.output)
 
 
 if __name__ == "__main__":
