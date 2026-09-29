@@ -58,7 +58,7 @@ def classification_metrics(
         "accuracy": 100 * float(correct.sum()) / true.size,
         "macro_f1": 100 * float(f1.mean()),
         "balanced_accuracy": 100 * float(recall[present].mean()),
-        "per_class_recall": [100 * float(r) if p else None for r, p in zip(recall, present)],
+        "per_class_recall": [100 * float(r) if p else None for r, p in zip(recall, present, strict=True)],
         "class_counts": true_counts.tolist(),
         "missing_classes": np.flatnonzero(~present).tolist(),
         "confusion_matrix": confusion.tolist(),

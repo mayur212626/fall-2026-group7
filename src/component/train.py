@@ -9,6 +9,7 @@ run writes to its own directory:
     best.pt        weights of the best validation checkpoint
     last.pt        full training state, removed when the run completes
     result.json    best validation scores and predictions, and measured cost
+    train.log      progress log, one line per validation
 
 Running the same command again resumes an interrupted run from ``last.pt``.
 The test set is never used here.
@@ -22,6 +23,7 @@ Example, from the repository root:
 import argparse
 import hashlib
 import json
+import logging
 import math
 import os
 import platform
@@ -53,6 +55,10 @@ from src.component.metrics import classification_metrics
 from src.component.models import build_model, weights_name
 
 SUMMARY_KEYS = ("accuracy", "macro_f1", "balanced_accuracy", "loss")
+LOG_FORMAT = "%(asctime)s %(message)s"
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 @dataclass
@@ -188,7 +194,7 @@ def evaluate(
     metrics = classification_metrics(true_labels, predicted, settings["num_classes"])
     metrics["loss"] = loss_sum / len(dataset)
     predictions = [
-        {"image_id": i, "true": t, "pred": p} for i, t, p in zip(image_ids, true_labels, predicted)
+        {"image_id": i, "true": t, "pred": p} for i, t, p in zip(image_ids, true_labels, predicted, strict=True)
     ]
     return metrics, predictions
 
@@ -280,48 +286,62 @@ def run_training(
         _trim_history(history_path, 0)
         extra = {"elapsed": 0.0, "peak_memory_mb": 0.0}
 
-    if device.type == "cuda":
-        torch.cuda.reset_peak_memory_stats(device)
-    interval = math.ceil(settings["steps"] / settings["evaluations"])
-    while state.step < settings["steps"]:
-        started = time.perf_counter()
-        until = min((state.step // interval + 1) * interval, settings["steps"])
-        train_loss = train_steps(state, train_set, settings, until, device)
-        metrics, _ = evaluate(state.model, val_set, settings, device)
-        extra["elapsed"] += time.perf_counter() - started
+    handler = logging.FileHandler(run_dir / "train.log", encoding="utf-8")
+    handler.setFormatter(logging.Formatter(LOG_FORMAT))
+    logger.addHandler(handler)
+    verb = "resuming from" if state.step else "starting at"
+    logger.info("%s: %s step %d of %d", run_dir.name, verb, state.step, settings["steps"])
+    try:
         if device.type == "cuda":
-            peak = torch.cuda.max_memory_allocated(device) / 2**20
-            extra["peak_memory_mb"] = max(extra["peak_memory_mb"], peak)
+            torch.cuda.reset_peak_memory_stats(device)
+        interval = math.ceil(settings["steps"] / settings["evaluations"])
+        while state.step < settings["steps"]:
+            started = time.perf_counter()
+            until = min((state.step // interval + 1) * interval, settings["steps"])
+            train_loss = train_steps(state, train_set, settings, until, device)
+            metrics, _ = evaluate(state.model, val_set, settings, device)
+            extra["elapsed"] += time.perf_counter() - started
+            if device.type == "cuda":
+                peak = torch.cuda.max_memory_allocated(device) / 2**20
+                extra["peak_memory_mb"] = max(extra["peak_memory_mb"], peak)
 
-        record = {
-            "step": state.step,
-            "train_loss": train_loss,
-            "lr": state.scheduler.get_last_lr()[0],
-            **{f"val_{key}": metrics[key] for key in SUMMARY_KEYS},
-            "elapsed_seconds": extra["elapsed"],
+            record = {
+                "step": state.step,
+                "train_loss": train_loss,
+                "lr": state.scheduler.get_last_lr()[0],
+                **{f"val_{key}": metrics[key] for key in SUMMARY_KEYS},
+                "elapsed_seconds": extra["elapsed"],
+            }
+            with history_path.open("a", encoding="utf-8") as history:
+                history.write(json.dumps(record) + "\n")
+            logger.info("step %d/%d: train loss %.4f, val accuracy %.2f, val loss %.4f, %.1f min",
+                        state.step, settings["steps"], train_loss, metrics["accuracy"], metrics["loss"],
+                        extra["elapsed"] / 60)
+
+            candidate = {"accuracy": metrics["accuracy"], "loss": metrics["loss"]}
+            if is_better(candidate, state.best):
+                state.best = {"step": state.step, **candidate}
+                _atomic_save({"model": state.model.state_dict(), "step": state.step}, run_dir / "best.pt")
+            save_checkpoint(state, last_path, extra)
+
+        best = torch.load(run_dir / "best.pt", map_location="cpu", weights_only=True)
+        state.model.load_state_dict(best["model"])
+        metrics, predictions = evaluate(state.model, val_set, settings, device)
+        result = {
+            "run": run_dir.name,
+            "best_step": best["step"],
+            "best_validation": metrics,
+            "reload_check_passed": metrics["accuracy"] == state.best["accuracy"],
+            "validation_predictions": predictions,
+            "cost": {"train_seconds": extra["elapsed"], "peak_memory_mb": extra["peak_memory_mb"]},
         }
-        with history_path.open("a", encoding="utf-8") as history:
-            history.write(json.dumps(record) + "\n")
-
-        candidate = {"accuracy": metrics["accuracy"], "loss": metrics["loss"]}
-        if is_better(candidate, state.best):
-            state.best = {"step": state.step, **candidate}
-            _atomic_save({"model": state.model.state_dict(), "step": state.step}, run_dir / "best.pt")
-        save_checkpoint(state, last_path, extra)
-
-    best = torch.load(run_dir / "best.pt", map_location="cpu", weights_only=True)
-    state.model.load_state_dict(best["model"])
-    metrics, predictions = evaluate(state.model, val_set, settings, device)
-    result = {
-        "run": run_dir.name,
-        "best_step": best["step"],
-        "best_validation": metrics,
-        "reload_check_passed": metrics["accuracy"] == state.best["accuracy"],
-        "validation_predictions": predictions,
-        "cost": {"train_seconds": extra["elapsed"], "peak_memory_mb": extra["peak_memory_mb"]},
-    }
-    _write_json(run_dir / "result.json", result)
-    last_path.unlink()
+        _write_json(run_dir / "result.json", result)
+        last_path.unlink()
+        logger.info("%s done: best step %d, val accuracy %.2f, macro-F1 %.2f, %.1f min", run_dir.name,
+                    result["best_step"], metrics["accuracy"], metrics["macro_f1"], extra["elapsed"] / 60)
+    finally:
+        logger.removeHandler(handler)
+        handler.close()
     return result
 
 
@@ -397,6 +417,7 @@ def main() -> None:
     parser.add_argument("--runs-root", type=Path, default=Path("runs"))
     parser.add_argument("--workers", type=int, default=4)
     args = parser.parse_args()
+    logging.basicConfig(format=LOG_FORMAT)
 
     config = json.loads(args.config.read_text(encoding="utf-8"))
     try:
@@ -431,12 +452,7 @@ def main() -> None:
         "git": _git_commit(),
     }
     name = f"{args.init}_{args.model}_{args.condition}_b{args.budget}_s{args.seed}"
-    result = run_training(settings, metadata, train_set, val_set, args.runs_root / name, device)
-    best = result["best_validation"]
-    print(
-        f"{name}: best step {result['best_step']}, accuracy {best['accuracy']:.2f}, "
-        f"macro-F1 {best['macro_f1']:.2f}, {result['cost']['train_seconds'] / 60:.1f} min"
-    )
+    run_training(settings, metadata, train_set, val_set, args.runs_root / name, device)
 
 
 if __name__ == "__main__":
