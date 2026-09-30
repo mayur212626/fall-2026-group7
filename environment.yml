@@ -11,3 +11,4 @@ dependencies:
       - torchvision==0.27.1+cu126
       - numpy==2.5.2
       - matplotlib==3.11.2
+      - clean-fid==0.1.35
