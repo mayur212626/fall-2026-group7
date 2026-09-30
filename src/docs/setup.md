@@ -2,7 +2,7 @@
 
 Run these commands from the project folder in a Linux Bash terminal with Conda available.
 
-The environment file pins Python 3.12.14, pip 26.2.1, NumPy 2.5.2, PyTorch 2.12.1, Torchvision 0.27.1 and Matplotlib 3.11.2. The PyTorch packages use the CUDA 12.6 build.
+The environment file pins Python 3.12.14, pip 26.2.1, NumPy 2.5.2, PyTorch 2.12.1, Torchvision 0.27.1, Matplotlib 3.11.2 and clean-fid 0.1.35. The PyTorch packages use the CUDA 12.6 build.
 
 Create the environment once:
 
@@ -11,7 +11,7 @@ conda env create -f environment.yml
 conda activate synthaug-bench
 ```
 
-If the environment already exists, activate it and add any package that was pinned later, for example `pip install matplotlib==3.11.2`.
+If the environment already exists, activate it and add any package that was pinned later, for example `pip install matplotlib==3.11.2 clean-fid==0.1.35`.
 
 Check that the installed packages are consistent:
 
