@@ -1,0 +1,22 @@
+\begin{table}[H]
+\centering
+\caption{Stage 1 baselines, scratch initialization: validation top-1 accuracy (\%), mean $\pm$ sample SD over 3 seeds. The change is RandAugment minus real-only per seed (percentage points); it is a gain or a loss only when every seed agrees in sign.}
+\label{tab:stage1-scratch-accuracy}
+\begin{tabular}{llrrrl}
+\toprule
+Model & Images/class & Real-only & RandAugment & Change & Verdict \\
+\midrule
+ResNet-50 & 5 & 8.85 $\pm$ 0.36 & 14.88 $\pm$ 0.58 & +6.03 $\pm$ 0.81 & gain \\
+ResNet-50 & 10 & 13.30 $\pm$ 0.69 & 22.65 $\pm$ 0.78 & +9.35 $\pm$ 0.78 & gain \\
+ResNet-50 & 20 & 19.19 $\pm$ 0.29 & 29.74 $\pm$ 2.50 & +10.55 $\pm$ 2.78 & gain \\
+ResNet-50 & 50 & 29.71 $\pm$ 1.30 & 39.33 $\pm$ 3.40 & +9.61 $\pm$ 4.70 & gain \\
+ResNet-50 & full & 54.98 $\pm$ 0.99 & 65.27 $\pm$ 1.28 & +10.29 $\pm$ 1.63 & gain \\
+\midrule
+ViT-B/16 & 5 & 7.43 $\pm$ 0.27 & 9.96 $\pm$ 0.07 & +2.53 $\pm$ 0.32 & gain \\
+ViT-B/16 & 10 & 10.03 $\pm$ 0.31 & 13.39 $\pm$ 0.01 & +3.37 $\pm$ 0.31 & gain \\
+ViT-B/16 & 20 & 13.55 $\pm$ 0.28 & 18.12 $\pm$ 0.50 & +4.57 $\pm$ 0.69 & gain \\
+ViT-B/16 & 50 & 19.51 $\pm$ 0.46 & 27.69 $\pm$ 0.21 & +8.17 $\pm$ 0.34 & gain \\
+ViT-B/16 & full & 44.18 $\pm$ 0.47 & 59.15 $\pm$ 0.31 & +14.97 $\pm$ 0.71 & gain \\
+\bottomrule
+\end{tabular}
+\end{table}
