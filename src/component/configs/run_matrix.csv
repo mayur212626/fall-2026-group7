@@ -1,0 +1,241 @@
+research_question,task,dataset,split_manifest,budget,init,model,condition,generator,synthetic_ratio,seed,runs_root,run,status,train_minutes,peak_memory_mb
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,resnet50,real_only,,0,0,stage1-pretrained,pretrained_resnet50_real_only_b5_s0,done,3.214,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,resnet50,real_only,,0,1,stage1-pretrained,pretrained_resnet50_real_only_b5_s1,done,3.1934,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,resnet50,real_only,,0,2,stage1-pretrained,pretrained_resnet50_real_only_b5_s2,done,3.195,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,resnet50,real_only,,0,0,stage1-pretrained,pretrained_resnet50_real_only_b10_s0,done,3.9193,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,resnet50,real_only,,0,1,stage1-pretrained,pretrained_resnet50_real_only_b10_s1,done,3.9213,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,resnet50,real_only,,0,2,stage1-pretrained,pretrained_resnet50_real_only_b10_s2,done,3.9198,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,resnet50,real_only,,0,0,stage1-pretrained,pretrained_resnet50_real_only_b20_s0,done,4.6461,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,resnet50,real_only,,0,1,stage1-pretrained,pretrained_resnet50_real_only_b20_s1,done,4.6496,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,resnet50,real_only,,0,2,stage1-pretrained,pretrained_resnet50_real_only_b20_s2,done,4.6465,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,resnet50,real_only,,0,0,stage1-pretrained,pretrained_resnet50_real_only_b50_s0,done,6.4653,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,resnet50,real_only,,0,1,stage1-pretrained,pretrained_resnet50_real_only_b50_s1,done,6.4667,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,resnet50,real_only,,0,2,stage1-pretrained,pretrained_resnet50_real_only_b50_s2,done,6.465,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,resnet50,real_only,,0,0,stage1-pretrained,pretrained_resnet50_real_only_bfull_s0,done,22.8298,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,resnet50,real_only,,0,1,stage1-pretrained,pretrained_resnet50_real_only_bfull_s1,done,22.8307,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,resnet50,real_only,,0,2,stage1-pretrained,pretrained_resnet50_real_only_bfull_s2,done,22.8253,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,resnet50,randaugment,,0,0,stage1-pretrained,pretrained_resnet50_randaugment_b5_s0,done,3.2241,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,resnet50,randaugment,,0,1,stage1-pretrained,pretrained_resnet50_randaugment_b5_s1,done,3.2249,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,resnet50,randaugment,,0,2,stage1-pretrained,pretrained_resnet50_randaugment_b5_s2,done,3.2243,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,resnet50,randaugment,,0,0,stage1-pretrained,pretrained_resnet50_randaugment_b10_s0,done,3.9524,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,resnet50,randaugment,,0,1,stage1-pretrained,pretrained_resnet50_randaugment_b10_s1,done,3.9532,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,resnet50,randaugment,,0,2,stage1-pretrained,pretrained_resnet50_randaugment_b10_s2,done,3.9527,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,resnet50,randaugment,,0,0,stage1-pretrained,pretrained_resnet50_randaugment_b20_s0,done,4.6798,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,resnet50,randaugment,,0,1,stage1-pretrained,pretrained_resnet50_randaugment_b20_s1,done,4.6809,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,resnet50,randaugment,,0,2,stage1-pretrained,pretrained_resnet50_randaugment_b20_s2,done,4.6783,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,resnet50,randaugment,,0,0,stage1-pretrained,pretrained_resnet50_randaugment_b50_s0,done,6.4994,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,resnet50,randaugment,,0,1,stage1-pretrained,pretrained_resnet50_randaugment_b50_s1,done,6.5006,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,resnet50,randaugment,,0,2,stage1-pretrained,pretrained_resnet50_randaugment_b50_s2,done,6.4979,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,resnet50,randaugment,,0,0,stage1-pretrained,pretrained_resnet50_randaugment_bfull_s0,done,22.862,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,resnet50,randaugment,,0,1,stage1-pretrained,pretrained_resnet50_randaugment_bfull_s1,done,22.8632,5877.7573
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,resnet50,randaugment,,0,2,stage1-pretrained,pretrained_resnet50_randaugment_bfull_s2,done,22.8625,5877.7573
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,resnet50,sd_prompt,sd_prompt,1:1,0,stage1-pretrained,pretrained_resnet50_sd_prompt_b5_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,resnet50,sd_prompt,sd_prompt,1:1,1,stage1-pretrained,pretrained_resnet50_sd_prompt_b5_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,resnet50,sd_prompt,sd_prompt,1:1,2,stage1-pretrained,pretrained_resnet50_sd_prompt_b5_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,resnet50,sd_prompt,sd_prompt,1:1,0,stage1-pretrained,pretrained_resnet50_sd_prompt_b10_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,resnet50,sd_prompt,sd_prompt,1:1,1,stage1-pretrained,pretrained_resnet50_sd_prompt_b10_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,resnet50,sd_prompt,sd_prompt,1:1,2,stage1-pretrained,pretrained_resnet50_sd_prompt_b10_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,resnet50,sd_prompt,sd_prompt,1:1,0,stage1-pretrained,pretrained_resnet50_sd_prompt_b20_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,resnet50,sd_prompt,sd_prompt,1:1,1,stage1-pretrained,pretrained_resnet50_sd_prompt_b20_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,resnet50,sd_prompt,sd_prompt,1:1,2,stage1-pretrained,pretrained_resnet50_sd_prompt_b20_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,resnet50,sd_prompt,sd_prompt,1:1,0,stage1-pretrained,pretrained_resnet50_sd_prompt_b50_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,resnet50,sd_prompt,sd_prompt,1:1,1,stage1-pretrained,pretrained_resnet50_sd_prompt_b50_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,resnet50,sd_prompt,sd_prompt,1:1,2,stage1-pretrained,pretrained_resnet50_sd_prompt_b50_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,resnet50,sd_prompt,sd_prompt,1:1,0,stage1-pretrained,pretrained_resnet50_sd_prompt_bfull_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,resnet50,sd_prompt,sd_prompt,1:1,1,stage1-pretrained,pretrained_resnet50_sd_prompt_bfull_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,resnet50,sd_prompt,sd_prompt,1:1,2,stage1-pretrained,pretrained_resnet50_sd_prompt_bfull_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,resnet50,lora_sd,lora_sd_b5,1:1,0,stage1-pretrained,pretrained_resnet50_lora_sd_b5_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,resnet50,lora_sd,lora_sd_b5,1:1,1,stage1-pretrained,pretrained_resnet50_lora_sd_b5_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,resnet50,lora_sd,lora_sd_b5,1:1,2,stage1-pretrained,pretrained_resnet50_lora_sd_b5_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,resnet50,lora_sd,lora_sd_b10,1:1,0,stage1-pretrained,pretrained_resnet50_lora_sd_b10_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,resnet50,lora_sd,lora_sd_b10,1:1,1,stage1-pretrained,pretrained_resnet50_lora_sd_b10_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,resnet50,lora_sd,lora_sd_b10,1:1,2,stage1-pretrained,pretrained_resnet50_lora_sd_b10_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,resnet50,lora_sd,lora_sd_b20,1:1,0,stage1-pretrained,pretrained_resnet50_lora_sd_b20_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,resnet50,lora_sd,lora_sd_b20,1:1,1,stage1-pretrained,pretrained_resnet50_lora_sd_b20_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,resnet50,lora_sd,lora_sd_b20,1:1,2,stage1-pretrained,pretrained_resnet50_lora_sd_b20_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,resnet50,lora_sd,lora_sd_b50,1:1,0,stage1-pretrained,pretrained_resnet50_lora_sd_b50_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,resnet50,lora_sd,lora_sd_b50,1:1,1,stage1-pretrained,pretrained_resnet50_lora_sd_b50_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,resnet50,lora_sd,lora_sd_b50,1:1,2,stage1-pretrained,pretrained_resnet50_lora_sd_b50_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,resnet50,lora_sd,lora_sd_bfull,1:1,0,stage1-pretrained,pretrained_resnet50_lora_sd_bfull_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,resnet50,lora_sd,lora_sd_bfull,1:1,1,stage1-pretrained,pretrained_resnet50_lora_sd_bfull_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,resnet50,lora_sd,lora_sd_bfull,1:1,2,stage1-pretrained,pretrained_resnet50_lora_sd_bfull_s2,planned,,
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,vit_b_16,real_only,,0,0,stage1-pretrained,pretrained_vit_b_16_real_only_b5_s0,done,6.4337,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,vit_b_16,real_only,,0,1,stage1-pretrained,pretrained_vit_b_16_real_only_b5_s1,done,6.4365,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,vit_b_16,real_only,,0,2,stage1-pretrained,pretrained_vit_b_16_real_only_b5_s2,done,6.4324,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,vit_b_16,real_only,,0,0,stage1-pretrained,pretrained_vit_b_16_real_only_b10_s0,done,7.9268,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,vit_b_16,real_only,,0,1,stage1-pretrained,pretrained_vit_b_16_real_only_b10_s1,done,7.9282,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,vit_b_16,real_only,,0,2,stage1-pretrained,pretrained_vit_b_16_real_only_b10_s2,done,7.9246,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,vit_b_16,real_only,,0,0,stage1-pretrained,pretrained_vit_b_16_real_only_b20_s0,done,9.4194,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,vit_b_16,real_only,,0,1,stage1-pretrained,pretrained_vit_b_16_real_only_b20_s1,done,9.4213,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,vit_b_16,real_only,,0,2,stage1-pretrained,pretrained_vit_b_16_real_only_b20_s2,done,9.416,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,vit_b_16,real_only,,0,0,stage1-pretrained,pretrained_vit_b_16_real_only_b50_s0,done,13.1509,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,vit_b_16,real_only,,0,1,stage1-pretrained,pretrained_vit_b_16_real_only_b50_s1,done,13.1518,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,vit_b_16,real_only,,0,2,stage1-pretrained,pretrained_vit_b_16_real_only_b50_s2,done,13.1457,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,vit_b_16,real_only,,0,0,stage1-pretrained,pretrained_vit_b_16_real_only_bfull_s0,done,46.7266,9913.4028
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,vit_b_16,real_only,,0,1,stage1-pretrained,pretrained_vit_b_16_real_only_bfull_s1,done,46.7272,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,vit_b_16,real_only,,0,2,stage1-pretrained,pretrained_vit_b_16_real_only_bfull_s2,done,46.7095,9912.6528
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,vit_b_16,randaugment,,0,0,stage1-pretrained,pretrained_vit_b_16_randaugment_b5_s0,done,6.4654,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,vit_b_16,randaugment,,0,1,stage1-pretrained,pretrained_vit_b_16_randaugment_b5_s1,done,6.4662,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,vit_b_16,randaugment,,0,2,stage1-pretrained,pretrained_vit_b_16_randaugment_b5_s2,done,6.4636,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,vit_b_16,randaugment,,0,0,stage1-pretrained,pretrained_vit_b_16_randaugment_b10_s0,done,7.9571,9913.4028
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,vit_b_16,randaugment,,0,1,stage1-pretrained,pretrained_vit_b_16_randaugment_b10_s1,done,7.962,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,vit_b_16,randaugment,,0,2,stage1-pretrained,pretrained_vit_b_16_randaugment_b10_s2,done,7.9563,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,vit_b_16,randaugment,,0,0,stage1-pretrained,pretrained_vit_b_16_randaugment_b20_s0,done,9.4506,9912.7778
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,vit_b_16,randaugment,,0,1,stage1-pretrained,pretrained_vit_b_16_randaugment_b20_s1,done,9.4538,9912.7778
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,vit_b_16,randaugment,,0,2,stage1-pretrained,pretrained_vit_b_16_randaugment_b20_s2,done,9.4485,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,vit_b_16,randaugment,,0,0,stage1-pretrained,pretrained_vit_b_16_randaugment_b50_s0,done,13.1818,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,vit_b_16,randaugment,,0,1,stage1-pretrained,pretrained_vit_b_16_randaugment_b50_s1,done,13.1836,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,vit_b_16,randaugment,,0,2,stage1-pretrained,pretrained_vit_b_16_randaugment_b50_s2,done,13.1783,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,vit_b_16,randaugment,,0,0,stage1-pretrained,pretrained_vit_b_16_randaugment_bfull_s0,done,46.7602,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,vit_b_16,randaugment,,0,1,stage1-pretrained,pretrained_vit_b_16_randaugment_bfull_s1,done,46.7971,9913.4028
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,vit_b_16,randaugment,,0,2,stage1-pretrained,pretrained_vit_b_16_randaugment_bfull_s2,done,46.7472,9912.6528
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,vit_b_16,sd_prompt,sd_prompt,1:1,0,stage1-pretrained,pretrained_vit_b_16_sd_prompt_b5_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,vit_b_16,sd_prompt,sd_prompt,1:1,1,stage1-pretrained,pretrained_vit_b_16_sd_prompt_b5_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,vit_b_16,sd_prompt,sd_prompt,1:1,2,stage1-pretrained,pretrained_vit_b_16_sd_prompt_b5_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,vit_b_16,sd_prompt,sd_prompt,1:1,0,stage1-pretrained,pretrained_vit_b_16_sd_prompt_b10_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,vit_b_16,sd_prompt,sd_prompt,1:1,1,stage1-pretrained,pretrained_vit_b_16_sd_prompt_b10_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,vit_b_16,sd_prompt,sd_prompt,1:1,2,stage1-pretrained,pretrained_vit_b_16_sd_prompt_b10_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,vit_b_16,sd_prompt,sd_prompt,1:1,0,stage1-pretrained,pretrained_vit_b_16_sd_prompt_b20_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,vit_b_16,sd_prompt,sd_prompt,1:1,1,stage1-pretrained,pretrained_vit_b_16_sd_prompt_b20_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,vit_b_16,sd_prompt,sd_prompt,1:1,2,stage1-pretrained,pretrained_vit_b_16_sd_prompt_b20_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,vit_b_16,sd_prompt,sd_prompt,1:1,0,stage1-pretrained,pretrained_vit_b_16_sd_prompt_b50_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,vit_b_16,sd_prompt,sd_prompt,1:1,1,stage1-pretrained,pretrained_vit_b_16_sd_prompt_b50_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,vit_b_16,sd_prompt,sd_prompt,1:1,2,stage1-pretrained,pretrained_vit_b_16_sd_prompt_b50_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,vit_b_16,sd_prompt,sd_prompt,1:1,0,stage1-pretrained,pretrained_vit_b_16_sd_prompt_bfull_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,vit_b_16,sd_prompt,sd_prompt,1:1,1,stage1-pretrained,pretrained_vit_b_16_sd_prompt_bfull_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,vit_b_16,sd_prompt,sd_prompt,1:1,2,stage1-pretrained,pretrained_vit_b_16_sd_prompt_bfull_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,vit_b_16,lora_sd,lora_sd_b5,1:1,0,stage1-pretrained,pretrained_vit_b_16_lora_sd_b5_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,vit_b_16,lora_sd,lora_sd_b5,1:1,1,stage1-pretrained,pretrained_vit_b_16_lora_sd_b5_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,pretrained,vit_b_16,lora_sd,lora_sd_b5,1:1,2,stage1-pretrained,pretrained_vit_b_16_lora_sd_b5_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,vit_b_16,lora_sd,lora_sd_b10,1:1,0,stage1-pretrained,pretrained_vit_b_16_lora_sd_b10_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,vit_b_16,lora_sd,lora_sd_b10,1:1,1,stage1-pretrained,pretrained_vit_b_16_lora_sd_b10_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,pretrained,vit_b_16,lora_sd,lora_sd_b10,1:1,2,stage1-pretrained,pretrained_vit_b_16_lora_sd_b10_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,vit_b_16,lora_sd,lora_sd_b20,1:1,0,stage1-pretrained,pretrained_vit_b_16_lora_sd_b20_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,vit_b_16,lora_sd,lora_sd_b20,1:1,1,stage1-pretrained,pretrained_vit_b_16_lora_sd_b20_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,pretrained,vit_b_16,lora_sd,lora_sd_b20,1:1,2,stage1-pretrained,pretrained_vit_b_16_lora_sd_b20_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,vit_b_16,lora_sd,lora_sd_b50,1:1,0,stage1-pretrained,pretrained_vit_b_16_lora_sd_b50_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,vit_b_16,lora_sd,lora_sd_b50,1:1,1,stage1-pretrained,pretrained_vit_b_16_lora_sd_b50_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,pretrained,vit_b_16,lora_sd,lora_sd_b50,1:1,2,stage1-pretrained,pretrained_vit_b_16_lora_sd_b50_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,vit_b_16,lora_sd,lora_sd_bfull,1:1,0,stage1-pretrained,pretrained_vit_b_16_lora_sd_bfull_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,vit_b_16,lora_sd,lora_sd_bfull,1:1,1,stage1-pretrained,pretrained_vit_b_16_lora_sd_bfull_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,pretrained,vit_b_16,lora_sd,lora_sd_bfull,1:1,2,stage1-pretrained,pretrained_vit_b_16_lora_sd_bfull_s2,planned,,
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,resnet50,real_only,,0,0,stage1-scratch,scratch_resnet50_real_only_b5_s0,done,8.22,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,resnet50,real_only,,0,1,stage1-scratch,scratch_resnet50_real_only_b5_s1,done,8.223,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,resnet50,real_only,,0,2,stage1-scratch,scratch_resnet50_real_only_b5_s2,done,8.2257,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,resnet50,real_only,,0,0,stage1-scratch,scratch_resnet50_real_only_b10_s0,done,11.8245,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,resnet50,real_only,,0,1,stage1-scratch,scratch_resnet50_real_only_b10_s1,done,11.8296,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,resnet50,real_only,,0,2,stage1-scratch,scratch_resnet50_real_only_b10_s2,done,11.8325,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,resnet50,real_only,,0,0,stage1-scratch,scratch_resnet50_real_only_b20_s0,done,15.4402,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,resnet50,real_only,,0,1,stage1-scratch,scratch_resnet50_real_only_b20_s1,done,15.4348,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,resnet50,real_only,,0,2,stage1-scratch,scratch_resnet50_real_only_b20_s2,done,15.4462,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,resnet50,real_only,,0,0,stage1-scratch,scratch_resnet50_real_only_b50_s0,done,29.9682,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,resnet50,real_only,,0,1,stage1-scratch,scratch_resnet50_real_only_b50_s1,done,29.9539,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,resnet50,real_only,,0,2,stage1-scratch,scratch_resnet50_real_only_b50_s2,done,29.9607,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,resnet50,real_only,,0,0,stage1-scratch,scratch_resnet50_real_only_bfull_s0,done,183.9304,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,resnet50,real_only,,0,1,stage1-scratch,scratch_resnet50_real_only_bfull_s1,done,183.878,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,resnet50,real_only,,0,2,stage1-scratch,scratch_resnet50_real_only_bfull_s2,done,183.8559,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,resnet50,randaugment,,0,0,stage1-scratch,scratch_resnet50_randaugment_b5_s0,done,8.2537,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,resnet50,randaugment,,0,1,stage1-scratch,scratch_resnet50_randaugment_b5_s1,done,8.2548,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,resnet50,randaugment,,0,2,stage1-scratch,scratch_resnet50_randaugment_b5_s2,done,8.2588,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,resnet50,randaugment,,0,0,stage1-scratch,scratch_resnet50_randaugment_b10_s0,done,11.8684,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,resnet50,randaugment,,0,1,stage1-scratch,scratch_resnet50_randaugment_b10_s1,done,11.8703,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,resnet50,randaugment,,0,2,stage1-scratch,scratch_resnet50_randaugment_b10_s2,done,11.8669,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,resnet50,randaugment,,0,0,stage1-scratch,scratch_resnet50_randaugment_b20_s0,done,15.4702,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,resnet50,randaugment,,0,1,stage1-scratch,scratch_resnet50_randaugment_b20_s1,done,15.4761,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,resnet50,randaugment,,0,2,stage1-scratch,scratch_resnet50_randaugment_b20_s2,done,15.4851,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,resnet50,randaugment,,0,0,stage1-scratch,scratch_resnet50_randaugment_b50_s0,done,29.997,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,resnet50,randaugment,,0,1,stage1-scratch,scratch_resnet50_randaugment_b50_s1,done,29.9463,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,resnet50,randaugment,,0,2,stage1-scratch,scratch_resnet50_randaugment_b50_s2,done,29.9196,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,resnet50,randaugment,,0,0,stage1-scratch,scratch_resnet50_randaugment_bfull_s0,done,183.9131,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,resnet50,randaugment,,0,1,stage1-scratch,scratch_resnet50_randaugment_bfull_s1,done,183.9376,5786.5459
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,resnet50,randaugment,,0,2,stage1-scratch,scratch_resnet50_randaugment_bfull_s2,done,183.8769,5786.5459
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,resnet50,sd_prompt,sd_prompt,1:1,0,stage1-scratch,scratch_resnet50_sd_prompt_b5_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,resnet50,sd_prompt,sd_prompt,1:1,1,stage1-scratch,scratch_resnet50_sd_prompt_b5_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,resnet50,sd_prompt,sd_prompt,1:1,2,stage1-scratch,scratch_resnet50_sd_prompt_b5_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,resnet50,sd_prompt,sd_prompt,1:1,0,stage1-scratch,scratch_resnet50_sd_prompt_b10_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,resnet50,sd_prompt,sd_prompt,1:1,1,stage1-scratch,scratch_resnet50_sd_prompt_b10_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,resnet50,sd_prompt,sd_prompt,1:1,2,stage1-scratch,scratch_resnet50_sd_prompt_b10_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,resnet50,sd_prompt,sd_prompt,1:1,0,stage1-scratch,scratch_resnet50_sd_prompt_b20_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,resnet50,sd_prompt,sd_prompt,1:1,1,stage1-scratch,scratch_resnet50_sd_prompt_b20_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,resnet50,sd_prompt,sd_prompt,1:1,2,stage1-scratch,scratch_resnet50_sd_prompt_b20_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,resnet50,sd_prompt,sd_prompt,1:1,0,stage1-scratch,scratch_resnet50_sd_prompt_b50_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,resnet50,sd_prompt,sd_prompt,1:1,1,stage1-scratch,scratch_resnet50_sd_prompt_b50_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,resnet50,sd_prompt,sd_prompt,1:1,2,stage1-scratch,scratch_resnet50_sd_prompt_b50_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,resnet50,sd_prompt,sd_prompt,1:1,0,stage1-scratch,scratch_resnet50_sd_prompt_bfull_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,resnet50,sd_prompt,sd_prompt,1:1,1,stage1-scratch,scratch_resnet50_sd_prompt_bfull_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,resnet50,sd_prompt,sd_prompt,1:1,2,stage1-scratch,scratch_resnet50_sd_prompt_bfull_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,resnet50,lora_sd,lora_sd_b5,1:1,0,stage1-scratch,scratch_resnet50_lora_sd_b5_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,resnet50,lora_sd,lora_sd_b5,1:1,1,stage1-scratch,scratch_resnet50_lora_sd_b5_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,resnet50,lora_sd,lora_sd_b5,1:1,2,stage1-scratch,scratch_resnet50_lora_sd_b5_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,resnet50,lora_sd,lora_sd_b10,1:1,0,stage1-scratch,scratch_resnet50_lora_sd_b10_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,resnet50,lora_sd,lora_sd_b10,1:1,1,stage1-scratch,scratch_resnet50_lora_sd_b10_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,resnet50,lora_sd,lora_sd_b10,1:1,2,stage1-scratch,scratch_resnet50_lora_sd_b10_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,resnet50,lora_sd,lora_sd_b20,1:1,0,stage1-scratch,scratch_resnet50_lora_sd_b20_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,resnet50,lora_sd,lora_sd_b20,1:1,1,stage1-scratch,scratch_resnet50_lora_sd_b20_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,resnet50,lora_sd,lora_sd_b20,1:1,2,stage1-scratch,scratch_resnet50_lora_sd_b20_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,resnet50,lora_sd,lora_sd_b50,1:1,0,stage1-scratch,scratch_resnet50_lora_sd_b50_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,resnet50,lora_sd,lora_sd_b50,1:1,1,stage1-scratch,scratch_resnet50_lora_sd_b50_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,resnet50,lora_sd,lora_sd_b50,1:1,2,stage1-scratch,scratch_resnet50_lora_sd_b50_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,resnet50,lora_sd,lora_sd_bfull,1:1,0,stage1-scratch,scratch_resnet50_lora_sd_bfull_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,resnet50,lora_sd,lora_sd_bfull,1:1,1,stage1-scratch,scratch_resnet50_lora_sd_bfull_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,resnet50,lora_sd,lora_sd_bfull,1:1,2,stage1-scratch,scratch_resnet50_lora_sd_bfull_s2,planned,,
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,vit_b_16,real_only,,0,0,stage1-scratch,scratch_vit_b_16_real_only_b5_s0,done,16.8773,9912.6528
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,vit_b_16,real_only,,0,1,stage1-scratch,scratch_vit_b_16_real_only_b5_s1,done,16.8813,9912.7153
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,vit_b_16,real_only,,0,2,stage1-scratch,scratch_vit_b_16_real_only_b5_s2,done,16.8817,9913.3403
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,vit_b_16,real_only,,0,0,stage1-scratch,scratch_vit_b_16_real_only_b10_s0,done,24.3367,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,vit_b_16,real_only,,0,1,stage1-scratch,scratch_vit_b_16_real_only_b10_s1,done,24.339,9912.6528
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,vit_b_16,real_only,,0,2,stage1-scratch,scratch_vit_b_16_real_only_b10_s2,done,24.3416,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,vit_b_16,real_only,,0,0,stage1-scratch,scratch_vit_b_16_real_only_b20_s0,done,31.7969,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,vit_b_16,real_only,,0,1,stage1-scratch,scratch_vit_b_16_real_only_b20_s1,done,31.7982,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,vit_b_16,real_only,,0,2,stage1-scratch,scratch_vit_b_16_real_only_b20_s2,done,31.8002,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,vit_b_16,real_only,,0,0,stage1-scratch,scratch_vit_b_16_real_only_b50_s0,done,61.6317,9912.8403
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,vit_b_16,real_only,,0,1,stage1-scratch,scratch_vit_b_16_real_only_b50_s1,done,61.6293,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,vit_b_16,real_only,,0,2,stage1-scratch,scratch_vit_b_16_real_only_b50_s2,done,61.6306,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,vit_b_16,real_only,,0,0,stage1-scratch,scratch_vit_b_16_real_only_bfull_s0,done,374.9121,9913.4028
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,vit_b_16,real_only,,0,1,stage1-scratch,scratch_vit_b_16_real_only_bfull_s1,done,374.8982,9913.4028
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,vit_b_16,real_only,,0,2,stage1-scratch,scratch_vit_b_16_real_only_bfull_s2,done,374.8746,9913.4028
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,vit_b_16,randaugment,,0,0,stage1-scratch,scratch_vit_b_16_randaugment_b5_s0,done,16.9076,9912.6528
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,vit_b_16,randaugment,,0,1,stage1-scratch,scratch_vit_b_16_randaugment_b5_s1,done,16.9116,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,vit_b_16,randaugment,,0,2,stage1-scratch,scratch_vit_b_16_randaugment_b5_s2,done,16.9138,9913.1528
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,vit_b_16,randaugment,,0,0,stage1-scratch,scratch_vit_b_16_randaugment_b10_s0,done,24.3673,9913.5903
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,vit_b_16,randaugment,,0,1,stage1-scratch,scratch_vit_b_16_randaugment_b10_s1,done,24.3681,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,vit_b_16,randaugment,,0,2,stage1-scratch,scratch_vit_b_16_randaugment_b10_s2,done,24.3706,9913.9653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,vit_b_16,randaugment,,0,0,stage1-scratch,scratch_vit_b_16_randaugment_b20_s0,done,31.8262,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,vit_b_16,randaugment,,0,1,stage1-scratch,scratch_vit_b_16_randaugment_b20_s1,done,31.8298,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,vit_b_16,randaugment,,0,2,stage1-scratch,scratch_vit_b_16_randaugment_b20_s2,done,31.8308,9913.1528
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,vit_b_16,randaugment,,0,0,stage1-scratch,scratch_vit_b_16_randaugment_b50_s0,done,61.6632,9912.4653
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,vit_b_16,randaugment,,0,1,stage1-scratch,scratch_vit_b_16_randaugment_b50_s1,done,61.6694,9912.5903
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,vit_b_16,randaugment,,0,2,stage1-scratch,scratch_vit_b_16_randaugment_b50_s2,done,61.6694,9913.7778
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,vit_b_16,randaugment,,0,0,stage1-scratch,scratch_vit_b_16_randaugment_bfull_s0,done,374.9376,9913.4028
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,vit_b_16,randaugment,,0,1,stage1-scratch,scratch_vit_b_16_randaugment_bfull_s1,done,374.9386,9913.4028
+RQ2,classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,vit_b_16,randaugment,,0,2,stage1-scratch,scratch_vit_b_16_randaugment_bfull_s2,done,374.9086,9913.4028
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,vit_b_16,sd_prompt,sd_prompt,1:1,0,stage1-scratch,scratch_vit_b_16_sd_prompt_b5_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,vit_b_16,sd_prompt,sd_prompt,1:1,1,stage1-scratch,scratch_vit_b_16_sd_prompt_b5_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,vit_b_16,sd_prompt,sd_prompt,1:1,2,stage1-scratch,scratch_vit_b_16_sd_prompt_b5_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,vit_b_16,sd_prompt,sd_prompt,1:1,0,stage1-scratch,scratch_vit_b_16_sd_prompt_b10_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,vit_b_16,sd_prompt,sd_prompt,1:1,1,stage1-scratch,scratch_vit_b_16_sd_prompt_b10_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,vit_b_16,sd_prompt,sd_prompt,1:1,2,stage1-scratch,scratch_vit_b_16_sd_prompt_b10_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,vit_b_16,sd_prompt,sd_prompt,1:1,0,stage1-scratch,scratch_vit_b_16_sd_prompt_b20_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,vit_b_16,sd_prompt,sd_prompt,1:1,1,stage1-scratch,scratch_vit_b_16_sd_prompt_b20_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,vit_b_16,sd_prompt,sd_prompt,1:1,2,stage1-scratch,scratch_vit_b_16_sd_prompt_b20_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,vit_b_16,sd_prompt,sd_prompt,1:1,0,stage1-scratch,scratch_vit_b_16_sd_prompt_b50_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,vit_b_16,sd_prompt,sd_prompt,1:1,1,stage1-scratch,scratch_vit_b_16_sd_prompt_b50_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,vit_b_16,sd_prompt,sd_prompt,1:1,2,stage1-scratch,scratch_vit_b_16_sd_prompt_b50_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,vit_b_16,sd_prompt,sd_prompt,1:1,0,stage1-scratch,scratch_vit_b_16_sd_prompt_bfull_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,vit_b_16,sd_prompt,sd_prompt,1:1,1,stage1-scratch,scratch_vit_b_16_sd_prompt_bfull_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,vit_b_16,sd_prompt,sd_prompt,1:1,2,stage1-scratch,scratch_vit_b_16_sd_prompt_bfull_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,vit_b_16,lora_sd,lora_sd_b5,1:1,0,stage1-scratch,scratch_vit_b_16_lora_sd_b5_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,vit_b_16,lora_sd,lora_sd_b5,1:1,1,stage1-scratch,scratch_vit_b_16_lora_sd_b5_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,5,scratch,vit_b_16,lora_sd,lora_sd_b5,1:1,2,stage1-scratch,scratch_vit_b_16_lora_sd_b5_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,vit_b_16,lora_sd,lora_sd_b10,1:1,0,stage1-scratch,scratch_vit_b_16_lora_sd_b10_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,vit_b_16,lora_sd,lora_sd_b10,1:1,1,stage1-scratch,scratch_vit_b_16_lora_sd_b10_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,10,scratch,vit_b_16,lora_sd,lora_sd_b10,1:1,2,stage1-scratch,scratch_vit_b_16_lora_sd_b10_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,vit_b_16,lora_sd,lora_sd_b20,1:1,0,stage1-scratch,scratch_vit_b_16_lora_sd_b20_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,vit_b_16,lora_sd,lora_sd_b20,1:1,1,stage1-scratch,scratch_vit_b_16_lora_sd_b20_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,20,scratch,vit_b_16,lora_sd,lora_sd_b20,1:1,2,stage1-scratch,scratch_vit_b_16_lora_sd_b20_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,vit_b_16,lora_sd,lora_sd_b50,1:1,0,stage1-scratch,scratch_vit_b_16_lora_sd_b50_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,vit_b_16,lora_sd,lora_sd_b50,1:1,1,stage1-scratch,scratch_vit_b_16_lora_sd_b50_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,50,scratch,vit_b_16,lora_sd,lora_sd_b50,1:1,2,stage1-scratch,scratch_vit_b_16_lora_sd_b50_s2,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,vit_b_16,lora_sd,lora_sd_bfull,1:1,0,stage1-scratch,scratch_vit_b_16_lora_sd_bfull_s0,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,vit_b_16,lora_sd,lora_sd_bfull,1:1,1,stage1-scratch,scratch_vit_b_16_lora_sd_bfull_s1,planned,,
+"RQ2, RQ4",classification,CIFAR-100,src/component/configs/splits/cifar100.json,full,scratch,vit_b_16,lora_sd,lora_sd_bfull,1:1,2,stage1-scratch,scratch_vit_b_16_lora_sd_bfull_s2,planned,,

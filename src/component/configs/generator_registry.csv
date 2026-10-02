@@ -1,0 +1,7 @@
+generator,condition,base_model,revision,adaptation,adaptation_data,sampler,steps,guidance,prompt_template,generation_seed,images_per_class,generation_minutes,fid,precision,recall,quality_file,status,ticket
+sd_prompt,sd_prompt,,,none,none,,,,,,450,,,,,,planned: settings to be agreed,#9
+lora_sd_b5,lora_sd,,,LoRA,training images of budget 5,,,,,,5,,,,,,planned,#15
+lora_sd_b10,lora_sd,,,LoRA,training images of budget 10,,,,,,10,,,,,,planned,#15
+lora_sd_b20,lora_sd,,,LoRA,training images of budget 20,,,,,,20,,,,,,planned,#15
+lora_sd_b50,lora_sd,,,LoRA,training images of budget 50,,,,,,50,,,,,,planned,#15
+lora_sd_bfull,lora_sd,,,LoRA,training images of the full budget,,,,,,450,,,,,,planned,#15

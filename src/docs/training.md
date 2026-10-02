@@ -133,6 +133,16 @@ python -m src.component.analyze_results --root runs/stage1-pretrained \
 
 `--metric` selects `accuracy` (default), `macro_f1` or `balanced_accuracy`. `--split test` uses the test-set scores described below instead of the best validation scores.
 
+## Run matrix and generator registry
+
+`src/component/configs/run_matrix.csv` lists all 240 Stage 1 runs (2 initializations × 2 classifiers × 4 conditions × 5 data budgets × 3 seeds) with their research question, condition, generator, synthetic ratio, run directory, status and cost. `src/component/run_matrix.py` rebuilds it from the run directories: a run is done when it has `result.json`, running when it has only `config.json`, and planned otherwise.
+
+```bash
+python -m src.component.run_matrix --runs-root runs --output src/component/configs/run_matrix.csv
+```
+
+`src/component/configs/generator_registry.csv` has one row per generator: the pretrained Stable Diffusion pool (`sd_prompt`) and one LoRA adapter per data budget (`lora_sd_b5` to `lora_sd_bfull`). Its model, revision, sampler, guidance, prompt, seed, generation time and quality scores are filled in when each set is generated. A unit test checks that every generator in the run matrix is registered.
+
 ## Test-set evaluation
 
 The official 10,000-image CIFAR-100 test set is scored once per run, after the training and selection protocol is fixed. `src/component/evaluate_test.py` rebuilds each completed run's model from its settings, loads `best.pt` (the best validation checkpoint) and scores it with the same evaluation code used for validation. It writes `test_result.json` next to `result.json`, with the test scores, per-image predictions and a fingerprint of the test labels.
