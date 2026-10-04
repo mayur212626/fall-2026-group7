@@ -10,7 +10,12 @@ Data Science Capstone (DATS 6501), The George Washington University, Fall 2026. 
 
 ## Status
 
-The repository structure and environment are in place. The data pipeline and training runner are under development. No results yet.
+Stage 1 is in progress:
+
+- Done: the CIFAR-100 split manifest, the training runner with resume and validation-only checkpoint selection, the metrics and tests, the learning-rate and step-budget pilots for both initializations, the real-only and RandAugment baselines for both initializations (120 runs, ImageNet-pretrained and random; tables and figures in the LaTeX report), and the FID and Improved Precision & Recall tool.
+- Next: Stable Diffusion and LoRA-SD generated sets, scored with FID and Improved Precision & Recall, and the synthetic-data comparisons.
+
+The run matrix in `src/component/configs/run_matrix.csv` lists every Stage 1 run and its status. Documentation: [setup](src/docs/setup.md), [data splits](src/docs/data-splits.md), [training and results](src/docs/training.md), [generated-image quality](src/docs/image-quality.md).
 
 ## Repository layout
 
