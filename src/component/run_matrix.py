@@ -10,12 +10,19 @@ finish:
     python -m src.component.run_matrix --runs-root runs \
         --output src/component/configs/run_matrix.csv
 
-The synthetic conditions are named here as the runner will name them:
-``sd_prompt`` uses the pretrained Stable Diffusion pool and ``lora_sd`` the
-LoRA adapter of the same budget (generators in ``generator_registry.csv``).
+The synthetic conditions use the runner's names: ``sd_prompt`` trains with
+the pretrained Stable Diffusion pool and ``sd_lora`` with the pool of the
+LoRA adapter of the same budget (generators ``sd_prompt`` and
+``lora_sd_b<budget>`` in ``generator_registry.csv``).
+
+Runs are split between machines, so one machine usually has only some of the
+run directories. With ``--keep-missing``, a run whose directory is not on
+this machine keeps the status it already has in the output file instead of
+falling back to planned.
 """
 
 import argparse
+import csv
 import json
 import logging
 from pathlib import Path
@@ -24,7 +31,7 @@ from src.component.analyze_results import write_csv
 
 INITS = ["pretrained", "scratch"]
 MODELS = ["resnet50", "vit_b_16"]
-CONDITIONS = ["real_only", "randaugment", "sd_prompt", "lora_sd"]
+CONDITIONS = ["real_only", "randaugment", "sd_prompt", "sd_lora"]
 BUDGETS = ["5", "10", "20", "50", "full"]
 SEEDS = [0, 1, 2]
 
@@ -35,9 +42,9 @@ def planned_runs() -> list[dict]:
     for init in INITS:
         for model in MODELS:
             for condition in CONDITIONS:
-                synthetic = condition in ("sd_prompt", "lora_sd")
+                synthetic = condition in ("sd_prompt", "sd_lora")
                 for budget in BUDGETS:
-                    generator = {"sd_prompt": "sd_prompt", "lora_sd": f"lora_sd_b{budget}"}.get(condition, "")
+                    generator = {"sd_prompt": "sd_prompt", "sd_lora": f"lora_sd_b{budget}"}.get(condition, "")
                     for seed in SEEDS:
                         rows.append({
                             "research_question": "RQ2, RQ4" if synthetic else "RQ2",
@@ -67,15 +74,34 @@ def run_status(run_dir: Path) -> dict:
     return {"status": status, "train_minutes": "", "peak_memory_mb": ""}
 
 
+def matrix_rows(runs_root: Path, previous: dict[str, dict] | None = None) -> list[dict]:
+    """Every planned run with its status; runs missing here keep their ``previous`` status if given."""
+    rows = []
+    for row in planned_runs():
+        run_dir = Path(runs_root) / row["runs_root"] / row["run"]
+        status = run_status(run_dir)
+        if previous and not run_dir.exists() and row["run"] in previous:
+            old = previous[row["run"]]
+            status = {key: old.get(key, "") for key in ("status", "train_minutes", "peak_memory_mb")}
+        rows.append({**row, **status})
+    return rows
+
+
 def main() -> None:
     """Write the run matrix with the current status of every run."""
     parser = argparse.ArgumentParser(description="Write the Stage 1 run matrix.")
     parser.add_argument("--runs-root", type=Path, default=Path("runs"))
     parser.add_argument("--output", type=Path, default=Path("src/component/configs/run_matrix.csv"))
+    parser.add_argument("--keep-missing", action="store_true",
+                        help="keep the current status of runs whose directory is not on this machine")
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
 
-    rows = [{**r, **run_status(args.runs_root / r["runs_root"] / r["run"])} for r in planned_runs()]
+    previous = None
+    if args.keep_missing and args.output.exists():
+        with args.output.open(encoding="utf-8", newline="") as f:
+            previous = {row["run"]: row for row in csv.DictReader(f)}
+    rows = matrix_rows(args.runs_root, previous)
     logging.info("saved %s", write_csv(rows, args.output))
     for status in ("done", "running", "planned"):
         logging.info("%s: %d", status, sum(r["status"] == status for r in rows))

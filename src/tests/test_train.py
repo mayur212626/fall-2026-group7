@@ -16,6 +16,7 @@ from src.component.train import (
     lr_factor,
     make_settings,
     new_state,
+    run_name,
     run_training,
     save_checkpoint,
     train_steps,
@@ -70,9 +71,25 @@ class MakeSettingsTest(unittest.TestCase):
         self.assertEqual(run["recipe"], {"optimizer": "adamw", "lr": 3e-4, "weight_decay": 0.05})
         self.assertEqual(CONFIG["models"]["resnet50"]["lr"], 1e-4)
 
+    def test_real_conditions_have_no_synthetic_key(self) -> None:
+        self.assertNotIn("synthetic", self.make())
+
+    def test_synthetic_details_are_stored(self) -> None:
+        info = {"pool_sha256": "abc", "ratio": 1, "per_class": 5, "images": 500}
+        self.assertEqual(self.make(condition="sd_prompt", synthetic=info)["synthetic"], info)
+
     def test_rejects_budget_without_steps(self) -> None:
         with self.assertRaises(ValueError):
             self.make(budget="full")
+
+
+class RunNameTest(unittest.TestCase):
+    def test_ratio_one_keeps_the_stage1_name(self) -> None:
+        self.assertEqual(run_name("pretrained", "resnet50", "sd_prompt", "5", 0), "pretrained_resnet50_sd_prompt_b5_s0")
+
+    def test_other_ratios_are_marked(self) -> None:
+        self.assertEqual(run_name("pretrained", "vit_b_16", "sd_prompt", "full", 2, ratio=2),
+                         "pretrained_vit_b_16_sd_prompt_bfull_s2_r2")
 
 
 class LrFactorTest(unittest.TestCase):

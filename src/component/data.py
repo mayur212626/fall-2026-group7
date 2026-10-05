@@ -136,6 +136,35 @@ def to_model_input(images: torch.Tensor, size: int) -> torch.Tensor:
     return (x - mean) / std
 
 
+def add_synthetic(
+    images: np.ndarray,
+    labels: Sequence[int],
+    train_indices: Sequence[int],
+    pool_images: np.ndarray,
+    pool_labels: np.ndarray,
+    pool_index: np.ndarray,
+    per_class: int,
+    num_classes: int,
+) -> tuple[np.ndarray, list[int], list[int]]:
+    """Append the first ``per_class`` generated images of every class to the real images.
+
+    Generated images get the image IDs ``len(images)``, ``len(images) + 1``, ...
+    after the real ones, so real image IDs are unchanged.
+
+    Returns:
+        All images, all labels, and the training indices: the real
+        ``train_indices`` followed by the IDs of the added generated images.
+    """
+    from src.component.synthetic_pool import select_per_class
+
+    rows = select_per_class(pool_labels, pool_index, per_class, num_classes)
+    offset = len(images)
+    all_images = np.concatenate([images, pool_images[rows]])
+    all_labels = list(labels) + np.asarray(pool_labels)[rows].tolist()
+    indices = list(train_indices) + list(range(offset, offset + len(rows)))
+    return all_images, all_labels, indices
+
+
 def load_cifar100(root: Path, train: bool) -> tuple[np.ndarray, list[int]]:
     """Load CIFAR-100 images (N, 32, 32, 3) uint8 and labels from ``root``."""
     from torchvision.datasets import CIFAR100

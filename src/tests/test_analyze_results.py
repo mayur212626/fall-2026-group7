@@ -129,6 +129,24 @@ class LatexTableTest(unittest.TestCase):
         self.assertNotIn("12.00", table)
 
 
+class SyntheticConditionTest(unittest.TestCase):
+    rows = ROWS + [row("sd_prompt", 0, 33.0), row("sd_prompt", 1, 31.0), row("sd_prompt", 2, 37.0)]
+
+    def test_paired_change_over_real_only(self) -> None:
+        change = paired_changes(self.rows, "sd_prompt", "real_only", "accuracy")[0]
+        self.assertEqual(change["changes"], [3.0, -1.0, 3.0])
+        self.assertEqual(change["verdict"], "inconclusive")
+
+    def test_latex_table_for_a_synthetic_condition(self) -> None:
+        changes = paired_changes(self.rows, "sd_prompt", "real_only", "accuracy")
+        table = latex_table(aggregate(self.rows, "accuracy"), changes, init="pretrained", metric="accuracy",
+                            split="validation", treatment="sd_prompt")
+        self.assertIn("Real-only & SD class prompts & Change", table)
+        self.assertIn(r"ResNet-50 & 5 & 32.00 $\pm$ 2.00 & 33.67 $\pm$ 3.06 & +1.67 $\pm$ 2.31 & inconclusive \\", table)
+        self.assertIn("tab:stage1-pretrained-accuracy-sd_prompt", table)
+        self.assertNotIn("RandAugment", table)
+
+
 class PlotAccuracyTest(unittest.TestCase):
     def test_writes_svg_and_pdf(self) -> None:
         rows = ROWS + [row(c, s, a + 10, budget="full") for c, s, a in

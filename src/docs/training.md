@@ -7,11 +7,13 @@
 | `--config` | `src/component/configs/train_pretrained.json` or `train_scratch.json` |
 | `--model` | `resnet50`, `vit_b_16` |
 | `--init` | `pretrained` (ImageNet weights), `scratch` (random initialization) |
-| `--condition` | `real_only`, `randaugment` |
+| `--condition` | `real_only`, `randaugment`, `sd_prompt`, `sd_lora` (synthetic conditions need `--synthetic-pool`; see [synthetic data](synthetic-data.md)) |
 | `--budget` | `5`, `10`, `20`, `50`, `full` (images per class, from the split manifest) |
 | `--seed` | training seed, e.g. `0`, `1`, `2` |
 | `--steps` | overrides the config's step budget; used for pilot runs |
 | `--lr` | overrides the config's learning rate; used for pilot runs |
+| `--synthetic-pool` | generated image pool (`pool.npz`) for `sd_prompt` and `sd_lora` |
+| `--synthetic-ratio` | generated images per real image and class, default 1 (1:1) |
 
 Example, from the repository root:
 
@@ -141,7 +143,9 @@ python -m src.component.analyze_results --root runs/stage1-pretrained \
 python -m src.component.run_matrix --runs-root runs --output src/component/configs/run_matrix.csv
 ```
 
-`src/component/configs/generator_registry.csv` has one row per generator: the pretrained Stable Diffusion pool (`sd_prompt`) and one LoRA adapter per data budget (`lora_sd_b5` to `lora_sd_bfull`). Its model, revision, sampler, guidance, prompt, seed, generation time and quality scores are filled in when each set is generated. A unit test checks that every generator in the run matrix is registered.
+The runs are split between machines. On a machine that has only some of the run directories, add `--keep-missing` so the other runs keep the status already in the file.
+
+`src/component/configs/generator_registry.csv` has one row per generator: the pretrained Stable Diffusion pool (`sd_prompt`) and one LoRA adapter per data budget (`lora_sd_b5` to `lora_sd_bfull`, used by the `sd_lora` condition). `generate_sd` fills in the model, revision, sampler, guidance, prompt, seed and generation time when a pool is finished, and `pool_quality` adds its FID and precision/recall (see [synthetic data](synthetic-data.md)). A unit test checks that every generator in the run matrix is registered.
 
 ## Test-set evaluation
 

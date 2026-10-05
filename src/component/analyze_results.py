@@ -5,9 +5,9 @@ Reads every run below ``--root`` (directories with ``config.json`` and
 
 - the mean and sample standard deviation over seeds of each model, data
   budget and condition, and
-- the paired change of RandAugment over real-only for each model and data
-  budget: the per-seed differences, their mean and standard deviation, and
-  a verdict. A change counts as a gain or a loss only when every seed agrees
+- the paired change of every other condition (RandAugment and the synthetic
+  conditions) over real-only for each model and data budget: the per-seed
+  differences, their mean and standard deviation, and a verdict. A change counts as a gain or a loss only when every seed agrees
   in sign; otherwise it is inconclusive.
 
 It also saves an accuracy-versus-data-size figure as SVG and PDF, and with
@@ -31,8 +31,14 @@ BUDGET_ORDER = ["5", "10", "20", "50", "full"]
 FULL_IMAGES_PER_CLASS = 450
 MODEL_NAMES = {"resnet50": "ResNet-50", "vit_b_16": "ViT-B/16"}
 MODEL_COLORS = {"resnet50": "#2a78d6", "vit_b_16": "#eb6834"}  # categorical slots 1-2, validated
-CONDITION_NAMES = {"real_only": "real-only", "randaugment": "RandAugment"}
-CONDITION_LINES = {"real_only": "-", "randaugment": "--"}
+CONDITION_NAMES = {
+    "real_only": "real-only",
+    "randaugment": "RandAugment",
+    "sd_prompt": "SD class prompts",
+    "sd_lora": "SD + LoRA",
+}
+CONDITION_LINES = {"real_only": "-", "randaugment": "--", "sd_prompt": ":", "sd_lora": "-."}
+CONTROL = "real_only"
 METRIC_NAMES = {"accuracy": "top-1 accuracy", "macro_f1": "macro-F1", "balanced_accuracy": "balanced accuracy"}
 
 
@@ -206,8 +212,14 @@ def _tex(mean: float, sd: float | None, sign: str = "") -> str:
     return f"{mean:{sign}.2f}" if sd is None else f"{mean:{sign}.2f} $\\pm$ {sd:.2f}"
 
 
-def latex_table(aggregates: list[dict], changes: list[dict], init: str, metric: str, split: str) -> str:
-    """Booktabs table of real-only, RandAugment and their paired change for one initialization."""
+def latex_table(
+    aggregates: list[dict], changes: list[dict], init: str, metric: str, split: str,
+    treatment: str = "randaugment",
+) -> str:
+    """Booktabs table of real-only, ``treatment`` and their paired change for one initialization.
+
+    ``changes`` must be the paired changes of ``treatment`` over real-only.
+    """
     means = {(g["model"], g["budget"], g["condition"]): g for g in aggregates if g["init"] == init}
     paired = {(c["model"], c["budget"]): c for c in changes if c["init"] == init}
     seeds = sorted({g["n"] for g in means.values()})
@@ -215,12 +227,12 @@ def latex_table(aggregates: list[dict], changes: list[dict], init: str, metric: 
         r"\begin{table}[H]",
         r"\centering",
         rf"\caption{{Stage 1 baselines, {init} initialization: {split} {METRIC_NAMES[metric]} (\%), mean $\pm$ "
-        rf"sample SD over {' or '.join(map(str, seeds))} seeds. The change is RandAugment minus real-only per seed "
-        r"(percentage points); it is a gain or a loss only when every seed agrees in sign.}",
-        rf"\label{{tab:stage1-{init}-{metric}}}",
+        rf"sample SD over {' or '.join(map(str, seeds))} seeds. The change is {CONDITION_NAMES[treatment]} minus "
+        r"real-only per seed (percentage points); it is a gain or a loss only when every seed agrees in sign.}",
+        rf"\label{{tab:stage1-{init}-{metric}{'' if treatment == 'randaugment' else '-' + treatment}}}",
         r"\begin{tabular}{llrrrl}",
         r"\toprule",
-        r"Model & Images/class & Real-only & RandAugment & Change & Verdict \\",
+        rf"Model & Images/class & Real-only & {CONDITION_NAMES[treatment]} & Change & Verdict \\",
     ]
     for model in MODEL_NAMES:
         budgets = sorted({b for m, b, _ in means if m == model}, key=_budget_key)
@@ -229,7 +241,7 @@ def latex_table(aggregates: list[dict], changes: list[dict], init: str, metric: 
         lines.append(r"\midrule")
         for budget in budgets:
             cells = [MODEL_NAMES[model], budget]
-            for condition in CONDITION_NAMES:
+            for condition in (CONTROL, treatment):
                 g = means.get((model, budget, condition))
                 cells.append(_tex(g["mean"], g["sd"]) if g else "--")
             c = paired.get((model, budget))
@@ -267,14 +279,19 @@ def main() -> None:
         print(f"| {g['init']} | {MODEL_NAMES.get(g['model'], g['model'])} | {g['budget']} | "
               f"{CONDITION_NAMES.get(g['condition'], g['condition'])} | {g['n']} | {_fmt(g['mean'], g['sd'])} |")
 
-    print("\nPaired change, RandAugment minus real-only (percentage points):\n")
-    print("| init | model | images/class | per-seed changes | mean ± SD | verdict |")
-    print("|---|---|---|---|---|---|")
-    changes = paired_changes(rows, "randaugment", "real_only", args.metric)
-    for c in changes:
-        per_seed = ", ".join(f"{v:+.2f}" for v in c["changes"])
-        print(f"| {c['init']} | {MODEL_NAMES.get(c['model'], c['model'])} | {c['budget']} | {per_seed} | "
-              f"{_fmt(c['mean'], c['sd'])} | {c['verdict']} |")
+    present = {r["condition"] for r in rows}
+    treatments = [c for c in CONDITION_NAMES if c != CONTROL and c in present]
+    changes_by_treatment = {}
+    for treatment in treatments:
+        print(f"\nPaired change, {CONDITION_NAMES[treatment]} minus real-only (percentage points):\n")
+        print("| init | model | images/class | per-seed changes | mean ± SD | verdict |")
+        print("|---|---|---|---|---|---|")
+        changes = paired_changes(rows, treatment, CONTROL, args.metric)
+        changes_by_treatment[treatment] = changes
+        for c in changes:
+            per_seed = ", ".join(f"{v:+.2f}" for v in c["changes"])
+            print(f"| {c['init']} | {MODEL_NAMES.get(c['model'], c['model'])} | {c['budget']} | {per_seed} | "
+                  f"{_fmt(c['mean'], c['sd'])} | {c['verdict']} |")
 
     if args.figure:
         inits = sorted({g["init"] for g in groups})
@@ -285,13 +302,21 @@ def main() -> None:
 
     if args.table:
         print(f"saved {write_csv(groups, args.table.with_suffix('.csv'))}")
-        print(f"saved {write_csv(changes, args.table.with_name(args.table.name + '_paired.csv'))}")
-        inits = sorted({g["init"] for g in groups})
-        for init in inits:
-            stem = args.table.name if len(inits) == 1 else f"{args.table.name}_{init}"
-            path = args.table.with_name(f"{stem}.tex")
-            path.write_text(latex_table(groups, changes, init, args.metric, args.split), encoding="utf-8")
-            print(f"saved {path}")
+        # RandAugment keeps the original file names; other treatments get a suffix.
+        for treatment, changes in changes_by_treatment.items():
+            if not changes:
+                continue
+            suffix = "" if treatment == "randaugment" else f"_{treatment}"
+            paired = changes if treatment == "randaugment" else [
+                {"treatment": treatment, "control": CONTROL, **c} for c in changes
+            ]
+            print(f"saved {write_csv(paired, args.table.with_name(args.table.name + suffix + '_paired.csv'))}")
+            inits = sorted({g["init"] for g in groups})
+            for init in inits:
+                stem = args.table.name if len(inits) == 1 else f"{args.table.name}_{init}"
+                path = args.table.with_name(f"{stem}{suffix}.tex")
+                path.write_text(latex_table(groups, changes, init, args.metric, args.split, treatment), encoding="utf-8")
+                print(f"saved {path}")
 
 
 if __name__ == "__main__":

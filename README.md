@@ -13,9 +13,10 @@ Data Science Capstone (DATS 6501), The George Washington University, Fall 2026. 
 Stage 1 is in progress:
 
 - Done: the CIFAR-100 split manifest, the training runner with resume and validation-only checkpoint selection, the metrics and tests, the learning-rate and step-budget pilots for both initializations, the real-only and RandAugment baselines for both initializations (120 runs, ImageNet-pretrained and random; tables and figures in the LaTeX report), and the FID and Improved Precision & Recall tool.
-- Next: Stable Diffusion and LoRA-SD generated sets, scored with FID and Improved Precision & Recall, and the synthetic-data comparisons.
+- Done: the Stable Diffusion 1.5 class-prompt pool (45,000 images) and one LoRA-adapted pool per data budget (53,500 images), scored with FID and Improved Precision & Recall, and the `sd_prompt` and `sd_lora` runs for both initializations (120 runs); tables and figures in the LaTeX report.
+- Next: SD + RandAugment, the one-time test-set evaluation, and Stage 2.
 
-The run matrix in `src/component/configs/run_matrix.csv` lists every Stage 1 run and its status. Documentation: [setup](src/docs/setup.md), [data splits](src/docs/data-splits.md), [training and results](src/docs/training.md), [generated-image quality](src/docs/image-quality.md).
+The run matrix in `src/component/configs/run_matrix.csv` lists every Stage 1 run and its status. Documentation: [setup](src/docs/setup.md), [data splits](src/docs/data-splits.md), [training and results](src/docs/training.md), [generated-image quality](src/docs/image-quality.md), [synthetic data](src/docs/synthetic-data.md).
 
 ## Repository layout
 
