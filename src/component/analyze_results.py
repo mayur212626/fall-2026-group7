@@ -36,8 +36,15 @@ CONDITION_NAMES = {
     "randaugment": "RandAugment",
     "sd_prompt": "SD class prompts",
     "sd_lora": "SD + LoRA",
+    "sd_prompt_randaugment": "SD class prompts + RandAugment",
 }
-CONDITION_LINES = {"real_only": "-", "randaugment": "--", "sd_prompt": ":", "sd_lora": "-."}
+CONDITION_LINES = {"real_only": "-", "randaugment": "--", "sd_prompt": ":", "sd_lora": "-.",
+                   "sd_prompt_randaugment": (0, (3, 1, 1, 1, 1, 1))}
+CONDITION_MARKERS = {"real_only": "o", "randaugment": "o", "sd_prompt": "^", "sd_lora": "v",
+                     "sd_prompt_randaugment": "s"}
+# Synthetic conditions compared with RandAugment, the strongest real-data control.
+RANDAUGMENT_COMPARISONS = {"sd_prompt": "SD$-$RA", "sd_lora": "LoRA$-$RA", "sd_prompt_randaugment": "SD+RA$-$RA"}
+VERDICT_MARKS = {"gain": r"$\uparrow$", "loss": r"$\downarrow$", "inconclusive": r"$\sim$"}
 CONTROL = "real_only"
 METRIC_NAMES = {"accuracy": "top-1 accuracy", "macro_f1": "macro-F1", "balanced_accuracy": "balanced accuracy"}
 
@@ -137,11 +144,28 @@ def paired_changes(rows: list[dict], treatment: str, control: str, metric: str) 
     return sorted(result, key=lambda c: (c["init"], c["model"], _budget_key(c["budget"])))
 
 
+def series_points(
+    groups: list[dict], model: str, condition: str, budgets: list[str]
+) -> tuple[list[int], list[float], list[float]]:
+    """Images per class, means and SDs of one series at ``budgets``; NaN where it has no runs.
+
+    The NaN gaps break the plotted line, so it never bridges budgets without data.
+    """
+    by_budget = {g["budget"]: g for g in groups if g["model"] == model and g["condition"] == condition}
+    nan = float("nan")
+    return (
+        [images_per_class(b) for b in budgets],
+        [by_budget[b]["mean"] if b in by_budget else nan for b in budgets],
+        [(by_budget[b]["sd"] or 0.0) if b in by_budget else nan for b in budgets],
+    )
+
+
 def plot_accuracy(aggregates: list[dict], out_stem: Path, init: str, split: str = "validation") -> list[Path]:
     """Plot mean accuracy (±1 SD over seeds) against images per class.
 
-    Color identifies the model and line style the condition. Saves
-    ``out_stem.svg`` and ``out_stem.pdf`` and returns both paths.
+    Color identifies the model; line style and marker identify the condition.
+    With more than four series the legend moves to the right of the plot so it
+    covers no data. Saves ``out_stem.svg`` and ``out_stem.pdf`` and returns both paths.
     """
     import matplotlib
 
@@ -149,25 +173,20 @@ def plot_accuracy(aggregates: list[dict], out_stem: Path, init: str, split: str 
     import matplotlib.pyplot as plt
 
     plt.rcParams.update({"svg.fonttype": "none", "pdf.fonttype": 42, "font.size": 9})
-    fig, ax = plt.subplots(figsize=(6.0, 3.8))
     groups = [g for g in aggregates if g["init"] == init]
-    for model in MODEL_NAMES:
-        for condition in CONDITION_NAMES:
-            series = sorted(
-                (g for g in groups if g["model"] == model and g["condition"] == condition),
-                key=lambda g: _budget_key(g["budget"]),
-            )
-            if not series:
-                continue
-            x = [images_per_class(g["budget"]) for g in series]
-            y = [g["mean"] for g in series]
-            err = [g["sd"] or 0.0 for g in series]
-            label = f"{MODEL_NAMES[model]}, {CONDITION_NAMES[condition]}"
-            ax.errorbar(
-                x, y, yerr=err, label=label, color=MODEL_COLORS[model],
-                linestyle=CONDITION_LINES[condition], linewidth=1.5, marker="o", markersize=5,
-                capsize=3,
-            )
+    budgets = sorted({g["budget"] for g in groups}, key=_budget_key)
+    series = [(m, c) for m in MODEL_NAMES for c in CONDITION_NAMES
+              if any(g["model"] == m and g["condition"] == c for g in groups)]
+    legend_outside = len(series) > 4
+    fig, ax = plt.subplots(figsize=(8.4 if legend_outside else 6.0, 3.8))
+    for model, condition in series:
+        x, y, err = series_points(groups, model, condition, budgets)
+        label = f"{MODEL_NAMES[model]}, {CONDITION_NAMES[condition]}"
+        ax.errorbar(
+            x, y, yerr=err, label=label, color=MODEL_COLORS[model],
+            linestyle=CONDITION_LINES[condition], linewidth=1.5, marker=CONDITION_MARKERS[condition], markersize=5,
+            capsize=3,
+        )
     ticks = [images_per_class(b) for b in BUDGET_ORDER]
     ax.set_xscale("log")
     ax.set_xticks(ticks)
@@ -179,7 +198,10 @@ def plot_accuracy(aggregates: list[dict], out_stem: Path, init: str, split: str 
     ax.set_axisbelow(True)
     for side in ("top", "right"):
         ax.spines[side].set_visible(False)
-    ax.legend(frameon=False, loc="lower right")
+    if legend_outside:
+        ax.legend(frameon=False, loc="upper left", bbox_to_anchor=(1.02, 1.0))
+    else:
+        ax.legend(frameon=False, loc="lower right")
     fig.tight_layout()
 
     out_stem = Path(out_stem)
@@ -251,6 +273,44 @@ def latex_table(
     return "\n".join(lines)
 
 
+def randaugment_comparison_table(rows: list[dict], init: str, metric: str, split: str) -> str:
+    """Booktabs table of each synthetic condition minus RandAugment, paired by seed, for one initialization.
+
+    Lists every model and data budget with synthetic runs; "--" marks a
+    condition without runs there.
+    """
+    rows = [r for r in rows if r["init"] == init]
+    pairs = {t: {(c["model"], c["budget"]): c for c in paired_changes(rows, t, "randaugment", metric)}
+             for t in RANDAUGMENT_COMPARISONS}
+    seeds = sorted({len(c["seeds"]) for pair in pairs.values() for c in pair.values()})
+    lines = [
+        r"\begin{table}[H]",
+        r"\centering",
+        rf"\caption{{Stage 1 synthetic conditions against RandAugment, {init} initialization: change in {split} "
+        rf"{METRIC_NAMES[metric]} (percentage points), paired by training seed, mean $\pm$ sample SD over "
+        rf"{' or '.join(map(str, seeds))} seeds. SD: pretrained Stable Diffusion with class prompts; LoRA: "
+        r"LoRA-adapted Stable Diffusion; RA: RandAugment. $\uparrow$ gain and $\downarrow$ loss when every seed "
+        r"agrees in sign, $\sim$ inconclusive otherwise.}",
+        rf"\label{{tab:stage1-{init}-{metric}-vs-randaugment}}",
+        r"\begin{tabular}{ll" + "r" * len(RANDAUGMENT_COMPARISONS) + "}",
+        r"\toprule",
+        "Model & Images/class & " + " & ".join(RANDAUGMENT_COMPARISONS.values()) + r" \\",
+    ]
+    for model in MODEL_NAMES:
+        budgets = sorted({b for pair in pairs.values() for m, b in pair if m == model}, key=_budget_key)
+        if not budgets:
+            continue
+        lines.append(r"\midrule")
+        for budget in budgets:
+            cells = [MODEL_NAMES[model], budget]
+            for pair in pairs.values():
+                c = pair.get((model, budget))
+                cells.append(f"{_tex(c['mean'], c['sd'], '+')} {VERDICT_MARKS[c['verdict']]}" if c else "--")
+            lines.append(" & ".join(cells) + r" \\")
+    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
+    return "\n".join(lines)
+
+
 def _fmt(mean: float, sd: float | None) -> str:
     return f"{mean:.2f}" if sd is None else f"{mean:.2f} ± {sd:.2f}"
 
@@ -317,6 +377,25 @@ def main() -> None:
                 path = args.table.with_name(f"{stem}{suffix}.tex")
                 path.write_text(latex_table(groups, changes, init, args.metric, args.split, treatment), encoding="utf-8")
                 print(f"saved {path}")
+
+    comparisons = [{"treatment": t, "control": "randaugment", **c}
+                   for t in RANDAUGMENT_COMPARISONS for c in paired_changes(rows, t, "randaugment", args.metric)]
+    if comparisons:
+        print("\nPaired change against RandAugment (percentage points):\n")
+        print("| init | model | images/class | condition | per-seed changes | mean ± SD | verdict |")
+        print("|---|---|---|---|---|---|---|")
+        for c in comparisons:
+            per_seed = ", ".join(f"{v:+.2f}" for v in c["changes"])
+            print(f"| {c['init']} | {MODEL_NAMES.get(c['model'], c['model'])} | {c['budget']} | "
+                  f"{CONDITION_NAMES[c['treatment']]} | {per_seed} | {_fmt(c['mean'], c['sd'])} | {c['verdict']} |")
+    if comparisons and args.table:
+        print(f"saved {write_csv(comparisons, args.table.with_name(args.table.name + '_vs_randaugment_paired.csv'))}")
+        inits = sorted({c["init"] for c in comparisons})
+        for init in inits:
+            stem = args.table.name if len(inits) == 1 else f"{args.table.name}_{init}"
+            path = args.table.with_name(f"{stem}_vs_randaugment.tex")
+            path.write_text(randaugment_comparison_table(rows, init, args.metric, args.split), encoding="utf-8")
+            print(f"saved {path}")
 
 
 if __name__ == "__main__":

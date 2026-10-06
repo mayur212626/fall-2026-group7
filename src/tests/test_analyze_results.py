@@ -2,6 +2,7 @@
 
 import csv
 import json
+import math
 import tempfile
 import unittest
 from pathlib import Path
@@ -13,6 +14,8 @@ from src.component.analyze_results import (
     load_runs,
     paired_changes,
     plot_accuracy,
+    randaugment_comparison_table,
+    series_points,
     write_csv,
 )
 
@@ -147,7 +150,50 @@ class SyntheticConditionTest(unittest.TestCase):
         self.assertNotIn("RandAugment", table)
 
 
+THREE_WAY_ROWS = ROWS + [
+    row("sd_prompt", 0, 33.0), row("sd_prompt", 1, 34.0), row("sd_prompt", 2, 35.0),
+    row("sd_lora", 0, 31.0), row("sd_lora", 1, 33.0), row("sd_lora", 2, 38.0),
+    row("sd_prompt_randaugment", 0, 38.0), row("sd_prompt_randaugment", 1, 39.0), row("sd_prompt_randaugment", 2, 41.0),
+]
+
+
+class RandAugmentComparisonTableTest(unittest.TestCase):
+    def table(self, rows: list[dict]) -> str:
+        return randaugment_comparison_table(rows, init="pretrained", metric="accuracy", split="validation")
+
+    def test_row_has_each_synthetic_condition_minus_randaugment(self) -> None:
+        self.assertIn(r"ResNet-50 & 5 & -3.00 $\pm$ 1.73 $\downarrow$ & -3.00 $\pm$ 1.00 $\downarrow$ & "
+                      r"+2.33 $\pm$ 1.15 $\uparrow$ \\", self.table(THREE_WAY_ROWS))
+
+    def test_mixed_signs_are_marked_inconclusive(self) -> None:
+        rows = THREE_WAY_ROWS[:-1] + [row("sd_prompt_randaugment", 2, 39.0)]
+        self.assertIn(r"$\sim$ \\", self.table(rows))
+
+    def test_missing_conditions_and_budgets_without_synthetic_runs_are_left_out(self) -> None:
+        rows = [r for r in THREE_WAY_ROWS if r["condition"] != "sd_lora"]
+        rows += [row(c, s, 80.0, budget="full") for c in ("real_only", "randaugment") for s in (0, 1, 2)]
+        table = self.table(rows)
+        self.assertIn(r"ResNet-50 & 5 & -3.00 $\pm$ 1.73 $\downarrow$ & -- & +2.33", table)
+        self.assertNotIn("& full &", table)
+
+
+class SeriesPointsTest(unittest.TestCase):
+    def test_missing_budgets_break_the_line_instead_of_bridging_it(self) -> None:
+        rows = THREE_WAY_ROWS + [row("sd_prompt", s, 70.0, budget="50") for s in (0, 1, 2)]
+        x, y, _ = series_points(aggregate(rows, "accuracy"), "resnet50", "sd_prompt", ["5", "10", "20", "50"])
+        self.assertEqual(x, [5, 10, 20, 50])
+        self.assertEqual((y[0], y[3]), (34.0, 70.0))
+        self.assertTrue(math.isnan(y[1]) and math.isnan(y[2]))
+
+
 class PlotAccuracyTest(unittest.TestCase):
+    def test_draws_the_synthetic_conditions(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            svg = plot_accuracy(aggregate(THREE_WAY_ROWS, "accuracy"), Path(tmp) / "accuracy", init="pretrained")[0]
+            text = svg.read_text(encoding="utf-8")
+        self.assertIn("ResNet-50, SD class prompts + RandAugment", text)
+        self.assertIn("ResNet-50, SD + LoRA", text)
+
     def test_writes_svg_and_pdf(self) -> None:
         rows = ROWS + [row(c, s, a + 10, budget="full") for c, s, a in
                        [("real_only", 0, 80.0), ("real_only", 1, 81.0), ("randaugment", 0, 82.0), ("randaugment", 1, 83.0)]]

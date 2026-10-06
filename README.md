@@ -4,9 +4,11 @@
 
 SynthAug-Bench is a reproducible benchmark of when synthetic training images help computer vision models. It compares conventional augmentation, GANs, diffusion models trained from scratch, and pretrained Stable Diffusion with and without adaptation. The comparison spans few-shot, long-tail, fine-grained, and medical classification datasets, four CNN and Transformer classifiers, and object detection and image captioning on MS COCO 2017.
 
-The project is built in stages. Stage 1 covers CIFAR-100 with 5, 10, 20, and 50 images per class and the full training set, on ResNet-50 and ViT-B/16, comparing real-only training, RandAugment, pretrained Stable Diffusion, and LoRA-adapted Stable Diffusion. The full plan and all stages are in [proposal.md](proposal.md).
+The project is built in stages. Stage 1 covers CIFAR-100 with 5, 10, 20, and 50 images per class and the full training set, on ResNet-50 and ViT-B/16, comparing real-only training, RandAugment, pretrained Stable Diffusion (alone and combined with RandAugment), and LoRA-adapted Stable Diffusion. The full plan and all stages are in [proposal.md](proposal.md).
 
 Data Science Capstone (DATS 6501), The George Washington University, Fall 2026. Advisor: Dr. Amir Jafari.
+
+Team (two students): Mayur Patil and Manoj Kodihalli Venkatesh.
 
 ## Status
 

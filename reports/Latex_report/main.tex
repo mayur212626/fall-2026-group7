@@ -135,6 +135,10 @@
 % Real-only, RandAugment, pretrained Stable Diffusion, LoRA-adapted Stable Diffusion; generated images
 % resized to 32x32 before the shared preprocessing.
 
+Stage 1 compares five training conditions, each defined as one change to the real-only control. \textit{Real-only} trains on the real images of the budget without augmentation. \textit{RandAugment} applies two RandAugment operations at magnitude 9 to every training image. \textit{Pretrained Stable Diffusion} adds generated images to the real-only training set, one generated image per real image (synthetic:real 1:1): for a budget of $k$ images per class, the first $k$ generated images of each class are added, so the generated sets are nested across budgets in the same way as the real ones. \textit{Pretrained Stable Diffusion with RandAugment} uses the same pool and applies RandAugment to every image, so that a gain from generated images can be separated from the gain of augmentation in general. \textit{LoRA-adapted Stable Diffusion} replaces the pool with images from an adapter fitted only on the real images of the same budget, so each budget has its own generated set.
+
+Generated images are resized to $32\times32$ before training and then follow exactly the same preprocessing as the real images, so a classifier cannot separate the two by resolution or sharpness. Batches sample the combined pool uniformly, so about half of each batch is generated. Because the step budget stays the same as for real-only training, each image is seen about half as often as in the real-only run. Every run records a fingerprint of the generated pool, the synthetic:real ratio and the number of generated images it used.
+
 \subsection{Evaluation}
 % Top-1 accuracy, macro-F1, per-class recall; paired changes per seed; bootstrap intervals.
 
@@ -160,6 +164,16 @@
 \subsection{Experimentation protocol}
 % Hardware (NVIDIA A10G, 24 GB), software versions, total GPU hours, number of runs, seeds,
 % and how the learning rates and step budgets were chosen (pilot, seed 100, validation only).
+
+All runs used one NVIDIA A10G GPU (24\,GB) with Python 3.12.14, PyTorch 2.12.1 (CUDA 12.6), Torchvision 0.27.1 and NumPy 2.5.2. The CIFAR-100 split is fixed by a manifest with seed 42: 50 images per class (5,000 in total) are held out from the training pool for validation, and the 5, 10, 20 and 50 images-per-class budgets are nested subsets of the remaining 45,000 images, which form the full budget. The official 10,000-image test set is not used before the protocol is final.
+
+ResNet-50 and ViT-B/16 are trained with all layers updated, either from ImageNet weights (torchvision \texttt{IMAGENET1K\_V2} and \texttt{IMAGENET1K\_V1}) or from random initialization. Images stay at $32\times32$ until they are upsampled to $224\times224$ on the GPU and normalized with the ImageNet statistics. Every run uses batch size 128, linear warmup over the first 5\% of steps followed by cosine decay to zero, label smoothing 0.1, gradient-norm clipping at 1.0 and bf16 mixed precision. The real-only condition applies no augmentation; RandAugment applies two operations at magnitude 9 to the $32\times32$ image.
+
+The learning rates and optimizer-step budgets were chosen in pilot runs with seed 100, on validation accuracy only (38 runs, 21.2 GPU hours). The pretrained arm uses AdamW with weight decay 0.05 and learning rate $3\times10^{-4}$ for ResNet-50 and $5\times10^{-5}$ for ViT-B/16, for 600, 800, 1,000, 1,500 and 6,000 steps at the five budgets. The random-initialization arm uses SGD with momentum 0.9, weight decay $5\times10^{-4}$ and learning rate 1.0 for ResNet-50, and AdamW with weight decay 0.05 and learning rate $3\times10^{-4}$ for ViT-B/16, for 2,000, 3,000, 4,000, 8,000 and 50,000 steps. Within an arm, every condition of a given budget uses the same recipe and step budget.
+
+Each run is validated 20 times at equal step intervals and keeps the checkpoint with the highest validation accuracy, breaking ties by the lower validation loss and then the earlier step. Runs are seeded with training seeds 0, 1 and 2, and the batch order and per-sample augmentation are fixed functions of the seed and the step. The 120 baseline runs took 88.4 GPU hours (12.5 for the pretrained arm, 75.9 for the random-initialization arm), with peak GPU memory of 5.7\,GiB for ResNet-50 and 9.7\,GiB for ViT-B/16.
+
+We compare conditions by the paired change for each training seed: the treatment score minus the control score of the same seed, in percentage points. A change counts as a gain or a loss only when all three seeds agree in sign; otherwise it is reported as inconclusive. Tables give the mean and sample standard deviation over the three seeds.
 
 \subsection{Baselines}
 % Real-only and RandAugment results per model and data budget.
@@ -202,6 +216,16 @@ Table~\ref{tab:stage1-scratch-accuracy} and Figure~\ref{fig:stage1-scratch-accur
 % State the weaknesses before a reader finds them, and why they do not undermine the main claims:
 % one dataset in Stage 1, 32x32 images upsampled to 224, three seeds, pretraining overlap
 % (ImageNet, Stable Diffusion training data), single-GPU compute, stages not completed.
+
+\textbf{One dataset at low resolution.} Stage 1 uses CIFAR-100 only, and its $32\times32$ images are upsampled to $224\times224$ for the classifiers. Results may differ for datasets with larger images or other domains, which later stages address.
+
+\textbf{Three seeds.} With three training seeds, a gain or loss is declared only when all seeds agree, and the standard deviations are themselves uncertain. In the baselines, the standard deviation of the paired change reaches 4.7 points (ResNet-50 from random initialization, 50 images per class), so Stage 1 can resolve only effects larger than this spread; smaller effects will be reported as inconclusive. Stage 2 adds two more seeds.
+
+\textbf{Fixed step budgets.} The step budgets were chosen in pilots on the real-only condition and are equal across conditions, so the comparison holds the training compute fixed. Some runs reached their best validation score at the final step: in the pretrained arm 1 of 30 real-only and 8 of 30 RandAugment runs, and in the random-initialization arm 6 of 30 and 13 of 30. Because the cosine schedule ends at a learning rate of zero, the last steps are often the best, but augmented runs might also gain from longer training, so the RandAugment gains may be understated. In the synthetic-data conditions the same step budget is spread over twice as many images, so each real image is seen about half as often as in the real-only run; the exposures are recorded for every run.
+
+\textbf{Outside pretraining.} The ImageNet weights of the pretrained classifiers and the web-scale training data of Stable Diffusion are outside our control. The diffusion training data may contain images similar to, or taken from, CIFAR-100, so any benefit of generated images may partly reflect that exposure. The random-initialization arm removes the classifier's outside knowledge but not the generator's.
+
+\textbf{Validation results so far.} The results reported here are validation scores. The test set will be scored once, after all Stage 1 conditions are trained.
 
 % ------------------------------------------------------------------------------------------------------------------------
 \section{Conclusion}

@@ -1,7 +1,7 @@
 """The Stage 1 run matrix: every planned run with its status and cost.
 
-Stage 1 trains 2 initializations x 2 classifiers x 4 conditions x 5 data
-budgets x 3 seeds = 240 runs. Each row names the run directory the runner
+Stage 1 trains 2 initializations x 2 classifiers x 5 conditions x 5 data
+budgets x 3 seeds = 300 runs. Each row names the run directory the runner
 writes (``<runs-root>/<stage1-init>/<init>_<model>_<condition>_b<budget>_s<seed>``)
 and reads its status from it: done when ``result.json`` exists, running when
 only ``config.json`` does, planned otherwise. Regenerate the file after runs
@@ -11,7 +11,8 @@ finish:
         --output src/component/configs/run_matrix.csv
 
 The synthetic conditions use the runner's names: ``sd_prompt`` trains with
-the pretrained Stable Diffusion pool and ``sd_lora`` with the pool of the
+the pretrained Stable Diffusion pool, ``sd_prompt_randaugment`` with the same
+pool and RandAugment on every image, and ``sd_lora`` with the pool of the
 LoRA adapter of the same budget (generators ``sd_prompt`` and
 ``lora_sd_b<budget>`` in ``generator_registry.csv``).
 
@@ -31,7 +32,7 @@ from src.component.analyze_results import write_csv
 
 INITS = ["pretrained", "scratch"]
 MODELS = ["resnet50", "vit_b_16"]
-CONDITIONS = ["real_only", "randaugment", "sd_prompt", "sd_lora"]
+CONDITIONS = ["real_only", "randaugment", "sd_prompt", "sd_prompt_randaugment", "sd_lora"]
 BUDGETS = ["5", "10", "20", "50", "full"]
 SEEDS = [0, 1, 2]
 
@@ -42,9 +43,10 @@ def planned_runs() -> list[dict]:
     for init in INITS:
         for model in MODELS:
             for condition in CONDITIONS:
-                synthetic = condition in ("sd_prompt", "sd_lora")
+                synthetic = condition in ("sd_prompt", "sd_prompt_randaugment", "sd_lora")
                 for budget in BUDGETS:
-                    generator = {"sd_prompt": "sd_prompt", "sd_lora": f"lora_sd_b{budget}"}.get(condition, "")
+                    generator = {"sd_prompt": "sd_prompt", "sd_prompt_randaugment": "sd_prompt",
+                                 "sd_lora": f"lora_sd_b{budget}"}.get(condition, "")
                     for seed in SEEDS:
                         rows.append({
                             "research_question": "RQ2, RQ4" if synthetic else "RQ2",
