@@ -1,0 +1,11 @@
+treatment,control,init,model,budget,seeds,changes,mean,sd,verdict
+sd_lora,real_only,scratch,resnet50,5,0 1 2,1.74 0.18 1.8,1.24,0.9185,gain
+sd_lora,real_only,scratch,resnet50,10,0 1 2,1.78 2.4 1.6,1.9267,0.4197,gain
+sd_lora,real_only,scratch,resnet50,20,0 1 2,3.84 6.96 7.14,5.98,1.8555,gain
+sd_lora,real_only,scratch,resnet50,50,0 1 2,9.18 4.14 8.22,7.18,2.6761,gain
+sd_lora,real_only,scratch,resnet50,full,0 1 2,8.56 4.44 8.76,7.2533,2.4385,gain
+sd_lora,real_only,scratch,vit_b_16,5,0 1 2,1.04 1.8 1.56,1.4667,0.3885,gain
+sd_lora,real_only,scratch,vit_b_16,10,0 1 2,1.6 1.82 2.3,1.9067,0.358,gain
+sd_lora,real_only,scratch,vit_b_16,20,0 1 2,2.76 1.38 1.48,1.8733,0.7695,gain
+sd_lora,real_only,scratch,vit_b_16,50,0 1 2,2.62 3.32 2.5,2.8133,0.4429,gain
+sd_lora,real_only,scratch,vit_b_16,full,0 1 2,5.86 6.02 6.38,6.0867,0.2663,gain

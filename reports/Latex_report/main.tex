@@ -162,10 +162,11 @@ Generated images are resized to $32\times32$ before training and then follow exa
 % decimals; figures are vector (SVG or PDF) with self-contained captions and colorblind-safe colors.
 
 \subsection{Experimentation protocol}
+\label{sec:protocol}
 % Hardware (NVIDIA A10G, 24 GB), software versions, total GPU hours, number of runs, seeds,
 % and how the learning rates and step budgets were chosen (pilot, seed 100, validation only).
 
-All runs used one NVIDIA A10G GPU (24\,GB) with Python 3.12.14, PyTorch 2.12.1 (CUDA 12.6), Torchvision 0.27.1 and NumPy 2.5.2. The CIFAR-100 split is fixed by a manifest with seed 42: 50 images per class (5,000 in total) are held out from the training pool for validation, and the 5, 10, 20 and 50 images-per-class budgets are nested subsets of the remaining 45,000 images, which form the full budget. The official 10,000-image test set is not used before the protocol is final.
+All runs used NVIDIA A10G GPUs (24\,GB). The pilots and the real-only and RandAugment runs used Python 3.12.14, PyTorch 2.12.1 (CUDA 12.6), Torchvision 0.27.1 and NumPy 2.5.2, the versions pinned in the environment file. The synthetic-data runs were trained on a second A10G instance with Python 3.13.14, PyTorch 2.13.0 (CUDA 13.0), Torchvision 0.28.0 and NumPy 2.4.4. The CIFAR-100 split is fixed by a manifest with seed 42: 50 images per class (5,000 in total) are held out from the training pool for validation, and the 5, 10, 20 and 50 images-per-class budgets are nested subsets of the remaining 45,000 images, which form the full budget. The official 10,000-image test set is not used before the protocol is final.
 
 ResNet-50 and ViT-B/16 are trained with all layers updated, either from ImageNet weights (torchvision \texttt{IMAGENET1K\_V2} and \texttt{IMAGENET1K\_V1}) or from random initialization. Images stay at $32\times32$ until they are upsampled to $224\times224$ on the GPU and normalized with the ImageNet statistics. Every run uses batch size 128, linear warmup over the first 5\% of steps followed by cosine decay to zero, label smoothing 0.1, gradient-norm clipping at 1.0 and bf16 mixed precision. The real-only condition applies no augmentation; RandAugment applies two operations at magnitude 9 to the $32\times32$ image.
 
@@ -205,6 +206,36 @@ Table~\ref{tab:stage1-scratch-accuracy} and Figure~\ref{fig:stage1-scratch-accur
 \subsection{Synthetic-data augmentation}
 % Pretrained and adapted diffusion conditions, as paired changes from the matched baselines.
 
+This section tests whether adding generated images to the real training images improves validation accuracy, compared with real-only training and with RandAugment, and whether the answer depends on the data budget and on the classifier's initialization. Every synthetic run uses the recipe and step budget of the real-only run of the same budget and pairs with it by training seed.
+
+\textbf{Generated-image quality.} Figure~\ref{fig:sd-samples} shows class-prompt samples. Against an equal number of real training images, the class-prompt pool reaches an FID of 34.2 at 50 images per class (5,000 images) and 24.7 at the full budget (45,000 images); two disjoint sets of 5,000 real images give 11.9. The LoRA pools have lower FID than the class-prompt pool from 10 images per class upward (30.2 against 34.2 at 50 per class) and higher recall (0.37 against 0.29), at lower precision (0.65 against 0.72). All scores are in \texttt{tables/generator\_quality.csv}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{sd15_prompt_samples.pdf}
+	\caption{Samples of the class-prompt pool (pretrained Stable Diffusion 1.5, 32$\times$32 as used for training).}
+	\label{fig:sd-samples}
+\end{figure}
+
+\textbf{ImageNet-pretrained classifiers.} Adding class-prompt images helps most when real data is scarce (Table~\ref{tab:stage1-pretrained-accuracy-sd_prompt}): at 5 images per class, accuracy rises by 11.6 points for ResNet-50 and 14.4 points for ViT-B/16, the gain shrinks with the budget, and at the full budget the change is inconclusive for both. Against RandAugment (Table~\ref{tab:stage1-pretrained-accuracy-vs-randaugment}), the generated images alone remain ahead at small budgets (+3.8 and +4.3 points at 5 per class) but fall behind at the full budget. Combined with RandAugment, they add to the augmentation: SD with RandAugment exceeds RandAugment alone by 9.6 points (ResNet-50) and 11.2 points (ViT-B/16) at 5 images per class and still gains at 50 per class, with inconclusive changes at the full budget. LoRA adaptation, despite its lower FID, helps less than the class prompts at every budget: against RandAugment it gains up to 20 images per class for ResNet-50 but only at 5 per class for ViT-B/16, and loses for ViT-B/16 from 10 images per class upward.
+
+\input{tables/stage1_pretrained_accuracy_sd_prompt.tex}
+
+\input{tables/stage1_pretrained_accuracy_vs_randaugment.tex}
+
+\textbf{Randomly initialized classifiers.} Without pretraining, class-prompt images still improve over real-only training at every budget, by 1.9 to 8.2 points for ResNet-50 and 1.9 to 4.0 points for ViT-B/16 (\texttt{tables/stage1\_scratch\_accuracy\_sd\_prompt.tex}), but both synthetic conditions fall behind RandAugment at almost every budget (Table~\ref{tab:stage1-scratch-accuracy-vs-randaugment}), by up to 11.0 points for ViT-B/16 at the full budget. The combined SD and RandAugment runs for this arm are still to be trained.
+
+\input{tables/stage1_scratch_accuracy_vs_randaugment.tex}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{stage1_pretrained_all_conditions.pdf}
+	\includegraphics[width=\textwidth]{stage1_scratch_all_conditions.pdf}
+	\caption{Validation top-1 accuracy of all Stage 1 conditions against training images per class (log scale), ImageNet-pretrained (top) and randomly initialized (bottom). Points are means over seeds 0, 1 and 2 with $\pm 1$ standard deviation; color marks the classifier, line style and marker the condition.}
+	\label{fig:stage1-all-conditions}
+\end{figure}
+% Tables and figures generated by src/component/analyze_results.py --table/--figure from the run folders of both machines.
+
 % ------------------------------------------------------------------------------------------------------------------------
 \section{Discussion}
 
@@ -224,6 +255,8 @@ Table~\ref{tab:stage1-scratch-accuracy} and Figure~\ref{fig:stage1-scratch-accur
 \textbf{Fixed step budgets.} The step budgets were chosen in pilots on the real-only condition and are equal across conditions, so the comparison holds the training compute fixed. Some runs reached their best validation score at the final step: in the pretrained arm 1 of 30 real-only and 8 of 30 RandAugment runs, and in the random-initialization arm 6 of 30 and 13 of 30. Because the cosine schedule ends at a learning rate of zero, the last steps are often the best, but augmented runs might also gain from longer training, so the RandAugment gains may be understated. In the synthetic-data conditions the same step budget is spread over twice as many images, so each real image is seen about half as often as in the real-only run; the exposures are recorded for every run.
 
 \textbf{Outside pretraining.} The ImageNet weights of the pretrained classifiers and the web-scale training data of Stable Diffusion are outside our control. The diffusion training data may contain images similar to, or taken from, CIFAR-100, so any benefit of generated images may partly reflect that exposure. The random-initialization arm removes the classifier's outside knowledge but not the generator's.
+
+\textbf{Two software environments.} The synthetic-data runs were trained with newer Python, PyTorch, Torchvision and NumPy versions than the real-only and RandAugment runs they are paired with (Section~\ref{sec:protocol}). The recipe, split and step budgets are identical, but a version change can shift accuracy slightly, so small paired changes between the two groups should be read with that in mind; one baseline rerun in the newer environment will measure the size of this shift.
 
 \textbf{Validation results so far.} The results reported here are validation scores. The test set will be scored once, after all Stage 1 conditions are trained.
 

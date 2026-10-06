@@ -1,0 +1,22 @@
+\begin{table}[H]
+\centering
+\caption{Stage 1 synthetic conditions against RandAugment, scratch initialization: change in validation top-1 accuracy (percentage points), paired by training seed, mean $\pm$ sample SD over 3 seeds. SD: pretrained Stable Diffusion with class prompts; LoRA: LoRA-adapted Stable Diffusion; RA: RandAugment. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise.}
+\label{tab:stage1-scratch-accuracy-vs-randaugment}
+\begin{tabular}{llrrr}
+\toprule
+Model & Images/class & SD$-$RA & LoRA$-$RA & SD+RA$-$RA \\
+\midrule
+ResNet-50 & 5 & -4.11 $\pm$ 1.03 $\downarrow$ & -4.79 $\pm$ 0.44 $\downarrow$ & -- \\
+ResNet-50 & 10 & -7.30 $\pm$ 0.65 $\downarrow$ & -7.43 $\pm$ 1.04 $\downarrow$ & -- \\
+ResNet-50 & 20 & -5.11 $\pm$ 1.06 $\downarrow$ & -4.57 $\pm$ 2.35 $\downarrow$ & -- \\
+ResNet-50 & 50 & -1.39 $\pm$ 2.97 $\sim$ & -2.43 $\pm$ 3.74 $\sim$ & -- \\
+ResNet-50 & full & -5.42 $\pm$ 2.30 $\downarrow$ & -3.03 $\pm$ 1.90 $\downarrow$ & -- \\
+\midrule
+ViT-B/16 & 5 & -0.67 $\pm$ 0.13 $\downarrow$ & -1.06 $\pm$ 0.14 $\downarrow$ & -- \\
+ViT-B/16 & 10 & -1.39 $\pm$ 0.63 $\downarrow$ & -1.46 $\pm$ 0.40 $\downarrow$ & -- \\
+ViT-B/16 & 20 & -1.97 $\pm$ 0.27 $\downarrow$ & -2.69 $\pm$ 1.19 $\downarrow$ & -- \\
+ViT-B/16 & 50 & -4.87 $\pm$ 0.43 $\downarrow$ & -5.36 $\pm$ 0.49 $\downarrow$ & -- \\
+ViT-B/16 & full & -11.02 $\pm$ 0.70 $\downarrow$ & -8.89 $\pm$ 0.75 $\downarrow$ & -- \\
+\bottomrule
+\end{tabular}
+\end{table}

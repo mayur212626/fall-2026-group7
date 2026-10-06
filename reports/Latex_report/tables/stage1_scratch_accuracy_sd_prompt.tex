@@ -1,0 +1,22 @@
+\begin{table}[H]
+\centering
+\caption{Stage 1, SD class prompts against real-only, scratch initialization: validation top-1 accuracy (\%), mean $\pm$ sample SD over 3 seeds. The change is SD class prompts minus real-only per seed (percentage points); it is a gain or a loss only when every seed agrees in sign.}
+\label{tab:stage1-scratch-accuracy-sd_prompt}
+\begin{tabular}{llrrrl}
+\toprule
+Model & Images/class & Real-only & SD class prompts & Change & Verdict \\
+\midrule
+ResNet-50 & 5 & 8.85 $\pm$ 0.36 & 10.77 $\pm$ 0.69 & +1.91 $\pm$ 0.34 & gain \\
+ResNet-50 & 10 & 13.30 $\pm$ 0.69 & 15.35 $\pm$ 0.53 & +2.05 $\pm$ 1.06 & gain \\
+ResNet-50 & 20 & 19.19 $\pm$ 0.29 & 24.63 $\pm$ 1.66 & +5.43 $\pm$ 1.96 & gain \\
+ResNet-50 & 50 & 29.71 $\pm$ 1.30 & 37.93 $\pm$ 3.42 & +8.22 $\pm$ 4.31 & gain \\
+ResNet-50 & full & 54.98 $\pm$ 0.99 & 59.85 $\pm$ 2.54 & +4.87 $\pm$ 1.72 & gain \\
+\midrule
+ViT-B/16 & 5 & 7.43 $\pm$ 0.27 & 9.29 $\pm$ 0.18 & +1.85 $\pm$ 0.45 & gain \\
+ViT-B/16 & 10 & 10.03 $\pm$ 0.31 & 12.00 $\pm$ 0.62 & +1.97 $\pm$ 0.34 & gain \\
+ViT-B/16 & 20 & 13.55 $\pm$ 0.28 & 16.15 $\pm$ 0.37 & +2.60 $\pm$ 0.64 & gain \\
+ViT-B/16 & 50 & 19.51 $\pm$ 0.46 & 22.81 $\pm$ 0.46 & +3.30 $\pm$ 0.19 & gain \\
+ViT-B/16 & full & 44.18 $\pm$ 0.47 & 48.13 $\pm$ 0.47 & +3.95 $\pm$ 0.06 & gain \\
+\bottomrule
+\end{tabular}
+\end{table}

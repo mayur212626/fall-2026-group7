@@ -245,10 +245,11 @@ def latex_table(
     means = {(g["model"], g["budget"], g["condition"]): g for g in aggregates if g["init"] == init}
     paired = {(c["model"], c["budget"]): c for c in changes if c["init"] == init}
     seeds = sorted({g["n"] for g in means.values()})
+    title = " baselines" if treatment == "randaugment" else f", {CONDITION_NAMES[treatment]} against real-only"
     lines = [
         r"\begin{table}[H]",
         r"\centering",
-        rf"\caption{{Stage 1 baselines, {init} initialization: {split} {METRIC_NAMES[metric]} (\%), mean $\pm$ "
+        rf"\caption{{Stage 1{title}, {init} initialization: {split} {METRIC_NAMES[metric]} (\%), mean $\pm$ "
         rf"sample SD over {' or '.join(map(str, seeds))} seeds. The change is {CONDITION_NAMES[treatment]} minus "
         r"real-only per seed (percentage points); it is a gain or a loss only when every seed agrees in sign.}",
         rf"\label{{tab:stage1-{init}-{metric}{'' if treatment == 'randaugment' else '-' + treatment}}}",
