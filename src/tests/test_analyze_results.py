@@ -148,6 +148,8 @@ class SyntheticConditionTest(unittest.TestCase):
         self.assertIn(r"ResNet-50 & 5 & 32.00 $\pm$ 2.00 & 33.67 $\pm$ 3.06 & +1.67 $\pm$ 2.31 & inconclusive \\", table)
         self.assertIn("tab:stage1-pretrained-accuracy-sd_prompt", table)
         self.assertNotIn("RandAugment", table)
+        self.assertIn(r"\caption{Stage 1, SD class prompts against real-only, pretrained initialization", table)
+        self.assertNotIn("baselines", table)
 
 
 THREE_WAY_ROWS = ROWS + [
