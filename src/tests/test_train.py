@@ -11,6 +11,8 @@ import torch
 
 from src.component.data import CifarImages
 from src.component.train import (
+    AUGMENTED_CONDITIONS,
+    SYNTHETIC_CONDITIONS,
     is_better,
     load_checkpoint,
     lr_factor,
@@ -90,6 +92,15 @@ class RunNameTest(unittest.TestCase):
     def test_other_ratios_are_marked(self) -> None:
         self.assertEqual(run_name("pretrained", "vit_b_16", "sd_prompt", "full", 2, ratio=2),
                          "pretrained_vit_b_16_sd_prompt_bfull_s2_r2")
+
+
+class ConditionsTest(unittest.TestCase):
+    def test_combined_condition_adds_the_prompt_pool_and_randaugment(self) -> None:
+        self.assertIn("sd_prompt_randaugment", SYNTHETIC_CONDITIONS)
+        self.assertIn("sd_prompt_randaugment", AUGMENTED_CONDITIONS)
+        self.assertIn("randaugment", AUGMENTED_CONDITIONS)
+        self.assertNotIn("sd_prompt", AUGMENTED_CONDITIONS)
+        self.assertNotIn("real_only", AUGMENTED_CONDITIONS)
 
 
 class LrFactorTest(unittest.TestCase):

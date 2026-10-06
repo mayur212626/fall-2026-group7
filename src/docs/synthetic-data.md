@@ -47,7 +47,7 @@ python -m src.component.analyze_results --root runs/stage1-pretrained
 
 ## Training with generated images
 
-`train.py --condition sd_prompt --synthetic-pool data/synthetic/sd15_prompt/pool.npz` appends `ratio × k` generated images per class (`--synthetic-ratio`, default 1) after the real training images and samples the combined set uniformly, so about half of every batch is generated at 1:1. Learning rate and step budget are those of the real-only run, so the two conditions train for the same number of optimizer steps and pair by seed. No RandAugment is applied in the synthetic conditions.
+`train.py --condition sd_prompt --synthetic-pool data/synthetic/sd15_prompt/pool.npz` appends `ratio × k` generated images per class (`--synthetic-ratio`, default 1) after the real training images and samples the combined set uniformly, so about half of every batch is generated at 1:1. Learning rate and step budget are those of the real-only run, so the two conditions train for the same number of optimizer steps and pair by seed. `sd_prompt` and `sd_lora` apply no RandAugment. `sd_prompt_randaugment` uses the class-prompt pool and applies RandAugment to every image, real and generated, so its paired change over RandAugment shows what the generated images add to conventional augmentation; `run_sd_prompt_randaugment.sh` trains it (pretrained arm by default, `scratch` for the random-initialization arm).
 
 The pool's SHA-256, the ratio and the number of generated images are stored under `settings["synthetic"]`; the runner refuses to resume a run with a different pool. Real-data runs have no `synthetic` key, so their settings are unchanged. Runs are named `pretrained_<model>_sd_prompt_b<budget>_s<seed>`, with `_r<ratio>` added for ratios other than 1.
 

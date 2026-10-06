@@ -13,9 +13,13 @@ class PlannedRunsTest(unittest.TestCase):
     def setUp(self) -> None:
         self.runs = planned_runs()
 
-    def test_stage_1_has_240_distinct_runs(self) -> None:
-        self.assertEqual(len(self.runs), 2 * 2 * 4 * 5 * 3)
-        self.assertEqual(len({r["run"] for r in self.runs}), 240)
+    def test_stage_1_has_300_distinct_runs(self) -> None:
+        self.assertEqual(len(self.runs), 2 * 2 * 5 * 5 * 3)
+        self.assertEqual(len({r["run"] for r in self.runs}), 300)
+
+    def test_combined_condition_uses_the_prompt_pool(self) -> None:
+        row = next(r for r in self.runs if r["run"] == "pretrained_resnet50_sd_prompt_randaugment_b5_s1")
+        self.assertEqual((row["research_question"], row["generator"], row["synthetic_ratio"]), ("RQ2, RQ4", "sd_prompt", "1:1"))
 
     def test_baseline_row(self) -> None:
         row = next(r for r in self.runs if r["run"] == "pretrained_resnet50_real_only_b5_s0")

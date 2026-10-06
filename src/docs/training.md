@@ -7,12 +7,12 @@
 | `--config` | `src/component/configs/train_pretrained.json` or `train_scratch.json` |
 | `--model` | `resnet50`, `vit_b_16` |
 | `--init` | `pretrained` (ImageNet weights), `scratch` (random initialization) |
-| `--condition` | `real_only`, `randaugment`, `sd_prompt`, `sd_lora` (synthetic conditions need `--synthetic-pool`; see [synthetic data](synthetic-data.md)) |
+| `--condition` | `real_only`, `randaugment`, `sd_prompt`, `sd_prompt_randaugment`, `sd_lora` (synthetic conditions need `--synthetic-pool`; see [synthetic data](synthetic-data.md)) |
 | `--budget` | `5`, `10`, `20`, `50`, `full` (images per class, from the split manifest) |
 | `--seed` | training seed, e.g. `0`, `1`, `2` |
 | `--steps` | overrides the config's step budget; used for pilot runs |
 | `--lr` | overrides the config's learning rate; used for pilot runs |
-| `--synthetic-pool` | generated image pool (`pool.npz`) for `sd_prompt` and `sd_lora` |
+| `--synthetic-pool` | generated image pool (`pool.npz`) for `sd_prompt`, `sd_prompt_randaugment` and `sd_lora` |
 | `--synthetic-ratio` | generated images per real image and class, default 1 (1:1) |
 
 Example, from the repository root:
@@ -123,7 +123,7 @@ python -m src.component.summarize_pilot --root runs/stage1-pretrained
 
 ## Result tables and figures
 
-`src/component/analyze_results.py` aggregates completed runs. It prints the mean and sample standard deviation over seeds for each model, data budget and condition, and the paired change of RandAugment over real-only per seed. A change is a gain or a loss only when every seed agrees in sign; otherwise it is inconclusive. It also saves an accuracy-versus-data-size figure as SVG and PDF.
+`src/component/analyze_results.py` aggregates completed runs. It prints the mean and sample standard deviation over seeds for each model, data budget and condition, and the paired change of every other condition over real-only per seed. When synthetic runs are present, it also prints and saves (with `--table`, as `<name>_vs_randaugment.tex` and `_vs_randaugment_paired.csv`) the paired change of each synthetic condition over RandAugment, the strongest real-data control. A change is a gain or a loss only when every seed agrees in sign; otherwise it is inconclusive. It also saves an accuracy-versus-data-size figure as SVG and PDF; each condition has its own line style and marker, lines break at budgets without runs, and with more than four series the legend sits beside the plot.
 
 ```bash
 python -m src.component.analyze_results --root runs/stage1-pretrained \
@@ -137,7 +137,7 @@ python -m src.component.analyze_results --root runs/stage1-pretrained \
 
 ## Run matrix and generator registry
 
-`src/component/configs/run_matrix.csv` lists all 240 Stage 1 runs (2 initializations × 2 classifiers × 4 conditions × 5 data budgets × 3 seeds) with their research question, condition, generator, synthetic ratio, run directory, status and cost. `src/component/run_matrix.py` rebuilds it from the run directories: a run is done when it has `result.json`, running when it has only `config.json`, and planned otherwise.
+`src/component/configs/run_matrix.csv` lists all 300 Stage 1 runs (2 initializations × 2 classifiers × 5 conditions × 5 data budgets × 3 seeds) with their research question, condition, generator, synthetic ratio, run directory, status and cost. `src/component/run_matrix.py` rebuilds it from the run directories: a run is done when it has `result.json`, running when it has only `config.json`, and planned otherwise.
 
 ```bash
 python -m src.component.run_matrix --runs-root runs --output src/component/configs/run_matrix.csv

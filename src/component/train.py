@@ -59,8 +59,10 @@ from src.component.synthetic_pool import file_sha256, load_pool
 SUMMARY_KEYS = ("accuracy", "macro_f1", "balanced_accuracy", "loss")
 LOG_FORMAT = "%(asctime)s %(message)s"
 # Conditions that add generated images to the real training images.
-SYNTHETIC_CONDITIONS = ("sd_prompt", "sd_lora")
+SYNTHETIC_CONDITIONS = ("sd_prompt", "sd_lora", "sd_prompt_randaugment")
 CONDITIONS = ("real_only", "randaugment") + SYNTHETIC_CONDITIONS
+# Conditions that apply RandAugment to every training image, real and generated.
+AUGMENTED_CONDITIONS = ("randaugment", "sd_prompt_randaugment")
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -477,7 +479,7 @@ def main() -> None:
         parser.error(str(error))
 
     train_set = CifarImages(
-        train_images, train_labels, train_indices, randaugment=args.condition == "randaugment"
+        train_images, train_labels, train_indices, randaugment=args.condition in AUGMENTED_CONDITIONS
     )
     val_set = CifarImages(images, labels, manifest["validation_indices"], randaugment=False)
 
