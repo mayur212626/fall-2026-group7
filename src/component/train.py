@@ -45,6 +45,7 @@ from src.component.cifar_splits import labels_sha256
 from src.component.data import (
     CifarImages,
     StepBatchSampler,
+    add_synthetic,
     budget_indices,
     evaluation_batches,
     load_cifar100,
@@ -53,9 +54,13 @@ from src.component.data import (
 )
 from src.component.metrics import classification_metrics
 from src.component.models import build_model, weights_name
+from src.component.synthetic_pool import file_sha256, load_pool
 
 SUMMARY_KEYS = ("accuracy", "macro_f1", "balanced_accuracy", "loss")
 LOG_FORMAT = "%(asctime)s %(message)s"
+# Conditions that add generated images to the real training images.
+SYNTHETIC_CONDITIONS = ("sd_prompt", "sd_lora")
+CONDITIONS = ("real_only", "randaugment") + SYNTHETIC_CONDITIONS
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -355,11 +360,16 @@ def make_settings(
     workers: int,
     steps: int | None = None,
     lr: float | None = None,
+    synthetic: dict | None = None,
 ) -> dict:
     """Combine a training config with one run's choices into run settings.
 
     ``steps`` and ``lr`` override the config (used by pilot runs); the
     values actually used are stored in the settings and saved with the run.
+    ``synthetic`` describes the generated images of a synthetic condition
+    (pool fingerprint, ratio, images per class). It is stored under the key
+    ``"synthetic"`` only for those conditions, so the settings of real-data
+    runs are unchanged and their saved runs still resume.
 
     Raises:
         ValueError: If the config has no step budget for ``budget`` and
@@ -371,7 +381,7 @@ def make_settings(
     recipe = dict(config["models"][model])
     if lr is not None:
         recipe["lr"] = lr
-    return {
+    settings = {
         "model": model,
         "init": init,
         "condition": condition,
@@ -388,6 +398,15 @@ def make_settings(
         "workers": workers,
         "recipe": recipe,
     }
+    if synthetic is not None:
+        settings["synthetic"] = synthetic
+    return settings
+
+
+def run_name(init: str, model: str, condition: str, budget: str, seed: int, ratio: int = 1) -> str:
+    """Run directory name; synthetic runs at a ratio other than 1:1 get ``_r<ratio>``."""
+    name = f"{init}_{model}_{condition}_b{budget}_s{seed}"
+    return name if ratio == 1 else f"{name}_r{ratio}"
 
 
 def _git_commit() -> dict:
@@ -407,7 +426,7 @@ def main() -> None:
     parser.add_argument("--config", type=Path, required=True)
     parser.add_argument("--model", choices=["resnet50", "vit_b_16"], required=True)
     parser.add_argument("--init", choices=["pretrained", "scratch"], required=True)
-    parser.add_argument("--condition", choices=["real_only", "randaugment"], required=True)
+    parser.add_argument("--condition", choices=list(CONDITIONS), required=True)
     parser.add_argument("--budget", choices=["5", "10", "20", "50", "full"], required=True)
     parser.add_argument("--seed", type=int, required=True)
     parser.add_argument("--steps", type=int, help="override the config's step budget (pilot runs)")
@@ -416,24 +435,49 @@ def main() -> None:
     parser.add_argument("--manifest", type=Path, default=Path("src/component/configs/splits/cifar100.json"))
     parser.add_argument("--runs-root", type=Path, default=Path("runs"))
     parser.add_argument("--workers", type=int, default=4)
+    parser.add_argument("--synthetic-pool", type=Path,
+                        help="generated image pool (pool.npz); required for sd_prompt and sd_lora")
+    parser.add_argument("--synthetic-ratio", type=int, default=1,
+                        help="generated images per real image and class (default 1, i.e. 1:1)")
     args = parser.parse_args()
     logging.basicConfig(format=LOG_FORMAT)
+    synthetic_run = args.condition in SYNTHETIC_CONDITIONS
+    if synthetic_run and args.synthetic_pool is None:
+        parser.error(f"--condition {args.condition} needs --synthetic-pool")
+    if not synthetic_run and args.synthetic_pool is not None:
+        parser.error(f"--synthetic-pool is only used with {', '.join(SYNTHETIC_CONDITIONS)}")
 
     config = json.loads(args.config.read_text(encoding="utf-8"))
-    try:
-        settings = make_settings(
-            config, args.model, args.init, args.condition, args.budget, args.seed,
-            args.workers, steps=args.steps, lr=args.lr,
-        )
-    except ValueError as error:
-        parser.error(str(error))
-
     images, labels = load_cifar100(args.data_root, train=True)
     manifest = load_manifest(args.manifest)
     if labels_sha256(labels) != manifest["labels_sha256"]:
         raise ValueError("CIFAR-100 labels do not match the split manifest")
+    train_images, train_labels = images, labels
+    train_indices = budget_indices(manifest, args.budget)
+    synthetic = None
+    if synthetic_run:
+        real_per_class = len(train_indices) // 100
+        per_class = args.synthetic_ratio * real_per_class
+        pool_images, pool_labels, pool_index = load_pool(args.synthetic_pool)
+        train_images, train_labels, train_indices = add_synthetic(
+            images, labels, train_indices, pool_images, pool_labels, pool_index, per_class, 100
+        )
+        synthetic = {
+            "pool_sha256": file_sha256(args.synthetic_pool),
+            "ratio": args.synthetic_ratio,
+            "per_class": per_class,
+            "images": len(train_indices) - real_per_class * 100,
+        }
+    try:
+        settings = make_settings(
+            config, args.model, args.init, args.condition, args.budget, args.seed,
+            args.workers, steps=args.steps, lr=args.lr, synthetic=synthetic,
+        )
+    except ValueError as error:
+        parser.error(str(error))
+
     train_set = CifarImages(
-        images, labels, budget_indices(manifest, args.budget), randaugment=args.condition == "randaugment"
+        train_images, train_labels, train_indices, randaugment=args.condition == "randaugment"
     )
     val_set = CifarImages(images, labels, manifest["validation_indices"], randaugment=False)
 
@@ -451,7 +495,10 @@ def main() -> None:
         "config_file": str(args.config),
         "git": _git_commit(),
     }
-    name = f"{args.init}_{args.model}_{args.condition}_b{args.budget}_s{args.seed}"
+    if synthetic_run:
+        metadata["synthetic_pool"] = str(args.synthetic_pool)
+    name = run_name(args.init, args.model, args.condition, args.budget, args.seed,
+                    args.synthetic_ratio if synthetic_run else 1)
     run_training(settings, metadata, train_set, val_set, args.runs_root / name, device)
 
 

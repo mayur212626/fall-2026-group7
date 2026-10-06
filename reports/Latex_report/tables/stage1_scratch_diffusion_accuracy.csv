@@ -1,0 +1,21 @@
+init,model,budget,condition,n,seeds,mean,sd
+scratch,resnet50,5,sd_lora,3,0 1 2,10.0933,0.5714
+scratch,resnet50,5,sd_prompt,3,0 1 2,10.7667,0.6854
+scratch,resnet50,10,sd_lora,3,0 1 2,15.2267,0.5608
+scratch,resnet50,10,sd_prompt,3,0 1 2,15.3533,0.5327
+scratch,resnet50,20,sd_lora,3,0 1 2,25.1733,1.6447
+scratch,resnet50,20,sd_prompt,3,0 1 2,24.6267,1.6638
+scratch,resnet50,50,sd_lora,3,0 1 2,36.8933,2.105
+scratch,resnet50,50,sd_prompt,3,0 1 2,37.9333,3.4217
+scratch,resnet50,full,sd_lora,3,0 1 2,62.2333,1.4508
+scratch,resnet50,full,sd_prompt,3,0 1 2,59.8467,2.539
+scratch,vit_b_16,5,sd_lora,3,0 1 2,8.9,0.2078
+scratch,vit_b_16,5,sd_prompt,3,0 1 2,9.2867,0.1815
+scratch,vit_b_16,10,sd_lora,3,0 1 2,11.9333,0.39
+scratch,vit_b_16,10,sd_prompt,3,0 1 2,12.0,0.6245
+scratch,vit_b_16,20,sd_lora,3,0 1 2,15.4267,0.7223
+scratch,vit_b_16,20,sd_prompt,3,0 1 2,16.1533,0.3711
+scratch,vit_b_16,50,sd_lora,3,0 1 2,22.3267,0.6955
+scratch,vit_b_16,50,sd_prompt,3,0 1 2,22.8133,0.4614
+scratch,vit_b_16,full,sd_lora,3,0 1 2,50.2667,0.5988
+scratch,vit_b_16,full,sd_prompt,3,0 1 2,48.1333,0.4717

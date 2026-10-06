@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from src.component.run_matrix import planned_runs, run_status
+from src.component.run_matrix import matrix_rows, planned_runs, run_status
 
 
 class PlannedRunsTest(unittest.TestCase):
@@ -23,7 +23,7 @@ class PlannedRunsTest(unittest.TestCase):
         self.assertEqual(row["runs_root"], "stage1-pretrained")
 
     def test_lora_rows_use_the_adapter_of_their_budget(self) -> None:
-        row = next(r for r in self.runs if r["run"] == "scratch_vit_b_16_lora_sd_b20_s2")
+        row = next(r for r in self.runs if r["run"] == "scratch_vit_b_16_sd_lora_b20_s2")
         self.assertEqual((row["research_question"], row["generator"], row["synthetic_ratio"]), ("RQ2, RQ4", "lora_sd_b20", "1:1"))
         self.assertEqual(row["runs_root"], "stage1-scratch")
 
@@ -51,6 +51,22 @@ class RunStatusTest(unittest.TestCase):
             self.assertEqual(run_status(running), {"status": "running", "train_minutes": "", "peak_memory_mb": ""})
             self.assertEqual(run_status(Path(tmp) / "missing"),
                              {"status": "planned", "train_minutes": "", "peak_memory_mb": ""})
+
+
+class KeepMissingTest(unittest.TestCase):
+    def test_runs_on_another_machine_keep_their_status(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            here = Path(tmp) / "stage1-pretrained" / "pretrained_resnet50_sd_prompt_b5_s0"
+            here.mkdir(parents=True)
+            (here / "config.json").write_text("{}")
+            previous = {"pretrained_resnet50_real_only_b5_s0": {"status": "done", "train_minutes": "3.2",
+                                                                 "peak_memory_mb": "5877"},
+                        "pretrained_resnet50_sd_prompt_b5_s0": {"status": "planned"}}
+            rows = {r["run"]: r for r in matrix_rows(Path(tmp), previous)}
+            fresh = {r["run"]: r for r in matrix_rows(Path(tmp))}
+        self.assertEqual(rows["pretrained_resnet50_real_only_b5_s0"]["status"], "done")
+        self.assertEqual(rows["pretrained_resnet50_sd_prompt_b5_s0"]["status"], "running")
+        self.assertEqual(fresh["pretrained_resnet50_real_only_b5_s0"]["status"], "planned")
 
 
 if __name__ == "__main__":

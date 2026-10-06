@@ -10,6 +10,7 @@ from src.component.data import (
     IMAGENET_STD,
     CifarImages,
     StepBatchSampler,
+    add_synthetic,
     budget_indices,
     to_model_input,
 )
@@ -78,6 +79,23 @@ class StepBatchSamplerTest(unittest.TestCase):
         first = stream(StepBatchSampler(10, 5, seed=0, start_step=0, end_step=2))
         second = stream(StepBatchSampler(10, 5, seed=1, start_step=0, end_step=2))
         self.assertNotEqual(first, second)
+
+
+class AddSyntheticTest(unittest.TestCase):
+    def test_appends_the_first_images_per_class_after_the_real_ones(self) -> None:
+        images = fake_images(6)
+        labels = [0, 1, 0, 1, 0, 1]
+        pool = np.full((8, 32, 32, 3), 7, dtype=np.uint8)
+        pool_labels = np.array([0, 0, 0, 0, 1, 1, 1, 1])
+        pool_index = np.array([0, 1, 2, 3, 0, 1, 2, 3])
+        all_images, all_labels, indices = add_synthetic(images, labels, [0, 1], pool, pool_labels, pool_index,
+                                                        per_class=2, num_classes=2)
+        self.assertEqual(indices, [0, 1, 6, 7, 8, 9])
+        self.assertEqual(all_labels[6:], [0, 0, 1, 1])
+        self.assertTrue(np.array_equal(all_images[:6], images))
+        dataset = CifarImages(all_images, all_labels, indices, randaugment=False)
+        image, label, image_id = dataset[(4, 0)]
+        self.assertEqual((label, image_id, int(image[0, 0, 0])), (1, 8, 7))
 
 
 class ToModelInputTest(unittest.TestCase):

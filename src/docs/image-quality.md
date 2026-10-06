@@ -22,4 +22,6 @@ python -m src.component.image_quality --generated data/synthetic/sd15_prompt \
     --output reports/Latex_report/tables/quality_sd15_prompt.json
 ```
 
-The JSON file holds the counts, FID, precision and recall for the generated set and the real-versus-real set, the settings, the clean-fid version, the date and the git commit. Precision and recall hold full distance matrices in memory, about 0.8 GB at 5,000 images per set.
+The JSON file holds the counts, FID, precision and recall for the generated set and the real-versus-real set, the settings, the clean-fid version, the date and the git commit. Precision and recall compute distances 1,024 rows at a time, so the 45,000-image full budget fits in a few GB of memory.
+
+To score a generated pool (`pool.npz`) at the size of each data budget against a matched real sample, use `pool_quality` (see [synthetic data](synthetic-data.md)).

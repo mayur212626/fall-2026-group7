@@ -62,18 +62,26 @@ def _distances(x: np.ndarray, y: np.ndarray) -> np.ndarray:
     return np.sqrt(np.clip(squared, 0.0, None))
 
 
-def _inside(query: np.ndarray, points: np.ndarray, k: int) -> float:
-    """Fraction of ``query`` rows within the k-NN radius of at least one row of ``points``."""
-    radii = np.partition(_distances(points, points), k, axis=1)[:, k]  # column 0 is the point itself
-    return float((_distances(query, points) <= radii[None, :]).any(axis=1).mean())
+def _inside(query: np.ndarray, points: np.ndarray, k: int, chunk: int = 1024) -> float:
+    """Fraction of ``query`` rows within the k-NN radius of at least one row of ``points``.
+
+    Distances are computed ``chunk`` rows at a time, so memory grows with
+    ``chunk`` times the set size instead of with its square.
+    """
+    radii = np.empty(len(points))
+    for start in range(0, len(points), chunk):  # column 0 of each sorted row is the point itself
+        radii[start:start + chunk] = np.partition(_distances(points[start:start + chunk], points), k, axis=1)[:, k]
+    inside = np.zeros(len(query), dtype=bool)
+    for start in range(0, len(query), chunk):
+        inside[start:start + chunk] = (_distances(query[start:start + chunk], points) <= radii[None, :]).any(axis=1)
+    return float(inside.mean())
 
 
 def precision_recall(real: np.ndarray, fake: np.ndarray, k: int = 3) -> tuple[float, float]:
     """Improved Precision & Recall of ``fake`` against ``real`` features.
 
-    Holds full pairwise distance matrices in memory, several at once: about
-    0.8 GB at 5,000 images per set (measured), growing with the square of the
-    set size, so much larger sets need chunking.
+    Works on 1,024 rows at a time: a few 1,024 x N distance matrices are in
+    memory at once (about 0.4 GB each for the 45,000-image full budget).
     """
     real, fake = np.asarray(real, dtype=np.float64), np.asarray(fake, dtype=np.float64)
     if min(len(real), len(fake)) <= k:
