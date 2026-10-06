@@ -1,0 +1,22 @@
+\begin{table}[H]
+\centering
+\caption{Stage 1, SD class prompts + RandAugment against real-only, pretrained initialization: validation top-1 accuracy (\%), mean $\pm$ sample SD over 3 seeds. The change is SD class prompts + RandAugment minus real-only per seed (percentage points); it is a gain or a loss only when every seed agrees in sign.}
+\label{tab:stage1-pretrained-accuracy-sd_prompt_randaugment}
+\begin{tabular}{llrrrl}
+\toprule
+Model & Images/class & Real-only & SD class prompts + RandAugment & Change & Verdict \\
+\midrule
+ResNet-50 & 5 & 35.17 $\pm$ 0.86 & 52.61 $\pm$ 1.08 & +17.43 $\pm$ 1.94 & gain \\
+ResNet-50 & 10 & 49.51 $\pm$ 0.96 & 59.99 $\pm$ 0.10 & +10.48 $\pm$ 0.96 & gain \\
+ResNet-50 & 20 & 59.48 $\pm$ 0.33 & 66.67 $\pm$ 0.61 & +7.19 $\pm$ 0.78 & gain \\
+ResNet-50 & 50 & 71.36 $\pm$ 0.39 & 74.35 $\pm$ 0.34 & +2.99 $\pm$ 0.69 & gain \\
+ResNet-50 & full & 84.17 $\pm$ 0.19 & 85.40 $\pm$ 0.26 & +1.23 $\pm$ 0.34 & gain \\
+\midrule
+ViT-B/16 & 5 & 46.93 $\pm$ 1.61 & 68.20 $\pm$ 1.56 & +21.27 $\pm$ 0.22 & gain \\
+ViT-B/16 & 10 & 61.08 $\pm$ 1.40 & 74.21 $\pm$ 0.61 & +13.13 $\pm$ 0.90 & gain \\
+ViT-B/16 & 20 & 72.05 $\pm$ 1.08 & 78.03 $\pm$ 0.38 & +5.98 $\pm$ 0.71 & gain \\
+ViT-B/16 & 50 & 80.29 $\pm$ 0.09 & 82.59 $\pm$ 0.52 & +2.31 $\pm$ 0.58 & gain \\
+ViT-B/16 & full & 88.64 $\pm$ 0.02 & 89.47 $\pm$ 0.33 & +0.83 $\pm$ 0.32 & gain \\
+\bottomrule
+\end{tabular}
+\end{table}
