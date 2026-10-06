@@ -2,7 +2,7 @@
 
 Run these commands from the project folder in a Linux Bash terminal with Conda available.
 
-The environment file pins Python 3.12.14, pip 26.2.1, NumPy 2.5.2, PyTorch 2.12.1, Torchvision 0.27.1, Matplotlib 3.11.2 and clean-fid 0.1.35. The PyTorch packages use the CUDA 12.6 build.
+The environment file pins Python 3.12.14, pip 26.2.1, NumPy 2.5.2, PyTorch 2.12.1, Torchvision 0.27.1, Matplotlib 3.11.2 and clean-fid 0.1.35, and for image generation diffusers 0.40.0, Transformers 5.14.1, Accelerate 1.15.0, safetensors 0.8.0 and PEFT 0.21.0. The PyTorch packages use the CUDA 12.6 build.
 
 Create the environment once:
 
@@ -56,4 +56,4 @@ Run the unit tests:
 python -m unittest discover -s src/tests
 ```
 
-Between 25 and 27 September 2026 the installed environment on the NVIDIA A10G (driver 595.91.07) reported PyTorch 2.12.1+cu126, Torchvision 0.27.1+cu126 and CUDA available, and the unit tests passed. A fresh installation from the current environment file has not been verified yet, and the dependencies are pinned at the top level only; a complete lock file is still missing.
+Between 25 and 27 September 2026 the installed environment on the NVIDIA A10G (driver 595.91.07) reported PyTorch 2.12.1+cu126, Torchvision 0.27.1+cu126 and CUDA available, and the unit tests passed. On 3 October 2026 a fresh environment created from `environment.yml` on the same machine passed `python -m pip check` and all unit tests; that file did not yet include the generation packages (diffusers, Transformers, Accelerate, safetensors, PEFT), so a fresh build with them is still to be checked. Only the top-level packages are pinned, so indirect dependencies can change between installations (that build resolved, for example, SciPy 1.18.1 and setuptools 81.0.0); a complete lock file is still missing.
