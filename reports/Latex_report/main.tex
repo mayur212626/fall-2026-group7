@@ -87,37 +87,26 @@
 \section{Related Work}
 \label{sec:related}
 
-% Literature review: at least ten works, each summarised in your own words, with an explicit
-% statement of how this project differs. Compare and contrast; do not list abstracts.
-% Organise by approach, not paper by paper: "One line of work ... [refs], whereas this study ...".
-% Every cited work must be in references.bib, with details taken from the paper itself.
-
 \subsection{Diffusion models and their adaptation}
-% Latent diffusion / Stable Diffusion \cite{rombach2022high}; denoising diffusion models \cite{ho2020denoising};
-% adapting a pretrained generator: textual inversion \cite{gal2023image}, DreamBooth \cite{ruiz2023dreambooth},
-% LoRA \cite{hu2022lora}.
+A prominent line of research focuses on diffusion models and how to adapt them to new concepts. Ho et al.~\cite{ho2020denoising} introduced models that learn to undo noise step by step, allowing them to create images from pure noise. Rombach et al.~\cite{rombach2022high} made this cheaper by operating in a compressed latent space and adding text control via cross-attention, which forms the basis of Stable Diffusion. Because pretrained models only know what they saw during training, Gal et al.~\cite{gal2023image} proposed textual inversion to teach a frozen model one new ``word'' for a concept using a few images. Ruiz et al.~\cite{ruiz2023dreambooth} developed DreamBooth, which fine-tunes the entire model on a few images using a rare token and an extra loss so it does not forget original classes. Hu et al.~\cite{hu2022lora} introduced LoRA to train small low-rank matrices while freezing the main weights, offering a cheap adaptation method originally for language models but now common for diffusion. In contrast, this study combines LoRA with a DreamBooth-style token, training one specific adapter per data budget using only that budget's real images.
 
 \subsection{Diffusion-based augmentation for classification}
-% DA-Fusion \cite{trabucco2024effective}; ALIA \cite{dunlap2023diversify}.
+A related approach uses diffusion models to edit existing real images for data augmentation. Trabucco et al.~\cite{trabucco2024effective} use image-to-image translation combined with a learned textual-inversion token for each class. They found that changing the background or pose while keeping the main object helps few-shot learning, even for plants the model never saw during training. Dunlap et al.~\cite{dunlap2023diversify} take this further by captioning real images and using a language model to suggest new domains, like different weather conditions. They edit the images to fit these new domains and filter out poor results, which beats normal augmentation on fine-grained data. In contrast, this study generates entirely new images from scratch instead of editing existing ones, and measures exactly when this helps across increasing data budgets from five examples up to the full set.
 
 \subsection{Synthetic images as training data}
-% He et al. \cite{he2023synthetic}; Sariyildiz et al. \cite{sariyildiz2023fake};
-% Azizi et al. \cite{azizi2023synthetic}; StableRep \cite{tian2023stablerep}.
+Another line of work trains classifiers on images generated from class names or captions. He et al.~\cite{he2023synthetic} generate images with GLIDE using diverse prompts and filter them with CLIP, finding that synthetic data helps few-shot learning, though this gain shrinks as real data grows. Sariyildiz et al.~\cite{sariyildiz2023fake} train models solely on ``ImageNet clones'' made with Stable Diffusion, showing that prompt variety and lower guidance scale help these models transfer well to other datasets. Azizi et al.~\cite{azizi2023synthetic} fine-tune Imagen on all of ImageNet and show that adding the resulting synthetic images back into the real dataset improves accuracy. Lastly, Tian et al.~\cite{tian2023stablerep} learn representations by treating Stable Diffusion images with the same caption as positive pairs, achieving results comparable to training on real images. In contrast, this study adds synthetic images to scarce real data at a strict one-to-one ratio, restricts the diffusion adapter to only see its specific data budget, and compares the impact on both pretrained and from-scratch classifiers.
 
 \subsection{Conventional augmentation and generators trained from scratch}
-% RandAugment \cite{cubuk2020randaugment}; StyleGAN2-ADA \cite{karras2020training}.
+Beyond diffusion, other research relies on conventional data augmentation and generative models trained entirely from scratch. Cubuk et al.~\cite{cubuk2020randaugment} introduced RandAugment, which applies random standard transforms at one shared strength. It avoids an expensive policy search and is the conventional-augmentation baseline in this study. Karras et al.~\cite{karras2020training} developed StyleGAN2-ADA to train a GAN on just a few thousand images by augmenting what the discriminator sees, which prevents overfitting. GANs trained this way know only their training set, whereas Stable Diffusion carries knowledge from billions of outside images; GANs are planned for a later stage.
 
 \subsection{Measuring generated-image quality}
-% FID \cite{heusel2017gans}; improved precision and recall \cite{kynkaanniemi2019improved};
-% Clean-FID and resizing effects \cite{parmar2022aliased}.
+A separate focus is measuring the quality of generated images. Heusel et al.~\cite{heusel2017gans} created the Fréchet Inception Distance (FID), which measures the distance between real and fake images using Inception features, where a lower score means higher similarity. Kynkäänniemi et al.~\cite{kynkaanniemi2019improved} improved on this by using k-nearest-neighbor regions to separate an image's realism (precision) from its variety (recall). Parmar et al.~\cite{parmar2022aliased} introduced Clean-FID to fix how FID scores inconsistently change with image resizing and compression. This study uses Clean-FID features, compares sets of equal size and reports a real-versus-real floor, so it can ask whether better FID leads to better accuracy.
 
 \subsection{Beyond classification}
-% Diffusion augmentation for object detection \cite{fang2024data} and image captioning \cite{xiao2023multimodal}.
+Recent work has also expanded generative data augmentation beyond simple image classification tasks. For example, Fang et al.~\cite{fang2024data} use controllable diffusion models to generate new objects directly inside bounding boxes. This creates labeled synthetic data for training object detection systems. Similarly, Xiao et al.~\cite{xiao2023multimodal} generate diverse images from existing captions to produce more training data for image captioning models. While both approaches help in low-data settings, this study currently focuses strictly on classification, leaving detection and captioning on datasets like COCO for later stages.
 
 \subsection{How this study differs}
-% State explicitly what this benchmark adds relative to the works above: the same protocol across
-% data budgets, pretrained vs. adapted generators, CNN vs. Transformer, pretrained vs. random
-% initialization, matched step budgets, and resolution-matched generated images.
+In summary, this study differs from prior work through a highly controlled experimental design. It evaluates performance using the exact same protocol across five specific data budgets. The tests span both CNN and Transformer architectures, comparing classifiers trained from scratch against pretrained ones. This study specifically contrasts plain Stable Diffusion with per-budget LoRA adapters, ensuring training steps are matched so any accuracy gain is not simply from training longer. Furthermore, generated images are reduced to 32×32, the size of the real images, and this study compares the synthetic data with RandAugment and with the two combined. Finally, this study uses paired seeds to provide an explicit per-seed verdict on exactly when generative augmentation succeeds.
 
 % ------------------------------------------------------------------------------------------------------------------------
 \section{Solution and Methodology}
