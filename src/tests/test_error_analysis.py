@@ -163,10 +163,22 @@ class IntervalTableTest(unittest.TestCase):
         intervals = interval_rows(CELL_RUNS, "pretrained")
         table = interval_table(intervals, sign_test_rows(intervals), "pretrained")
         r = intervals[0]
-        self.assertIn(f"ResNet-50 & 5 & +50.00 [{r['ci_low']:+.2f}, {r['ci_high']:+.2f}] & -- & -- \\\\", table)
-        self.assertIn(r"\multicolumn{2}{l}{Sign test} & 1/1, $p=1.000$ & -- & --", table)
+        self.assertIn(f"ResNet-50 & 5 & +50.00 [{r['ci_low']:+.2f}, {r['ci_high']:+.2f}] \\\\", table)
+        self.assertIn(r"\multicolumn{2}{l}{Sign test} & 1/1, $p=1.000$ \\", table)
         self.assertIn("10{,}000 resamples", table)
         self.assertIn(r"\label{tab:stage1-pretrained-bootstrap}", table)
+        self.assertIn("\\centering\n\\small\n\\setlength{\\tabcolsep}{4pt}\n", table)  # the interval cells are wide
+
+    def test_leaves_out_comparisons_without_runs(self) -> None:
+        intervals = interval_rows(CELL_RUNS, "pretrained")
+        table = interval_table(intervals, sign_test_rows(intervals), "pretrained")
+        self.assertIn(r"\begin{tabular}{llr}", table)
+        self.assertNotIn("RA (pp)", table)
+
+    def test_a_change_that_rounds_to_zero_has_no_minus_sign(self) -> None:
+        cell = {"model": "resnet50", "budget": "5", "treatment": "sd_prompt", "control": "real_only",
+                "mean": -1e-15, "ci_low": -0.5, "ci_high": 0.5}
+        self.assertIn("ResNet-50 & 5 & +0.00 [-0.50, +0.50] \\\\", interval_table([cell], [], "pretrained"))
 
 
 class SuperclassesTest(unittest.TestCase):

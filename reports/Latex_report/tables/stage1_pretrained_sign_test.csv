@@ -1,0 +1,8 @@
+init,treatment,control,cells,gains,losses,p_value
+pretrained,randaugment,real_only,10,10,0,0.002
+pretrained,sd_prompt,real_only,10,9,1,0.0215
+pretrained,sd_lora,real_only,10,7,3,0.3438
+pretrained,sd_prompt_randaugment,real_only,10,10,0,0.002
+pretrained,sd_prompt,randaugment,10,6,4,0.7539
+pretrained,sd_lora,randaugment,10,5,5,1.0
+pretrained,sd_prompt_randaugment,randaugment,10,9,1,0.0215

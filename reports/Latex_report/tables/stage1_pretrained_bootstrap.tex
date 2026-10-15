@@ -1,0 +1,26 @@
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{Stage 1, pretrained initialization: change in validation top-1 accuracy (percentage points), mean over training seeds of the paired change, with its 95\% percentile bootstrap interval over the 5{,}000 validation images (10{,}000 resamples, the same images for every seed and both conditions). The interval covers image-sampling noise only; the seed SD is in the paired tables. The last row is a two-sided sign test of the mean changes over all cells (gains/cells, $p$). SD: pretrained Stable Diffusion with class prompts; RA: RandAugment.}
+\label{tab:stage1-pretrained-bootstrap}
+\begin{tabular}{llrrr}
+\toprule
+Model & Images/class & SD$-$real (pp) $\uparrow$ & SD$-$RA (pp) $\uparrow$ & SD+RA$-$RA (pp) $\uparrow$ \\
+\midrule
+ResNet-50 & 5 & +11.61 [+10.69, +12.55] & +3.75 [+2.77, +4.74] & +9.58 [+8.66, +10.51] \\
+ResNet-50 & 10 & +7.52 [+6.63, +8.41] & +3.53 [+2.55, +4.53] & +6.49 [+5.60, +7.41] \\
+ResNet-50 & 20 & +6.01 [+5.15, +6.85] & +2.38 [+1.51, +3.23] & +3.55 [+2.74, +4.38] \\
+ResNet-50 & 50 & +2.14 [+1.39, +2.89] & +1.31 [+0.55, +2.10] & +2.17 [+1.47, +2.87] \\
+ResNet-50 & full & +0.23 [-0.32, +0.78] & -0.77 [-1.35, -0.21] & +0.23 [-0.31, +0.76] \\
+\midrule
+ViT-B/16 & 5 & +14.42 [+13.54, +15.30] & +4.33 [+3.41, +5.23] & +11.17 [+10.27, +12.07] \\
+ViT-B/16 & 10 & +9.68 [+8.87, +10.51] & +1.51 [+0.66, +2.35] & +4.96 [+4.22, +5.69] \\
+ViT-B/16 & 20 & +3.94 [+3.23, +4.65] & -0.21 [-0.96, +0.51] & +1.83 [+1.16, +2.49] \\
+ViT-B/16 & 50 & +0.80 [+0.19, +1.41] & -0.94 [-1.59, -0.29] & +0.57 [+0.02, +1.13] \\
+ViT-B/16 & full & +0.00 [-0.48, +0.47] & -1.25 [-1.75, -0.75] & -0.43 [-0.85, -0.01] \\
+\midrule
+\multicolumn{2}{l}{Sign test} & 9/10, $p=0.021$ & 6/10, $p=0.754$ & 9/10, $p=0.021$ \\
+\bottomrule
+\end{tabular}
+\end{table}

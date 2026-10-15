@@ -18,7 +18,7 @@ control, paired by training seed) it writes:
 The class-to-superclass map comes from the CIFAR-100 dataset files; write it
 once on the machine that has the data:
 
-    python -m src.component.error_analysis superclasses --data-root data \
+    python -m src.component.error_analysis superclasses --data-root data/cifar100 \
         --output src/component/configs/cifar100_superclasses.csv
 
 then analyze one initialization:
@@ -242,15 +242,22 @@ def sign_test_rows(intervals: list[dict]) -> list[dict]:
 
 
 def interval_table(intervals: list[dict], tests: list[dict], init: str) -> str:
-    """Booktabs table of the paired change with its 95% bootstrap interval, for the main comparisons."""
-    shown = [("sd_prompt", "real_only"), ("sd_prompt", "randaugment"), ("sd_prompt_randaugment", "randaugment")]
+    """Booktabs table of the paired change with its 95% bootstrap interval, for the main comparisons with runs."""
     cells = {(r["model"], r["budget"], r["treatment"], r["control"]): r for r in intervals}
+    shown = [(t, c) for t, c in [("sd_prompt", "real_only"), ("sd_prompt", "randaugment"),
+                                 ("sd_prompt_randaugment", "randaugment")]
+             if any(key[2:] == (t, c) for key in cells)]
+
+    def pp(value: float) -> str:
+        return f"{round(value, 2) + 0.0:+.2f}"  # + 0.0 turns -0.0 into 0.0
     p_values = {(t["treatment"], t["control"]): t for t in tests}
     header = [f"{SHORT_NAMES[t]}$-${SHORT_NAMES[c]} (pp) $\\uparrow$" for t, c in shown]
     resamples = f"{BOOTSTRAP_RESAMPLES:,}".replace(",", "{,}")
     lines = [
         r"\begin{table}[H]",
         r"\centering",
+        r"\small",
+        r"\setlength{\tabcolsep}{4pt}",
         rf"\caption{{Stage 1, {init} initialization: change in validation top-1 accuracy (percentage points), "
         r"mean over training seeds of the paired change, with its 95\% percentile bootstrap interval over the "
         rf"5{{,}}000 validation images ({resamples} resamples, the same images for every seed and "
@@ -271,7 +278,7 @@ def interval_table(intervals: list[dict], tests: list[dict], init: str) -> str:
             row = [MODEL_NAMES[model], budget]
             for t, c in shown:
                 r = cells.get((model, budget, t, c))
-                row.append(f"{r['mean']:+.2f} [{r['ci_low']:+.2f}, {r['ci_high']:+.2f}]" if r else "--")
+                row.append(f"{pp(r['mean'])} [{pp(r['ci_low'])}, {pp(r['ci_high'])}]" if r else "--")
             lines.append(" & ".join(row) + r" \\")
     lines.append(r"\midrule")
     signs = []
@@ -331,7 +338,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     commands = parser.add_subparsers(dest="command", required=True)
     write = commands.add_parser("superclasses", help="write the CIFAR-100 class-to-superclass map")
-    write.add_argument("--data-root", type=Path, default=Path("data"))
+    write.add_argument("--data-root", type=Path, default=Path("data/cifar100"))
     write.add_argument("--output", type=Path, default=Path("src/component/configs/cifar100_superclasses.csv"))
     run = commands.add_parser("analyze", help="write the error-analysis tables and figures")
     run.add_argument("--root", type=Path, required=True, help="runs of one or more initializations")

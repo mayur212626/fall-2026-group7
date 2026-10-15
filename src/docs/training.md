@@ -140,7 +140,7 @@ python -m src.component.analyze_results --root runs/stage1-pretrained \
 `src/component/error_analysis.py` works from the validation predictions stored in each `result.json`, so it needs no retraining and never uses the test set. The class-to-superclass map of CIFAR-100 is read once from the dataset files:
 
 ```bash
-python -m src.component.error_analysis superclasses --data-root data \
+python -m src.component.error_analysis superclasses --data-root data/cifar100 \
     --output src/component/configs/cifar100_superclasses.csv
 python -m src.component.error_analysis analyze --root runs
 ```
