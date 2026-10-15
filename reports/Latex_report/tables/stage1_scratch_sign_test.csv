@@ -1,0 +1,6 @@
+init,treatment,control,cells,gains,losses,p_value
+scratch,randaugment,real_only,10,10,0,0.002
+scratch,sd_prompt,real_only,10,10,0,0.002
+scratch,sd_lora,real_only,10,10,0,0.002
+scratch,sd_prompt,randaugment,10,0,10,0.002
+scratch,sd_lora,randaugment,10,0,10,0.002

@@ -1,0 +1,24 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # CPU builds of the versions in environment.yml; the unit tests need no GPU,
+      # no dataset and no pretrained weights.
+      - name: Install packages
+        run: |
+          pip install --index-url https://download.pytorch.org/whl/cpu torch==2.12.1 torchvision==0.27.1
+          pip install numpy==2.5.2 matplotlib==3.11.2 clean-fid==0.1.35
+      - name: Run unit tests
+        run: python -m unittest discover -s src/tests -v
