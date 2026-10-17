@@ -135,6 +135,26 @@ python -m src.component.analyze_results --root runs/stage1-pretrained \
 
 `--metric` selects `accuracy` (default), `macro_f1` or `balanced_accuracy`. `--split test` uses the test-set scores described below instead of the best validation scores.
 
+## Error analysis
+
+`src/component/error_analysis.py` works from the validation predictions stored in each `result.json`, so it needs no retraining and never uses the test set. The class-to-superclass map of CIFAR-100 is read once from the dataset files:
+
+```bash
+python -m src.component.error_analysis superclasses --data-root data/cifar100 \
+    --output src/component/configs/cifar100_superclasses.csv
+python -m src.component.error_analysis analyze --root runs
+```
+
+For each initialization, `analyze` writes to `reports/Latex_report/tables` and `reports/Latex_report/fig`:
+
+- `stage1_<init>_bootstrap.{csv,tex}`: for every model, data budget and comparison, the paired accuracy change (mean over seeds), the sample SD of the per-seed changes, the verdict, and a 95% percentile bootstrap interval over the 5,000 validation images (10,000 resamples, bootstrap seed 0; the same resampled images for every seed and both conditions). The interval measures image-sampling noise; the seed SD measures training noise.
+- `stage1_<init>_sign_test.csv`: a two-sided exact sign test of the mean changes over all models and budgets, per comparison. The cells share control runs and the budgets are nested, so the test summarizes the pattern rather than combining independent evidence.
+- `stage1_<init>_b5_<treatment>_vs_<control>_{classes,superclasses,confusions}.csv` and a superclass figure: the recall change of each class and superclass, and the confusions (true class, predicted class) whose error count fell or rose the most, as means over the paired seeds, at 5 images per class (`--budget`).
+
+## Extra training seeds
+
+`src/shellscripts/run_extra_seeds.sh` adds training seeds 3 and 4 to the pretrained cells behind the main claims: both classifiers at 5, 10 and 20 images per class, for real-only, RandAugment, SD class prompts and SD class prompts + RandAugment. Only the seed differs from the runs with seeds 0 to 2. The analysis scripts pair runs by seed, so these cells then have five paired seeds. These 48 runs are not part of the 300-run matrix below.
+
 ## Run matrix and generator registry
 
 `src/component/configs/run_matrix.csv` lists all 300 Stage 1 runs (2 initializations × 2 classifiers × 5 conditions × 5 data budgets × 3 seeds) with their research question, condition, generator, synthetic ratio, run directory, status and cost. `src/component/run_matrix.py` rebuilds it from the run directories: a run is done when it has `result.json`, running when it has only `config.json`, and planned otherwise.
