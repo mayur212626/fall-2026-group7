@@ -1,19 +1,19 @@
 init,model,budget,condition,n,seeds,mean,sd
-pretrained,resnet50,5,randaugment,3,0 1 2,43.0267,0.993
-pretrained,resnet50,5,real_only,3,0 1 2,35.1733,0.8603
+pretrained,resnet50,5,randaugment,5,0 1 2 3 4,43.108,1.0382
+pretrained,resnet50,5,real_only,5,0 1 2 3 4,35.66,0.9195
 pretrained,resnet50,5,sd_lora,3,0 1 2,45.2,0.3606
-pretrained,resnet50,5,sd_prompt,3,0 1 2,46.78,0.1908
-pretrained,resnet50,5,sd_prompt_randaugment,3,0 1 2,52.6067,1.0849
-pretrained,resnet50,10,randaugment,3,0 1 2,53.4933,0.45
-pretrained,resnet50,10,real_only,3,0 1 2,49.5067,0.9601
+pretrained,resnet50,5,sd_prompt,5,0 1 2 3 4,47.076,0.8261
+pretrained,resnet50,5,sd_prompt_randaugment,5,0 1 2 3 4,52.768,1.1096
+pretrained,resnet50,10,randaugment,5,0 1 2 3 4,53.456,0.3251
+pretrained,resnet50,10,real_only,5,0 1 2 3 4,49.872,0.9316
 pretrained,resnet50,10,sd_lora,3,0 1 2,55.44,0.3219
-pretrained,resnet50,10,sd_prompt,3,0 1 2,57.0267,0.9496
-pretrained,resnet50,10,sd_prompt_randaugment,3,0 1 2,59.9867,0.1007
-pretrained,resnet50,20,randaugment,3,0 1 2,63.1133,0.5178
-pretrained,resnet50,20,real_only,3,0 1 2,59.48,0.3305
+pretrained,resnet50,10,sd_prompt,5,0 1 2 3 4,56.752,0.8411
+pretrained,resnet50,10,sd_prompt_randaugment,5,0 1 2 3 4,60.028,0.1863
+pretrained,resnet50,20,randaugment,5,0 1 2 3 4,63.152,0.4789
+pretrained,resnet50,20,real_only,5,0 1 2 3 4,59.728,0.4275
 pretrained,resnet50,20,sd_lora,3,0 1 2,64.64,0.5546
-pretrained,resnet50,20,sd_prompt,3,0 1 2,65.4933,0.223
-pretrained,resnet50,20,sd_prompt_randaugment,3,0 1 2,66.6667,0.6071
+pretrained,resnet50,20,sd_prompt,5,0 1 2 3 4,65.684,0.3057
+pretrained,resnet50,20,sd_prompt_randaugment,5,0 1 2 3 4,66.84,0.6216
 pretrained,resnet50,50,randaugment,3,0 1 2,72.1867,0.2928
 pretrained,resnet50,50,real_only,3,0 1 2,71.36,0.3857
 pretrained,resnet50,50,sd_lora,3,0 1 2,72.2933,0.6601
@@ -24,21 +24,21 @@ pretrained,resnet50,full,real_only,3,0 1 2,84.1733,0.1943
 pretrained,resnet50,full,sd_lora,3,0 1 2,84.0867,0.4163
 pretrained,resnet50,full,sd_prompt,3,0 1 2,84.4,0.2771
 pretrained,resnet50,full,sd_prompt_randaugment,3,0 1 2,85.4,0.2615
-pretrained,vit_b_16,5,randaugment,3,0 1 2,57.0267,2.113
-pretrained,vit_b_16,5,real_only,3,0 1 2,46.9333,1.6115
+pretrained,vit_b_16,5,randaugment,5,0 1 2 3 4,56.652,1.939
+pretrained,vit_b_16,5,real_only,5,0 1 2 3 4,46.488,1.4224
 pretrained,vit_b_16,5,sd_lora,3,0 1 2,58.5733,1.0715
-pretrained,vit_b_16,5,sd_prompt,3,0 1 2,61.3533,2.1358
-pretrained,vit_b_16,5,sd_prompt_randaugment,3,0 1 2,68.2,1.5558
-pretrained,vit_b_16,10,randaugment,3,0 1 2,69.2467,1.4883
-pretrained,vit_b_16,10,real_only,3,0 1 2,61.08,1.403
+pretrained,vit_b_16,5,sd_prompt,5,0 1 2 3 4,60.972,1.603
+pretrained,vit_b_16,5,sd_prompt_randaugment,5,0 1 2 3 4,67.88,1.2112
+pretrained,vit_b_16,10,randaugment,5,0 1 2 3 4,69.1,1.087
+pretrained,vit_b_16,10,real_only,5,0 1 2 3 4,61.292,1.0349
 pretrained,vit_b_16,10,sd_lora,3,0 1 2,68.2267,1.6171
-pretrained,vit_b_16,10,sd_prompt,3,0 1 2,70.76,1.2244
-pretrained,vit_b_16,10,sd_prompt_randaugment,3,0 1 2,74.2067,0.6113
-pretrained,vit_b_16,20,randaugment,3,0 1 2,76.2067,0.5155
-pretrained,vit_b_16,20,real_only,3,0 1 2,72.0533,1.0782
+pretrained,vit_b_16,10,sd_prompt,5,0 1 2 3 4,70.66,0.8768
+pretrained,vit_b_16,10,sd_prompt_randaugment,5,0 1 2 3 4,74.152,0.4514
+pretrained,vit_b_16,20,randaugment,5,0 1 2 3 4,75.968,0.5116
+pretrained,vit_b_16,20,real_only,5,0 1 2 3 4,72.148,0.7773
 pretrained,vit_b_16,20,sd_lora,3,0 1 2,74.54,0.3747
-pretrained,vit_b_16,20,sd_prompt,3,0 1 2,75.9933,0.9603
-pretrained,vit_b_16,20,sd_prompt_randaugment,3,0 1 2,78.0333,0.3781
+pretrained,vit_b_16,20,sd_prompt,5,0 1 2 3 4,75.788,0.7649
+pretrained,vit_b_16,20,sd_prompt_randaugment,5,0 1 2 3 4,77.78,0.4561
 pretrained,vit_b_16,50,randaugment,3,0 1 2,82.0267,0.5194
 pretrained,vit_b_16,50,real_only,3,0 1 2,80.2867,0.0945
 pretrained,vit_b_16,50,sd_lora,3,0 1 2,80.2467,0.5281

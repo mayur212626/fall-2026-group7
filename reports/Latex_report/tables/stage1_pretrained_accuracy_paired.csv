@@ -1,11 +1,11 @@
 init,model,budget,seeds,changes,mean,sd,verdict
-pretrained,resnet50,5,0 1 2,7.66 9.66 6.24,7.8533,1.7182,gain
-pretrained,resnet50,10,0 1 2,3.48 4.72 3.76,3.9867,0.6503,gain
-pretrained,resnet50,20,0 1 2,3.12 3.58 4.2,3.6333,0.542,gain
+pretrained,resnet50,5,0 1 2 3 4,7.66 9.66 6.24 5.52 8.16,7.448,1.6295,gain
+pretrained,resnet50,10,0 1 2 3 4,3.48 4.72 3.76 3.48 2.48,3.584,0.8003,gain
+pretrained,resnet50,20,0 1 2 3 4,3.12 3.58 4.2 2.84 3.38,3.424,0.5152,gain
 pretrained,resnet50,50,0 1 2,0.7 0.84 0.94,0.8267,0.1206,gain
 pretrained,resnet50,full,0 1 2,1.02 0.88 1.1,1.0,0.1114,gain
-pretrained,vit_b_16,5,0 1 2,9.46 10.62 10.2,10.0933,0.5873,gain
-pretrained,vit_b_16,10,0 1 2,7.34 9.32 7.84,8.1667,1.0296,gain
-pretrained,vit_b_16,20,0 1 2,4.68 4.22 3.56,4.1533,0.563,gain
+pretrained,vit_b_16,5,0 1 2 3 4,9.46 10.62 10.2 9.52 11.02,10.164,0.6805,gain
+pretrained,vit_b_16,10,0 1 2 3 4,7.34 9.32 7.84 7.46 7.08,7.808,0.8884,gain
+pretrained,vit_b_16,20,0 1 2 3 4,4.68 4.22 3.56 3.22 3.42,3.82,0.6098,gain
 pretrained,vit_b_16,50,0 1 2,1.14 2.3 1.78,1.74,0.581,gain
 pretrained,vit_b_16,full,0 1 2,1.58 1.02 1.16,1.2533,0.2914,gain
