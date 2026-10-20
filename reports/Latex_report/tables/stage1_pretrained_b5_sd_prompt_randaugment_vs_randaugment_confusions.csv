@@ -1,41 +1,41 @@
 model,effect,true,pred,treatment_errors,control_errors,change,seeds
-resnet50,fixed,pickup_truck,bus,6.3333,14.3333,-8.0,0 1 2
-resnet50,fixed,clock,plate,3.6667,10.3333,-6.6667,0 1 2
-resnet50,fixed,tank,train,0.3333,7.0,-6.6667,0 1 2
-resnet50,fixed,boy,girl,3.6667,9.6667,-6.0,0 1 2
-resnet50,fixed,dolphin,whale,3.6667,9.6667,-6.0,0 1 2
-resnet50,fixed,shrew,beaver,5.0,10.6667,-5.6667,0 1 2
-resnet50,fixed,boy,man,6.3333,11.6667,-5.3333,0 1 2
-resnet50,fixed,sunflower,orchid,2.0,7.3333,-5.3333,0 1 2
-resnet50,fixed,can,bottle,1.6667,6.6667,-5.0,0 1 2
-resnet50,fixed,lamp,cup,1.0,6.0,-5.0,0 1 2
-resnet50,created,girl,boy,15.3333,8.6667,6.6667,0 1 2
-resnet50,created,streetcar,bus,13.3333,7.0,6.3333,0 1 2
-resnet50,created,whale,dolphin,11.6667,6.0,5.6667,0 1 2
-resnet50,created,lobster,sweet_pepper,12.3333,7.6667,4.6667,0 1 2
-resnet50,created,mouse,shrew,7.0,2.3333,4.6667,0 1 2
-resnet50,created,man,boy,6.6667,2.0,4.6667,0 1 2
-resnet50,created,willow_tree,pine_tree,7.6667,3.0,4.6667,0 1 2
-resnet50,created,cockroach,beetle,15.6667,11.3333,4.3333,0 1 2
-resnet50,created,camel,dinosaur,10.3333,6.0,4.3333,0 1 2
-resnet50,created,maple_tree,oak_tree,12.6667,8.6667,4.0,0 1 2
-vit_b_16,fixed,lamp,cup,0.3333,13.3333,-13.0,0 1 2
-vit_b_16,fixed,rose,tulip,4.0,14.3333,-10.3333,0 1 2
-vit_b_16,fixed,baby,boy,16.6667,26.3333,-9.6667,0 1 2
-vit_b_16,fixed,house,castle,7.0,16.3333,-9.3333,0 1 2
-vit_b_16,fixed,orchid,tulip,5.6667,14.0,-8.3333,0 1 2
-vit_b_16,fixed,can,bottle,3.6667,12.0,-8.3333,0 1 2
-vit_b_16,fixed,boy,man,6.3333,14.3333,-8.0,0 1 2
-vit_b_16,fixed,table,bed,6.0,14.0,-8.0,0 1 2
-vit_b_16,fixed,sea,plain,2.0,9.6667,-7.6667,0 1 2
-vit_b_16,fixed,couch,bed,13.3333,21.0,-7.6667,0 1 2
-vit_b_16,created,man,boy,12.6667,5.0,7.6667,0 1 2
-vit_b_16,created,aquarium_fish,trout,7.3333,1.0,6.3333,0 1 2
-vit_b_16,created,bear,seal,9.3333,4.3333,5.0,0 1 2
-vit_b_16,created,shrew,mouse,8.6667,4.0,4.6667,0 1 2
-vit_b_16,created,crab,lobster,7.3333,2.6667,4.6667,0 1 2
-vit_b_16,created,woman,girl,24.6667,20.0,4.6667,0 1 2
-vit_b_16,created,boy,baby,5.0,0.6667,4.3333,0 1 2
-vit_b_16,created,ray,flatfish,4.3333,1.0,3.3333,0 1 2
-vit_b_16,created,poppy,sunflower,5.0,1.6667,3.3333,0 1 2
-vit_b_16,created,bear,beaver,5.3333,2.0,3.3333,0 1 2
+resnet50,fixed,clock,plate,3.2,13.8,-10.6,0 1 2 3 4
+resnet50,fixed,pickup_truck,bus,6.0,15.6,-9.6,0 1 2 3 4
+resnet50,fixed,boy,man,6.2,13.8,-7.6,0 1 2 3 4
+resnet50,fixed,dolphin,whale,5.0,11.2,-6.2,0 1 2 3 4
+resnet50,fixed,palm_tree,pine_tree,3.8,9.6,-5.8,0 1 2 3 4
+resnet50,fixed,tank,train,0.4,6.0,-5.6,0 1 2 3 4
+resnet50,fixed,lamp,cup,0.6,6.0,-5.4,0 1 2 3 4
+resnet50,fixed,lion,camel,2.2,7.4,-5.2,0 1 2 3 4
+resnet50,fixed,cup,lamp,4.2,9.2,-5.0,0 1 2 3 4
+resnet50,fixed,boy,girl,5.2,10.2,-5.0,0 1 2 3 4
+resnet50,created,girl,boy,16.2,9.6,6.6,0 1 2 3 4
+resnet50,created,streetcar,bus,12.8,7.4,5.4,0 1 2 3 4
+resnet50,created,whale,dolphin,10.0,4.8,5.2,0 1 2 3 4
+resnet50,created,camel,dinosaur,10.6,5.8,4.8,0 1 2 3 4
+resnet50,created,maple_tree,oak_tree,13.4,9.0,4.4,0 1 2 3 4
+resnet50,created,mouse,shrew,7.0,2.8,4.2,0 1 2 3 4
+resnet50,created,man,boy,6.4,2.4,4.0,0 1 2 3 4
+resnet50,created,tulip,sweet_pepper,8.4,4.6,3.8,0 1 2 3 4
+resnet50,created,ray,flatfish,4.8,1.2,3.6,0 1 2 3 4
+resnet50,created,lobster,sweet_pepper,12.0,8.6,3.4,0 1 2 3 4
+vit_b_16,fixed,lamp,cup,0.2,13.0,-12.8,0 1 2 3 4
+vit_b_16,fixed,pickup_truck,bus,1.6,10.2,-8.6,0 1 2 3 4
+vit_b_16,fixed,baby,boy,16.4,24.8,-8.4,0 1 2 3 4
+vit_b_16,fixed,rose,tulip,4.4,12.6,-8.2,0 1 2 3 4
+vit_b_16,fixed,can,bottle,4.2,12.0,-7.8,0 1 2 3 4
+vit_b_16,fixed,plate,bowl,3.4,11.0,-7.6,0 1 2 3 4
+vit_b_16,fixed,table,bed,6.2,13.0,-6.8,0 1 2 3 4
+vit_b_16,fixed,house,castle,8.2,15.0,-6.8,0 1 2 3 4
+vit_b_16,fixed,sea,plain,2.2,8.4,-6.2,0 1 2 3 4
+vit_b_16,fixed,couch,bed,12.0,18.2,-6.2,0 1 2 3 4
+vit_b_16,created,aquarium_fish,trout,7.8,1.0,6.8,0 1 2 3 4
+vit_b_16,created,man,boy,10.6,5.6,5.0,0 1 2 3 4
+vit_b_16,created,crab,lobster,6.2,2.2,4.0,0 1 2 3 4
+vit_b_16,created,bear,beaver,5.8,2.0,3.8,0 1 2 3 4
+vit_b_16,created,poppy,sunflower,5.6,2.0,3.6,0 1 2 3 4
+vit_b_16,created,boy,baby,5.6,2.0,3.6,0 1 2 3 4
+vit_b_16,created,crocodile,lizard,4.4,1.0,3.4,0 1 2 3 4
+vit_b_16,created,dolphin,shark,8.8,5.4,3.4,0 1 2 3 4
+vit_b_16,created,woman,girl,23.6,20.2,3.4,0 1 2 3 4
+vit_b_16,created,shrew,mouse,7.2,4.2,3.0,0 1 2 3 4

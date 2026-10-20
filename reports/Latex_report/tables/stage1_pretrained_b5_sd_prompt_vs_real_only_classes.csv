@@ -1,201 +1,201 @@
 model,class,class_name,superclass_name,recall_change,seeds
-resnet50,35,girl,people,-17.3333,0 1 2
-resnet50,95,whale,aquatic_mammals,-10.6667,0 1 2
-resnet50,60,plain,large_natural_outdoor_scenes,-9.3333,0 1 2
-resnet50,92,tulip,flowers,-8.0,0 1 2
-resnet50,13,bus,vehicles_1,-3.3333,0 1 2
-resnet50,4,beaver,aquatic_mammals,-0.6667,0 1 2
-resnet50,49,mountain,large_natural_outdoor_scenes,-0.6667,0 1 2
-resnet50,32,flatfish,fish,0.0,0 1 2
-resnet50,24,cockroach,insects,0.0,0 1 2
-resnet50,65,rabbit,small_mammals,1.3333,0 1 2
-resnet50,74,shrew,small_mammals,1.3333,0 1 2
-resnet50,61,plate,food_containers,1.3333,0 1 2
-resnet50,93,turtle,reptiles,2.0,0 1 2
-resnet50,14,butterfly,insects,2.6667,0 1 2
-resnet50,9,bottle,food_containers,3.3333,0 1 2
-resnet50,48,motorcycle,vehicles_1,4.0,0 1 2
-resnet50,28,cup,food_containers,4.0,0 1 2
-resnet50,59,pine_tree,trees,4.0,0 1 2
-resnet50,99,worm,non-insect_invertebrates,4.0,0 1 2
-resnet50,83,sweet_pepper,fruit_and_vegetables,4.6667,0 1 2
-resnet50,41,lawn_mower,vehicles_2,4.6667,0 1 2
-resnet50,38,kangaroo,large_omnivores_and_herbivores,5.3333,0 1 2
-resnet50,1,aquarium_fish,fish,5.3333,0 1 2
-resnet50,53,orange,fruit_and_vegetables,5.3333,0 1 2
-resnet50,75,skunk,medium_mammals,5.3333,0 1 2
-resnet50,81,streetcar,vehicles_2,6.0,0 1 2
-resnet50,78,snake,reptiles,6.0,0 1 2
-resnet50,46,man,people,6.6667,0 1 2
-resnet50,67,ray,fish,6.6667,0 1 2
-resnet50,64,possum,medium_mammals,6.6667,0 1 2
-resnet50,0,apple,fruit_and_vegetables,6.6667,0 1 2
-resnet50,21,chimpanzee,large_omnivores_and_herbivores,7.3333,0 1 2
-resnet50,51,mushroom,fruit_and_vegetables,8.0,0 1 2
-resnet50,80,squirrel,small_mammals,8.0,0 1 2
-resnet50,76,skyscraper,large_man-made_outdoor_things,8.6667,0 1 2
-resnet50,84,table,household_furniture,8.6667,0 1 2
-resnet50,62,poppy,flowers,8.6667,0 1 2
-resnet50,6,bee,insects,8.6667,0 1 2
-resnet50,54,orchid,flowers,8.6667,0 1 2
-resnet50,44,lizard,reptiles,9.3333,0 1 2
-resnet50,10,bowl,food_containers,9.3333,0 1 2
-resnet50,50,mouse,small_mammals,9.3333,0 1 2
-resnet50,89,tractor,vehicles_2,10.0,0 1 2
-resnet50,5,bed,household_furniture,10.0,0 1 2
-resnet50,47,maple_tree,trees,10.0,0 1 2
-resnet50,55,otter,aquatic_mammals,10.0,0 1 2
-resnet50,63,porcupine,medium_mammals,10.0,0 1 2
-resnet50,97,wolf,large_carnivores,10.0,0 1 2
-resnet50,77,snail,non-insect_invertebrates,10.6667,0 1 2
-resnet50,26,crab,non-insect_invertebrates,10.6667,0 1 2
-resnet50,25,couch,household_furniture,11.3333,0 1 2
-resnet50,45,lobster,non-insect_invertebrates,11.3333,0 1 2
-resnet50,98,woman,people,11.3333,0 1 2
-resnet50,87,television,household_electrical_devices,12.0,0 1 2
-resnet50,52,oak_tree,trees,12.0,0 1 2
-resnet50,19,cattle,large_omnivores_and_herbivores,12.0,0 1 2
-resnet50,71,sea,large_natural_outdoor_scenes,12.0,0 1 2
-resnet50,70,rose,flowers,12.6667,0 1 2
-resnet50,68,road,large_man-made_outdoor_things,12.6667,0 1 2
-resnet50,82,sunflower,flowers,13.3333,0 1 2
-resnet50,27,crocodile,reptiles,13.3333,0 1 2
-resnet50,94,wardrobe,household_furniture,13.3333,0 1 2
-resnet50,42,leopard,large_carnivores,14.0,0 1 2
-resnet50,34,fox,medium_mammals,14.0,0 1 2
-resnet50,90,train,vehicles_1,14.0,0 1 2
-resnet50,91,trout,fish,14.0,0 1 2
-resnet50,3,bear,large_carnivores,14.6667,0 1 2
-resnet50,69,rocket,vehicles_2,14.6667,0 1 2
-resnet50,2,baby,people,15.3333,0 1 2
-resnet50,23,cloud,large_natural_outdoor_scenes,15.3333,0 1 2
-resnet50,31,elephant,large_omnivores_and_herbivores,15.3333,0 1 2
-resnet50,8,bicycle,vehicles_1,15.3333,0 1 2
-resnet50,12,bridge,large_man-made_outdoor_things,15.3333,0 1 2
-resnet50,20,chair,household_furniture,16.0,0 1 2
-resnet50,29,dinosaur,reptiles,16.0,0 1 2
-resnet50,18,caterpillar,insects,16.0,0 1 2
-resnet50,66,raccoon,medium_mammals,16.0,0 1 2
-resnet50,58,pickup_truck,vehicles_1,16.6667,0 1 2
-resnet50,39,keyboard,household_electrical_devices,16.6667,0 1 2
-resnet50,36,hamster,small_mammals,17.3333,0 1 2
-resnet50,96,willow_tree,trees,17.3333,0 1 2
-resnet50,43,lion,large_carnivores,18.6667,0 1 2
-resnet50,72,seal,aquatic_mammals,18.6667,0 1 2
-resnet50,30,dolphin,aquatic_mammals,18.6667,0 1 2
-resnet50,17,castle,large_man-made_outdoor_things,19.3333,0 1 2
-resnet50,40,lamp,household_electrical_devices,21.3333,0 1 2
-resnet50,86,telephone,household_electrical_devices,22.0,0 1 2
-resnet50,88,tiger,large_carnivores,22.6667,0 1 2
-resnet50,16,can,food_containers,22.6667,0 1 2
-resnet50,57,pear,fruit_and_vegetables,24.0,0 1 2
-resnet50,11,boy,people,24.6667,0 1 2
-resnet50,7,beetle,insects,25.3333,0 1 2
-resnet50,37,house,large_man-made_outdoor_things,28.0,0 1 2
-resnet50,56,palm_tree,trees,30.6667,0 1 2
-resnet50,33,forest,large_natural_outdoor_scenes,31.3333,0 1 2
-resnet50,15,camel,large_omnivores_and_herbivores,32.0,0 1 2
-resnet50,22,clock,household_electrical_devices,32.6667,0 1 2
-resnet50,85,tank,vehicles_2,32.6667,0 1 2
-resnet50,79,spider,non-insect_invertebrates,33.3333,0 1 2
-resnet50,73,shark,fish,37.3333,0 1 2
-vit_b_16,78,snake,reptiles,-10.6667,0 1 2
-vit_b_16,95,whale,aquatic_mammals,-6.6667,0 1 2
-vit_b_16,13,bus,vehicles_1,-4.6667,0 1 2
-vit_b_16,60,plain,large_natural_outdoor_scenes,-3.3333,0 1 2
-vit_b_16,21,chimpanzee,large_omnivores_and_herbivores,-0.6667,0 1 2
-vit_b_16,38,kangaroo,large_omnivores_and_herbivores,1.3333,0 1 2
-vit_b_16,35,girl,people,1.3333,0 1 2
-vit_b_16,5,bed,household_furniture,1.3333,0 1 2
-vit_b_16,32,flatfish,fish,1.3333,0 1 2
-vit_b_16,48,motorcycle,vehicles_1,2.0,0 1 2
-vit_b_16,55,otter,aquatic_mammals,2.6667,0 1 2
-vit_b_16,1,aquarium_fish,fish,2.6667,0 1 2
-vit_b_16,86,telephone,household_electrical_devices,2.6667,0 1 2
-vit_b_16,15,camel,large_omnivores_and_herbivores,3.3333,0 1 2
-vit_b_16,28,cup,food_containers,4.0,0 1 2
-vit_b_16,20,chair,household_furniture,4.0,0 1 2
-vit_b_16,23,cloud,large_natural_outdoor_scenes,4.6667,0 1 2
-vit_b_16,36,hamster,small_mammals,5.3333,0 1 2
-vit_b_16,31,elephant,large_omnivores_and_herbivores,5.3333,0 1 2
-vit_b_16,74,shrew,small_mammals,5.3333,0 1 2
-vit_b_16,68,road,large_man-made_outdoor_things,5.3333,0 1 2
-vit_b_16,41,lawn_mower,vehicles_2,5.3333,0 1 2
-vit_b_16,9,bottle,food_containers,6.0,0 1 2
-vit_b_16,14,butterfly,insects,6.6667,0 1 2
-vit_b_16,52,oak_tree,trees,6.6667,0 1 2
-vit_b_16,0,apple,fruit_and_vegetables,7.3333,0 1 2
-vit_b_16,64,possum,medium_mammals,8.0,0 1 2
-vit_b_16,99,worm,non-insect_invertebrates,8.0,0 1 2
-vit_b_16,29,dinosaur,reptiles,8.0,0 1 2
-vit_b_16,62,poppy,flowers,8.0,0 1 2
-vit_b_16,47,maple_tree,trees,8.0,0 1 2
-vit_b_16,46,man,people,8.0,0 1 2
-vit_b_16,90,train,vehicles_1,8.6667,0 1 2
-vit_b_16,12,bridge,large_man-made_outdoor_things,8.6667,0 1 2
-vit_b_16,51,mushroom,fruit_and_vegetables,9.3333,0 1 2
-vit_b_16,4,beaver,aquatic_mammals,10.0,0 1 2
-vit_b_16,24,cockroach,insects,10.0,0 1 2
-vit_b_16,89,tractor,vehicles_2,10.0,0 1 2
-vit_b_16,92,tulip,flowers,10.0,0 1 2
-vit_b_16,98,woman,people,10.6667,0 1 2
-vit_b_16,39,keyboard,household_electrical_devices,10.6667,0 1 2
-vit_b_16,69,rocket,vehicles_2,11.3333,0 1 2
-vit_b_16,72,seal,aquatic_mammals,11.3333,0 1 2
-vit_b_16,84,table,household_furniture,11.3333,0 1 2
-vit_b_16,53,orange,fruit_and_vegetables,11.3333,0 1 2
-vit_b_16,43,lion,large_carnivores,11.3333,0 1 2
-vit_b_16,80,squirrel,small_mammals,12.0,0 1 2
-vit_b_16,33,forest,large_natural_outdoor_scenes,12.6667,0 1 2
-vit_b_16,81,streetcar,vehicles_2,12.6667,0 1 2
-vit_b_16,8,bicycle,vehicles_1,12.6667,0 1 2
-vit_b_16,10,bowl,food_containers,12.6667,0 1 2
-vit_b_16,96,willow_tree,trees,12.6667,0 1 2
-vit_b_16,19,cattle,large_omnivores_and_herbivores,13.3333,0 1 2
-vit_b_16,22,clock,household_electrical_devices,14.0,0 1 2
-vit_b_16,75,skunk,medium_mammals,14.0,0 1 2
-vit_b_16,59,pine_tree,trees,14.0,0 1 2
-vit_b_16,82,sunflower,flowers,15.3333,0 1 2
-vit_b_16,91,trout,fish,16.0,0 1 2
-vit_b_16,18,caterpillar,insects,16.0,0 1 2
-vit_b_16,3,bear,large_carnivores,16.0,0 1 2
-vit_b_16,7,beetle,insects,16.6667,0 1 2
-vit_b_16,87,television,household_electrical_devices,16.6667,0 1 2
-vit_b_16,63,porcupine,medium_mammals,17.3333,0 1 2
-vit_b_16,30,dolphin,aquatic_mammals,17.3333,0 1 2
-vit_b_16,88,tiger,large_carnivores,17.3333,0 1 2
-vit_b_16,34,fox,medium_mammals,18.0,0 1 2
-vit_b_16,94,wardrobe,household_furniture,18.6667,0 1 2
-vit_b_16,17,castle,large_man-made_outdoor_things,18.6667,0 1 2
-vit_b_16,67,ray,fish,18.6667,0 1 2
-vit_b_16,79,spider,non-insect_invertebrates,19.3333,0 1 2
-vit_b_16,11,boy,people,20.6667,0 1 2
-vit_b_16,26,crab,non-insect_invertebrates,20.6667,0 1 2
-vit_b_16,6,bee,insects,20.6667,0 1 2
-vit_b_16,50,mouse,small_mammals,21.3333,0 1 2
-vit_b_16,27,crocodile,reptiles,21.3333,0 1 2
-vit_b_16,76,skyscraper,large_man-made_outdoor_things,22.0,0 1 2
-vit_b_16,49,mountain,large_natural_outdoor_scenes,22.0,0 1 2
-vit_b_16,58,pickup_truck,vehicles_1,22.6667,0 1 2
-vit_b_16,97,wolf,large_carnivores,23.3333,0 1 2
-vit_b_16,61,plate,food_containers,23.3333,0 1 2
-vit_b_16,56,palm_tree,trees,24.0,0 1 2
-vit_b_16,25,couch,household_furniture,24.0,0 1 2
-vit_b_16,93,turtle,reptiles,24.6667,0 1 2
-vit_b_16,70,rose,flowers,24.6667,0 1 2
-vit_b_16,83,sweet_pepper,fruit_and_vegetables,24.6667,0 1 2
-vit_b_16,45,lobster,non-insect_invertebrates,25.3333,0 1 2
-vit_b_16,65,rabbit,small_mammals,26.0,0 1 2
-vit_b_16,57,pear,fruit_and_vegetables,26.0,0 1 2
-vit_b_16,44,lizard,reptiles,27.3333,0 1 2
-vit_b_16,77,snail,non-insect_invertebrates,28.0,0 1 2
-vit_b_16,66,raccoon,medium_mammals,28.0,0 1 2
-vit_b_16,73,shark,fish,30.6667,0 1 2
-vit_b_16,2,baby,people,31.3333,0 1 2
-vit_b_16,42,leopard,large_carnivores,32.0,0 1 2
-vit_b_16,85,tank,vehicles_2,32.6667,0 1 2
-vit_b_16,37,house,large_man-made_outdoor_things,33.3333,0 1 2
-vit_b_16,54,orchid,flowers,38.0,0 1 2
-vit_b_16,16,can,food_containers,38.6667,0 1 2
-vit_b_16,71,sea,large_natural_outdoor_scenes,38.6667,0 1 2
-vit_b_16,40,lamp,household_electrical_devices,42.0,0 1 2
+resnet50,35,girl,people,-14.8,0 1 2 3 4
+resnet50,60,plain,large_natural_outdoor_scenes,-10.4,0 1 2 3 4
+resnet50,92,tulip,flowers,-7.6,0 1 2 3 4
+resnet50,95,whale,aquatic_mammals,-5.2,0 1 2 3 4
+resnet50,13,bus,vehicles_1,-4.8,0 1 2 3 4
+resnet50,49,mountain,large_natural_outdoor_scenes,-4.0,0 1 2 3 4
+resnet50,89,tractor,vehicles_2,1.2,0 1 2 3 4
+resnet50,32,flatfish,fish,1.6,0 1 2 3 4
+resnet50,99,worm,non-insect_invertebrates,1.6,0 1 2 3 4
+resnet50,61,plate,food_containers,2.0,0 1 2 3 4
+resnet50,98,woman,people,2.0,0 1 2 3 4
+resnet50,53,orange,fruit_and_vegetables,2.4,0 1 2 3 4
+resnet50,78,snake,reptiles,2.8,0 1 2 3 4
+resnet50,38,kangaroo,large_omnivores_and_herbivores,4.0,0 1 2 3 4
+resnet50,9,bottle,food_containers,4.0,0 1 2 3 4
+resnet50,1,aquarium_fish,fish,4.0,0 1 2 3 4
+resnet50,24,cockroach,insects,4.0,0 1 2 3 4
+resnet50,74,shrew,small_mammals,4.0,0 1 2 3 4
+resnet50,93,turtle,reptiles,4.4,0 1 2 3 4
+resnet50,48,motorcycle,vehicles_1,4.4,0 1 2 3 4
+resnet50,27,crocodile,reptiles,4.8,0 1 2 3 4
+resnet50,65,rabbit,small_mammals,5.2,0 1 2 3 4
+resnet50,76,skyscraper,large_man-made_outdoor_things,5.2,0 1 2 3 4
+resnet50,4,beaver,aquatic_mammals,5.6,0 1 2 3 4
+resnet50,84,table,household_furniture,6.4,0 1 2 3 4
+resnet50,75,skunk,medium_mammals,6.4,0 1 2 3 4
+resnet50,10,bowl,food_containers,6.8,0 1 2 3 4
+resnet50,80,squirrel,small_mammals,6.8,0 1 2 3 4
+resnet50,0,apple,fruit_and_vegetables,7.2,0 1 2 3 4
+resnet50,26,crab,non-insect_invertebrates,7.2,0 1 2 3 4
+resnet50,55,otter,aquatic_mammals,7.2,0 1 2 3 4
+resnet50,5,bed,household_furniture,7.2,0 1 2 3 4
+resnet50,51,mushroom,fruit_and_vegetables,7.2,0 1 2 3 4
+resnet50,45,lobster,non-insect_invertebrates,8.4,0 1 2 3 4
+resnet50,67,ray,fish,8.4,0 1 2 3 4
+resnet50,69,rocket,vehicles_2,8.4,0 1 2 3 4
+resnet50,28,cup,food_containers,8.4,0 1 2 3 4
+resnet50,50,mouse,small_mammals,8.4,0 1 2 3 4
+resnet50,64,possum,medium_mammals,8.8,0 1 2 3 4
+resnet50,62,poppy,flowers,8.8,0 1 2 3 4
+resnet50,21,chimpanzee,large_omnivores_and_herbivores,8.8,0 1 2 3 4
+resnet50,41,lawn_mower,vehicles_2,9.2,0 1 2 3 4
+resnet50,63,porcupine,medium_mammals,9.2,0 1 2 3 4
+resnet50,59,pine_tree,trees,9.6,0 1 2 3 4
+resnet50,19,cattle,large_omnivores_and_herbivores,10.0,0 1 2 3 4
+resnet50,6,bee,insects,10.0,0 1 2 3 4
+resnet50,94,wardrobe,household_furniture,10.0,0 1 2 3 4
+resnet50,83,sweet_pepper,fruit_and_vegetables,10.4,0 1 2 3 4
+resnet50,52,oak_tree,trees,10.4,0 1 2 3 4
+resnet50,47,maple_tree,trees,10.4,0 1 2 3 4
+resnet50,14,butterfly,insects,10.4,0 1 2 3 4
+resnet50,20,chair,household_furniture,10.8,0 1 2 3 4
+resnet50,87,television,household_electrical_devices,10.8,0 1 2 3 4
+resnet50,81,streetcar,vehicles_2,10.8,0 1 2 3 4
+resnet50,25,couch,household_furniture,11.2,0 1 2 3 4
+resnet50,3,bear,large_carnivores,11.2,0 1 2 3 4
+resnet50,68,road,large_man-made_outdoor_things,11.2,0 1 2 3 4
+resnet50,39,keyboard,household_electrical_devices,11.6,0 1 2 3 4
+resnet50,82,sunflower,flowers,12.4,0 1 2 3 4
+resnet50,54,orchid,flowers,12.4,0 1 2 3 4
+resnet50,46,man,people,12.8,0 1 2 3 4
+resnet50,96,willow_tree,trees,13.6,0 1 2 3 4
+resnet50,44,lizard,reptiles,14.0,0 1 2 3 4
+resnet50,97,wolf,large_carnivores,14.4,0 1 2 3 4
+resnet50,91,trout,fish,14.8,0 1 2 3 4
+resnet50,70,rose,flowers,14.8,0 1 2 3 4
+resnet50,77,snail,non-insect_invertebrates,14.8,0 1 2 3 4
+resnet50,90,train,vehicles_1,14.8,0 1 2 3 4
+resnet50,86,telephone,household_electrical_devices,15.2,0 1 2 3 4
+resnet50,23,cloud,large_natural_outdoor_scenes,15.2,0 1 2 3 4
+resnet50,72,seal,aquatic_mammals,15.6,0 1 2 3 4
+resnet50,42,leopard,large_carnivores,16.0,0 1 2 3 4
+resnet50,18,caterpillar,insects,16.4,0 1 2 3 4
+resnet50,30,dolphin,aquatic_mammals,16.4,0 1 2 3 4
+resnet50,34,fox,medium_mammals,16.4,0 1 2 3 4
+resnet50,12,bridge,large_man-made_outdoor_things,16.4,0 1 2 3 4
+resnet50,8,bicycle,vehicles_1,17.2,0 1 2 3 4
+resnet50,58,pickup_truck,vehicles_1,17.2,0 1 2 3 4
+resnet50,88,tiger,large_carnivores,17.6,0 1 2 3 4
+resnet50,31,elephant,large_omnivores_and_herbivores,18.4,0 1 2 3 4
+resnet50,71,sea,large_natural_outdoor_scenes,18.4,0 1 2 3 4
+resnet50,11,boy,people,18.8,0 1 2 3 4
+resnet50,36,hamster,small_mammals,19.2,0 1 2 3 4
+resnet50,17,castle,large_man-made_outdoor_things,19.2,0 1 2 3 4
+resnet50,29,dinosaur,reptiles,19.2,0 1 2 3 4
+resnet50,16,can,food_containers,19.6,0 1 2 3 4
+resnet50,66,raccoon,medium_mammals,20.0,0 1 2 3 4
+resnet50,7,beetle,insects,21.2,0 1 2 3 4
+resnet50,2,baby,people,21.6,0 1 2 3 4
+resnet50,85,tank,vehicles_2,22.0,0 1 2 3 4
+resnet50,15,camel,large_omnivores_and_herbivores,22.4,0 1 2 3 4
+resnet50,40,lamp,household_electrical_devices,23.6,0 1 2 3 4
+resnet50,57,pear,fruit_and_vegetables,24.0,0 1 2 3 4
+resnet50,43,lion,large_carnivores,24.8,0 1 2 3 4
+resnet50,79,spider,non-insect_invertebrates,28.4,0 1 2 3 4
+resnet50,37,house,large_man-made_outdoor_things,28.8,0 1 2 3 4
+resnet50,73,shark,fish,30.0,0 1 2 3 4
+resnet50,33,forest,large_natural_outdoor_scenes,30.8,0 1 2 3 4
+resnet50,56,palm_tree,trees,32.0,0 1 2 3 4
+resnet50,22,clock,household_electrical_devices,36.4,0 1 2 3 4
+vit_b_16,13,bus,vehicles_1,-6.0,0 1 2 3 4
+vit_b_16,95,whale,aquatic_mammals,-3.2,0 1 2 3 4
+vit_b_16,60,plain,large_natural_outdoor_scenes,-2.0,0 1 2 3 4
+vit_b_16,78,snake,reptiles,-0.8,0 1 2 3 4
+vit_b_16,5,bed,household_furniture,1.2,0 1 2 3 4
+vit_b_16,62,poppy,flowers,2.4,0 1 2 3 4
+vit_b_16,48,motorcycle,vehicles_1,2.4,0 1 2 3 4
+vit_b_16,21,chimpanzee,large_omnivores_and_herbivores,2.4,0 1 2 3 4
+vit_b_16,55,otter,aquatic_mammals,2.8,0 1 2 3 4
+vit_b_16,1,aquarium_fish,fish,2.8,0 1 2 3 4
+vit_b_16,32,flatfish,fish,3.6,0 1 2 3 4
+vit_b_16,23,cloud,large_natural_outdoor_scenes,4.0,0 1 2 3 4
+vit_b_16,31,elephant,large_omnivores_and_herbivores,4.0,0 1 2 3 4
+vit_b_16,68,road,large_man-made_outdoor_things,4.8,0 1 2 3 4
+vit_b_16,28,cup,food_containers,4.8,0 1 2 3 4
+vit_b_16,35,girl,people,5.2,0 1 2 3 4
+vit_b_16,9,bottle,food_containers,5.2,0 1 2 3 4
+vit_b_16,86,telephone,household_electrical_devices,6.0,0 1 2 3 4
+vit_b_16,0,apple,fruit_and_vegetables,6.4,0 1 2 3 4
+vit_b_16,20,chair,household_furniture,6.4,0 1 2 3 4
+vit_b_16,47,maple_tree,trees,6.8,0 1 2 3 4
+vit_b_16,92,tulip,flowers,6.8,0 1 2 3 4
+vit_b_16,98,woman,people,6.8,0 1 2 3 4
+vit_b_16,15,camel,large_omnivores_and_herbivores,7.2,0 1 2 3 4
+vit_b_16,46,man,people,7.6,0 1 2 3 4
+vit_b_16,99,worm,non-insect_invertebrates,7.6,0 1 2 3 4
+vit_b_16,52,oak_tree,trees,7.6,0 1 2 3 4
+vit_b_16,74,shrew,small_mammals,8.0,0 1 2 3 4
+vit_b_16,64,possum,medium_mammals,8.0,0 1 2 3 4
+vit_b_16,29,dinosaur,reptiles,8.4,0 1 2 3 4
+vit_b_16,24,cockroach,insects,8.4,0 1 2 3 4
+vit_b_16,38,kangaroo,large_omnivores_and_herbivores,8.8,0 1 2 3 4
+vit_b_16,22,clock,household_electrical_devices,8.8,0 1 2 3 4
+vit_b_16,41,lawn_mower,vehicles_2,9.6,0 1 2 3 4
+vit_b_16,39,keyboard,household_electrical_devices,9.6,0 1 2 3 4
+vit_b_16,10,bowl,food_containers,10.4,0 1 2 3 4
+vit_b_16,80,squirrel,small_mammals,10.4,0 1 2 3 4
+vit_b_16,4,beaver,aquatic_mammals,10.4,0 1 2 3 4
+vit_b_16,89,tractor,vehicles_2,10.8,0 1 2 3 4
+vit_b_16,69,rocket,vehicles_2,11.2,0 1 2 3 4
+vit_b_16,12,bridge,large_man-made_outdoor_things,11.2,0 1 2 3 4
+vit_b_16,81,streetcar,vehicles_2,11.2,0 1 2 3 4
+vit_b_16,96,willow_tree,trees,11.2,0 1 2 3 4
+vit_b_16,53,orange,fruit_and_vegetables,11.6,0 1 2 3 4
+vit_b_16,51,mushroom,fruit_and_vegetables,12.0,0 1 2 3 4
+vit_b_16,75,skunk,medium_mammals,12.0,0 1 2 3 4
+vit_b_16,36,hamster,small_mammals,12.0,0 1 2 3 4
+vit_b_16,87,television,household_electrical_devices,12.8,0 1 2 3 4
+vit_b_16,14,butterfly,insects,13.6,0 1 2 3 4
+vit_b_16,72,seal,aquatic_mammals,14.0,0 1 2 3 4
+vit_b_16,84,table,household_furniture,14.4,0 1 2 3 4
+vit_b_16,19,cattle,large_omnivores_and_herbivores,14.4,0 1 2 3 4
+vit_b_16,43,lion,large_carnivores,14.8,0 1 2 3 4
+vit_b_16,7,beetle,insects,15.2,0 1 2 3 4
+vit_b_16,8,bicycle,vehicles_1,15.2,0 1 2 3 4
+vit_b_16,30,dolphin,aquatic_mammals,15.2,0 1 2 3 4
+vit_b_16,83,sweet_pepper,fruit_and_vegetables,15.2,0 1 2 3 4
+vit_b_16,90,train,vehicles_1,15.2,0 1 2 3 4
+vit_b_16,33,forest,large_natural_outdoor_scenes,15.6,0 1 2 3 4
+vit_b_16,91,trout,fish,16.0,0 1 2 3 4
+vit_b_16,6,bee,insects,16.0,0 1 2 3 4
+vit_b_16,18,caterpillar,insects,16.4,0 1 2 3 4
+vit_b_16,94,wardrobe,household_furniture,16.4,0 1 2 3 4
+vit_b_16,59,pine_tree,trees,16.4,0 1 2 3 4
+vit_b_16,88,tiger,large_carnivores,16.4,0 1 2 3 4
+vit_b_16,34,fox,medium_mammals,17.6,0 1 2 3 4
+vit_b_16,26,crab,non-insect_invertebrates,17.6,0 1 2 3 4
+vit_b_16,93,turtle,reptiles,17.6,0 1 2 3 4
+vit_b_16,79,spider,non-insect_invertebrates,18.0,0 1 2 3 4
+vit_b_16,27,crocodile,reptiles,19.6,0 1 2 3 4
+vit_b_16,50,mouse,small_mammals,19.6,0 1 2 3 4
+vit_b_16,63,porcupine,medium_mammals,19.6,0 1 2 3 4
+vit_b_16,82,sunflower,flowers,19.6,0 1 2 3 4
+vit_b_16,17,castle,large_man-made_outdoor_things,20.0,0 1 2 3 4
+vit_b_16,67,ray,fish,20.0,0 1 2 3 4
+vit_b_16,25,couch,household_furniture,20.4,0 1 2 3 4
+vit_b_16,61,plate,food_containers,20.4,0 1 2 3 4
+vit_b_16,3,bear,large_carnivores,20.8,0 1 2 3 4
+vit_b_16,11,boy,people,21.2,0 1 2 3 4
+vit_b_16,57,pear,fruit_and_vegetables,22.4,0 1 2 3 4
+vit_b_16,97,wolf,large_carnivores,22.4,0 1 2 3 4
+vit_b_16,45,lobster,non-insect_invertebrates,22.8,0 1 2 3 4
+vit_b_16,56,palm_tree,trees,23.2,0 1 2 3 4
+vit_b_16,58,pickup_truck,vehicles_1,23.2,0 1 2 3 4
+vit_b_16,77,snail,non-insect_invertebrates,23.2,0 1 2 3 4
+vit_b_16,76,skyscraper,large_man-made_outdoor_things,23.2,0 1 2 3 4
+vit_b_16,85,tank,vehicles_2,26.0,0 1 2 3 4
+vit_b_16,49,mountain,large_natural_outdoor_scenes,26.0,0 1 2 3 4
+vit_b_16,65,rabbit,small_mammals,26.4,0 1 2 3 4
+vit_b_16,2,baby,people,27.2,0 1 2 3 4
+vit_b_16,70,rose,flowers,27.6,0 1 2 3 4
+vit_b_16,73,shark,fish,27.6,0 1 2 3 4
+vit_b_16,44,lizard,reptiles,29.2,0 1 2 3 4
+vit_b_16,42,leopard,large_carnivores,29.2,0 1 2 3 4
+vit_b_16,66,raccoon,medium_mammals,30.4,0 1 2 3 4
+vit_b_16,54,orchid,flowers,34.4,0 1 2 3 4
+vit_b_16,16,can,food_containers,35.6,0 1 2 3 4
+vit_b_16,37,house,large_man-made_outdoor_things,35.6,0 1 2 3 4
+vit_b_16,71,sea,large_natural_outdoor_scenes,36.8,0 1 2 3 4
+vit_b_16,40,lamp,household_electrical_devices,44.0,0 1 2 3 4

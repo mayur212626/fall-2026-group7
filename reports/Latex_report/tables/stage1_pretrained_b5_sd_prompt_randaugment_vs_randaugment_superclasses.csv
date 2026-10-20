@@ -1,41 +1,41 @@
 model,superclass,superclass_name,recall_change,seeds
-resnet50,0,aquatic_mammals,5.4667,0 1 2
-resnet50,1,fish,5.0667,0 1 2
-resnet50,2,flowers,12.8,0 1 2
-resnet50,3,food_containers,11.0667,0 1 2
-resnet50,4,fruit_and_vegetables,7.3333,0 1 2
-resnet50,5,household_electrical_devices,13.4667,0 1 2
-resnet50,6,household_furniture,5.8667,0 1 2
-resnet50,7,insects,11.7333,0 1 2
-resnet50,8,large_carnivores,9.8667,0 1 2
-resnet50,9,large_man-made_outdoor_things,12.0,0 1 2
-resnet50,10,large_natural_outdoor_scenes,9.0667,0 1 2
-resnet50,11,large_omnivores_and_herbivores,10.5333,0 1 2
-resnet50,12,medium_mammals,7.4667,0 1 2
-resnet50,13,non-insect_invertebrates,7.8667,0 1 2
-resnet50,14,people,12.5333,0 1 2
-resnet50,15,reptiles,7.8667,0 1 2
-resnet50,16,small_mammals,7.3333,0 1 2
-resnet50,17,trees,9.3333,0 1 2
-resnet50,18,vehicles_1,11.2,0 1 2
-resnet50,19,vehicles_2,13.7333,0 1 2
-vit_b_16,0,aquatic_mammals,7.3333,0 1 2
-vit_b_16,1,fish,6.8,0 1 2
-vit_b_16,2,flowers,15.3333,0 1 2
-vit_b_16,3,food_containers,14.2667,0 1 2
-vit_b_16,4,fruit_and_vegetables,13.0667,0 1 2
-vit_b_16,5,household_electrical_devices,15.4667,0 1 2
-vit_b_16,6,household_furniture,9.2,0 1 2
-vit_b_16,7,insects,13.2,0 1 2
-vit_b_16,8,large_carnivores,10.0,0 1 2
-vit_b_16,9,large_man-made_outdoor_things,14.1333,0 1 2
-vit_b_16,10,large_natural_outdoor_scenes,4.2667,0 1 2
-vit_b_16,11,large_omnivores_and_herbivores,4.6667,0 1 2
-vit_b_16,12,medium_mammals,11.0667,0 1 2
-vit_b_16,13,non-insect_invertebrates,14.5333,0 1 2
-vit_b_16,14,people,12.5333,0 1 2
-vit_b_16,15,reptiles,15.3333,0 1 2
-vit_b_16,16,small_mammals,11.3333,0 1 2
-vit_b_16,17,trees,12.6667,0 1 2
-vit_b_16,18,vehicles_1,8.1333,0 1 2
-vit_b_16,19,vehicles_2,10.1333,0 1 2
+resnet50,0,aquatic_mammals,7.36,0 1 2 3 4
+resnet50,1,fish,4.64,0 1 2 3 4
+resnet50,2,flowers,13.44,0 1 2 3 4
+resnet50,3,food_containers,11.28,0 1 2 3 4
+resnet50,4,fruit_and_vegetables,9.2,0 1 2 3 4
+resnet50,5,household_electrical_devices,15.92,0 1 2 3 4
+resnet50,6,household_furniture,6.24,0 1 2 3 4
+resnet50,7,insects,11.76,0 1 2 3 4
+resnet50,8,large_carnivores,10.48,0 1 2 3 4
+resnet50,9,large_man-made_outdoor_things,13.44,0 1 2 3 4
+resnet50,10,large_natural_outdoor_scenes,7.36,0 1 2 3 4
+resnet50,11,large_omnivores_and_herbivores,10.0,0 1 2 3 4
+resnet50,12,medium_mammals,6.64,0 1 2 3 4
+resnet50,13,non-insect_invertebrates,5.76,0 1 2 3 4
+resnet50,14,people,11.76,0 1 2 3 4
+resnet50,15,reptiles,6.16,0 1 2 3 4
+resnet50,16,small_mammals,8.8,0 1 2 3 4
+resnet50,17,trees,10.24,0 1 2 3 4
+resnet50,18,vehicles_1,10.32,0 1 2 3 4
+resnet50,19,vehicles_2,12.4,0 1 2 3 4
+vit_b_16,0,aquatic_mammals,9.36,0 1 2 3 4
+vit_b_16,1,fish,7.12,0 1 2 3 4
+vit_b_16,2,flowers,14.8,0 1 2 3 4
+vit_b_16,3,food_containers,13.84,0 1 2 3 4
+vit_b_16,4,fruit_and_vegetables,10.56,0 1 2 3 4
+vit_b_16,5,household_electrical_devices,13.84,0 1 2 3 4
+vit_b_16,6,household_furniture,9.28,0 1 2 3 4
+vit_b_16,7,insects,13.68,0 1 2 3 4
+vit_b_16,8,large_carnivores,13.04,0 1 2 3 4
+vit_b_16,9,large_man-made_outdoor_things,14.08,0 1 2 3 4
+vit_b_16,10,large_natural_outdoor_scenes,7.68,0 1 2 3 4
+vit_b_16,11,large_omnivores_and_herbivores,5.52,0 1 2 3 4
+vit_b_16,12,medium_mammals,11.28,0 1 2 3 4
+vit_b_16,13,non-insect_invertebrates,11.92,0 1 2 3 4
+vit_b_16,14,people,11.36,0 1 2 3 4
+vit_b_16,15,reptiles,14.32,0 1 2 3 4
+vit_b_16,16,small_mammals,12.56,0 1 2 3 4
+vit_b_16,17,trees,11.04,0 1 2 3 4
+vit_b_16,18,vehicles_1,9.12,0 1 2 3 4
+vit_b_16,19,vehicles_2,10.16,0 1 2 3 4

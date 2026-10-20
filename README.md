@@ -16,8 +16,8 @@ Stage 1 is in progress:
 
 - Done: the CIFAR-100 split manifest, the training runner with resume and validation-only checkpoint selection, the metrics and tests, the learning-rate and step-budget pilots for both initializations, the real-only and RandAugment baselines for both initializations (120 runs, ImageNet-pretrained and random; tables and figures in the LaTeX report), and the FID and Improved Precision & Recall tool.
 - Done: the Stable Diffusion 1.5 class-prompt pool (45,000 images) and one LoRA-adapted pool per data budget (53,500 images), scored with FID and Improved Precision & Recall, and the `sd_prompt` and `sd_lora` runs for both initializations (120 runs); tables and figures in the LaTeX report.
-- Done: SD + RandAugment for the ImageNet-pretrained arm (30 runs), and an error analysis from the stored validation predictions (per-class and per-superclass recall change, confusions, bootstrap intervals, sign tests).
-- Next: SD + RandAugment for the random-initialization arm, training seeds 3 and 4 for the main pretrained cells, the one-time test-set evaluation, and Stage 2.
+- Done: SD + RandAugment for the ImageNet-pretrained arm (30 runs), an error analysis from the stored validation predictions (per-class and per-superclass recall change, confusions, bootstrap intervals, sign tests), and training seeds 3 and 4 for the main pretrained cells (48 runs).
+- Next: SD + RandAugment for the random-initialization arm, the one-time test-set evaluation, and Stage 2.
 
 The run matrix in `src/component/configs/run_matrix.csv` lists every Stage 1 run and its status. Documentation: [setup](src/docs/setup.md), [data splits](src/docs/data-splits.md), [training and results](src/docs/training.md), [generated-image quality](src/docs/image-quality.md), [synthetic data](src/docs/synthetic-data.md).
 
