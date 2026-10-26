@@ -2,23 +2,33 @@
 \centering
 \small
 \setlength{\tabcolsep}{4pt}
-\caption{Stage 1, scratch initialization: change in validation top-1 accuracy (percentage points), mean over training seeds of the paired change, with its 95\% percentile bootstrap interval over the 5{,}000 validation images (10{,}000 resamples, the same images for every seed and both conditions). The interval covers image-sampling noise only; the seed SD is in the paired tables. The last row is a two-sided sign test of the mean changes over all cells (gains/cells, $p$). SD: pretrained Stable Diffusion with class prompts; RA: RandAugment.}
+\caption{Stage 1, scratch initialization: change in validation top-1 accuracy (percentage points), mean over training seeds of the paired change, with its 95\% percentile bootstrap interval over the 5{,}000 validation images (10{,}000 resamples, the same images for every seed and both conditions). This interval covers image-sampling noise; the line below each row, in parentheses, gives the 95\% t-interval over training seeds, which covers training noise. The last row is a two-sided sign test of the mean changes over all cells (gains/cells, $p$). SD: pretrained Stable Diffusion with class prompts; RA: RandAugment.}
 \label{tab:stage1-scratch-bootstrap}
 \begin{tabular}{llrr}
 \toprule
 Model & Images/class & SD$-$real (pp) $\uparrow$ & SD$-$RA (pp) $\uparrow$ \\
 \midrule
 ResNet-50 & 5 & +1.91 [+1.29, +2.54] & -4.11 [-4.94, -3.29] \\
+ & & (+1.07, +2.76) & (-6.67, -1.56) \\
 ResNet-50 & 10 & +2.05 [+1.30, +2.81] & -7.30 [-8.25, -6.33] \\
+ & & (-0.58, +4.69) & (-8.91, -5.69) \\
 ResNet-50 & 20 & +5.43 [+4.59, +6.27] & -5.11 [-6.05, -4.16] \\
+ & & (+0.57, +10.29) & (-7.75, -2.47) \\
 ResNet-50 & 50 & +8.22 [+7.33, +9.13] & -1.39 [-2.30, -0.45] \\
+ & & (-2.48, +18.92) & (-8.78, +5.99) \\
 ResNet-50 & full & +4.87 [+3.99, +5.77] & -5.42 [-6.29, -4.53] \\
+ & & (+0.60, +9.13) & (-11.12, +0.28) \\
 \midrule
 ViT-B/16 & 5 & +1.85 [+1.33, +2.39] & -0.67 [-1.39, +0.05] \\
+ & & (+0.75, +2.96) & (-0.99, -0.35) \\
 ViT-B/16 & 10 & +1.97 [+1.37, +2.59] & -1.39 [-2.17, -0.59] \\
+ & & (+1.13, +2.82) & (-2.95, +0.17) \\
 ViT-B/16 & 20 & +2.60 [+1.93, +3.29] & -1.97 [-2.83, -1.11] \\
+ & & (+1.02, +4.18) & (-2.63, -1.30) \\
 ViT-B/16 & 50 & +3.30 [+2.55, +4.07] & -4.87 [-5.80, -3.97] \\
+ & & (+2.82, +3.78) & (-5.94, -3.81) \\
 ViT-B/16 & full & +3.95 [+3.11, +4.80] & -11.02 [-11.99, -10.05] \\
+ & & (+3.81, +4.10) & (-12.75, -9.29) \\
 \midrule
 \multicolumn{2}{l}{Sign test} & 10/10, $p=0.002$ & 0/10, $p=0.002$ \\
 \bottomrule

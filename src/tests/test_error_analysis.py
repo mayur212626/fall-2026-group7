@@ -20,6 +20,7 @@ from src.component.error_analysis import (
     per_class_recall,
     plot_superclass_change,
     read_superclasses,
+    seed_t_interval,
     sign_test,
     sign_test_rows,
     superclass_change,
@@ -145,9 +146,24 @@ class IntervalRowsTest(unittest.TestCase):
         self.assertLessEqual(row["ci_low"], row["mean"])
         self.assertGreaterEqual(row["ci_high"], row["mean"])
         self.assertEqual((row["resamples"], row["bootstrap_seed"]), (10_000, 0))
+        self.assertEqual((row["seed_ci_low"], row["seed_ci_high"]), seed_t_interval([25.0, 75.0]))
 
     def test_leaves_out_other_initializations(self) -> None:
         self.assertEqual(interval_rows(CELL_RUNS, "scratch"), [])
+
+
+class SeedTIntervalTest(unittest.TestCase):
+    def test_mean_plus_minus_t_times_standard_error_over_seeds(self) -> None:
+        low, high = seed_t_interval([5.0, 4.0, 6.0])  # mean 5, SD 1, t(0.975, 2 df) = 4.3027
+        self.assertAlmostEqual(low, 5 - 4.3027 / 3 ** 0.5, places=3)
+        self.assertAlmostEqual(high, 5 + 4.3027 / 3 ** 0.5, places=3)
+
+    def test_five_seeds_use_four_degrees_of_freedom(self) -> None:
+        low, high = seed_t_interval([1.0, 2.0, 3.0, 4.0, 5.0])  # mean 3, SD 1.5811, t(0.975, 4 df) = 2.7764
+        self.assertAlmostEqual(high - 3, 2.7764 * 1.5811 / 5 ** 0.5, places=3)
+
+    def test_one_seed_has_no_interval(self) -> None:
+        self.assertEqual(seed_t_interval([2.0]), (None, None))
 
 
 class SignTestRowsTest(unittest.TestCase):
@@ -168,6 +184,14 @@ class IntervalTableTest(unittest.TestCase):
         self.assertIn("10{,}000 resamples", table)
         self.assertIn(r"\label{tab:stage1-pretrained-bootstrap}", table)
         self.assertIn("\\centering\n\\small\n\\setlength{\\tabcolsep}{4pt}\n", table)  # the interval cells are wide
+
+    def test_second_line_shows_the_across_seed_interval(self) -> None:
+        intervals = interval_rows(CELL_RUNS, "pretrained")
+        table = interval_table(intervals, sign_test_rows(intervals), "pretrained")
+        r = intervals[0]
+        self.assertIn(f"ResNet-50 & 5 & +50.00 [{r['ci_low']:+.2f}, {r['ci_high']:+.2f}] \\\\\n"
+                      f" & & ({r['seed_ci_low']:+.2f}, {r['seed_ci_high']:+.2f}) \\\\", table)
+        self.assertIn("t-interval over training seeds", table)
 
     def test_leaves_out_comparisons_without_runs(self) -> None:
         intervals = interval_rows(CELL_RUNS, "pretrained")

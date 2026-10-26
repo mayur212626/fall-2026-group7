@@ -141,6 +141,25 @@ def bootstrap_ci(pairs: list[tuple[dict, dict]], resamples: int = BOOTSTRAP_RESA
     return round(float(low), 10), round(float(high), 10)
 
 
+# Two-sided 95% quantiles of Student's t, t(0.975, df), for the across-seed interval.
+T_975 = {1: 12.7062, 2: 4.3027, 3: 3.1824, 4: 2.7764, 5: 2.5706, 6: 2.4469, 7: 2.3646, 8: 2.3060, 9: 2.2622,
+         10: 2.2281}
+
+
+def seed_t_interval(changes: list[float]) -> tuple[float | None, float | None]:
+    """95% t-interval of the mean paired change over training seeds; (None, None) for one seed.
+
+    All seeds are scored on the same validation images, so this interval
+    covers training noise and the image bootstrap covers image-sampling noise.
+    """
+    n = len(changes)
+    if n < 2:
+        return None, None
+    mean = float(np.mean(changes))
+    half = T_975[n - 1] * float(np.std(changes, ddof=1)) / math.sqrt(n)
+    return mean - half, mean + half
+
+
 def sign_test(changes: list[float]) -> float:
     """Two-sided exact sign test p-value of the changes; zero changes are left out."""
     signs = [c > 0 for c in changes if c != 0]
@@ -222,9 +241,11 @@ def interval_rows(runs: list[dict], init: str) -> list[dict]:
     for treatment, control in CI_COMPARISONS:
         for c in paired_changes(accuracy, treatment, control, "accuracy"):
             low, high = bootstrap_ci(paired_runs(runs, init, c["model"], c["budget"], treatment, control))
+            seed_low, seed_high = seed_t_interval(c["changes"])
             rows.append({"init": init, "model": c["model"], "budget": c["budget"], "treatment": treatment,
                          "control": control, "seeds": c["seeds"], "changes": c["changes"], "mean": c["mean"],
-                         "seed_sd": c["sd"], "ci_low": low, "ci_high": high, "verdict": c["verdict"],
+                         "seed_sd": c["sd"], "ci_low": low, "ci_high": high, "seed_ci_low": seed_low,
+                         "seed_ci_high": seed_high, "verdict": c["verdict"],
                          "resamples": BOOTSTRAP_RESAMPLES, "bootstrap_seed": BOOTSTRAP_SEED})
     return rows
 
@@ -261,7 +282,8 @@ def interval_table(intervals: list[dict], tests: list[dict], init: str) -> str:
         rf"\caption{{Stage 1, {init} initialization: change in validation top-1 accuracy (percentage points), "
         r"mean over training seeds of the paired change, with its 95\% percentile bootstrap interval over the "
         rf"5{{,}}000 validation images ({resamples} resamples, the same images for every seed and "
-        r"both conditions). The interval covers image-sampling noise only; the seed SD is in the paired tables. "
+        r"both conditions). This interval covers image-sampling noise; the line below each row, in parentheses, "
+        r"gives the 95\% t-interval over training seeds, which covers training noise. "
         r"The last row is a two-sided sign test of the mean changes over all cells (gains/cells, $p$). "
         r"SD: pretrained Stable Diffusion with class prompts; RA: RandAugment.}",
         rf"\label{{tab:stage1-{init}-bootstrap}}",
@@ -275,11 +297,14 @@ def interval_table(intervals: list[dict], tests: list[dict], init: str) -> str:
             continue
         lines.append(r"\midrule")
         for budget in budgets:
-            row = [MODEL_NAMES[model], budget]
+            row, seed_row = [MODEL_NAMES[model], budget], []
             for t, c in shown:
                 r = cells.get((model, budget, t, c))
                 row.append(f"{pp(r['mean'])} [{pp(r['ci_low'])}, {pp(r['ci_high'])}]" if r else "--")
+                has_seed_ci = r is not None and r.get("seed_ci_low") is not None
+                seed_row.append(f"({pp(r['seed_ci_low'])}, {pp(r['seed_ci_high'])})" if has_seed_ci else "--")
             lines.append(" & ".join(row) + r" \\")
+            lines.append(" & & " + " & ".join(seed_row) + r" \\")
     lines.append(r"\midrule")
     signs = []
     for t, c in shown:
