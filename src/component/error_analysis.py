@@ -155,6 +155,8 @@ def seed_t_interval(changes: list[float]) -> tuple[float | None, float | None]:
     n = len(changes)
     if n < 2:
         return None, None
+    if n - 1 not in T_975:
+        raise ValueError(f"t quantiles are tabulated for 2 to {max(T_975) + 1} seeds, not {n} seeds")
     mean = float(np.mean(changes))
     half = T_975[n - 1] * float(np.std(changes, ddof=1)) / math.sqrt(n)
     return mean - half, mean + half
