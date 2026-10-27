@@ -78,18 +78,25 @@
 
 \paragraph{Contribution.}
 That synthetic images help when real data is scarce is expected: with 5 images per class, Stable Diffusion
-class-prompt images raise ImageNet-pretrained ResNet-50 by 11.4 and ViT-B/16 by 14.5 points, as earlier work
-on synthetic training data would predict. This study asks two questions that such gains leave open.
-First, \emph{which property of a generated set predicts whether it will help?} The standard answer is
-generator quality, but in our benchmark the two measures disagree: LoRA-adapted pools are closer to the real
-data than class-prompt pools (lower FID from 10 images per class up, higher recall at every budget), yet they
-give smaller gains at every budget, and no per-class precision, recall or diversity measure predicts which
-classes gain. Second, \emph{why does the effect reverse with initialization?} The same images that help
-pretrained classifiers lose to RandAugment for randomly initialized ones at most budgets. We test candidate
-explanations for this sign flip (diversity of the generated images, their distance from the real data, and
-how well a classifier trained on real images recognises them) and report which quality measures, if any,
-predict the downstream gain. The aim is a practical rule for when to add generated images, and a warning
-about the measures commonly used to choose them.
+class-prompt images raise ImageNet-pretrained ResNet-50 by 11.4 and ViT-B/16 by 14.5 points, in line with
+earlier work on synthetic training data~\cite{he2023synthetic}. This study asks two questions that such
+gains leave open. First, \emph{which property of a generated set predicts whether it will help?}
+Generator-quality measures such as FID are known to predict poorly how well a classifier trained on
+generated images performs~\cite{ravuri2019classification}, also for diffusion-based
+augmentation~\cite{li2026diffusion}. We test this in the scarce-data setting, with the real images always
+in the training set and conventional augmentation as a control. In our benchmark the two disagree:
+LoRA-adapted pools are closer to the real data than class-prompt pools (lower FID from 10 images per class
+up, higher recall at every budget), yet with pretrained classifiers they give smaller gains at every
+budget, and in a first per-class analysis no precision, recall or diversity measure predicts which classes
+gain. Second, \emph{why does the effect reverse with initialization?} The same images that help pretrained
+classifiers lose to RandAugment for randomly initialized ones at most budgets. A recent systematic study of
+diffusion-based augmentation~\cite{li2026diffusion} starts from ImageNet weights for some datasets and trains
+from scratch on others, so it cannot separate the two, and it has no RandAugment control; our design pairs
+both initializations on the same data, budgets and generated images. We test candidate explanations for
+this sign flip (diversity of the generated images, their distance from the real data, and how well a
+classifier trained on real images recognises them) and report which quality measures, if any, predict the
+downstream gain. The aim is a practical rule for when to add generated images, and a warning about the
+measures commonly used to choose them.
 
 % ------------------------------------------------------------------------------------------------------------------------
 \section{Problem Statement}
