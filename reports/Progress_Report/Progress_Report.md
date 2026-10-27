@@ -10,6 +10,10 @@ This report is updated every week. Each week lists what was planned, what was do
 | 1-2 | Repository, proposal and research questions | [#4](https://github.com/mayur212626/fall-2026-group7/pull/4) |
 | 3-4 | Repository layout, staged proposal, split manifest, metrics, training runner and tests | [#6](https://github.com/mayur212626/fall-2026-group7/pull/6) |
 | 5 | Pilots, 60 pretrained baselines, pipeline diagram, report skeleton, first reviewed PRs | [#6](https://github.com/mayur212626/fall-2026-group7/pull/6), [#7](https://github.com/mayur212626/fall-2026-group7/pull/7), [#17](https://github.com/mayur212626/fall-2026-group7/pull/17) |
+| 6 | Synthetic pools, generated-image quality, random-initialization baselines | [#17](https://github.com/mayur212626/fall-2026-group7/pull/17), [#18](https://github.com/mayur212626/fall-2026-group7/pull/18), [#20](https://github.com/mayur212626/fall-2026-group7/pull/20), [#22](https://github.com/mayur212626/fall-2026-group7/pull/22) |
+| 7 | Synthetic-data results and literature review | [#24](https://github.com/mayur212626/fall-2026-group7/pull/24)–[#28](https://github.com/mayur212626/fall-2026-group7/pull/28) |
+| 8 | Error analysis and uncertainty (Fall break) | [#30](https://github.com/mayur212626/fall-2026-group7/pull/30) |
+| 9 | Preliminary presentation | [#32](https://github.com/mayur212626/fall-2026-group7/pull/32), [#33](https://github.com/mayur212626/fall-2026-group7/pull/33) |
 
 ---
 
@@ -89,3 +93,108 @@ All of this was merged in PR [#6](https://github.com/mayur212626/fall-2026-group
 - Random-initialization baselines (60 runs) and the FID and Improved Precision & Recall tool (MP).
 - Stable Diffusion class-prompt pool, LoRA adapters for each budget, and the synthetic-data runs (MKV).
 - Literature review in the LaTeX report (MKV).
+
+---
+
+## Week 6: Synthetic pools, generated-image quality, random-initialization baselines
+
+**Planned**
+
+- Random-initialization baselines (60 runs) and the FID and Improved Precision & Recall tool.
+- Stable Diffusion class-prompt pool, one LoRA adapter per budget, and the synthetic-data runs.
+
+**Done**
+
+- Exported the result tables as CSV and LaTeX and added the pretrained baseline table to the report: PR [#17](https://github.com/mayur212626/fall-2026-group7/pull/17); training progress logged to `train.log`: PR [#18](https://github.com/mayur212626/fall-2026-group7/pull/18). (MP)
+- FID and Improved Precision & Recall for generated image sets, and the pilot learning rates recorded: PR [#20](https://github.com/mayur212626/fall-2026-group7/pull/20). (MP)
+- Stage 1 run matrix, generator registry and the 60 random-initialization baselines: PR [#22](https://github.com/mayur212626/fall-2026-group7/pull/22). (MP)
+- Generated the Stable Diffusion 1.5 class-prompt pool: 45,000 images (450 per class), 8 prompt templates and a negative prompt, DPM-Solver++ with 25 steps and guidance 7.5, reduced to 32×32. (MKV)
+- LoRA rank pilot (rank 4, 8, 16; rank 8 chosen on validation accuracy), then one rank-8 adapter per data budget, trained only on that budget's real images, and its pool: 53,500 images. (MKV)
+- Scored every pool with FID and Improved Precision & Recall against an equal-size real sample, with a real-vs-real floor. (MKV)
+- Ran the SD class-prompt and SD + LoRA conditions for both initializations (120 runs). The code was committed in [`a9bb0da`](https://github.com/mayur212626/fall-2026-group7/commit/a9bb0da). (MKV)
+
+**Next**
+
+- Merge the SD and LoRA conditions, add SD + RandAugment, write the results section, and finish the literature review.
+
+---
+
+## Week 7: Synthetic-data results and literature review
+
+**Planned**
+
+- Merge the synthetic conditions and their results.
+- SD + RandAugment as a combined condition.
+- Literature review in the LaTeX report.
+
+**Done**
+
+- SD class-prompt and SD + LoRA conditions merged: PR [#24](https://github.com/mayur212626/fall-2026-group7/pull/24) (reviewed by MP). (MKV)
+- SD + RandAugment condition and the comparison against RandAugment: PR [#25](https://github.com/mayur212626/fall-2026-group7/pull/25). (MP)
+- Pretrained SD + RandAugment results (30 runs): PR [#26](https://github.com/mayur212626/fall-2026-group7/pull/26) ([`097a2e3`](https://github.com/mayur212626/fall-2026-group7/commit/097a2e3)). (MKV)
+- Synthetic-data results section, tables and figures for both initializations: PR [#27](https://github.com/mayur212626/fall-2026-group7/pull/27). (MP)
+- Literature review, Related Work section with 21 cited works: PR [#28](https://github.com/mayur212626/fall-2026-group7/pull/28) ([`7eb0fa8`](https://github.com/mayur212626/fall-2026-group7/commit/7eb0fa8)). (MKV)
+- Instructor Review #4 received: [#29](https://github.com/mayur212626/fall-2026-group7/issues/29).
+
+**Next**
+
+- Answer Review #4's statistical critique (intervals, verdict rule) and prepare the preliminary presentation.
+
+---
+
+## Week 8: Error analysis and uncertainty (Fall break, no working session)
+
+**Planned**
+
+- Bootstrap intervals and a sign test for the paired comparisons.
+- Per-class and per-superclass error analysis.
+- Runner for training seeds 3 and 4.
+
+**Done**
+
+- Error analysis from the stored validation predictions: per-class and per-superclass recall changes, confusion changes, 95% bootstrap intervals over validation images, sign test, the extra-seed runner and CI: PR [#30](https://github.com/mayur212626/fall-2026-group7/pull/30) ([`a864513`](https://github.com/mayur212626/fall-2026-group7/commit/a864513), [`61119c0`](https://github.com/mayur212626/fall-2026-group7/commit/61119c0)). (MP; reviewed by MKV)
+- Shared the SD class-prompt pool (`pool.npz`, SHA-256 checked against the registry) so seeds 3–4 and the remaining scratch SD + RandAugment runs can use the same images. (MKV)
+- Instructor Review #5 received: [#31](https://github.com/mayur212626/fall-2026-group7/issues/31).
+
+**Next**
+
+- Preliminary presentation, seeds 3 and 4 for the main pretrained cells, and an explanation of the sign flip (Review #5, Critique 2).
+
+---
+
+## Week 9: Preliminary presentation
+
+**Planned**
+
+- Preliminary presentation (Oct 20).
+- Slides in `presentation/` and the progress report.
+- Seeds 3 and 4.
+
+**Done**
+
+- Preliminary presentation of Stage 1: design, protocol, baselines, synthetic-data results, superclass breakdown and next steps. (MP, MKV)
+- Slides in `presentation/` and this progress report (Weeks 1–5): PR [#33](https://github.com/mayur212626/fall-2026-group7/pull/33). (MKV; reviewed by MP)
+- Seeds 3 and 4 for the main pretrained cells (48 runs; no verdict changed): PR [#32](https://github.com/mayur212626/fall-2026-group7/pull/32). (MP; reviewed by MKV)
+- Replied to Review #5 on [#31](https://github.com/mayur212626/fall-2026-group7/issues/31) and took the sign-flip diagnostic. (MKV)
+- Instructor Review #6 received: [#34](https://github.com/mayur212626/fall-2026-group7/issues/34).
+
+**Feedback from the presentation (Review #6)**
+
+- "How good was the generation?" and "Is there any metric that shows the generated samples are helpful?"
+- That augmentation helps with little data is expected and is not enough of a contribution. The two non-obvious results are that lower FID does not mean more useful images (LoRA has lower FID but helps less), and that the effect flips with initialization.
+
+**Next**
+
+- Reframe the contribution around which generated-data measure predicts usefulness (RQ3) and why the effect flips with initialization.
+- Seed-aware intervals (MP) and the sign-flip and RQ3 diagnostics (MKV).
+- Plan tickets with owners for Nov 3 to Dec 1.
+
+---
+
+## Working-session notes
+
+**Oct 27**
+
+- Deleted the stale `manoj` branch; all its commits were already on `main`. (MKV)
+- Opened [#36](https://github.com/mayur212626/fall-2026-group7/issues/36), the sign-flip and RQ3 diagnostics, and its draft PR [#37](https://github.com/mayur212626/fall-2026-group7/pull/37): per-class Improved Precision/Recall, diversity ratio and centroid gap of the SD pool against the per-class recall change. First result: no per-class measure predicts where SD helps, and the one significant SD − RandAugment correlation (scratch ResNet-50) comes from RandAugment's own per-class gain. The real-only classifiers' accuracy on the generated images is pending (it needs the real-only checkpoints). (MKV)
+- Seed-aware intervals: a 95% t-interval over training seeds beside the image bootstrap, PR [#35](https://github.com/mayur212626/fall-2026-group7/pull/35) (MP). Reviewed by MKV: re-ran the 26 tests and recomputed two intervals by hand; both matched.
