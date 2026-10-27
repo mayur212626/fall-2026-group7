@@ -12,6 +12,7 @@ from src.component.sign_flip import (
     class_quality,
     correlation_rows,
     correlation_table,
+    holm,
     permutation_p,
     plot_recall_vs_change,
     rank,
@@ -148,6 +149,24 @@ class CorrelationTest(unittest.TestCase):
                              table.splitlines()), 4)
 
 
+class HolmTest(unittest.TestCase):
+    def test_matches_the_step_down_procedure(self) -> None:
+        # sorted 0.01, 0.02, 0.04 -> 3*0.01, max(0.03, 2*0.02), max(0.04, 1*0.04)
+        np.testing.assert_allclose(holm([0.04, 0.01, 0.02]), [0.04, 0.03, 0.04])
+
+    def test_caps_at_one_and_skips_nan(self) -> None:
+        adjusted = holm([0.5, float("nan"), 0.6])
+        self.assertTrue(np.isnan(adjusted[1]))
+        np.testing.assert_allclose([adjusted[0], adjusted[2]], [1.0, 1.0])
+
+    def test_rows_get_an_adjusted_p_value(self) -> None:
+        rows = correlation_rows(quality_rows(np.linspace(0, 1, 100)),
+                                {("scratch", "sd_prompt", "real_only"): {"vit_b_16": np.arange(100.0)}},
+                                permutations=100)
+        self.assertTrue(all(r["p_holm"] >= r["p_value"] for r in rows))
+        self.assertIn("4 tests", correlation_table(rows))
+
+
 class RandAugmentChangeTest(unittest.TestCase):
     def test_derives_randaugment_minus_real_from_both_sd_tables(self) -> None:
         changes = {("scratch", "sd_prompt", "real_only"): {"resnet50": np.array([5.0, -2.0])},
@@ -172,10 +191,12 @@ class FilesTest(unittest.TestCase):
         self.assertEqual(changes["resnet50"][7], -12.5)
         self.assertTrue(np.isnan(changes["resnet50"][0]))
 
-    def test_synthetic_accuracy_is_averaged_over_runs(self) -> None:
-        rows = [{"init": "scratch", "model": "resnet50", "synthetic_class_accuracy": "10 20"},
-                {"init": "scratch", "model": "resnet50", "synthetic_class_accuracy": "30 40"}]
+    def test_synthetic_accuracy_uses_one_budget_and_averages_its_runs(self) -> None:
+        rows = [{"init": "scratch", "model": "resnet50", "budget": "full", "synthetic_class_accuracy": "10 20"},
+                {"init": "scratch", "model": "resnet50", "budget": "full", "synthetic_class_accuracy": "30 40"},
+                {"init": "scratch", "model": "resnet50", "budget": "5", "synthetic_class_accuracy": "0 0"}]
         np.testing.assert_allclose(synthetic_accuracy_measures(rows)[("scratch", "resnet50")], [20, 30])
+        np.testing.assert_allclose(synthetic_accuracy_measures(rows, "5")[("scratch", "resnet50")], [0, 0])
 
     def test_plot_writes_svg_and_pdf(self) -> None:
         changes = {("scratch", "sd_prompt", "real_only"): {"resnet50": np.arange(100.0)},

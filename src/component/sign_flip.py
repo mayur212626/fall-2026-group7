@@ -212,13 +212,33 @@ def add_randaugment_changes(changes: dict[tuple[str, str, str], dict[str, np.nda
             changes[(init, "randaugment", "real_only")] = {m: sd_real[m] - sd_ra[m] for m in sd_real if m in sd_ra}
 
 
-def synthetic_accuracy_measures(rows: list[dict]) -> dict[tuple[str, str], np.ndarray]:
-    """Per-class accuracy on generated images, averaged over the runs of each (init, model)."""
+def synthetic_accuracy_measures(rows: list[dict], budget: str = "full") -> dict[tuple[str, str], np.ndarray]:
+    """Per-class accuracy on generated images of the real-only runs of one budget, averaged per (init, model).
+
+    The full-budget runs are the default: at 5 images per class the scratch
+    classifiers are close to chance on the generated images, so their
+    per-class accuracies are mostly noise.
+    """
     grouped: dict[tuple[str, str], list[np.ndarray]] = {}
     for row in rows:
+        if str(row["budget"]) != budget:
+            continue
         grouped.setdefault((row["init"], row["model"]), []).append(
             np.array([float(v) for v in row["synthetic_class_accuracy"].split()]))
     return {key: np.mean(values, axis=0) for key, values in grouped.items()}
+
+
+def holm(p_values: list[float]) -> list[float]:
+    """Holm-Bonferroni adjusted p-values (NaN entries are left out of the count and kept as NaN)."""
+    p = np.asarray(p_values, dtype=np.float64)
+    finite = np.flatnonzero(~np.isnan(p))
+    adjusted = np.full(len(p), np.nan)
+    order = finite[np.argsort(p[finite], kind="stable")]
+    running = 0.0
+    for rank_, i in enumerate(order):
+        running = max(running, min(1.0, (len(order) - rank_) * p[i]))
+        adjusted[i] = running
+    return adjusted.tolist()
 
 
 def correlation_rows(quality: list[dict], changes: dict[tuple[str, str, str], dict[str, np.ndarray]],
@@ -239,6 +259,8 @@ def correlation_rows(quality: list[dict], changes: dict[tuple[str, str, str], di
                              "measure": name, "classes": int(keep.sum()),
                              "spearman": spearman(values[keep], change[keep]),
                              "p_value": permutation_p(values[keep], change[keep], permutations)})
+    for row, adjusted in zip(rows, holm([r["p_value"] for r in rows]), strict=True):
+        row["p_holm"] = adjusted
     return rows
 
 
@@ -256,7 +278,9 @@ def correlation_table(rows: list[dict]) -> str:
         r"\setlength{\tabcolsep}{3pt}",
         r"\caption{Sign-flip diagnostics at 5 images per class: Spearman correlation over the 100 classes between "
         r"a per-class property of the SD class-prompt images and the per-class recall change of SD over its "
-        r"control (two-sided permutation $p$ in brackets). RA$-$real is derived as (SD$-$real) $-$ (SD$-$RA) and "
+        rf"control (two-sided permutation $p$ in brackets; {sum(not np.isnan(float(r['p_value'])) for r in rows)} tests, "
+        r"$^{*}$ marks those that stay below 0.05 after the Holm correction). With 100 classes, $|\rho|$ must "
+        r"exceed about 0.20 for $p < 0.05$, and a true $\rho$ of about 0.28 is needed for 80\% power. RA$-$real is derived as (SD$-$real) $-$ (SD$-$RA) and "
         r"shows how much of an SD$-$RA correlation comes from RandAugment alone. Diversity predicts a positive correlation with recall "
         r"and diversity ratio, a domain gap a negative one with centroid gap and a positive one with precision "
         r"and with the accuracy of a real-only classifier on the generated images.}",
@@ -271,7 +295,8 @@ def correlation_table(rows: list[dict]) -> str:
         for i, m, t, c in columns:
             r = cell.get((i, m, t, c, measure))
             values.append("--" if r is None or np.isnan(float(r["spearman"]))
-                          else f"{float(r['spearman']):+.2f} ({float(r['p_value']):.3f})")
+                          else f"{float(r['spearman']):+.2f} ({float(r['p_value']):.3f})"
+                          + ("$^{*}$" if float(r.get("p_holm", 1.0)) < 0.05 else ""))
         lines.append(measure.replace("_", " ") + " & " + " & ".join(values) + r" \\")
     lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
     return "\n".join(lines)
@@ -420,6 +445,8 @@ def main() -> None:
     corr.add_argument("--tables", type=Path, default=TABLES)
     corr.add_argument("--figures", type=Path, default=FIGURES)
     corr.add_argument("--permutations", type=int, default=PERMUTATIONS)
+    corr.add_argument("--synthetic-budget", default="full",
+                      help="budget of the real-only runs whose accuracy on generated images is used")
     args = parser.parse_args()
 
     if args.command == "features":
@@ -440,7 +467,7 @@ def main() -> None:
         changes = {key: read_changes(args.tables / name) for key, name in CHANGE_FILES.items()
                    if (args.tables / name).exists()}
         add_randaugment_changes(changes)
-        synthetic = (synthetic_accuracy_measures(read_rows(args.synthetic_accuracy))
+        synthetic = (synthetic_accuracy_measures(read_rows(args.synthetic_accuracy), args.synthetic_budget)
                      if args.synthetic_accuracy.exists() else None)
         rows = correlation_rows(quality_rows, changes, synthetic, args.permutations)
         write_rows(rows, args.tables / "sign_flip_correlations.csv")
@@ -454,7 +481,7 @@ def main() -> None:
         for r in rows:
             name = f"{'RA' if r['treatment'] == 'randaugment' else 'SD'}-{r['control']}"
             print(f"  {r['init']:<10} {MODEL_NAMES[r['model']]:<9} {name:<14} {r['measure']:<18} "
-                  f"rho {r['spearman']:+.2f}  p {r['p_value']:.4f}  (n={r['classes']})")
+                  f"rho {r['spearman']:+.2f}  p {r['p_value']:.4f}  Holm {r['p_holm']:.4f}  (n={r['classes']})")
 
 
 if __name__ == "__main__":

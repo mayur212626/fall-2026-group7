@@ -259,9 +259,12 @@ Improved Precision and Recall within the class, the spread of the generated imag
 ones, and the distance between the two class means. The generated images are realistic but narrow
 (mean per-class precision 0.73, recall 0.26, spread 0.86 of the real class). None of these measures
 predicts the per-class recall change of SD over real-only at 5 images per class, for either
-initialization ($|\rho| \le 0.19$, no permutation $p$ below 0.05 over the 100 classes). The one
-significant correlation with the change over RandAugment (scratch ResNet-50, precision $\rho = +0.36$,
-$p = 0.0004$) comes from RandAugment's own per-class gain ($\rho = -0.40$, $p = 0.0001$), not from SD.
+initialization ($|\rho| \le 0.19$, no permutation $p$ below 0.05 over the 100 classes). Over all 60
+correlations we computed, the only ones that survive a Holm correction concern the change
+of scratch ResNet-50 over RandAugment (precision $\rho = +0.36$, Holm $p = 0.024$), and they come from
+RandAugment's own per-class gain ($\rho = -0.40$, Holm $p = 0.006$), not from SD. With 100 classes a
+correlation must exceed about 0.20 to reach $p < 0.05$, and only true correlations of about 0.28 or more
+are detected with 80\% power, so weaker per-class effects may be missed.
 
 \paragraph{A real-only classifier recognises the generated images less well from scratch.}
 Table~\ref{tab:synthetic-accuracy} gives the accuracy of classifiers trained on real images only on
@@ -272,10 +275,13 @@ about 9 points on them even with the full training set (79--83\%). The generated
 their class, which answers how good the generation is, but they lie in a region that features learned
 from CIFAR-100 alone cover less well. A pretrained backbone bridges this shift; a network trained from
 scratch must learn both distributions from the same few images, and the generated images help it less
-than RandAugment's perturbations of the real ones. Because no per-class property explains the effect,
-the shift is a property of the generated set as a whole rather than of particular classes: per class, the
-accuracy on generated images correlates only weakly with the scratch gain of SD ($\rho = 0.18$--$0.23$) and
-as much with that of RandAugment ($\rho = 0.17$--$0.19$), so it tracks how easy a class is, not what SD adds.
+than RandAugment's perturbations of the real ones. Per class, the accuracy of the full-data real-only
+classifiers on the generated images is weakly but consistently related to the gain of SD over real-only
+($\rho = 0.15$--$0.29$ over the four classifiers, none significant after the Holm correction). For
+pretrained classifiers this relation is specific to SD ($\rho = 0.06$--$0.08$ for RandAugment); from scratch
+it is about as strong for RandAugment ($\rho = 0.16$--$0.19$), so there it partly reflects how easy a class
+is. Because the per-class relations are weak, the shift appears to be a property of the generated set as a
+whole rather than of particular classes.
 
 \begin{table}[H]
 \centering
