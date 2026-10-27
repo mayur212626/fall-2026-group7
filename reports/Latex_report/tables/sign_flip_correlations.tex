@@ -1,0 +1,18 @@
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\caption{Sign-flip diagnostics at 5 images per class: Spearman correlation over the 100 classes between a per-class property of the SD class-prompt images and the per-class recall change of SD over its control (two-sided permutation $p$ in brackets; 60 tests, $^{*}$ marks those that stay below 0.05 after the Holm correction). With 100 classes, $|\rho|$ must exceed about 0.20 for $p < 0.05$, and a true $\rho$ of about 0.28 is needed for 80\% power. RA$-$real is derived as (SD$-$real) $-$ (SD$-$RA) and shows how much of an SD$-$RA correlation comes from RandAugment alone. Diversity predicts a positive correlation with recall and diversity ratio, a domain gap a negative one with centroid gap and a positive one with precision and with the accuracy of a real-only classifier on the generated images.}
+\label{tab:sign-flip}
+\begin{tabular}{lrrrrrrrrrrrr}
+\toprule
+Measure & pret. ResNet-50 SD$-$RA & pret. ViT-B/16 SD$-$RA & pret. ResNet-50 SD$-$real & pret. ResNet-50 RA$-$real & pret. ViT-B/16 SD$-$real & pret. ViT-B/16 RA$-$real & scra. ResNet-50 SD$-$RA & scra. ViT-B/16 SD$-$RA & scra. ResNet-50 SD$-$real & scra. ResNet-50 RA$-$real & scra. ViT-B/16 RA$-$real & scra. ViT-B/16 SD$-$real \\
+\midrule
+recall & +0.16 (0.107) & +0.06 (0.534) & +0.09 (0.358) & -0.03 (0.761) & -0.03 (0.759) & -0.13 (0.201) & -0.19 (0.054) & -0.03 (0.735) & +0.10 (0.335) & +0.23 (0.021) & +0.12 (0.220) & +0.01 (0.942) \\
+precision & -0.10 (0.311) & +0.06 (0.543) & -0.03 (0.803) & +0.03 (0.805) & +0.12 (0.209) & +0.07 (0.510) & +0.36 (0.000)$^{*}$ & +0.05 (0.640) & -0.11 (0.267) & -0.40 (0.000)$^{*}$ & -0.09 (0.377) & +0.04 (0.679) \\
+diversity ratio & +0.12 (0.235) & -0.01 (0.950) & +0.01 (0.921) & -0.07 (0.468) & -0.08 (0.406) & -0.10 (0.344) & -0.32 (0.001) & -0.07 (0.518) & +0.11 (0.279) & +0.35 (0.001) & +0.08 (0.434) & -0.04 (0.720) \\
+centroid gap & -0.23 (0.023) & -0.19 (0.060) & -0.19 (0.057) & +0.06 (0.545) & -0.16 (0.124) & +0.03 (0.803) & -0.03 (0.742) & -0.08 (0.424) & +0.03 (0.745) & +0.03 (0.743) & +0.03 (0.775) & -0.04 (0.730) \\
+synthetic accuracy & +0.17 (0.083) & +0.12 (0.224) & +0.24 (0.018) & +0.06 (0.529) & +0.22 (0.027) & +0.08 (0.439) & -0.04 (0.666) & +0.08 (0.439) & +0.15 (0.122) & +0.16 (0.106) & +0.19 (0.062) & +0.29 (0.003) \\
+\bottomrule
+\end{tabular}
+\end{table}
