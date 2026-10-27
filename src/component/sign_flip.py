@@ -198,6 +198,20 @@ def read_changes(path: Path) -> dict[str, np.ndarray]:
     return changes
 
 
+def add_randaugment_changes(changes: dict[tuple[str, str, str], dict[str, np.ndarray]]) -> None:
+    """Add the per-class change of RandAugment over real-only, derived from SD - real and SD - RandAugment.
+
+    The SD - RandAugment change mixes what SD adds and what RandAugment adds,
+    so a measure that correlates with it may only track RandAugment. The
+    derived (SD - real) - (SD - RA) = RA - real separates the two; it uses the
+    seeds both tables share, so it is exact for those seeds.
+    """
+    for init in sorted({key[0] for key in changes}):
+        sd_real, sd_ra = changes.get((init, "sd_prompt", "real_only")), changes.get((init, "sd_prompt", "randaugment"))
+        if sd_real and sd_ra:
+            changes[(init, "randaugment", "real_only")] = {m: sd_real[m] - sd_ra[m] for m in sd_real if m in sd_ra}
+
+
 def synthetic_accuracy_measures(rows: list[dict]) -> dict[tuple[str, str], np.ndarray]:
     """Per-class accuracy on generated images, averaged over the runs of each (init, model)."""
     grouped: dict[tuple[str, str], list[np.ndarray]] = {}
@@ -234,7 +248,7 @@ def correlation_table(rows: list[dict]) -> str:
                      key=lambda c: (c[0], c[3], list(MODEL_NAMES).index(c[1])))
     measures = [m for m in [*MEASURES, "synthetic_accuracy"] if any(r["measure"] == m for r in rows)]
     cell = {(r["init"], r["model"], r["treatment"], r["control"], r["measure"]): r for r in rows}
-    short = {"real_only": "real", "randaugment": "RA"}
+    short = {"real_only": "real", "randaugment": "RA", "sd_prompt": "SD"}
     lines = [
         r"\begin{table}[H]",
         r"\centering",
@@ -242,13 +256,14 @@ def correlation_table(rows: list[dict]) -> str:
         r"\setlength{\tabcolsep}{3pt}",
         r"\caption{Sign-flip diagnostics at 5 images per class: Spearman correlation over the 100 classes between "
         r"a per-class property of the SD class-prompt images and the per-class recall change of SD over its "
-        r"control (two-sided permutation $p$ in brackets). Diversity predicts a positive correlation with recall "
+        r"control (two-sided permutation $p$ in brackets). RA$-$real is derived as (SD$-$real) $-$ (SD$-$RA) and "
+        r"shows how much of an SD$-$RA correlation comes from RandAugment alone. Diversity predicts a positive correlation with recall "
         r"and diversity ratio, a domain gap a negative one with centroid gap and a positive one with precision "
         r"and with the accuracy of a real-only classifier on the generated images.}",
         r"\label{tab:sign-flip}",
         r"\begin{tabular}{l" + "r" * len(columns) + "}",
         r"\toprule",
-        "Measure & " + " & ".join(f"{i[:4]}. {MODEL_NAMES[m]} SD$-${short[c]}" for i, m, _, c in columns) + r" \\",
+        "Measure & " + " & ".join(f"{i[:4]}. {MODEL_NAMES[m]} {short[t]}$-${short[c]}" for i, m, t, c in columns) + r" \\",
         r"\midrule",
     ]
     for measure in measures:
@@ -424,6 +439,7 @@ def main() -> None:
         quality_rows = read_rows(args.quality)
         changes = {key: read_changes(args.tables / name) for key, name in CHANGE_FILES.items()
                    if (args.tables / name).exists()}
+        add_randaugment_changes(changes)
         synthetic = (synthetic_accuracy_measures(read_rows(args.synthetic_accuracy))
                      if args.synthetic_accuracy.exists() else None)
         rows = correlation_rows(quality_rows, changes, synthetic, args.permutations)
@@ -436,7 +452,8 @@ def main() -> None:
                     print(f"wrote {path}")
         print("Spearman correlation of per-class measure with per-class recall change (b5):")
         for r in rows:
-            print(f"  {r['init']:<10} {MODEL_NAMES[r['model']]:<9} SD-{r['control']:<11} {r['measure']:<18} "
+            name = f"{'RA' if r['treatment'] == 'randaugment' else 'SD'}-{r['control']}"
+            print(f"  {r['init']:<10} {MODEL_NAMES[r['model']]:<9} {name:<14} {r['measure']:<18} "
                   f"rho {r['spearman']:+.2f}  p {r['p_value']:.4f}  (n={r['classes']})")
 
 

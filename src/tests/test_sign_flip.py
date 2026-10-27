@@ -8,6 +8,7 @@ from pathlib import Path
 import numpy as np
 
 from src.component.sign_flip import (
+    add_randaugment_changes,
     class_quality,
     correlation_rows,
     correlation_table,
@@ -145,6 +146,16 @@ class CorrelationTest(unittest.TestCase):
         self.assertIn(r"\label{tab:sign-flip}", table)
         self.assertEqual(sum(line.startswith(("recall", "precision", "diversity", "centroid")) for line in
                              table.splitlines()), 4)
+
+
+class RandAugmentChangeTest(unittest.TestCase):
+    def test_derives_randaugment_minus_real_from_both_sd_tables(self) -> None:
+        changes = {("scratch", "sd_prompt", "real_only"): {"resnet50": np.array([5.0, -2.0])},
+                   ("scratch", "sd_prompt", "randaugment"): {"resnet50": np.array([1.0, -6.0])},
+                   ("pretrained", "sd_prompt", "real_only"): {"resnet50": np.array([3.0, 3.0])}}
+        add_randaugment_changes(changes)
+        np.testing.assert_allclose(changes[("scratch", "randaugment", "real_only")]["resnet50"], [4.0, 4.0])
+        self.assertNotIn(("pretrained", "randaugment", "real_only"), changes)  # its SD - RA table is missing
 
 
 class FilesTest(unittest.TestCase):
