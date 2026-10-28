@@ -12,6 +12,8 @@ import torch
 from src.component.data import CifarImages
 from src.component.train import (
     AUGMENTED_CONDITIONS,
+    CONDITIONS,
+    MIXING_CONDITIONS,
     SYNTHETIC_CONDITIONS,
     is_better,
     load_checkpoint,
@@ -76,6 +78,12 @@ class MakeSettingsTest(unittest.TestCase):
     def test_real_conditions_have_no_synthetic_key(self) -> None:
         self.assertNotIn("synthetic", self.make())
 
+    def test_mixing_settings_are_stored_only_for_mixing_conditions(self) -> None:
+        self.assertEqual(self.make(condition="mixup")["mixing"], {"method": "mixup", "alpha": 0.2})
+        self.assertEqual(self.make(condition="cutmix")["mixing"], {"method": "cutmix", "alpha": 1.0})
+        for condition in ("real_only", "randaugment"):
+            self.assertNotIn("mixing", self.make(condition=condition))
+
     def test_synthetic_details_are_stored(self) -> None:
         info = {"pool_sha256": "abc", "ratio": 1, "per_class": 5, "images": 500}
         self.assertEqual(self.make(condition="sd_prompt", synthetic=info)["synthetic"], info)
@@ -101,6 +109,12 @@ class ConditionsTest(unittest.TestCase):
         self.assertIn("randaugment", AUGMENTED_CONDITIONS)
         self.assertNotIn("sd_prompt", AUGMENTED_CONDITIONS)
         self.assertNotIn("real_only", AUGMENTED_CONDITIONS)
+
+    def test_mixup_and_cutmix_are_conventional_conditions(self) -> None:
+        self.assertEqual(MIXING_CONDITIONS, ("mixup", "cutmix"))
+        for condition in MIXING_CONDITIONS:
+            self.assertIn(condition, CONDITIONS)
+            self.assertNotIn(condition, AUGMENTED_CONDITIONS + SYNTHETIC_CONDITIONS)
 
 
 class LrFactorTest(unittest.TestCase):
@@ -151,6 +165,33 @@ class ResumeTest(unittest.TestCase):
         self.assertEqual(resumed.step, 4)
         for a, b in zip(straight.model.state_dict().values(), resumed.model.state_dict().values(), strict=True):
             self.assertTrue(torch.equal(a, b))
+
+
+class MixingTrainingTest(unittest.TestCase):
+    def test_mixing_changes_the_training_update(self) -> None:
+        device = torch.device("cpu")
+        plain, mixed = settings(steps=2), settings(steps=2, condition="mixup", mixing={"method": "mixup", "alpha": 0.2})
+        a, b = new_state(plain, device), new_state(mixed, device)
+        train_steps(a, fake_dataset(10), plain, until_step=2, device=device)
+        train_steps(b, fake_dataset(10), mixed, until_step=2, device=device)
+        self.assertFalse(all(torch.equal(x, y) for x, y in zip(a.model.state_dict().values(),
+                                                                b.model.state_dict().values(), strict=True)))
+
+    def test_resumed_mixing_run_matches_uninterrupted_training(self) -> None:
+        device = torch.device("cpu")
+        for method, alpha in (("mixup", 0.2), ("cutmix", 1.0)):
+            run = settings(steps=4, condition=method, mixing={"method": method, "alpha": alpha})
+            straight = new_state(run, device)
+            train_steps(straight, fake_dataset(10), run, until_step=4, device=device)
+            with tempfile.TemporaryDirectory() as tmp:
+                first = new_state(run, device)
+                train_steps(first, fake_dataset(10), run, until_step=2, device=device)
+                save_checkpoint(first, Path(tmp) / "last.pt", {"elapsed": 1.0})
+                resumed = new_state(run, device)
+                load_checkpoint(resumed, Path(tmp) / "last.pt")
+            train_steps(resumed, fake_dataset(10), run, until_step=4, device=device)
+            for x, y in zip(straight.model.state_dict().values(), resumed.model.state_dict().values(), strict=True):
+                self.assertTrue(torch.equal(x, y), method)
 
 
 class RunTrainingResumeTest(unittest.TestCase):

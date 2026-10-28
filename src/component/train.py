@@ -53,6 +53,7 @@ from src.component.data import (
     to_model_input,
 )
 from src.component.metrics import classification_metrics
+from src.component.mixing import MIXING, mix_batch
 from src.component.models import build_model, weights_name
 from src.component.synthetic_pool import file_sha256, load_pool
 
@@ -60,7 +61,9 @@ SUMMARY_KEYS = ("accuracy", "macro_f1", "balanced_accuracy", "loss")
 LOG_FORMAT = "%(asctime)s %(message)s"
 # Conditions that add generated images to the real training images.
 SYNTHETIC_CONDITIONS = ("sd_prompt", "sd_lora", "sd_prompt_randaugment")
-CONDITIONS = ("real_only", "randaugment") + SYNTHETIC_CONDITIONS
+# Conditions that mix each training batch with a shuffled copy of itself (src/component/mixing.py).
+MIXING_CONDITIONS = tuple(MIXING)
+CONDITIONS = ("real_only", "randaugment") + SYNTHETIC_CONDITIONS + MIXING_CONDITIONS
 # Conditions that apply RandAugment to every training image, real and generated.
 AUGMENTED_CONDITIONS = ("randaugment", "sd_prompt_randaugment")
 
@@ -158,6 +161,9 @@ def train_steps(
     total_loss = torch.zeros((), device=device)
     steps = 0
     for images, labels, _ in loader:
+        if "mixing" in settings:
+            images, labels = mix_batch(images, labels, settings["mixing"]["method"], settings["seed"],
+                                       state.step, settings["num_classes"])
         inputs = to_model_input(images.to(device, non_blocking=True), settings["image_size"])
         labels = labels.to(device, non_blocking=True)
         with torch.autocast(device.type, dtype=torch.bfloat16, enabled=device.type == "cuda"):
@@ -371,7 +377,8 @@ def make_settings(
     ``synthetic`` describes the generated images of a synthetic condition
     (pool fingerprint, ratio, images per class). It is stored under the key
     ``"synthetic"`` only for those conditions, so the settings of real-data
-    runs are unchanged and their saved runs still resume.
+    runs are unchanged and their saved runs still resume. Mixup and CutMix
+    runs store their method and alpha under ``"mixing"`` in the same way.
 
     Raises:
         ValueError: If the config has no step budget for ``budget`` and
@@ -402,6 +409,8 @@ def make_settings(
     }
     if synthetic is not None:
         settings["synthetic"] = synthetic
+    if condition in MIXING_CONDITIONS:
+        settings["mixing"] = {"method": condition, **MIXING[condition]}
     return settings
 
 
