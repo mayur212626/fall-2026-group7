@@ -1,0 +1,13 @@
+measure,init,comparisons,agree,agree_share,p_value,p_holm
+fid,all,20,7,0.35,0.2632,0.4202
+fid,pretrained,10,2,0.2,0.1094,
+fid,scratch,10,5,0.5,1.0,
+fid_gap,all,16,5,0.3125,0.2101,0.4202
+fid_gap,pretrained,8,2,0.25,0.2891,
+fid_gap,scratch,8,3,0.375,0.7266,
+precision,all,20,17,0.85,0.0026,0.0103
+precision,pretrained,10,10,1.0,0.002,
+precision,scratch,10,7,0.7,0.3438,
+recall,all,20,3,0.15,0.0026,0.0103
+recall,pretrained,10,0,0.0,0.002,
+recall,scratch,10,3,0.3,0.3438,
