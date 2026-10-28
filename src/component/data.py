@@ -145,6 +145,7 @@ def add_synthetic(
     pool_index: np.ndarray,
     per_class: int,
     num_classes: int,
+    keep_real: bool = True,
 ) -> tuple[np.ndarray, list[int], list[int]]:
     """Append the first ``per_class`` generated images of every class to the real images.
 
@@ -153,7 +154,8 @@ def add_synthetic(
 
     Returns:
         All images, all labels, and the training indices: the real
-        ``train_indices`` followed by the IDs of the added generated images.
+        ``train_indices`` followed by the IDs of the added generated images,
+        or only the generated IDs when ``keep_real`` is false.
     """
     from src.component.synthetic_pool import select_per_class
 
@@ -161,7 +163,7 @@ def add_synthetic(
     offset = len(images)
     all_images = np.concatenate([images, pool_images[rows]])
     all_labels = list(labels) + np.asarray(pool_labels)[rows].tolist()
-    indices = list(train_indices) + list(range(offset, offset + len(rows)))
+    indices = (list(train_indices) if keep_real else []) + list(range(offset, offset + len(rows)))
     return all_images, all_labels, indices
 
 
