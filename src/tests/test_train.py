@@ -15,6 +15,7 @@ from src.component.train import (
     CONDITIONS,
     MIXING_CONDITIONS,
     SYNTHETIC_CONDITIONS,
+    SYNTHETIC_ONLY_CONDITIONS,
     is_better,
     load_checkpoint,
     lr_factor,
@@ -116,6 +117,12 @@ class ConditionsTest(unittest.TestCase):
             self.assertIn(condition, CONDITIONS)
             self.assertNotIn(condition, AUGMENTED_CONDITIONS + SYNTHETIC_CONDITIONS)
 
+
+    def test_sd_only_trains_on_the_class_prompt_pool_without_real_images(self) -> None:
+        self.assertEqual(SYNTHETIC_ONLY_CONDITIONS, ("sd_prompt_only",))
+        self.assertIn("sd_prompt_only", SYNTHETIC_CONDITIONS)
+        self.assertIn("sd_prompt_only", CONDITIONS)
+        self.assertNotIn("sd_prompt_only", AUGMENTED_CONDITIONS)
 
 class LrFactorTest(unittest.TestCase):
     def test_warmup_rises_linearly_to_one(self) -> None:

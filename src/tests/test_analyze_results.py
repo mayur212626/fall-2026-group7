@@ -152,6 +152,13 @@ class SyntheticConditionTest(unittest.TestCase):
         self.assertNotIn("baselines", table)
 
 
+    def test_latex_table_for_the_sd_only_condition(self) -> None:
+        rows = ROWS + [row("sd_prompt_only", s, 20.0 + s) for s in (0, 1, 2)]
+        table = latex_table(aggregate(rows, "accuracy"), paired_changes(rows, "sd_prompt_only", "real_only", "accuracy"),
+                            init="pretrained", metric="accuracy", split="validation", treatment="sd_prompt_only")
+        self.assertIn(r"\caption{Stage 1, SD class prompts only against real-only, pretrained initialization", table)
+        self.assertIn("tab:stage1-pretrained-accuracy-sd_prompt_only", table)
+
 THREE_WAY_ROWS = ROWS + [
     row("sd_prompt", 0, 33.0), row("sd_prompt", 1, 34.0), row("sd_prompt", 2, 35.0),
     row("sd_lora", 0, 31.0), row("sd_lora", 1, 33.0), row("sd_lora", 2, 38.0),

@@ -60,7 +60,9 @@ from src.component.synthetic_pool import file_sha256, load_pool
 SUMMARY_KEYS = ("accuracy", "macro_f1", "balanced_accuracy", "loss")
 LOG_FORMAT = "%(asctime)s %(message)s"
 # Conditions that add generated images to the real training images.
-SYNTHETIC_CONDITIONS = ("sd_prompt", "sd_lora", "sd_prompt_randaugment")
+SYNTHETIC_CONDITIONS = ("sd_prompt", "sd_lora", "sd_prompt_randaugment", "sd_prompt_only")
+# Synthetic conditions that train on the generated images alone, without the real ones.
+SYNTHETIC_ONLY_CONDITIONS = ("sd_prompt_only",)
 # Conditions that mix each training batch with a shuffled copy of itself (src/component/mixing.py).
 MIXING_CONDITIONS = tuple(MIXING)
 CONDITIONS = ("real_only", "randaugment") + SYNTHETIC_CONDITIONS + MIXING_CONDITIONS
@@ -469,16 +471,20 @@ def main() -> None:
     if synthetic_run:
         real_per_class = len(train_indices) // 100
         per_class = args.synthetic_ratio * real_per_class
+        keep_real = args.condition not in SYNTHETIC_ONLY_CONDITIONS
         pool_images, pool_labels, pool_index = load_pool(args.synthetic_pool)
         train_images, train_labels, train_indices = add_synthetic(
-            images, labels, train_indices, pool_images, pool_labels, pool_index, per_class, 100
+            images, labels, train_indices, pool_images, pool_labels, pool_index, per_class, 100,
+            keep_real=keep_real,
         )
         synthetic = {
             "pool_sha256": file_sha256(args.synthetic_pool),
             "ratio": args.synthetic_ratio,
             "per_class": per_class,
-            "images": len(train_indices) - real_per_class * 100,
+            "images": len(train_indices) - (real_per_class * 100 if keep_real else 0),
         }
+        if not keep_real:
+            synthetic["real_images"] = 0
     try:
         settings = make_settings(
             config, args.model, args.init, args.condition, args.budget, args.seed,
