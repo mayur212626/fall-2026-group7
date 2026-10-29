@@ -98,6 +98,17 @@ class AddSyntheticTest(unittest.TestCase):
         self.assertEqual((label, image_id, int(image[0, 0, 0])), (1, 8, 7))
 
 
+    def test_without_real_images_the_training_set_is_only_the_generated_ones(self) -> None:
+        images = fake_images(6)
+        pool = np.full((8, 32, 32, 3), 7, dtype=np.uint8)
+        pool_labels = np.array([0, 0, 0, 0, 1, 1, 1, 1])
+        pool_index = np.array([0, 1, 2, 3, 0, 1, 2, 3])
+        all_images, all_labels, indices = add_synthetic(images, [0, 1, 0, 1, 0, 1], [0, 1], pool, pool_labels,
+                                                        pool_index, per_class=2, num_classes=2, keep_real=False)
+        self.assertEqual(indices, [6, 7, 8, 9])
+        self.assertEqual([all_labels[i] for i in indices], [0, 0, 1, 1])
+        self.assertTrue(np.array_equal(all_images[:6], images))
+
 class ToModelInputTest(unittest.TestCase):
     def test_resizes_and_normalizes(self) -> None:
         white = torch.full((2, 3, 32, 32), 255, dtype=torch.uint8)

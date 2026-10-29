@@ -7,7 +7,7 @@
 | `--config` | `src/component/configs/train_pretrained.json` or `train_scratch.json` |
 | `--model` | `resnet50`, `vit_b_16` |
 | `--init` | `pretrained` (ImageNet weights), `scratch` (random initialization) |
-| `--condition` | `real_only`, `randaugment`, `sd_prompt`, `sd_prompt_randaugment`, `sd_lora` (synthetic conditions need `--synthetic-pool`; see [synthetic data](synthetic-data.md)) |
+| `--condition` | `real_only`, `randaugment`, `sd_prompt`, `sd_prompt_randaugment`, `sd_lora`, `sd_prompt_only` (synthetic conditions need `--synthetic-pool`; see [synthetic data](synthetic-data.md)) |
 | `--budget` | `5`, `10`, `20`, `50`, `full` (images per class, from the split manifest) |
 | `--seed` | training seed, e.g. `0`, `1`, `2` |
 | `--steps` | overrides the config's step budget; used for pilot runs |
@@ -182,7 +182,7 @@ Run it when no training job is using the GPU. The command refuses to run without
 ## Protocol
 
 - Images are 32×32 CIFAR-100 images, upsampled to 224×224 (bilinear) and normalized with the ImageNet mean and standard deviation.
-- `real_only` applies no augmentation. `randaugment` applies RandAugment (2 operations, magnitude 9) to the 32×32 image before upsampling.
+- `real_only` applies no augmentation. `randaugment` applies RandAugment (2 operations, magnitude 9) to the 32×32 image before upsampling. `sd_prompt_only` trains on the SD class-prompt images alone, with as many per class as the real budget has, and is validated on real images like every other condition. `src/shellscripts/run_sd_prompt_only.sh` runs it for both classifiers at every budget with seeds 0 to 2.
 - Training runs for a fixed number of optimizer steps: linear warmup over 5% of the steps, then cosine decay; gradient norm clipped at 1.0; label smoothing 0.1; bf16 mixed precision on the GPU.
 - The validation set is scored 20 times at equal step intervals. The best checkpoint has the highest validation accuracy; ties go to the lower validation loss, then the earlier step.
 - Every run is seeded (Python, NumPy, PyTorch, deterministic cuDNN), and the sample order and the augmentation of each sample depend only on the seed and the step. A resumed run therefore sees the same batches and augmentations as an uninterrupted one, which the unit tests check on the CPU. On the GPU, some kernels (for example the attention backward pass of ViT-B/16) are not guaranteed to be deterministic, so repeated GPU runs with the same seed can differ slightly; the differences between seeds are measured by the training seeds (three, or five for the cells with seeds 3 and 4).

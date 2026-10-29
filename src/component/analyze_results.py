@@ -37,11 +37,12 @@ CONDITION_NAMES = {
     "sd_prompt": "SD class prompts",
     "sd_lora": "SD + LoRA",
     "sd_prompt_randaugment": "SD class prompts + RandAugment",
+    "sd_prompt_only": "SD class prompts only",
 }
 CONDITION_LINES = {"real_only": "-", "randaugment": "--", "sd_prompt": ":", "sd_lora": "-.",
-                   "sd_prompt_randaugment": (0, (3, 1, 1, 1, 1, 1))}
+                   "sd_prompt_randaugment": (0, (3, 1, 1, 1, 1, 1)), "sd_prompt_only": (0, (1, 3))}
 CONDITION_MARKERS = {"real_only": "o", "randaugment": "o", "sd_prompt": "^", "sd_lora": "v",
-                     "sd_prompt_randaugment": "s"}
+                     "sd_prompt_randaugment": "s", "sd_prompt_only": "D"}
 # Synthetic conditions compared with RandAugment, the strongest real-data control.
 RANDAUGMENT_COMPARISONS = {"sd_prompt": "SD$-$RA", "sd_lora": "LoRA$-$RA", "sd_prompt_randaugment": "SD+RA$-$RA"}
 VERDICT_MARKS = {"gain": r"$\uparrow$", "loss": r"$\downarrow$", "inconclusive": r"$\sim$"}
