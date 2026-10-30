@@ -54,7 +54,7 @@ from src.component.data import (
 )
 from src.component.metrics import classification_metrics
 from src.component.mixing import MIXING, mix_batch
-from src.component.models import build_model, weights_name
+from src.component.models import MODELS, build_model, weights_name
 from src.component.synthetic_pool import file_sha256, load_pool
 
 SUMMARY_KEYS = ("accuracy", "macro_f1", "balanced_accuracy", "loss")
@@ -437,7 +437,7 @@ def main() -> None:
     """Parse the command line, load the data and run one training run."""
     parser = argparse.ArgumentParser(description="Train one CIFAR-100 benchmark run.")
     parser.add_argument("--config", type=Path, required=True)
-    parser.add_argument("--model", choices=["resnet50", "vit_b_16"], required=True)
+    parser.add_argument("--model", choices=list(MODELS), required=True)
     parser.add_argument("--init", choices=["pretrained", "scratch"], required=True)
     parser.add_argument("--condition", choices=list(CONDITIONS), required=True)
     parser.add_argument("--budget", choices=["5", "10", "20", "50", "full"], required=True)

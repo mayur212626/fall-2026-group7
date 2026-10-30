@@ -18,6 +18,12 @@ class BuildModelTest(unittest.TestCase):
         with torch.no_grad():
             self.assertEqual(tuple(model(torch.zeros(1, 3, 224, 224)).shape), (1, 100))
 
+    def test_convnext_tiny_has_requested_output_size(self) -> None:
+        model = build_model("convnext_tiny", pretrained=False, num_classes=100).eval()
+        with torch.no_grad():
+            self.assertEqual(tuple(model(torch.zeros(2, 3, 32, 32)).shape), (2, 100))
+        self.assertEqual(model.classifier[2].out_features, 100)
+
     def test_same_seed_gives_same_initial_weights(self) -> None:
         torch.manual_seed(0)
         first = build_model("resnet50", pretrained=False, num_classes=100)
@@ -35,6 +41,7 @@ class WeightsNameTest(unittest.TestCase):
     def test_names_pretrained_weights(self) -> None:
         self.assertEqual(weights_name("resnet50", pretrained=True), "IMAGENET1K_V2")
         self.assertEqual(weights_name("vit_b_16", pretrained=True), "IMAGENET1K_V1")
+        self.assertEqual(weights_name("convnext_tiny", pretrained=True), "IMAGENET1K_V1")
 
     def test_scratch_has_no_weights(self) -> None:
         self.assertIsNone(weights_name("resnet50", pretrained=False))

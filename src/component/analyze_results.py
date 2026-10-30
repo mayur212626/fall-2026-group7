@@ -29,8 +29,8 @@ from pathlib import Path
 
 BUDGET_ORDER = ["5", "10", "20", "50", "full"]
 FULL_IMAGES_PER_CLASS = 450
-MODEL_NAMES = {"resnet50": "ResNet-50", "vit_b_16": "ViT-B/16"}
-MODEL_COLORS = {"resnet50": "#2a78d6", "vit_b_16": "#eb6834"}  # categorical slots 1-2, validated
+MODEL_NAMES = {"resnet50": "ResNet-50", "vit_b_16": "ViT-B/16", "convnext_tiny": "ConvNeXt-T"}
+MODEL_COLORS = {"resnet50": "#2a78d6", "vit_b_16": "#eb6834", "convnext_tiny": "#1baf7a"}  # categorical slots 1-3
 CONDITION_NAMES = {
     "real_only": "real-only",
     "randaugment": "RandAugment",

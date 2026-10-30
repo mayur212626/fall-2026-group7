@@ -202,3 +202,16 @@ Each run writes to `runs/<init>_<model>_<condition>_b<budget>_s<seed>/`:
 | `train.log` | Timestamped progress: the start or resume step, one line per validation (training loss, validation accuracy and loss, minutes) and the final best step. The same lines go to the console |
 
 `last.pt` holds the full training state while the run is in progress and is removed when it completes. If a run is interrupted, run the same command again to resume. The runner refuses to resume with different settings and refuses to overwrite a completed run.
+
+## Stage 2 extras: ConvNeXt-Tiny, synthetic:real ratios, Mixup and CutMix
+
+These runs test whether the Stage 1 findings hold beyond the two Stage 1 models and settings. Each one keeps the arm's step budgets and, for ResNet-50 and ViT-B/16, its learning rates, so it pairs with the Stage 1 runs of the same seed. Runs go to their own folders, apart from `runs/stage1-<init>`.
+
+| Script | Runs | Folder |
+|---|---|---|
+| `pilot_convnext.sh` | ConvNeXt-Tiny learning rates at 50 images per class, pilot seed 100: AdamW 5e-5, 1e-4, 3e-4 (pretrained) and 3e-4, 1e-3, 3e-3 (scratch) | `runs/pilot-<init>/lr_<lr>` |
+| `run_convnext.sh` | ConvNeXt-Tiny, seeds 0-2. Pretrained: real-only, RandAugment, SD, SD + RandAugment at 5, 20, full (36). Scratch: real-only, RandAugment, SD at 5 and 50 (18) | `runs/stage2-convnext-<init>` |
+| `run_sd_prompt_ratios.sh` | SD class prompts at 2:1 and 5:1, ResNet-50 and ViT-B/16, seeds 0-2. Pretrained at 5-50 (48), scratch at 5 and 50 (24) | `runs/stage2-ratio-<init>/r<ratio>` |
+| `run_mixup_cutmix.sh` | Mixup and CutMix, ResNet-50 and ViT-B/16, seeds 0-2. Pretrained at 5, 20, full (36), scratch at 5 and 50 (24) | `runs/stage2-mixing-<init>` |
+
+The scratch arm leaves out the full training set: from random weights it takes 50,000 steps per run. The ConvNeXt learning rate of each arm is chosen by the same rule as for the Stage 1 models, the highest validation accuracy at 50 images per class in the pilot, and `pick_lr.py` writes it into `train_<init>.json` before `run_convnext.sh`; the values in the configs until then are the pilot's starting points. `run_stage2.sh` runs everything in order: the pilot and the learning-rate choice, ConvNeXt, the ratios, then Mixup and CutMix (192 runs, about 60 GPU hours).
