@@ -85,10 +85,12 @@ Generator-quality measures such as FID are known to predict poorly how well a cl
 generated images performs~\cite{ravuri2019classification}, also for diffusion-based
 augmentation~\cite{li2026diffusion}. We test this in the scarce-data setting, with the real images always
 in the training set and conventional augmentation as a control. In our benchmark the two disagree:
-LoRA-adapted pools are closer to the real data than class-prompt pools (lower FID from 10 images per class
-up, higher recall at every budget), yet with pretrained classifiers they give smaller gains at every
-budget, and in a first per-class analysis no precision, recall or diversity measure predicts which classes
-gain. Second, \emph{why does the effect reverse with initialization?} The same images that help pretrained
+the closer a generated set is to the real training images, the less it helps. LoRA-adapted pools are closer
+to the real data than class-prompt pools (lower FID and higher recall), and SD img2img edits of the real
+images closer still, yet with pretrained classifiers the class-prompt set gives the largest gain at every
+budget and the img2img set the smallest in most cases. No set-level measure we test, FID, precision or
+recall, predicts which set will help, and in a first per-class analysis no precision, recall or diversity
+measure predicts which classes gain. Second, \emph{why does the effect reverse with initialization?} The same images that help pretrained
 classifiers lose to RandAugment for randomly initialized ones at most budgets. A recent systematic study of
 diffusion-based augmentation~\cite{li2026diffusion} starts from ImageNet weights for some datasets and trains
 from scratch on others, so it cannot separate the two, and it has no RandAugment control; our design pairs
@@ -146,7 +148,7 @@ In summary, this study differs from prior work through a highly controlled exper
 % Real-only, RandAugment, pretrained Stable Diffusion, LoRA-adapted Stable Diffusion; generated images
 % resized to 32x32 before the shared preprocessing.
 
-Stage 1 compares five training conditions, each defined as one change to the real-only control. \textit{Real-only} trains on the real images of the budget without augmentation. \textit{RandAugment} applies two RandAugment operations at magnitude 9 to every training image. \textit{Pretrained Stable Diffusion} adds generated images to the real-only training set, one generated image per real image (synthetic:real 1:1): for a budget of $k$ images per class, the first $k$ generated images of each class are added, so the generated sets are nested across budgets in the same way as the real ones. \textit{Pretrained Stable Diffusion with RandAugment} uses the same pool and applies RandAugment to every image, so that a gain from generated images can be separated from the gain of augmentation in general. \textit{LoRA-adapted Stable Diffusion} replaces the pool with images from an adapter fitted only on the real images of the same budget, so each budget has its own generated set.
+Stage 1 compares five training conditions, each defined as one change to the real-only control. \textit{Real-only} trains on the real images of the budget without augmentation. \textit{RandAugment} applies two RandAugment operations at magnitude 9 to every training image. \textit{Pretrained Stable Diffusion} adds generated images to the real-only training set, one generated image per real image (synthetic:real 1:1): for a budget of $k$ images per class, the first $k$ generated images of each class are added, so the generated sets are nested across budgets in the same way as the real ones. \textit{Pretrained Stable Diffusion with RandAugment} uses the same pool and applies RandAugment to every image, so that a gain from generated images can be separated from the gain of augmentation in general. \textit{LoRA-adapted Stable Diffusion} replaces the pool with images from an adapter fitted only on the real images of the same budget, so each budget has its own generated set. For the pool-level analysis of Section~\ref{sec:pool-utility}, a third set, \textit{SD img2img}, edits the budget's own real images in the style of DA-Fusion~\cite{trabucco2024effective}: the same Stable Diffusion model, with the class prompts, changes each upsampled real image at strength 0.5, which keeps its layout and colours and adds detail. A run with $k$ images per class adds the edits of exactly its $k$ real images, so no other real image enters; this set covers 5 to 50 images per class.
 
 Generated images are resized to $32\times32$ before training and then follow exactly the same preprocessing as the real images, so a classifier cannot separate the two by resolution or sharpness. Batches sample the combined pool uniformly, so about half of each batch is generated. Because the step budget stays the same as for real-only training, each image is seen about half as often as in the real-only run. Every run records a fingerprint of the generated pool, the synthetic:real ratio and the number of generated images it used.
 
@@ -219,7 +221,7 @@ Table~\ref{tab:stage1-scratch-accuracy} and Figure~\ref{fig:stage1-scratch-accur
 
 This section tests whether adding generated images to the real training images improves validation accuracy, compared with real-only training and with RandAugment, and whether the answer depends on the data budget and on the classifier's initialization. Every synthetic run uses the recipe and step budget of the real-only run of the same budget and pairs with it by training seed.
 
-\textbf{Generated-image quality.} Figure~\ref{fig:sd-samples} shows class-prompt samples. Against an equal number of real training images, the class-prompt pool reaches an FID of 34.2 at 50 images per class (5,000 images) and 24.7 at the full budget (45,000 images); two disjoint sets of 5,000 real images give 11.9. The LoRA pools have lower FID than the class-prompt pool from 10 images per class upward (30.2 against 34.2 at 50 per class) and higher recall (0.37 against 0.29), at lower precision (0.65 against 0.72). All scores are in \texttt{tables/generator\_quality.csv}.
+\textbf{Generated-image quality.} Figure~\ref{fig:sd-samples} shows class-prompt samples. Against an equal number of real training images, the class-prompt pool reaches an FID of 34.2 at 50 images per class (5,000 images) and 24.7 at the full budget (45,000 images); two disjoint sets of 5,000 real images give 11.9. The LoRA pools have lower FID than the class-prompt pool from 10 images per class upward (30.2 against 34.2 at 50 per class) and higher recall (0.37 against 0.29), at lower precision (0.65 against 0.72). The img2img set is closer still to the real data: against a reference that leaves out the budget's own images, its FID is 19.2 at 50 images per class and its recall 0.58, both the best of the three sets at every budget. All scores are in \texttt{tables/generator\_quality.csv} and \texttt{tables/generator\_quality\_without\_budget.csv}.
 
 \begin{figure}[H]
 	\centering
@@ -273,42 +275,60 @@ This section asks how certain the paired changes are and which classes the gener
 \subsection{Does generator quality predict usefulness?}
 \label{sec:pool-utility}
 FID and Improved Precision \& Recall describe a generated set without training on it. To test whether they
-predict which set helps more, we compare the two sets of each budget, SD class prompts and the LoRA set of
-that budget, within each budget, classifier and initialization (20 comparisons). A comparison agrees when
-the set a measure rates better also gives the larger paired gain over real-only, averaged over the seeds
-both sets share (seeds 0--2). Comparing within a budget is necessary: both FID and the gain shrink as the
-budget grows, so across budgets any measure would appear to predict the gain through the budget alone.
-The 20 comparisons are not independent: a measure rates the two sets once per budget, and the two
-classifiers and two initializations of that budget share the verdict, so each measure gives only 5
-budget-level verdicts. FID minus the real-versus-real floor is not a separate measure, because both sets of
-a budget are scored against the same real sample and share the floor; it ranks them exactly as FID does.
+predict which set helps more, we compare the generated sets of each budget: SD class prompts, the LoRA set
+of that budget and the SD img2img edits of the budget's own real images (5 to 50 images per class; the full
+set has the first two). Every pair of sets is compared within each budget, classifier and initialization
+(52 comparisons). A comparison agrees when the set a measure rates better also gives the larger paired gain
+over real-only, averaged over the seeds both sets share (seeds 0--2). Comparing within a budget is
+necessary: both FID and the gain shrink as the budget grows, so across budgets any measure would appear to
+predict the gain through the budget alone.
 
-Table~\ref{tab:pool-utility} and Figure~\ref{fig:pool-utility} give the result. FID rates the class-prompt
-set better only at 5 images per class and the LoRA set from 10 images per class up, yet with pretrained
-classifiers the class-prompt set gives the larger gain at every budget and in 29 of 30 seed pairs. FID
-therefore picks the more useful set in 2 of 10 pretrained comparisons and 7 of 20 overall, at chance
-($p = 0.26$). From random initialization the two sets are within one point at most budgets, and the LoRA set
-is ahead only on the full training set ($-2.4$ and $-2.1$ points for ResNet-50 and ViT-B/16), so the ranking
-of generated sets also depends on the initialization.
+Two details of the measurement matter. First, the img2img edits and the LoRA adapter are made from the
+budget's own real images, and a reference sample drawn from the whole training pool contains some of them
+(6 of 500 reference images at 5 images per class, up to 557 of 5,000 at 50), which would flatter those sets.
+From 5 to 50 images per class, all three sets are therefore scored against a reference that leaves the
+budget's images out. This moves the img2img FID by at most 1.5 (94.1 to 95.5 at 5 images per class) and
+changes no conclusion below. Second, the comparisons are not independent: a measure rates each pair of
+sets once per budget, and the two classifiers and two initializations of that budget share the verdict.
+Where a pair's verdict is the same at every budget, the measure agrees exactly where the favoured set wins,
+so we test a measure only on the pairs whose verdict changes between budgets. FID minus the
+real-versus-real floor is not a separate measure, since the sets of a budget share the floor.
 
-Precision and recall do not change their verdict between budgets: precision rates the class-prompt set
-better at all 5 budgets and recall the LoRA set. They agree in 17 and 3 of 20 comparisons, but these counts
-are the comparisons the class-prompt set wins, so they say how often that set wins, not whether the measure
-predicts usefulness, and we give no $p$-value for them. FID is the only measure here whose verdict changes,
-and it is at chance, which is the robust finding: in the scarce-data setting, FID does not tell which
-generated set will help. Whether precision itself predicts usefulness needs a set that it ranks
-differently; for this we add a third generator, SD img2img edits of the real training images in the style
-of DA-Fusion.
+Table~\ref{tab:pool-utility} and Figure~\ref{fig:pool-utility} give the result. The usefulness of the three
+sets follows one order. The class-prompt set gives a larger gain than the LoRA set in 17 of 20 comparisons
+(all 10 with pretrained classifiers, in 29 of 30 seed pairs) and than the img2img set in all 16, and the
+LoRA set a larger gain than the img2img set in 13 of 16. FID and recall rank the sets in the opposite order
+at every budget: img2img first, then LoRA, then class prompts. They pick the more useful set in only 6 of 52
+comparisons, the few where the order of usefulness is reversed: the LoRA set ahead of the class-prompt set
+in three cells from random initialization (ResNet-50 at 20 images per class, and both classifiers on the
+full set, by 2.4 and 2.1 points), and the img2img set ahead of the LoRA set in three pretrained cells at 20
+and 50 images per class. Because their verdict never changes, we give them no $p$-value, but the pattern is
+plain: the sets that these measures rate closest to the real data help least.
+
+Precision rates the class-prompt set above both others at every budget and so agrees in 42 of 52
+comparisons, but that count mostly restates that the class-prompt set wins. The one pair whose precision
+verdict changes between budgets is LoRA against img2img (LoRA ahead at 10 and 20 images per class, img2img
+at 5 and 50, by 0.01 to 0.02), and there precision picks the more useful set in 9 of 16 comparisons, at
+chance ($p = 0.80$). The third set thus answers the question that two sets left open: none of the three
+measures predicts which generated set will help beyond the advantage of the class-prompt set.
+
+The order of usefulness matches how far each set is from the budget's own real images. The class-prompt
+images never see them, the LoRA adapter is fitted to them, and the img2img edits keep their layout and
+colours. In the scarce-data setting a generated set helps by adding what the few real images lack, while
+FID and recall reward closeness to the real data, so they rank the sets the wrong way round. The order also
+holds from random initialization, where the class-prompt set is ahead of the img2img set in all 8
+comparisons and by 3.4 and 5.7 points for ResNet-50 at 20 and 50 images per class.
 
 \input{tables/pool_utility_summary.tex}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{pool_utility_measure_vs_gain.pdf}
-\caption{LoRA set minus SD class-prompt set, in each quality measure (x) and in the paired gain over
-real-only (y), one point per budget and classifier. A measure that predicts usefulness puts the points in
-the two quadrants where its sign matches the gain's (for FID, lower is better, so the upper-left and
-lower-right quadrants). Blue circles: pretrained; red triangles: random initialization.}
+\caption{For each pair of generated sets (colour), the second set minus the first, in each quality
+measure (x) and in the paired gain over real-only (y), one point per budget and classifier; circles:
+pretrained, triangles: random initialization. A measure that predicts usefulness puts the points in the two
+quadrants where its sign matches the gain's (for FID, lower is better, so the upper-left and lower-right
+quadrants). The scores at 5 to 50 images per class use a reference without the budget's own images.}
 \label{fig:pool-utility}
 \end{figure}
 
