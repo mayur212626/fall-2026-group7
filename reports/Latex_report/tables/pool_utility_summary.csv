@@ -1,0 +1,10 @@
+measure,init,comparisons,agree,agree_share,budgets,budgets_prompt_better,verdict_changes,p_value,p_holm
+fid,all,20,7,0.35,5,1,1,0.2632,0.2632
+fid,pretrained,10,2,0.2,5,1,1,0.1094,
+fid,scratch,10,5,0.5,5,1,1,1.0,
+precision,all,20,17,0.85,5,5,0,nan,nan
+precision,pretrained,10,10,1.0,5,5,0,nan,
+precision,scratch,10,7,0.7,5,5,0,nan,
+recall,all,20,3,0.15,5,0,0,nan,nan
+recall,pretrained,10,0,0.0,5,0,0,nan,
+recall,scratch,10,3,0.3,5,0,0,nan,

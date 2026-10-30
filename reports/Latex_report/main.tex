@@ -270,6 +270,48 @@ This section asks how certain the paired changes are and which classes the gener
 \end{figure}
 
 % ------------------------------------------------------------------------------------------------------------------------
+\subsection{Does generator quality predict usefulness?}
+\label{sec:pool-utility}
+FID and Improved Precision \& Recall describe a generated set without training on it. To test whether they
+predict which set helps more, we compare the two sets of each budget, SD class prompts and the LoRA set of
+that budget, within each budget, classifier and initialization (20 comparisons). A comparison agrees when
+the set a measure rates better also gives the larger paired gain over real-only, averaged over the seeds
+both sets share (seeds 0--2). Comparing within a budget is necessary: both FID and the gain shrink as the
+budget grows, so across budgets any measure would appear to predict the gain through the budget alone.
+The 20 comparisons are not independent: a measure rates the two sets once per budget, and the two
+classifiers and two initializations of that budget share the verdict, so each measure gives only 5
+budget-level verdicts. FID minus the real-versus-real floor is not a separate measure, because both sets of
+a budget are scored against the same real sample and share the floor; it ranks them exactly as FID does.
+
+Table~\ref{tab:pool-utility} and Figure~\ref{fig:pool-utility} give the result. FID rates the class-prompt
+set better only at 5 images per class and the LoRA set from 10 images per class up, yet with pretrained
+classifiers the class-prompt set gives the larger gain at every budget and in 29 of 30 seed pairs. FID
+therefore picks the more useful set in 2 of 10 pretrained comparisons and 7 of 20 overall, at chance
+($p = 0.26$). From random initialization the two sets are within one point at most budgets, and the LoRA set
+is ahead only on the full training set ($-2.4$ and $-2.1$ points for ResNet-50 and ViT-B/16), so the ranking
+of generated sets also depends on the initialization.
+
+Precision and recall do not change their verdict between budgets: precision rates the class-prompt set
+better at all 5 budgets and recall the LoRA set. They agree in 17 and 3 of 20 comparisons, but these counts
+are the comparisons the class-prompt set wins, so they say how often that set wins, not whether the measure
+predicts usefulness, and we give no $p$-value for them. FID is the only measure here whose verdict changes,
+and it is at chance, which is the robust finding: in the scarce-data setting, FID does not tell which
+generated set will help. Whether precision itself predicts usefulness needs a set that it ranks
+differently; for this we add a third generator, SD img2img edits of the real training images in the style
+of DA-Fusion.
+
+\input{tables/pool_utility_summary.tex}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{pool_utility_measure_vs_gain.pdf}
+\caption{LoRA set minus SD class-prompt set, in each quality measure (x) and in the paired gain over
+real-only (y), one point per budget and classifier. A measure that predicts usefulness puts the points in
+the two quadrants where its sign matches the gain's (for FID, lower is better, so the upper-left and
+lower-right quadrants). Blue circles: pretrained; red triangles: random initialization.}
+\label{fig:pool-utility}
+\end{figure}
+
 \subsection{Why the effect flips with initialization}
 \label{sec:sign-flip}
 SD class-prompt images raise the accuracy of ImageNet-pretrained classifiers at every budget but lose to
