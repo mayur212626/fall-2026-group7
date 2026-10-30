@@ -1,0 +1,22 @@
+\begin{table}[H]
+\centering
+\caption{Stage 1, SD img2img against real-only, pretrained initialization: validation top-1 accuracy (\%), mean $\pm$ sample SD over 3 or 5 seeds. The change is SD img2img minus real-only per seed (percentage points); it is a gain or a loss only when every seed agrees in sign.}
+\label{tab:stage1-pretrained-accuracy-sd_img2img}
+\begin{tabular}{llrrrl}
+\toprule
+Model & Images/class & Real-only & SD img2img & Change & Verdict \\
+\midrule
+ResNet-50 & 5 & 35.66 $\pm$ 0.92 & 40.88 $\pm$ 0.61 & +5.71 $\pm$ 1.30 & gain \\
+ResNet-50 & 10 & 49.87 $\pm$ 0.93 & 54.67 $\pm$ 0.28 & +5.17 $\pm$ 0.79 & gain \\
+ResNet-50 & 20 & 59.73 $\pm$ 0.43 & 64.04 $\pm$ 0.60 & +4.56 $\pm$ 0.72 & gain \\
+ResNet-50 & 50 & 71.36 $\pm$ 0.39 & 73.18 $\pm$ 0.28 & +1.82 $\pm$ 0.52 & gain \\
+ResNet-50 & full & 84.17 $\pm$ 0.19 & -- & -- & -- \\
+\midrule
+ViT-B/16 & 5 & 46.49 $\pm$ 1.42 & 54.95 $\pm$ 1.60 & +8.02 $\pm$ 0.57 & gain \\
+ViT-B/16 & 10 & 61.29 $\pm$ 1.03 & 67.58 $\pm$ 1.65 & +6.50 $\pm$ 0.34 & gain \\
+ViT-B/16 & 20 & 72.15 $\pm$ 0.78 & 74.97 $\pm$ 0.74 & +2.92 $\pm$ 0.68 & gain \\
+ViT-B/16 & 50 & 80.29 $\pm$ 0.09 & 80.83 $\pm$ 0.43 & +0.54 $\pm$ 0.52 & gain \\
+ViT-B/16 & full & 88.64 $\pm$ 0.02 & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
