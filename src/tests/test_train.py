@@ -104,6 +104,10 @@ class ConditionsTest(unittest.TestCase):
         self.assertNotIn("sd_prompt", AUGMENTED_CONDITIONS)
         self.assertNotIn("real_only", AUGMENTED_CONDITIONS)
 
+    def test_img2img_condition_adds_its_pool_without_randaugment(self) -> None:
+        self.assertIn("sd_img2img", SYNTHETIC_CONDITIONS)
+        self.assertNotIn("sd_img2img", AUGMENTED_CONDITIONS)
+
 
     def test_sd_only_trains_on_the_class_prompt_pool_without_real_images(self) -> None:
         self.assertEqual(SYNTHETIC_ONLY_CONDITIONS, ("sd_prompt_only",))

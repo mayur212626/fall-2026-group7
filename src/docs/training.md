@@ -7,12 +7,12 @@
 | `--config` | `src/component/configs/train_pretrained.json` or `train_scratch.json` |
 | `--model` | `resnet50`, `vit_b_16` |
 | `--init` | `pretrained` (ImageNet weights), `scratch` (random initialization) |
-| `--condition` | `real_only`, `randaugment`, `sd_prompt`, `sd_prompt_randaugment`, `sd_lora`, `sd_prompt_only` (synthetic conditions need `--synthetic-pool`; see [synthetic data](synthetic-data.md)) |
+| `--condition` | `real_only`, `randaugment`, `sd_prompt`, `sd_prompt_randaugment`, `sd_lora`, `sd_prompt_only`, `sd_img2img` (synthetic conditions need `--synthetic-pool`; see [synthetic data](synthetic-data.md)) |
 | `--budget` | `5`, `10`, `20`, `50`, `full` (images per class, from the split manifest) |
 | `--seed` | training seed, e.g. `0`, `1`, `2` |
 | `--steps` | overrides the config's step budget; used for pilot runs |
 | `--lr` | overrides the config's learning rate; used for pilot runs |
-| `--synthetic-pool` | generated image pool (`pool.npz`) for `sd_prompt`, `sd_prompt_randaugment` and `sd_lora` |
+| `--synthetic-pool` | generated image pool (`pool.npz`) for `sd_prompt`, `sd_prompt_randaugment`, `sd_prompt_only`, `sd_lora` and `sd_img2img` |
 | `--synthetic-ratio` | generated images per real image and class, default 1 (1:1) |
 
 Example, from the repository root:
@@ -165,7 +165,7 @@ python -m src.component.run_matrix --runs-root runs --output src/component/confi
 
 The runs are split between machines. On a machine that has only some of the run directories, add `--keep-missing` so the other runs keep the status already in the file.
 
-`src/component/configs/generator_registry.csv` has one row per generator: the pretrained Stable Diffusion pool (`sd_prompt`) and one LoRA adapter per data budget (`lora_sd_b5` to `lora_sd_bfull`, used by the `sd_lora` condition). `generate_sd` fills in the model, revision, sampler, guidance, prompt, seed and generation time when a pool is finished, and `pool_quality` adds its FID and precision/recall (see [synthetic data](synthetic-data.md)). A unit test checks that every generator in the run matrix is registered.
+`src/component/configs/generator_registry.csv` has one row per generator: the pretrained Stable Diffusion pool (`sd_prompt`), one LoRA adapter per data budget (`lora_sd_b5` to `lora_sd_bfull`, used by the `sd_lora` condition) and the SD img2img pool (`sd_img2img`). `generate_sd` and `generate_img2img` fill in the model, revision, sampler, guidance, prompt, seed and generation time when a pool is finished, and `pool_quality` adds its FID and precision/recall (see [synthetic data](synthetic-data.md)). A unit test checks that every generator in the run matrix is registered.
 
 ## Test-set evaluation
 
@@ -182,7 +182,7 @@ Run it when no training job is using the GPU. The command refuses to run without
 ## Protocol
 
 - Images are 32×32 CIFAR-100 images, upsampled to 224×224 (bilinear) and normalized with the ImageNet mean and standard deviation.
-- `real_only` applies no augmentation. `randaugment` applies RandAugment (2 operations, magnitude 9) to the 32×32 image before upsampling. `sd_prompt_only` trains on the SD class-prompt images alone, with as many per class as the real budget has, and is validated on real images like every other condition. `src/shellscripts/run_sd_prompt_only.sh` runs it for both classifiers at every budget with seeds 0 to 2.
+- `real_only` applies no augmentation. `randaugment` applies RandAugment (2 operations, magnitude 9) to the 32×32 image before upsampling. `sd_prompt_only` trains on the SD class-prompt images alone, with as many per class as the real budget has, and is validated on real images like every other condition. `src/shellscripts/run_sd_prompt_only.sh` runs it for both classifiers at every budget with seeds 0 to 2. `sd_img2img` adds SD img2img edits of the run's own real training images, 1:1 (see [synthetic data](synthetic-data.md)).
 - Training runs for a fixed number of optimizer steps: linear warmup over 5% of the steps, then cosine decay; gradient norm clipped at 1.0; label smoothing 0.1; bf16 mixed precision on the GPU.
 - The validation set is scored 20 times at equal step intervals. The best checkpoint has the highest validation accuracy; ties go to the lower validation loss, then the earlier step.
 - Every run is seeded (Python, NumPy, PyTorch, deterministic cuDNN), and the sample order and the augmentation of each sample depend only on the seed and the step. A resumed run therefore sees the same batches and augmentations as an uninterrupted one, which the unit tests check on the CPU. On the GPU, some kernels (for example the attention backward pass of ViT-B/16) are not guaranteed to be deterministic, so repeated GPU runs with the same seed can differ slightly; the differences between seeds are measured by the training seeds (three, or five for the cells with seeds 3 and 4).

@@ -59,7 +59,7 @@ from src.component.synthetic_pool import file_sha256, load_pool
 SUMMARY_KEYS = ("accuracy", "macro_f1", "balanced_accuracy", "loss")
 LOG_FORMAT = "%(asctime)s %(message)s"
 # Conditions that add generated images to the real training images.
-SYNTHETIC_CONDITIONS = ("sd_prompt", "sd_lora", "sd_prompt_randaugment", "sd_prompt_only")
+SYNTHETIC_CONDITIONS = ("sd_prompt", "sd_lora", "sd_prompt_randaugment", "sd_prompt_only", "sd_img2img")
 # Synthetic conditions that train on the generated images alone, without the real ones.
 SYNTHETIC_ONLY_CONDITIONS = ("sd_prompt_only",)
 CONDITIONS = ("real_only", "randaugment") + SYNTHETIC_CONDITIONS
@@ -440,7 +440,7 @@ def main() -> None:
     parser.add_argument("--runs-root", type=Path, default=Path("runs"))
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--synthetic-pool", type=Path,
-                        help="generated image pool (pool.npz); required for sd_prompt and sd_lora")
+                        help="generated image pool (pool.npz); required for the synthetic conditions")
     parser.add_argument("--synthetic-ratio", type=int, default=1,
                         help="generated images per real image and class (default 1, i.e. 1:1)")
     args = parser.parse_args()
