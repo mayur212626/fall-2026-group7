@@ -165,6 +165,10 @@ class SeedTIntervalTest(unittest.TestCase):
     def test_one_seed_has_no_interval(self) -> None:
         self.assertEqual(seed_t_interval([2.0]), (None, None))
 
+    def test_more_seeds_than_the_t_table_covers_is_a_clear_error(self) -> None:
+        with self.assertRaisesRegex(ValueError, "12 seeds"):
+            seed_t_interval([float(v) for v in range(12)])
+
 
 class SignTestRowsTest(unittest.TestCase):
     def test_counts_gains_and_losses_per_comparison(self) -> None:
