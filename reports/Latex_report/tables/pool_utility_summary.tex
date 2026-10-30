@@ -1,16 +1,15 @@
 \begin{table}[H]
 \centering
 \small
-\caption{Does a quality measure pick the more useful generated set? Within each budget, model and initialization, the SD class-prompt and LoRA sets are compared: a comparison agrees when the set the measure rates better also gives the larger accuracy gain over real-only (paired, mean over the seeds both sets have). Chance is one half; $p$ is a two-sided binomial test, Holm-adjusted over the measures in the last column. With two sets per budget, a measure that rates the same set better at every budget agrees exactly where that set wins, so more generators are needed to separate such measures.}
+\caption{Does a quality measure pick the more useful generated set? Within each budget, model and initialization, the SD class-prompt and LoRA sets are compared: a comparison agrees when the set the measure rates better also gives the larger accuracy gain over real-only (paired, mean over the seeds both sets have, seeds 0--2). A measure rates the two sets once per budget, and every model and initialization of the budget shares that verdict; the second column gives the budgets at which it rates the class-prompt set better. A measure that prefers the same set at every budget agrees exactly where that set wins, so no $p$ is given for it (--). Otherwise $p$ is a two-sided binomial test against one half, Holm-adjusted over the measures tested.}
 \label{tab:pool-utility}
-\begin{tabular}{lrrrrr}
+\begin{tabular}{lrrrrrr}
 \toprule
-Measure & Pretrained & Scratch & All & $p$ & Holm $p$ \\
+Measure & Prompts better & Pretrained & Scratch & All & $p$ & Holm $p$ \\
 \midrule
-FID & 2/10 & 5/10 & 7/20 & 0.263 & 0.420 \\
-FID $-$ real floor & 2/8 & 3/8 & 5/16 & 0.210 & 0.420 \\
-Precision & 10/10 & 7/10 & 17/20 & 0.003 & 0.010 \\
-Recall & 0/10 & 3/10 & 3/20 & 0.003 & 0.010 \\
+FID & 1/5 & 2/10 & 5/10 & 7/20 & 0.263 & 0.263 \\
+Precision & 5/5 & 10/10 & 7/10 & 17/20 & -- & -- \\
+Recall & 0/5 & 0/10 & 3/10 & 3/20 & -- & -- \\
 \bottomrule
 \end{tabular}
 \end{table}

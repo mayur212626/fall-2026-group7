@@ -49,12 +49,11 @@ def gain_files(folder: Path, init: str, prompt: dict, lora: dict) -> None:
 
 
 class ReadTest(unittest.TestCase):
-    def test_quality_maps_names_and_computes_the_gap_to_the_floor(self) -> None:
+    def test_quality_maps_names_to_conditions(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             q = pu.read_quality(quality_file(Path(tmp)))
         self.assertEqual(set(q), {(g, b) for g in ("sd_prompt", "sd_lora") for b in ("5", "10", "full")})
-        self.assertAlmostEqual(q[("sd_lora", "5")]["fid_gap"], 104.8 - 88.9)
-        self.assertTrue(np.isnan(q[("sd_prompt", "full")]["fid_gap"]))  # no floor at full
+        self.assertEqual(q[("sd_lora", "5")], {"fid": 104.8, "precision": 0.73, "recall": 0.5})
 
     def test_gains_are_per_seed(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -107,6 +106,42 @@ class ComparisonTest(unittest.TestCase):
         self.assertEqual(stats[("m", "scratch")]["p_holm"], "")
         self.assertIn(r"\label{tab:pool-utility}", pu.summary_table(list(stats.values())))
 
+    @staticmethod
+    def rows_for(verdicts: dict[str, tuple[float, float]], agree: list[int]) -> list[dict]:
+        """Two cells (pretrained, scratch) per budget sharing the budget's measure values."""
+        rows, votes = [], iter(agree)
+        for budget, (prompt, lora) in verdicts.items():
+            for init in ("pretrained", "scratch"):
+                rows.append({"init": init, "budget": budget, "m_sd_prompt": prompt, "m_sd_lora": lora,
+                             "agree_m": next(votes)})
+        return rows
+
+    def test_constant_verdict_gets_no_p_value(self) -> None:
+        # the measure prefers prompts at every budget: its count only says how often prompts win
+        rows = self.rows_for({"5": (0.8, 0.7), "10": (0.8, 0.7), "20": (0.8, 0.7)}, [1, 1, 1, 1, 1, 1])
+        stats = {(s["measure"], s["init"]): s for s in pu.summary(rows, {"m": True})}
+        overall = stats[("m", "all")]
+        self.assertEqual((overall["budgets_prompt_better"], overall["budgets"], overall["verdict_changes"]), (3, 3, 0))
+        self.assertEqual((overall["agree"], overall["comparisons"]), (6, 6))
+        self.assertTrue(np.isnan(overall["p_value"]))
+        self.assertTrue(np.isnan(overall["p_holm"]))
+        table = pu.summary_table(list(stats.values()), "0--2")
+        self.assertIn("m & 3/3 & 3/3 & 3/3 & 6/6 & -- & --", table)
+        self.assertIn("seeds 0--2", table)
+
+    def test_changing_verdict_is_tested(self) -> None:
+        # prompts better at 5 only (lower is better), so the verdict changes and a p-value is given
+        rows = self.rows_for({"5": (90.0, 95.0), "10": (80.0, 70.0), "20": (60.0, 50.0)}, [1, 0, 0, 0, 0, 1])
+        overall = {(s["measure"], s["init"]): s for s in pu.summary(rows, {"m": False})}[("m", "all")]
+        self.assertEqual((overall["budgets_prompt_better"], overall["budgets"], overall["verdict_changes"]), (1, 3, 1))
+        self.assertAlmostEqual(overall["p_value"], pu.binomial_two_sided(2, 6))
+        self.assertAlmostEqual(overall["p_holm"], overall["p_value"])  # the only measure tested
+
+    def test_seed_range(self) -> None:
+        self.assertEqual(pu.seed_range(["0", "1", "2", "1"]), "0--2")
+        self.assertEqual(pu.seed_range(["0", "2"]), "0, 2")
+        self.assertEqual(pu.seed_range([]), "")
+
 
 class ExtraTest(unittest.TestCase):
     def test_extra_measures_need_a_direction(self) -> None:
@@ -140,6 +175,10 @@ class EndToEndTest(unittest.TestCase):
                              ("6", "6"))
             self.assertEqual(stats[("fid", "all")]["agree"], "2")
             self.assertEqual(stats[("recall", "all")]["agree"], "0")
+            # FID changes its verdict (prompts better at 5 only), precision and recall never do
+            self.assertEqual(stats[("fid", "all")]["verdict_changes"], "1")
+            self.assertEqual(stats[("precision", "all")]["p_value"], "nan")
+            self.assertNotIn("fid_gap", {r["measure"] for r in stats.values()})
             self.assertTrue((figures / "pool_utility_measure_vs_gain.pdf").exists())
             self.assertTrue((tables / "pool_utility_summary.tex").exists())
 
