@@ -1,6 +1,6 @@
-# Synthetic data: Stable Diffusion class prompts (`sd_prompt`) and LoRA (`sd_lora`)
+# Synthetic data: Stable Diffusion class prompts (`sd_prompt`), LoRA (`sd_lora`) and img2img (`sd_img2img`)
 
-Stage 1 compares real-only and RandAugment with two diffusion conditions at a 1:1 synthetic-to-real ratio. Pretrained Stable Diffusion with class prompts (`sd_prompt`) uses the model as released; the LoRA condition (`sd_lora`) first adapts it to each data budget's real images. Both use the same pool format, training option and analysis.
+Stage 1 compares real-only and RandAugment with two diffusion conditions at a 1:1 synthetic-to-real ratio. Pretrained Stable Diffusion with class prompts (`sd_prompt`) uses the model as released; the LoRA condition (`sd_lora`) first adapts it to each data budget's real images. Both use the same pool format, training option and analysis. A third set, SD img2img edits of the real training images (`sd_img2img`, below), was added for the pool-level RQ3 comparison.
 
 ## Generator
 
@@ -71,6 +71,29 @@ Each adapter directory holds `pytorch_lora_weights.safetensors`, `lora.json` (se
 
 `generate_sd --lora-dir data/lora/sd15_lora_b<budget>` loads the adapter and writes prompts with the identifier ("a photo of a cfr bear."), with a negative prompt of only "text, watermark, logo" so the output can match the soft look of CIFAR photos. Each budget's pool has exactly as many images per class as the budget has real images (1:1): 5, 10, 20, 50 and 450. Pools are stored in `data/synthetic/sd15_lora_b<budget>/` and registered as `lora_sd_b<budget>`.
 
+## SD img2img edits of the real images (`sd_img2img`)
+
+A third generated set for the pool-level RQ3 comparison, in the style of DA-Fusion: Stable Diffusion edits each real training image instead of generating from a prompt alone. `generate_img2img` uses the same SD 1.5 revision as the prompt pool (read from `data/synthetic/sd15_prompt/pool.json`), no LoRA and no fine-tuning.
+
+| Setting | Value |
+|---|---|
+| Pipeline | `StableDiffusionImg2ImgPipeline`, fp16, DPM-Solver++ (`DPMSolverMultistepScheduler`), 25 steps, guidance 7.5 |
+| Strength | 0.5: the edit keeps the layout, pose and colours of its source and adds detail |
+| Input and output | 32×32 source upsampled to 512×512 (PIL bicubic), output reduced to 32×32 (PIL bicubic, antialiased) |
+| Prompts | the 8 class-prompt templates and class names of `sd_prompt`, image `i` uses template `i mod 8`; negative prompt as for `sd_prompt` |
+| Seeds | image `i` of class `c`: NumPy `SeedSequence([generation seed, c, i])`; generation seed 0 |
+| Pool size | one edit of each of the first 50 training images per class, 5,000 images |
+
+Source order: within each class, the images of budget 5 come first, then the images budget 10 adds, then those of 20 and 50, each tier in index order. The edit of source `i` gets index `i`, so a run at budget `k` takes indices `0 … k−1`, which are the edits of exactly its own `k` real images: no real image outside the budget enters, directly or through an edit. The pool covers budgets 5 to 50; there is no full-budget edit pool.
+
+```bash
+bash src/shellscripts/generate_sd_img2img_pool.sh          # pool, then FID and precision/recall at 5, 10, 20, 50
+bash src/shellscripts/run_sd_img2img.sh                    # pretrained arm: 2 models x 4 budgets x seeds 0-2
+bash src/shellscripts/run_sd_img2img.sh scratch            # random-initialization arm
+```
+
+Generation is resumable per class, and `pool.json` keeps the time of the first start. The pool is registered as `sd_img2img`.
+
 ## Image quality: FID and Improved Precision & Recall
 
 `pool_quality` scores a `pool.npz` with the measures and features of `image_quality` (Clean-FID "clean" Inception features of the 32×32 images, FID, Improved Precision & Recall with k = 3), at the size a run uses: the first `k` images per class against a class-balanced real sample of the training pool (never the test set) with the same number of images per class, so FID is always compared at equal sample counts. FID is biased upwards for small sets, so each result also reports its bootstrap SD (10 resamples of the generated set) and, when the pool allows, a real-versus-real floor: the FID of two disjoint real samples of that size.
@@ -80,6 +103,8 @@ bash src/shellscripts/measure_quality.sh
 ```
 
 The script measures every finished pool (the class-prompt pool at each budget's size and each LoRA pool), writes `reports/Latex_report/tables/generator_quality.csv`, and copies the scores of the full class-prompt pool and of each LoRA pool into the generator registry.
+
+The reference sample is drawn from the whole training pool, so at budget `k` it can contain some of that budget's own images: with seed 0, 6 of 500 reference images at 5 per class, 17 of 1,000 at 10, 84 of 2,000 at 20 and 557 of 5,000 at 50. A set made from those images (the img2img edits, and less directly the LoRA set, whose adapter is fitted on them) then looks closer to the real data than it is. `measure_quality_without_budget.sh` scores the three sets of each budget from 5 to 50 again with `--exclude-budget`, against a reference that leaves the budget's images out, and writes `reports/Latex_report/tables/generator_quality_without_budget.csv`; the pool-level RQ3 comparison uses these scores, so all three sets of a budget are measured against the same reference.
 
 ## LoRA rank pilot
 

@@ -243,7 +243,8 @@ def main() -> None:
         elapsed += seconds
         print(f"class {label:3d} {class_names[label]:<16} {per_class} edits in {seconds / 60:.1f} min", flush=True)
         meta_path.parent.mkdir(parents=True, exist_ok=True)
-        meta_path.write_text(json.dumps({**previous, "generation_seconds": elapsed}, indent=2) + "\n", encoding="utf-8")
+        progress = {**previous, "started": previous.get("started", started), "generation_seconds": elapsed}
+        meta_path.write_text(json.dumps(progress, indent=2) + "\n", encoding="utf-8")
 
     if args.classes:
         print("partial run (--classes): pool.npz is written only when every class is generated")
