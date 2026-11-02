@@ -85,10 +85,10 @@ Generator-quality measures such as FID are known to predict poorly how well a cl
 generated images performs~\cite{ravuri2019classification}, also for diffusion-based
 augmentation~\cite{li2026diffusion}. We test this in the scarce-data setting, with the real images always
 in the training set and conventional augmentation as a control. In our benchmark the two disagree:
-the closer a generated set is to the real training images, the less it helps. LoRA-adapted pools are closer
-to the real data than class-prompt pools (lower FID and higher recall), and SD img2img edits of the real
-images closer still, yet with pretrained classifiers the class-prompt set gives the largest gain at every
-budget and the img2img set the smallest in most cases. No set-level measure we test, FID, precision or
+among our three generated sets, the ones closest to the real training images help least. LoRA-adapted pools
+are closer to the real data than class-prompt pools (lower FID and higher recall), and SD img2img edits of
+the real images closer still, yet with pretrained classifiers the class-prompt set gives the largest gain at
+every budget, and the img2img set a smaller gain than the LoRA set in 5 of 8 cells. No set-level measure we test, FID, precision or
 recall, predicts which set will help, and in a first per-class analysis no precision, recall or diversity
 measure predicts which classes gain. Second, \emph{why does the effect reverse with initialization?} The same images that help pretrained
 classifiers lose to RandAugment for randomly initialized ones at most budgets. A recent systematic study of
@@ -314,8 +314,9 @@ measures predicts which generated set will help beyond the advantage of the clas
 
 The order of usefulness matches how far each set is from the budget's own real images. The class-prompt
 images never see them, the LoRA adapter is fitted to them, and the img2img edits keep their layout and
-colours. In the scarce-data setting a generated set helps by adding what the few real images lack, while
-FID and recall reward closeness to the real data, so they rank the sets the wrong way round. The order also
+colours. One explanation consistent with this order, which we have not tested directly, is that in the
+scarce-data setting a generated set helps by adding what the few real images lack, while FID and recall
+reward closeness to the real data and so rank the sets the wrong way round. The order also
 holds from random initialization, where the class-prompt set is ahead of the img2img set in all 8
 comparisons and by 3.4 and 5.7 points for ResNet-50 at 20 and 50 images per class.
 

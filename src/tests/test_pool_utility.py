@@ -14,6 +14,7 @@ from src.component import pool_utility as pu
 QUALITY_FIELDS = ["name", "pool_sha256", "images", "per_class", "reference", "reference_images", "fid", "fid_sd",
                   "fid_real_floor", "precision", "recall", "k", "features", "measured"]
 PREFIXES = {"sd_prompt": "sd15_prompt", "sd_lora": "sd15_lora", "sd_img2img": "sd15_img2img"}
+MEASURES = {"fid": False, "precision": True, "recall": True}
 
 
 def write_csv(path: Path, fields: list[str], rows: list[dict]) -> None:
@@ -77,8 +78,6 @@ class StatsTest(unittest.TestCase):
 
 
 class ComparisonTest(unittest.TestCase):
-    measures = {"fid": False, "precision": True, "recall": True}
-
     def test_every_pair_with_direction_and_shared_seeds(self) -> None:
         quality = {("sd_prompt", "5"): {"fid": 100.0, "precision": 0.8, "recall": 0.4},
                    ("sd_lora", "5"): {"fid": 90.0, "precision": 0.7, "recall": 0.5},
@@ -86,7 +85,7 @@ class ComparisonTest(unittest.TestCase):
         gains = {"pretrained": {("resnet50", "sd_prompt", "5"): {0: 10.0, 1: 12.0, 3: 50.0},
                                 ("resnet50", "sd_lora", "5"): {0: 8.0, 1: 13.0},
                                 ("resnet50", "sd_img2img", "5"): {0: 5.0, 1: 6.0}}}
-        rows = {r["pair"]: r for r in pu.comparisons(quality, gains, self.measures)}
+        rows = {r["pair"]: r for r in pu.comparisons(quality, gains, MEASURES)}
         self.assertEqual(set(rows), {"sd_prompt-sd_lora", "sd_prompt-sd_img2img", "sd_lora-sd_img2img"})
         pl = rows["sd_prompt-sd_lora"]
         self.assertEqual(pl["seeds"], "0 1")                # seed 3 only for prompts
@@ -102,7 +101,7 @@ class ComparisonTest(unittest.TestCase):
                    ("sd_lora", "10"): {"fid": 70.0, "precision": 0.7, "recall": 0.5}}
         gains = {"scratch": {("vit_b_16", "sd_prompt", "10"): {0: 2.0}, ("vit_b_16", "sd_lora", "10"): {0: 1.0},
                              ("vit_b_16", "sd_img2img", "10"): {0: 1.0}, ("vit_b_16", "sd_prompt", "20"): {0: 2.0}}}
-        [row] = pu.comparisons(quality, gains, self.measures)  # img2img has no quality, budget 20 has one set
+        [row] = pu.comparisons(quality, gains, MEASURES)  # img2img has no quality, budget 20 has one set
         self.assertEqual(row["pair"], "sd_prompt-sd_lora")
         self.assertEqual(row["agree_fid"], "")  # equal FID
 
