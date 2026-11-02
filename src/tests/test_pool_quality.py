@@ -4,13 +4,16 @@ FID and precision/recall themselves are tested in test_image_quality.
 """
 
 import csv
+import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 import numpy as np
 
 from src.component.image_quality import precision_recall
+from src.component import pool_quality
 from src.component.pool_quality import append_table, bootstrap_fid_sd, matched_reference, reference_pool
 
 RNG = np.random.default_rng(0)
@@ -77,6 +80,13 @@ class TableTest(unittest.TestCase):
             with path.open(encoding="utf-8") as f:
                 rows = list(csv.DictReader(f))
         self.assertEqual([(r["name"], r["fid"]) for r in rows], [("b", "20"), ("a", "5")])
+
+
+class ArgumentTest(unittest.TestCase):
+    def test_registry_scores_never_use_a_reduced_reference(self) -> None:
+        argv = ["pool_quality", "--pool", "pool.npz", "--name", "x_b5", "--exclude-budget", "5", "--generator", "x"]
+        with mock.patch.object(sys, "argv", argv), self.assertRaises(SystemExit):
+            pool_quality.main()
 
 
 if __name__ == "__main__":

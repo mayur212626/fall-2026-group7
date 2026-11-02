@@ -102,7 +102,7 @@ def append_table(path: Path, row: dict) -> None:
     with path.open("w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=QUALITY_FIELDS)
         writer.writeheader()
-        writer.writerows(rows + [{k: row.get(k, "") for k in QUALITY_FIELDS}])
+        writer.writerows([*rows, {k: row.get(k, "") for k in QUALITY_FIELDS}])
 
 
 def main() -> None:
@@ -131,6 +131,9 @@ def main() -> None:
     parser.add_argument("--table", type=Path, default=QUALITY_TABLE)
     parser.add_argument("--registry", type=Path, default=REGISTRY)
     args = parser.parse_args()
+    if args.exclude_budget and args.generator:
+        parser.error("--generator records the scores against the whole training pool in the registry; "
+                     "do not combine it with --exclude-budget")
 
     pool_images, pool_labels, pool_index = load_pool(args.pool)
     per_class = args.per_class or int(np.bincount(pool_labels).min())
@@ -179,8 +182,10 @@ def main() -> None:
                                                                        encoding="utf-8")
     append_table(args.table, result)
     if args.generator:
-        set_row(args.registry, args.generator, {"fid": result["fid"], "precision": result["precision"],
-                                                "recall": result["recall"], "quality_file": f"{args.table} ({args.name})"})
+        set_row(args.registry, args.generator, {
+            "fid": result["fid"], "precision": result["precision"], "recall": result["recall"],
+            "quality_file": f"{args.table} ({args.name})",
+        })
     print(f"{args.name}: {len(fake)} images ({per_class}/class) vs {len(real)} real | FID {fid:.2f}"
           + (f" ± {fid_sd:.2f}" if fid_sd is not None else "")
           + (f" (real-vs-real floor {floor:.2f})" if floor is not None else "")
