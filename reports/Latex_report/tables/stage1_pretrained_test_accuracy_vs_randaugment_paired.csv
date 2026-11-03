@@ -1,0 +1,31 @@
+treatment,control,init,model,budget,seeds,changes,mean,sd,verdict
+sd_prompt,randaugment,pretrained,resnet50,5,0 1 2 3 4,3.65 3.31 4.79 2.38 3.0,3.426,0.8944,gain
+sd_prompt,randaugment,pretrained,resnet50,10,0 1 2 3 4,3.08 3.96 1.81 4.46 2.76,3.214,1.0373,gain
+sd_prompt,randaugment,pretrained,resnet50,20,0 1 2 3 4,2.8 2.79 1.99 2.06 1.63,2.254,0.5201,gain
+sd_prompt,randaugment,pretrained,resnet50,50,0 1 2,1.52 1.48 1.01,1.3367,0.2836,gain
+sd_prompt,randaugment,pretrained,resnet50,full,0 1 2,-0.78 -0.39 -1.09,-0.7533,0.3508,loss
+sd_prompt,randaugment,pretrained,vit_b_16,5,0 1 2 3 4,3.8 3.78 2.82 4.84 2.59,3.566,0.899,gain
+sd_prompt,randaugment,pretrained,vit_b_16,10,0 1 2 3 4,1.97 1.13 2.14 1.44 0.77,1.49,0.5708,gain
+sd_prompt,randaugment,pretrained,vit_b_16,20,0 1 2 3 4,-0.79 -0.46 0.29 0.15 -0.09,-0.18,0.444,inconclusive
+sd_prompt,randaugment,pretrained,vit_b_16,50,0 1 2,-1.77 -1.15 -0.81,-1.2433,0.4868,loss
+sd_prompt,randaugment,pretrained,vit_b_16,full,0 1 2,-1.04 -1.35 -1.11,-1.1667,0.1626,loss
+sd_lora,randaugment,pretrained,resnet50,5,0 1 2,1.99 0.82 3.6,2.1367,1.3958,gain
+sd_lora,randaugment,pretrained,resnet50,10,0 1 2,0.76 1.73 0.21,0.9,0.7696,gain
+sd_lora,randaugment,pretrained,resnet50,20,0 1 2,1.79 1.64 0.42,1.2833,0.7514,gain
+sd_lora,randaugment,pretrained,resnet50,50,0 1 2,-0.17 0.07 -0.74,-0.28,0.4161,inconclusive
+sd_lora,randaugment,pretrained,resnet50,full,0 1 2,-0.77 -0.73 -1.25,-0.9167,0.2894,loss
+sd_lora,randaugment,pretrained,vit_b_16,5,0 1 2,2.13 0.56 -0.11,0.86,1.1497,inconclusive
+sd_lora,randaugment,pretrained,vit_b_16,10,0 1 2,-0.96 -1.23 -1.55,-1.2467,0.2954,loss
+sd_lora,randaugment,pretrained,vit_b_16,20,0 1 2,-1.42 -1.7 -1.22,-1.4467,0.2411,loss
+sd_lora,randaugment,pretrained,vit_b_16,50,0 1 2,-2.95 -2.2 -1.84,-2.33,0.5663,loss
+sd_lora,randaugment,pretrained,vit_b_16,full,0 1 2,-1.69 -2.12 -1.73,-1.8467,0.2376,loss
+sd_prompt_randaugment,randaugment,pretrained,resnet50,5,0 1 2 3 4,8.31 8.78 9.65 8.67 9.25,8.932,0.5233,gain
+sd_prompt_randaugment,randaugment,pretrained,resnet50,10,0 1 2 3 4,6.7 6.77 5.41 7.02 6.96,6.572,0.6628,gain
+sd_prompt_randaugment,randaugment,pretrained,resnet50,20,0 1 2 3 4,4.08 4.66 2.81 2.72 3.88,3.63,0.8406,gain
+sd_prompt_randaugment,randaugment,pretrained,resnet50,50,0 1 2,1.59 2.19 1.78,1.8533,0.3066,gain
+sd_prompt_randaugment,randaugment,pretrained,resnet50,full,0 1 2,0.27 0.57 0.09,0.31,0.2425,gain
+sd_prompt_randaugment,randaugment,pretrained,vit_b_16,5,0 1 2 3 4,11.66 9.53 9.97 12.6 10.2,10.792,1.2885,gain
+sd_prompt_randaugment,randaugment,pretrained,vit_b_16,10,0 1 2 3 4,5.93 4.93 4.52 4.77 5.64,5.158,0.5996,gain
+sd_prompt_randaugment,randaugment,pretrained,vit_b_16,20,0 1 2 3 4,1.77 1.67 2.28 2.51 2.25,2.096,0.3594,gain
+sd_prompt_randaugment,randaugment,pretrained,vit_b_16,50,0 1 2,0.03 0.22 0.2,0.15,0.1044,gain
+sd_prompt_randaugment,randaugment,pretrained,vit_b_16,full,0 1 2,-0.01 -0.75 -0.55,-0.4367,0.3828,loss
