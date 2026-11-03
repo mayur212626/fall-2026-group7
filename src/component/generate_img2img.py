@@ -257,7 +257,8 @@ def main() -> None:
         "strength": args.strength, "size": args.size, "output_size": 32, "resize": "PIL bicubic (antialiased)",
         "input_resize": "PIL bicubic 32 to size", "dtype": "float16", "safety_checker": "disabled",
         "per_class": per_class, "source_budgets": list(SOURCE_BUDGETS),
-        "source_rule": "class images of budget 5, then those budget 10 adds, then 20, then 50; each tier in index order",
+        "source_rule": ("class images of budget 5, then those budget 10 adds, then 20, then 50; "
+                        "each tier in index order"),
         "source_indices": {str(c): order[c] for c in range(len(class_names))},
         "generation_seed": args.generation_seed,
         "seed_rule": "numpy SeedSequence([generation_seed, label, index]), uint32",
