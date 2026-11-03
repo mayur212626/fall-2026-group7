@@ -1,0 +1,18 @@
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{Stage 2, SD class prompts at synthetic:real ratios 1:1, 2:1 and 5:1, scratch initialization: change in validation top-1 accuracy (percentage points), paired by training seed, mean $\pm$ sample SD over 3 seeds. SD: Stable Diffusion with class prompts (1:1 unless a ratio is given); RA: RandAugment. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise.}
+\label{tab:stage2-ratio-scratch}
+\begin{tabular}{llrrrrrr}
+\toprule
+Model & Images/class & 1:1$-$real & 2:1$-$real & 5:1$-$real & 1:1$-$RA & 2:1$-$RA & 5:1$-$RA \\
+\midrule
+ResNet-50 & 5 & +1.91 $\pm$ 0.34 $\uparrow$ & +3.94 $\pm$ 0.72 $\uparrow$ & +7.86 $\pm$ 0.97 $\uparrow$ & -4.11 $\pm$ 1.03 $\downarrow$ & -2.09 $\pm$ 0.70 $\downarrow$ & +1.83 $\pm$ 0.46 $\uparrow$ \\
+ResNet-50 & 50 & +8.22 $\pm$ 4.31 $\uparrow$ & +12.50 $\pm$ 2.84 $\uparrow$ & +14.18 $\pm$ 1.45 $\uparrow$ & -1.39 $\pm$ 2.97 $\sim$ & +2.89 $\pm$ 4.53 $\sim$ & +4.57 $\pm$ 3.56 $\uparrow$ \\
+\midrule
+ViT-B/16 & 5 & +1.85 $\pm$ 0.45 $\uparrow$ & +2.77 $\pm$ 0.60 $\uparrow$ & +3.96 $\pm$ 0.62 $\uparrow$ & -0.67 $\pm$ 0.13 $\downarrow$ & +0.24 $\pm$ 0.29 $\sim$ & +1.43 $\pm$ 0.66 $\uparrow$ \\
+ViT-B/16 & 50 & +3.30 $\pm$ 0.19 $\uparrow$ & +4.11 $\pm$ 0.51 $\uparrow$ & +5.80 $\pm$ 0.65 $\uparrow$ & -4.87 $\pm$ 0.43 $\downarrow$ & -4.07 $\pm$ 0.25 $\downarrow$ & -2.37 $\pm$ 0.32 $\downarrow$ \\
+\bottomrule
+\end{tabular}
+\end{table}
