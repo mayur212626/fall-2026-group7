@@ -4,14 +4,17 @@ FID and precision/recall themselves are tested in test_image_quality.
 """
 
 import csv
+import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 import numpy as np
 
 from src.component.image_quality import precision_recall
-from src.component.pool_quality import append_table, bootstrap_fid_sd, matched_reference
+from src.component import pool_quality
+from src.component.pool_quality import append_table, bootstrap_fid_sd, matched_reference, reference_pool
 
 RNG = np.random.default_rng(0)
 A = RNG.normal(size=(400, 8))
@@ -53,6 +56,14 @@ class MatchedReferenceTest(unittest.TestCase):
     def test_one_sample_when_the_pool_is_too_small_for_two(self) -> None:
         self.assertEqual(len(matched_reference(self.labels, np.arange(120), 20, 4, 0)), 1)
 
+    def test_excluded_budget_never_enters_the_reference(self) -> None:
+        budget = np.array([0, 1, 2, 3, 30, 31, 32, 33, 60, 61, 62, 63, 90, 91, 92, 93])
+        pool = reference_pool(np.arange(120), budget)
+        self.assertEqual(len(pool), 120 - len(budget))
+        for ref in matched_reference(self.labels, pool, 5, 4, 0):
+            self.assertFalse(np.isin(ref, budget).any())
+        np.testing.assert_array_equal(reference_pool(np.arange(5)), np.arange(5))
+
     def test_only_pool_indices_are_used(self) -> None:
         pool = np.arange(0, 120, 2)
         ref = matched_reference(self.labels, pool, 5, 4, 0)[0]
@@ -69,6 +80,13 @@ class TableTest(unittest.TestCase):
             with path.open(encoding="utf-8") as f:
                 rows = list(csv.DictReader(f))
         self.assertEqual([(r["name"], r["fid"]) for r in rows], [("b", "20"), ("a", "5")])
+
+
+class ArgumentTest(unittest.TestCase):
+    def test_registry_scores_never_use_a_reduced_reference(self) -> None:
+        argv = ["pool_quality", "--pool", "pool.npz", "--name", "x_b5", "--exclude-budget", "5", "--generator", "x"]
+        with mock.patch.object(sys, "argv", argv), self.assertRaises(SystemExit):
+            pool_quality.main()
 
 
 if __name__ == "__main__":

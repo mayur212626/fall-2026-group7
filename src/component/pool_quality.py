@@ -14,6 +14,13 @@ floor: the FID two real samples of that size already have. FID is biased
 upwards for small sets, so a score is read against the floor of its size, and
 only sets of equal size are compared.
 
+With ``--exclude-budget k`` the reference leaves out the training images of
+budget k. Use it for sets made from those images (SD img2img edits them, the
+LoRA adapter of budget k is fitted on them): otherwise some reference images
+are the very images a set was made from, which pulls its FID down and its
+recall up. These scores go to their own table (``--table``), so the scores
+against the whole training pool are kept.
+
     FID          Frechet distance between Gaussian fits of the two feature sets; lower is closer
     precision    share of generated images inside the real feature manifold (realism)
     recall       share of real images inside the generated feature manifold (variety)
@@ -76,6 +83,14 @@ def matched_reference(train_labels: np.ndarray, pool_indices: np.ndarray, per_cl
     return [np.sort(np.asarray(s)) for s in samples]
 
 
+def reference_pool(full_indices: np.ndarray, excluded: np.ndarray | None = None) -> np.ndarray:
+    """Training images the reference is drawn from: the full pool, minus ``excluded`` when given."""
+    full_indices = np.asarray(full_indices)
+    if excluded is None:
+        return full_indices
+    return full_indices[~np.isin(full_indices, np.asarray(excluded))]
+
+
 def append_table(path: Path, row: dict) -> None:
     """Add or replace (same name) a row of the quality table."""
     path = Path(path)
@@ -87,7 +102,7 @@ def append_table(path: Path, row: dict) -> None:
     with path.open("w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=QUALITY_FIELDS)
         writer.writeheader()
-        writer.writerows(rows + [{k: row.get(k, "") for k in QUALITY_FIELDS}])
+        writer.writerows([*rows, {k: row.get(k, "") for k in QUALITY_FIELDS}])
 
 
 def main() -> None:
@@ -110,10 +125,15 @@ def main() -> None:
     parser.add_argument("--manifest", type=Path, default=Path("src/component/configs/splits/cifar100.json"))
     parser.add_argument("--bootstrap", type=int, default=10, help="FID resamples for its SD (0 to skip)")
     parser.add_argument("--seed", type=int, default=0, help="seed of the reference sample")
+    parser.add_argument("--exclude-budget", choices=["5", "10", "20", "50"],
+                        help="leave this budget's training images out of the reference")
     parser.add_argument("--batch-size", type=int, default=100)
     parser.add_argument("--table", type=Path, default=QUALITY_TABLE)
     parser.add_argument("--registry", type=Path, default=REGISTRY)
     args = parser.parse_args()
+    if args.exclude_budget and args.generator:
+        parser.error("--generator records the scores against the whole training pool in the registry; "
+                     "do not combine it with --exclude-budget")
 
     pool_images, pool_labels, pool_index = load_pool(args.pool)
     per_class = args.per_class or int(np.bincount(pool_labels).min())
@@ -123,7 +143,8 @@ def main() -> None:
     manifest = load_manifest(args.manifest)
     if labels_sha256(labels) != manifest["labels_sha256"]:
         raise ValueError("CIFAR-100 labels do not match the split manifest")
-    references = matched_reference(np.asarray(labels), np.asarray(budget_indices(manifest, "full")),
+    excluded = budget_indices(manifest, args.exclude_budget) if args.exclude_budget else None
+    references = matched_reference(np.asarray(labels), reference_pool(budget_indices(manifest, "full"), excluded),
                                    per_class, 100, args.seed)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -143,7 +164,9 @@ def main() -> None:
         "pool_sha256": file_sha256(args.pool),
         "images": len(fake),
         "per_class": per_class,
-        "reference": f"CIFAR-100 training pool (non-validation), class-balanced, matched count, seed {args.seed}",
+        "reference": (f"CIFAR-100 training pool (non-validation), class-balanced, matched count, seed {args.seed}"
+                      + (f", without the training images of budget {args.exclude_budget}"
+                         if args.exclude_budget else "")),
         "reference_images": len(real),
         "fid": round(fid, 4),
         "fid_sd": round(fid_sd, 4) if fid_sd is not None else "",
@@ -154,11 +177,15 @@ def main() -> None:
         "features": "clean-fid clean mode, Inception pool3 (2048), PIL bicubic 32 to 299",
         "measured": datetime.now(timezone.utc).isoformat(timespec="seconds"),
     }
-    (args.pool.parent / f"quality_{per_class}.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+    suffix = f"_without_b{args.exclude_budget}" if args.exclude_budget else ""
+    (args.pool.parent / f"quality_{per_class}{suffix}.json").write_text(json.dumps(result, indent=2) + "\n",
+                                                                       encoding="utf-8")
     append_table(args.table, result)
     if args.generator:
-        set_row(args.registry, args.generator, {"fid": result["fid"], "precision": result["precision"],
-                                                "recall": result["recall"], "quality_file": f"{args.table} ({args.name})"})
+        set_row(args.registry, args.generator, {
+            "fid": result["fid"], "precision": result["precision"], "recall": result["recall"],
+            "quality_file": f"{args.table} ({args.name})",
+        })
     print(f"{args.name}: {len(fake)} images ({per_class}/class) vs {len(real)} real | FID {fid:.2f}"
           + (f" ± {fid_sd:.2f}" if fid_sd is not None else "")
           + (f" (real-vs-real floor {floor:.2f})" if floor is not None else "")
