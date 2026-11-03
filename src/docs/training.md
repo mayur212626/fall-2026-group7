@@ -214,4 +214,11 @@ These runs test whether the Stage 1 findings hold beyond the two Stage 1 models 
 | `run_sd_prompt_ratios.sh` | SD class prompts at 2:1 and 5:1, ResNet-50 and ViT-B/16, seeds 0-2. Pretrained at 5-50 (48), scratch at 5 and 50 (24) | `runs/stage2-ratio-<init>/r<ratio>` |
 | `run_mixup_cutmix.sh` | Mixup and CutMix, ResNet-50 and ViT-B/16, seeds 0-2. Pretrained at 5, 20, full (36), scratch at 5 and 50 (24) | `runs/stage2-mixing-<init>` |
 
-The scratch arm leaves out the full training set: from random weights it takes 50,000 steps per run. The ConvNeXt learning rate of each arm is chosen by the same rule as for the Stage 1 models, the highest validation accuracy at 50 images per class in the pilot, and `pick_lr.py` writes it into `train_<init>.json` before `run_convnext.sh`; the values in the configs until then are the pilot's starting points. `run_stage2.sh` runs everything in order: the pilot and the learning-rate choice, ConvNeXt, the ratios, then Mixup and CutMix (192 runs, about 60 GPU hours).
+The scratch arm leaves out the full training set: from random weights it takes 50,000 steps per run. The ConvNeXt learning rate of each arm is chosen by the same rule as for the Stage 1 models, the highest validation accuracy at 50 images per class in the pilot, and `pick_lr.py` writes it into `train_<init>.json` before `run_convnext.sh`; the values in the configs until then are the pilot's starting points. `run_stage2.sh` runs everything in order: the pilot and the learning-rate choice, ConvNeXt, the ratios, then Mixup and CutMix (192 runs, about 60 GPU hours). For ConvNeXt-T from random initialization the pilot covered 3e-4, 1e-3, 3e-3 and 1e-2 (validation accuracy at 50 images per class 20.38, 22.04, 22.24 and 20.74), so 3e-3 is not at the edge of the range tried.
+
+`src/component/stage2_results.py` pairs the Stage 2 runs with their controls: the Stage 1 folders give real-only, RandAugment and 1:1 SD for ResNet-50 and ViT-B/16. It writes one table per study and initialization (`tables/stage2_<convnext|ratio|mixing>_<init>.tex`), `stage2_accuracy.csv`, `stage2_paired.csv` and the figure `fig/stage2_ratio_gain`; with `--split test` it uses the test scores and adds `_test` to every name. `analyze_results` names a run at a ratio other than 1:1 `<condition>_r<ratio>`, so 2:1 and 5:1 runs are never pooled with 1:1.
+
+```bash
+python -m src.component.stage2_results
+python -m src.component.stage2_results --split test
+```

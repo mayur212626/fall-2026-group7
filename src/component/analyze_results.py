@@ -39,11 +39,18 @@ CONDITION_NAMES = {
     "sd_prompt_randaugment": "SD class prompts + RandAugment",
     "sd_prompt_only": "SD class prompts only",
     "sd_img2img": "SD img2img",
+    "sd_prompt_r2": "SD class prompts 2:1",
+    "sd_prompt_r5": "SD class prompts 5:1",
+    "mixup": "Mixup",
+    "cutmix": "CutMix",
 }
 CONDITION_LINES = {"real_only": "-", "randaugment": "--", "sd_prompt": ":", "sd_lora": "-.",
-                   "sd_prompt_randaugment": (0, (3, 1, 1, 1, 1, 1)), "sd_prompt_only": (0, (1, 3)), "sd_img2img": (0, (5, 2))}
+                   "sd_prompt_randaugment": (0, (3, 1, 1, 1, 1, 1)), "sd_prompt_only": (0, (1, 3)), "sd_img2img": (0, (5, 2)),
+                   "sd_prompt_r2": (0, (1, 1)), "sd_prompt_r5": (0, (4, 1, 1, 1)), "mixup": (0, (6, 2)),
+                   "cutmix": (0, (2, 2))}
 CONDITION_MARKERS = {"real_only": "o", "randaugment": "o", "sd_prompt": "^", "sd_lora": "v",
-                     "sd_prompt_randaugment": "s", "sd_prompt_only": "D", "sd_img2img": "P"}
+                     "sd_prompt_randaugment": "s", "sd_prompt_only": "D", "sd_img2img": "P",
+                     "sd_prompt_r2": "h", "sd_prompt_r5": "X", "mixup": "<", "cutmix": ">"}
 # Synthetic conditions compared with RandAugment, the strongest real-data control.
 RANDAUGMENT_COMPARISONS = {"sd_prompt": "SD$-$RA", "sd_lora": "LoRA$-$RA", "sd_prompt_randaugment": "SD+RA$-$RA"}
 VERDICT_MARKS = {"gain": r"$\uparrow$", "loss": r"$\downarrow$", "inconclusive": r"$\sim$"}
@@ -61,6 +68,8 @@ def load_runs(root: Path, split: str = "validation") -> list[dict]:
 
     ``split="validation"`` uses the best validation scores from ``result.json``;
     ``split="test"`` uses ``test_result.json`` and leaves out runs without one.
+    A synthetic run at a ratio other than 1:1 gets the condition
+    ``<condition>_r<ratio>``, so it is never pooled with the 1:1 runs.
     """
     rows = []
     for result_path in sorted(Path(root).rglob("result.json")):
@@ -74,10 +83,11 @@ def load_runs(root: Path, split: str = "validation") -> list[dict]:
             best = json.loads(test_path.read_text(encoding="utf-8"))["test"]
         else:
             best = result["best_validation"]
+        ratio = settings.get("synthetic", {}).get("ratio", 1)
         rows.append({
             "init": settings["init"],
             "model": settings["model"],
-            "condition": settings["condition"],
+            "condition": settings["condition"] + (f"_r{ratio}" if ratio != 1 else ""),
             "budget": settings["budget"],
             "seed": settings["seed"],
             "accuracy": best["accuracy"],
