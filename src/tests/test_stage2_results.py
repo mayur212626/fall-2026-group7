@@ -74,6 +74,21 @@ class StudyTest(unittest.TestCase):
         self.assertIn(r"ResNet-50 & 5 & +1.00 $\pm$ 0.00 $\uparrow$ & -1.00 $\pm$ 0.00 $\downarrow$ & --", table)
 
 
+class TestLabelTest(unittest.TestCase):
+    def test_test_split_tables_get_their_own_labels(self) -> None:
+        rows = [{"init": "pretrained", "model": "resnet50", "condition": c, "budget": "5", "seed": s,
+                 "accuracy": a + s} for s in range(3) for c, a in (("real_only", 40.0), ("randaugment", 42.0),
+                                                                   ("sd_prompt", 50.0))]
+        groups = ar.aggregate(rows, "accuracy")
+        changes = ar.paired_changes(rows, "sd_prompt", "real_only", "accuracy")
+        test = ar.latex_table(groups, changes, "pretrained", "accuracy", "test", "sd_prompt")
+        validation = ar.latex_table(groups, changes, "pretrained", "accuracy", "validation", "sd_prompt")
+        self.assertIn(r"\label{tab:stage1-pretrained-accuracy-sd_prompt-test}", test)
+        self.assertIn(r"\label{tab:stage1-pretrained-accuracy-sd_prompt}", validation)
+        self.assertIn(r"\label{tab:stage1-pretrained-accuracy-vs-randaugment-test}",
+                      ar.randaugment_comparison_table(rows, "pretrained", "accuracy", "test"))
+
+
 class EndToEndTest(unittest.TestCase):
     def test_main_writes_tables_and_the_ratio_figure_for_the_test_split(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

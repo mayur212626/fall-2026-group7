@@ -264,7 +264,8 @@ def latex_table(
         rf"\caption{{Stage 1{title}, {init} initialization: {split} {METRIC_NAMES[metric]} (\%), mean $\pm$ "
         rf"sample SD over {' or '.join(map(str, seeds))} seeds. The change is {CONDITION_NAMES[treatment]} minus "
         r"real-only per seed (percentage points); it is a gain or a loss only when every seed agrees in sign.}",
-        rf"\label{{tab:stage1-{init}-{metric}{'' if treatment == 'randaugment' else '-' + treatment}}}",
+        rf"\label{{tab:stage1-{init}-{metric}{'' if treatment == 'randaugment' else '-' + treatment}"
+        rf"{'-test' if split == 'test' else ''}}}",
         r"\begin{tabular}{llrrrl}",
         r"\toprule",
         rf"Model & Images/class & Real-only & {CONDITION_NAMES[treatment]} & Change & Verdict \\",
@@ -304,7 +305,7 @@ def randaugment_comparison_table(rows: list[dict], init: str, metric: str, split
         rf"{' or '.join(map(str, seeds))} seeds. SD: pretrained Stable Diffusion with class prompts; LoRA: "
         r"LoRA-adapted Stable Diffusion; RA: RandAugment. $\uparrow$ gain and $\downarrow$ loss when every seed "
         r"agrees in sign, $\sim$ inconclusive otherwise.}",
-        rf"\label{{tab:stage1-{init}-{metric}-vs-randaugment}}",
+        rf"\label{{tab:stage1-{init}-{metric}-vs-randaugment{'-test' if split == 'test' else ''}}}",
         r"\begin{tabular}{ll" + "r" * len(RANDAUGMENT_COMPARISONS) + "}",
         r"\toprule",
         "Model & Images/class & " + " & ".join(RANDAUGMENT_COMPARISONS.values()) + r" \\",
