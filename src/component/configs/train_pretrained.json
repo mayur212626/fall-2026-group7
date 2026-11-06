@@ -14,6 +14,7 @@
   },
   "models": {
     "resnet50": {"optimizer": "adamw", "lr": 0.0003, "weight_decay": 0.05},
-    "vit_b_16": {"optimizer": "adamw", "lr": 0.00005, "weight_decay": 0.05}
+    "vit_b_16": {"optimizer": "adamw", "lr": 0.00005, "weight_decay": 0.05},
+    "convnext_tiny": {"optimizer": "adamw", "lr": 0.0001, "weight_decay": 0.05}
   }
 }

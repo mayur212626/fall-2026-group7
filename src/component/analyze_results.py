@@ -29,8 +29,8 @@ from pathlib import Path
 
 BUDGET_ORDER = ["5", "10", "20", "50", "full"]
 FULL_IMAGES_PER_CLASS = 450
-MODEL_NAMES = {"resnet50": "ResNet-50", "vit_b_16": "ViT-B/16"}
-MODEL_COLORS = {"resnet50": "#2a78d6", "vit_b_16": "#eb6834"}  # categorical slots 1-2, validated
+MODEL_NAMES = {"resnet50": "ResNet-50", "vit_b_16": "ViT-B/16", "convnext_tiny": "ConvNeXt-T"}
+MODEL_COLORS = {"resnet50": "#2a78d6", "vit_b_16": "#eb6834", "convnext_tiny": "#1baf7a"}  # categorical slots 1-3
 CONDITION_NAMES = {
     "real_only": "real-only",
     "randaugment": "RandAugment",
@@ -39,11 +39,18 @@ CONDITION_NAMES = {
     "sd_prompt_randaugment": "SD class prompts + RandAugment",
     "sd_prompt_only": "SD class prompts only",
     "sd_img2img": "SD img2img",
+    "sd_prompt_r2": "SD class prompts 2:1",
+    "sd_prompt_r5": "SD class prompts 5:1",
+    "mixup": "Mixup",
+    "cutmix": "CutMix",
 }
 CONDITION_LINES = {"real_only": "-", "randaugment": "--", "sd_prompt": ":", "sd_lora": "-.",
-                   "sd_prompt_randaugment": (0, (3, 1, 1, 1, 1, 1)), "sd_prompt_only": (0, (1, 3)), "sd_img2img": (0, (5, 2))}
+                   "sd_prompt_randaugment": (0, (3, 1, 1, 1, 1, 1)), "sd_prompt_only": (0, (1, 3)), "sd_img2img": (0, (5, 2)),
+                   "sd_prompt_r2": (0, (1, 1)), "sd_prompt_r5": (0, (4, 1, 1, 1)), "mixup": (0, (6, 2)),
+                   "cutmix": (0, (2, 2))}
 CONDITION_MARKERS = {"real_only": "o", "randaugment": "o", "sd_prompt": "^", "sd_lora": "v",
-                     "sd_prompt_randaugment": "s", "sd_prompt_only": "D", "sd_img2img": "P"}
+                     "sd_prompt_randaugment": "s", "sd_prompt_only": "D", "sd_img2img": "P",
+                     "sd_prompt_r2": "h", "sd_prompt_r5": "X", "mixup": "<", "cutmix": ">"}
 # Synthetic conditions compared with RandAugment, the strongest real-data control.
 RANDAUGMENT_COMPARISONS = {"sd_prompt": "SD$-$RA", "sd_lora": "LoRA$-$RA", "sd_prompt_randaugment": "SD+RA$-$RA"}
 VERDICT_MARKS = {"gain": r"$\uparrow$", "loss": r"$\downarrow$", "inconclusive": r"$\sim$"}
@@ -61,6 +68,8 @@ def load_runs(root: Path, split: str = "validation") -> list[dict]:
 
     ``split="validation"`` uses the best validation scores from ``result.json``;
     ``split="test"`` uses ``test_result.json`` and leaves out runs without one.
+    A synthetic run at a ratio other than 1:1 gets the condition
+    ``<condition>_r<ratio>``, so it is never pooled with the 1:1 runs.
     """
     rows = []
     for result_path in sorted(Path(root).rglob("result.json")):
@@ -74,10 +83,11 @@ def load_runs(root: Path, split: str = "validation") -> list[dict]:
             best = json.loads(test_path.read_text(encoding="utf-8"))["test"]
         else:
             best = result["best_validation"]
+        ratio = settings.get("synthetic", {}).get("ratio", 1)
         rows.append({
             "init": settings["init"],
             "model": settings["model"],
-            "condition": settings["condition"],
+            "condition": settings["condition"] + (f"_r{ratio}" if ratio != 1 else ""),
             "budget": settings["budget"],
             "seed": settings["seed"],
             "accuracy": best["accuracy"],
@@ -254,7 +264,8 @@ def latex_table(
         rf"\caption{{Stage 1{title}, {init} initialization: {split} {METRIC_NAMES[metric]} (\%), mean $\pm$ "
         rf"sample SD over {' or '.join(map(str, seeds))} seeds. The change is {CONDITION_NAMES[treatment]} minus "
         r"real-only per seed (percentage points); it is a gain or a loss only when every seed agrees in sign.}",
-        rf"\label{{tab:stage1-{init}-{metric}{'' if treatment == 'randaugment' else '-' + treatment}}}",
+        rf"\label{{tab:stage1-{init}-{metric}{'' if treatment == 'randaugment' else '-' + treatment}"
+        rf"{'-test' if split == 'test' else ''}}}",
         r"\begin{tabular}{llrrrl}",
         r"\toprule",
         rf"Model & Images/class & Real-only & {CONDITION_NAMES[treatment]} & Change & Verdict \\",
@@ -294,7 +305,7 @@ def randaugment_comparison_table(rows: list[dict], init: str, metric: str, split
         rf"{' or '.join(map(str, seeds))} seeds. SD: pretrained Stable Diffusion with class prompts; LoRA: "
         r"LoRA-adapted Stable Diffusion; RA: RandAugment. $\uparrow$ gain and $\downarrow$ loss when every seed "
         r"agrees in sign, $\sim$ inconclusive otherwise.}",
-        rf"\label{{tab:stage1-{init}-{metric}-vs-randaugment}}",
+        rf"\label{{tab:stage1-{init}-{metric}-vs-randaugment{'-test' if split == 'test' else ''}}}",
         r"\begin{tabular}{ll" + "r" * len(RANDAUGMENT_COMPARISONS) + "}",
         r"\toprule",
         "Model & Images/class & " + " & ".join(RANDAUGMENT_COMPARISONS.values()) + r" \\",

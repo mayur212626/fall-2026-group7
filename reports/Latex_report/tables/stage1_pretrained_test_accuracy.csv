@@ -1,0 +1,59 @@
+init,model,budget,condition,n,seeds,mean,sd
+pretrained,resnet50,5,randaugment,5,0 1 2 3 4,43.048,0.9648
+pretrained,resnet50,5,real_only,5,0 1 2 3 4,35.204,0.4221
+pretrained,resnet50,5,sd_img2img,3,0 1 2,40.4333,0.2268
+pretrained,resnet50,5,sd_lora,3,0 1 2,44.8133,0.3612
+pretrained,resnet50,5,sd_prompt,5,0 1 2 3 4,46.474,0.6348
+pretrained,resnet50,5,sd_prompt_randaugment,5,0 1 2 3 4,51.98,0.9567
+pretrained,resnet50,10,randaugment,5,0 1 2 3 4,53.382,0.6595
+pretrained,resnet50,10,real_only,5,0 1 2 3 4,49.398,0.5954
+pretrained,resnet50,10,sd_img2img,3,0 1 2,54.5033,0.3607
+pretrained,resnet50,10,sd_lora,3,0 1 2,54.5133,0.3338
+pretrained,resnet50,10,sd_prompt,5,0 1 2 3 4,56.596,0.4595
+pretrained,resnet50,10,sd_prompt_randaugment,5,0 1 2 3 4,59.954,0.2363
+pretrained,resnet50,20,randaugment,5,0 1 2 3 4,63.076,0.5794
+pretrained,resnet50,20,real_only,5,0 1 2 3 4,59.688,0.2602
+pretrained,resnet50,20,sd_img2img,3,0 1 2,64.69,0.5611
+pretrained,resnet50,20,sd_lora,3,0 1 2,64.1033,0.115
+pretrained,resnet50,20,sd_prompt,5,0 1 2 3 4,65.33,0.1722
+pretrained,resnet50,20,sd_prompt_randaugment,5,0 1 2 3 4,66.706,0.5341
+pretrained,resnet50,50,randaugment,3,0 1 2,72.0933,0.165
+pretrained,resnet50,50,real_only,3,0 1 2,71.4833,0.2413
+pretrained,resnet50,50,sd_img2img,3,0 1 2,73.0133,0.4571
+pretrained,resnet50,50,sd_lora,3,0 1 2,71.8133,0.2572
+pretrained,resnet50,50,sd_prompt,3,0 1 2,73.43,0.1709
+pretrained,resnet50,50,sd_prompt_randaugment,3,0 1 2,73.9467,0.2344
+pretrained,resnet50,full,randaugment,3,0 1 2,84.6967,0.3101
+pretrained,resnet50,full,real_only,3,0 1 2,83.8267,0.371
+pretrained,resnet50,full,sd_lora,3,0 1 2,83.78,0.1311
+pretrained,resnet50,full,sd_prompt,3,0 1 2,83.9433,0.0493
+pretrained,resnet50,full,sd_prompt_randaugment,3,0 1 2,85.0067,0.0808
+pretrained,vit_b_16,5,randaugment,5,0 1 2 3 4,56.94,2.1411
+pretrained,vit_b_16,5,real_only,5,0 1 2 3 4,46.28,1.8521
+pretrained,vit_b_16,5,sd_img2img,3,0 1 2,54.8,1.6212
+pretrained,vit_b_16,5,sd_lora,3,0 1 2,58.4667,1.2388
+pretrained,vit_b_16,5,sd_prompt,5,0 1 2 3 4,60.506,1.6632
+pretrained,vit_b_16,5,sd_prompt_randaugment,5,0 1 2 3 4,67.732,1.0089
+pretrained,vit_b_16,10,randaugment,5,0 1 2 3 4,68.594,1.0722
+pretrained,vit_b_16,10,real_only,5,0 1 2 3 4,61.046,1.5465
+pretrained,vit_b_16,10,sd_img2img,3,0 1 2,66.9167,1.446
+pretrained,vit_b_16,10,sd_lora,3,0 1 2,67.3933,1.2154
+pretrained,vit_b_16,10,sd_prompt,5,0 1 2 3 4,70.084,1.2939
+pretrained,vit_b_16,10,sd_prompt_randaugment,5,0 1 2 3 4,73.752,0.625
+pretrained,vit_b_16,20,randaugment,5,0 1 2 3 4,75.744,0.4719
+pretrained,vit_b_16,20,real_only,5,0 1 2 3 4,71.626,0.9605
+pretrained,vit_b_16,20,sd_img2img,3,0 1 2,74.4667,0.9699
+pretrained,vit_b_16,20,sd_lora,3,0 1 2,74.3733,0.7146
+pretrained,vit_b_16,20,sd_prompt,5,0 1 2 3 4,75.564,0.8191
+pretrained,vit_b_16,20,sd_prompt_randaugment,5,0 1 2 3 4,77.84,0.6338
+pretrained,vit_b_16,50,randaugment,3,0 1 2,82.0333,0.225
+pretrained,vit_b_16,50,real_only,3,0 1 2,80.1,0.4903
+pretrained,vit_b_16,50,sd_img2img,3,0 1 2,81.0267,0.3134
+pretrained,vit_b_16,50,sd_lora,3,0 1 2,79.7033,0.3811
+pretrained,vit_b_16,50,sd_prompt,3,0 1 2,80.79,0.311
+pretrained,vit_b_16,50,sd_prompt_randaugment,3,0 1 2,82.1833,0.121
+pretrained,vit_b_16,full,randaugment,3,0 1 2,89.36,0.11
+pretrained,vit_b_16,full,real_only,3,0 1 2,88.1167,0.085
+pretrained,vit_b_16,full,sd_lora,3,0 1 2,87.5133,0.1457
+pretrained,vit_b_16,full,sd_prompt,3,0 1 2,88.1933,0.0666
+pretrained,vit_b_16,full,sd_prompt_randaugment,3,0 1 2,88.9233,0.2779
