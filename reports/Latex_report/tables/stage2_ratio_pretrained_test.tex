@@ -2,21 +2,21 @@
 \centering
 \small
 \setlength{\tabcolsep}{4pt}
-\caption{Stage 2, SD class prompts at synthetic:real ratios 1:1, 2:1 and 5:1, pretrained initialization: change in test top-1 accuracy (percentage points), paired by training seed, mean $\pm$ sample SD over 3 or 5 seeds. SD: Stable Diffusion with class prompts (1:1 unless a ratio is given); RA: RandAugment. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise.}
+\caption{Stage 2, SD class prompts at synthetic:real ratios 1:1, 2:1 and 5:1, pretrained initialization: change in test top-1 accuracy (percentage points), paired by training seed, mean $\pm$ sample SD over 5 seeds. SD: Stable Diffusion with class prompts (1:1 unless a ratio is given); RA: RandAugment. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise.}
 \label{tab:stage2-ratio-pretrained-test}
 \begin{tabular}{llrrrrrr}
 \toprule
 Model & Images/class & 1:1$-$real & 2:1$-$real & 5:1$-$real & 1:1$-$RA & 2:1$-$RA & 5:1$-$RA \\
 \midrule
-ResNet-50 & 5 & +11.27 $\pm$ 0.86 $\uparrow$ & +14.89 $\pm$ 0.52 $\uparrow$ & +20.16 $\pm$ 0.25 $\uparrow$ & +3.43 $\pm$ 0.89 $\uparrow$ & +7.21 $\pm$ 0.66 $\uparrow$ & +12.47 $\pm$ 0.95 $\uparrow$ \\
-ResNet-50 & 10 & +7.20 $\pm$ 0.97 $\uparrow$ & +9.46 $\pm$ 1.54 $\uparrow$ & +11.95 $\pm$ 0.22 $\uparrow$ & +3.21 $\pm$ 1.04 $\uparrow$ & +5.13 $\pm$ 1.90 $\uparrow$ & +7.62 $\pm$ 1.08 $\uparrow$ \\
-ResNet-50 & 20 & +5.64 $\pm$ 0.41 $\uparrow$ & +7.00 $\pm$ 0.49 $\uparrow$ & +7.76 $\pm$ 0.21 $\uparrow$ & +2.25 $\pm$ 0.52 $\uparrow$ & +3.84 $\pm$ 1.18 $\uparrow$ & +4.60 $\pm$ 0.70 $\uparrow$ \\
-ResNet-50 & 50 & +1.95 $\pm$ 0.27 $\uparrow$ & +1.83 $\pm$ 0.45 $\uparrow$ & +2.06 $\pm$ 0.28 $\uparrow$ & +1.34 $\pm$ 0.28 $\uparrow$ & +1.22 $\pm$ 0.19 $\uparrow$ & +1.45 $\pm$ 0.38 $\uparrow$ \\
+ResNet-50 & 5 & +11.27 $\pm$ 0.86 $\uparrow$ & +14.49 $\pm$ 1.00 $\uparrow$ & +19.65 $\pm$ 0.90 $\uparrow$ & +3.43 $\pm$ 0.89 $\uparrow$ & +6.64 $\pm$ 1.02 $\uparrow$ & +11.80 $\pm$ 1.17 $\uparrow$ \\
+ResNet-50 & 10 & +7.20 $\pm$ 0.97 $\uparrow$ & +9.72 $\pm$ 1.15 $\uparrow$ & +11.86 $\pm$ 0.22 $\uparrow$ & +3.21 $\pm$ 1.04 $\uparrow$ & +5.74 $\pm$ 1.58 $\uparrow$ & +7.87 $\pm$ 0.84 $\uparrow$ \\
+ResNet-50 & 20 & +5.64 $\pm$ 0.41 $\uparrow$ & +6.94 $\pm$ 0.37 $\uparrow$ & +7.58 $\pm$ 0.32 $\uparrow$ & +2.25 $\pm$ 0.52 $\uparrow$ & +3.55 $\pm$ 0.92 $\uparrow$ & +4.19 $\pm$ 0.80 $\uparrow$ \\
+ResNet-50 & 50 & +1.98 $\pm$ 0.27 $\uparrow$ & +2.07 $\pm$ 0.50 $\uparrow$ & +2.09 $\pm$ 0.45 $\uparrow$ & +1.23 $\pm$ 0.26 $\uparrow$ & +1.32 $\pm$ 0.20 $\uparrow$ & +1.35 $\pm$ 0.33 $\uparrow$ \\
 \midrule
-ViT-B/16 & 5 & +14.23 $\pm$ 1.28 $\uparrow$ & +17.97 $\pm$ 0.45 $\uparrow$ & +21.24 $\pm$ 0.63 $\uparrow$ & +3.57 $\pm$ 0.90 $\uparrow$ & +7.05 $\pm$ 0.50 $\uparrow$ & +10.33 $\pm$ 1.40 $\uparrow$ \\
-ViT-B/16 & 10 & +9.04 $\pm$ 0.86 $\uparrow$ & +10.84 $\pm$ 1.24 $\uparrow$ & +11.78 $\pm$ 1.50 $\uparrow$ & +1.49 $\pm$ 0.57 $\uparrow$ & +3.18 $\pm$ 0.76 $\uparrow$ & +4.12 $\pm$ 0.67 $\uparrow$ \\
-ViT-B/16 & 20 & +3.94 $\pm$ 0.27 $\uparrow$ & +4.40 $\pm$ 0.68 $\uparrow$ & +4.74 $\pm$ 1.17 $\uparrow$ & -0.18 $\pm$ 0.44 $\sim$ & +0.20 $\pm$ 0.32 $\sim$ & +0.54 $\pm$ 0.36 $\uparrow$ \\
-ViT-B/16 & 50 & +0.69 $\pm$ 0.19 $\uparrow$ & +0.68 $\pm$ 0.14 $\uparrow$ & +0.44 $\pm$ 0.19 $\uparrow$ & -1.24 $\pm$ 0.49 $\downarrow$ & -1.25 $\pm$ 0.81 $\downarrow$ & -1.49 $\pm$ 0.54 $\downarrow$ \\
+ViT-B/16 & 5 & +14.23 $\pm$ 1.28 $\uparrow$ & +18.10 $\pm$ 1.63 $\uparrow$ & +21.65 $\pm$ 1.36 $\uparrow$ & +3.57 $\pm$ 0.90 $\uparrow$ & +7.44 $\pm$ 1.41 $\uparrow$ & +10.99 $\pm$ 1.58 $\uparrow$ \\
+ViT-B/16 & 10 & +9.04 $\pm$ 0.86 $\uparrow$ & +10.72 $\pm$ 1.02 $\uparrow$ & +11.69 $\pm$ 1.18 $\uparrow$ & +1.49 $\pm$ 0.57 $\uparrow$ & +3.17 $\pm$ 0.55 $\uparrow$ & +4.15 $\pm$ 0.49 $\uparrow$ \\
+ViT-B/16 & 20 & +3.94 $\pm$ 0.27 $\uparrow$ & +4.37 $\pm$ 0.48 $\uparrow$ & +4.55 $\pm$ 0.88 $\uparrow$ & -0.18 $\pm$ 0.44 $\sim$ & +0.25 $\pm$ 0.33 $\sim$ & +0.43 $\pm$ 0.31 $\uparrow$ \\
+ViT-B/16 & 50 & +0.88 $\pm$ 0.32 $\uparrow$ & +0.98 $\pm$ 0.43 $\uparrow$ & +0.74 $\pm$ 0.43 $\uparrow$ & -1.02 $\pm$ 0.46 $\downarrow$ & -0.92 $\pm$ 0.74 $\downarrow$ & -1.16 $\pm$ 0.60 $\downarrow$ \\
 \bottomrule
 \end{tabular}
 \end{table}

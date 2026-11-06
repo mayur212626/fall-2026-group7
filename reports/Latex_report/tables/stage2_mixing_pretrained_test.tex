@@ -2,19 +2,19 @@
 \centering
 \small
 \setlength{\tabcolsep}{4pt}
-\caption{Stage 2, SD class prompts against Mixup and CutMix, pretrained initialization: change in test top-1 accuracy (percentage points), paired by training seed, mean $\pm$ sample SD over 3 or 5 seeds. SD: Stable Diffusion with class prompts (1:1 unless a ratio is given); RA: RandAugment. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise.}
+\caption{Stage 2, SD class prompts against Mixup and CutMix, pretrained initialization: change in test top-1 accuracy (percentage points), paired by training seed, mean $\pm$ sample SD over 5 seeds. SD: Stable Diffusion with class prompts (1:1 unless a ratio is given); RA: RandAugment. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise.}
 \label{tab:stage2-mixing-pretrained-test}
 \begin{tabular}{llrrrrrr}
 \toprule
 Model & Images/class & RA$-$real & Mixup$-$real & CutMix$-$real & SD$-$RA & SD$-$Mixup & SD$-$CutMix \\
 \midrule
-ResNet-50 & 5 & +7.84 $\pm$ 0.89 $\uparrow$ & +1.68 $\pm$ 1.15 $\uparrow$ & +0.22 $\pm$ 0.32 $\sim$ & +3.43 $\pm$ 0.89 $\uparrow$ & +9.92 $\pm$ 0.97 $\uparrow$ & +11.38 $\pm$ 0.47 $\uparrow$ \\
-ResNet-50 & 20 & +3.39 $\pm$ 0.69 $\uparrow$ & +3.42 $\pm$ 0.46 $\uparrow$ & +2.15 $\pm$ 1.02 $\uparrow$ & +2.25 $\pm$ 0.52 $\uparrow$ & +2.27 $\pm$ 0.36 $\uparrow$ & +3.54 $\pm$ 1.27 $\uparrow$ \\
-ResNet-50 & full & +0.87 $\pm$ 0.56 $\uparrow$ & +1.15 $\pm$ 0.47 $\uparrow$ & +1.40 $\pm$ 0.51 $\uparrow$ & -0.75 $\pm$ 0.35 $\downarrow$ & -1.03 $\pm$ 0.12 $\downarrow$ & -1.29 $\pm$ 0.18 $\downarrow$ \\
+ResNet-50 & 5 & +7.84 $\pm$ 0.89 $\uparrow$ & +1.68 $\pm$ 0.82 $\uparrow$ & +0.39 $\pm$ 0.44 $\sim$ & +3.43 $\pm$ 0.89 $\uparrow$ & +9.59 $\pm$ 1.01 $\uparrow$ & +10.88 $\pm$ 1.10 $\uparrow$ \\
+ResNet-50 & 20 & +3.39 $\pm$ 0.69 $\uparrow$ & +3.24 $\pm$ 0.91 $\uparrow$ & +2.08 $\pm$ 0.84 $\uparrow$ & +2.25 $\pm$ 0.52 $\uparrow$ & +2.40 $\pm$ 0.61 $\uparrow$ & +3.56 $\pm$ 0.90 $\uparrow$ \\
+ResNet-50 & full & +1.02 $\pm$ 0.57 $\uparrow$ & +1.20 $\pm$ 0.37 $\uparrow$ & +1.63 $\pm$ 0.50 $\uparrow$ & -0.78 $\pm$ 0.26 $\downarrow$ & -0.96 $\pm$ 0.21 $\downarrow$ & -1.40 $\pm$ 0.25 $\downarrow$ \\
 \midrule
-ViT-B/16 & 5 & +10.66 $\pm$ 0.73 $\uparrow$ & +6.66 $\pm$ 0.91 $\uparrow$ & +4.21 $\pm$ 1.05 $\uparrow$ & +3.57 $\pm$ 0.90 $\uparrow$ & +7.72 $\pm$ 0.86 $\uparrow$ & +10.17 $\pm$ 1.87 $\uparrow$ \\
-ViT-B/16 & 20 & +4.12 $\pm$ 0.63 $\uparrow$ & +4.09 $\pm$ 0.24 $\uparrow$ & +3.24 $\pm$ 1.13 $\uparrow$ & -0.18 $\pm$ 0.44 $\sim$ & -0.21 $\pm$ 0.42 $\sim$ & +0.64 $\pm$ 0.88 $\sim$ \\
-ViT-B/16 & full & +1.24 $\pm$ 0.18 $\uparrow$ & +1.11 $\pm$ 0.05 $\uparrow$ & +1.68 $\pm$ 0.21 $\uparrow$ & -1.17 $\pm$ 0.16 $\downarrow$ & -1.03 $\pm$ 0.03 $\downarrow$ & -1.60 $\pm$ 0.22 $\downarrow$ \\
+ViT-B/16 & 5 & +10.66 $\pm$ 0.73 $\uparrow$ & +6.50 $\pm$ 1.16 $\uparrow$ & +4.30 $\pm$ 1.30 $\uparrow$ & +3.57 $\pm$ 0.90 $\uparrow$ & +7.72 $\pm$ 0.64 $\uparrow$ & +9.93 $\pm$ 1.36 $\uparrow$ \\
+ViT-B/16 & 20 & +4.12 $\pm$ 0.63 $\uparrow$ & +4.04 $\pm$ 0.26 $\uparrow$ & +3.27 $\pm$ 0.82 $\uparrow$ & -0.18 $\pm$ 0.44 $\sim$ & -0.10 $\pm$ 0.33 $\sim$ & +0.67 $\pm$ 0.62 $\sim$ \\
+ViT-B/16 & full & +1.31 $\pm$ 0.18 $\uparrow$ & +1.17 $\pm$ 0.19 $\uparrow$ & +1.92 $\pm$ 0.38 $\uparrow$ & -1.19 $\pm$ 0.12 $\downarrow$ & -1.05 $\pm$ 0.09 $\downarrow$ & -1.80 $\pm$ 0.31 $\downarrow$ \\
 \bottomrule
 \end{tabular}
 \end{table}
