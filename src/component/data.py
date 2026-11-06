@@ -1,6 +1,7 @@
 """CIFAR-100 data pipeline.
 
-Images stay as 32x32 uint8 tensors on the CPU, where RandAugment is applied.
+Images stay as 32x32 uint8 tensors on the CPU, where the augmentation policy
+(RandAugment, TrivialAugment, AutoAugment or AugMix) is applied.
 ``to_model_input`` resizes and normalizes whole batches on the training
 device. The training order is a fixed function of the seed and the step, so
 an interrupted run resumes with exactly the same batches and augmentations.
@@ -20,6 +21,14 @@ IMAGENET_MEAN = (0.485, 0.456, 0.406)
 IMAGENET_STD = (0.229, 0.224, 0.225)
 RANDAUGMENT_OPS = 2
 RANDAUGMENT_MAGNITUDE = 9
+# Per-image augmentation policies, all torchvision defaults except RandAugment's two operations at
+# magnitude 9. AutoAugment uses its CIFAR-10 policy, the one learned on 32x32 natural images.
+AUGMENT_POLICIES = {
+    "randaugment": lambda: v2.RandAugment(num_ops=RANDAUGMENT_OPS, magnitude=RANDAUGMENT_MAGNITUDE),
+    "trivialaugment": lambda: v2.TrivialAugmentWide(),
+    "autoaugment": lambda: v2.AutoAugment(v2.AutoAugmentPolicy.CIFAR10),
+    "augmix": lambda: v2.AugMix(),
+}
 
 
 def load_manifest(path: Path) -> dict:
@@ -38,9 +47,9 @@ def budget_indices(manifest: dict, budget: str) -> list[int]:
 class CifarImages(Dataset):
     """A subset of CIFAR images, returned as uint8 tensors with label and image ID.
 
-    Items are addressed by ``(position, visit_seed)``. With RandAugment on,
-    the augmentation of that visit depends only on ``visit_seed``, not on the
-    worker process or on earlier samples.
+    Items are addressed by ``(position, visit_seed)``. With an augmentation
+    policy on, the augmentation of that visit depends only on ``visit_seed``,
+    not on the worker process or on earlier samples.
     """
 
     def __init__(
@@ -49,22 +58,29 @@ class CifarImages(Dataset):
         labels: Sequence[int],
         indices: Sequence[int],
         randaugment: bool,
+        policy: str | None = None,
     ) -> None:
         """
         Args:
             images: All images of the split, shape (N, 32, 32, 3), uint8.
             labels: Class label of every image in ``images``.
             indices: Image IDs (rows of ``images``) in this subset.
-            randaugment: Whether to apply RandAugment to each visit.
+            randaugment: Whether to apply RandAugment to each visit (the same as
+                ``policy="randaugment"``).
+            policy: Name of a policy in ``AUGMENT_POLICIES`` to apply to each visit.
+
+        Raises:
+            ValueError: If ``policy`` is unknown, or both arguments ask for a policy.
         """
+        if randaugment and policy is not None:
+            raise ValueError("pass either randaugment=True or a policy, not both")
+        if policy is not None and policy not in AUGMENT_POLICIES:
+            raise ValueError(f"unknown augmentation policy {policy!r}; expected one of {sorted(AUGMENT_POLICIES)}")
         self.images = images
         self.labels = labels
         self.indices = list(indices)
-        self.augment = (
-            v2.RandAugment(num_ops=RANDAUGMENT_OPS, magnitude=RANDAUGMENT_MAGNITUDE)
-            if randaugment
-            else None
-        )
+        name = "randaugment" if randaugment else policy
+        self.augment = AUGMENT_POLICIES[name]() if name else None
 
     def __len__(self) -> int:
         return len(self.indices)

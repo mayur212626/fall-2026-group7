@@ -12,7 +12,11 @@ import torch
 from src.component.data import CifarImages
 from src.component.train import (
     AUGMENTED_CONDITIONS,
+    CONDITION_MIXING,
+    CONDITION_POLICY,
     CONDITIONS,
+    POLICY_CONDITIONS,
+    STACKED_CONDITIONS,
     MIXING_CONDITIONS,
     SYNTHETIC_CONDITIONS,
     SYNTHETIC_ONLY_CONDITIONS,
@@ -126,6 +130,28 @@ class ConditionsTest(unittest.TestCase):
         self.assertIn("sd_prompt_only", SYNTHETIC_CONDITIONS)
         self.assertIn("sd_prompt_only", CONDITIONS)
         self.assertNotIn("sd_prompt_only", AUGMENTED_CONDITIONS)
+
+class StackedConditionsTest(unittest.TestCase):
+    def test_policies_are_conventional_and_stacked_ones_add_the_prompt_pool(self) -> None:
+        for condition in POLICY_CONDITIONS:
+            self.assertIn(condition, CONDITIONS)
+            self.assertNotIn(condition, SYNTHETIC_CONDITIONS + AUGMENTED_CONDITIONS)
+            self.assertEqual(CONDITION_POLICY[condition], condition)
+        for condition in STACKED_CONDITIONS:
+            self.assertIn(condition, SYNTHETIC_CONDITIONS)
+            self.assertIn(condition, CONDITIONS)
+            uses_ra = condition in AUGMENTED_CONDITIONS
+            self.assertFalse(uses_ra and condition in CONDITION_POLICY)  # at most one per-image policy
+
+    def test_cutmix_conditions_get_the_cutmix_settings(self) -> None:
+        make = MakeSettingsTest().make
+        for condition in ("cutmix", "sd_prompt_cutmix", "sd_prompt_randaugment_cutmix"):
+            self.assertEqual(CONDITION_MIXING[condition], "cutmix")
+            self.assertEqual(make(condition=condition)["mixing"], {"method": "cutmix", "alpha": 1.0})
+        self.assertEqual(make(condition="mixup")["mixing"], {"method": "mixup", "alpha": 0.2})
+        self.assertNotIn("mixing", make(condition="sd_prompt_trivialaugment"))
+        self.assertNotIn("mixing", make(condition="randaugment"))
+
 
 class LrFactorTest(unittest.TestCase):
     def test_warmup_rises_linearly_to_one(self) -> None:
