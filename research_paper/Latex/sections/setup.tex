@@ -1,0 +1,20 @@
+\section{Experimental Setup}
+\label{sec:setup}
+
+% Moved from the report's protocol section. Keep every number that a reader needs to rerun a cell.
+
+\paragraph{Hardware and software.}
+All runs used NVIDIA A10G GPUs (24\,GB). The pilots and the real-only and RandAugment runs used Python 3.12.14, PyTorch 2.12.1 (CUDA 12.6), Torchvision 0.27.1 and NumPy 2.5.2, the versions pinned in the environment file. The synthetic-data runs with seeds 0 to 2 were trained on a second A10G instance with Python 3.13.14, PyTorch 2.13.0 (CUDA 13.0), Torchvision 0.28.0 and NumPy 2.4.4; their seed 3 and 4 runs used the pinned versions.
+% TODO: add the Stage 2 note (seeds 0-2 in the newer environment, paired with pinned controls) and
+% the GAN runs (pinned environment), then total runs and GPU hours.
+
+\paragraph{Training recipe.}
+Every run uses batch size 128, linear warmup over the first 5\% of steps followed by cosine decay to zero, label smoothing 0.1, gradient-norm clipping at 1.0 and bf16 mixed precision. The real-only condition applies no augmentation; RandAugment applies two operations at magnitude 9 to the $32\times32$ image.
+
+\paragraph{Learning rates and step budgets.}
+The learning rates and optimizer-step budgets were chosen in pilot runs with seed 100, on validation accuracy only (38 runs, 21.2 GPU hours). The pretrained arm uses AdamW with weight decay 0.05 and learning rate $3\times10^{-4}$ for ResNet-50 and $5\times10^{-5}$ for ViT-B/16, for 600, 800, 1,000, 1,500 and 6,000 steps at the five budgets. The random-initialization arm uses SGD with momentum 0.9, weight decay $5\times10^{-4}$ and learning rate 1.0 for ResNet-50, and AdamW with weight decay 0.05 and learning rate $3\times10^{-4}$ for ViT-B/16, for 2,000, 3,000, 4,000, 8,000 and 50,000 steps. Within an arm, every condition of a given budget uses the same recipe and step budget.
+% TODO: ConvNeXt-T rates from its pilot (pretrained 1e-4, scratch 3e-3).
+
+\paragraph{Checkpoint selection and seeds.}
+Each run is validated 20 times at equal step intervals and keeps the checkpoint with the highest validation accuracy, breaking ties by the lower validation loss and then the earlier step. The batch order and per-sample augmentation are fixed functions of the seed and the step.
+% TODO: state the final seed count per cell (0-4) and the number of runs per study.

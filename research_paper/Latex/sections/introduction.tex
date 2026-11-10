@@ -1,0 +1,44 @@
+\section{Introduction}
+\label{sec:intro}
+
+% Paragraph plan (one message each):
+%   1. Problem: generators can produce unlimited labelled images; when does adding them help a
+%      classifier trained on scarce real data?
+%   2. What is already known (synthetic data helps few-shot; FID predicts downstream use poorly) and
+%      what is open (which set helps, and whether the answer depends on initialization).
+%   3. This study: a controlled benchmark, paired seeds, matched step budgets, conventional
+%      augmentation as the control.
+%   4. Findings, then 2-4 contribution bullets of one or two lines each.
+\todo{opening paragraphs 1-3}
+
+% Moved from the report's Introduction. Its numbers are validation scores; replace them with the
+% test-set numbers once the Results section is final.
+\paragraph{Contribution.}
+That synthetic images help when real data is scarce is expected: with 5 images per class, Stable Diffusion
+class-prompt images raise ImageNet-pretrained ResNet-50 by 11.4 and ViT-B/16 by 14.5 points, in line with
+earlier work on synthetic training data~\cite{he2023synthetic}. This study asks two questions that such
+gains leave open. First, \emph{which property of a generated set predicts whether it will help?}
+Generator-quality measures such as FID are known to predict poorly how well a classifier trained on
+generated images performs~\cite{ravuri2019classification}, also for diffusion-based
+augmentation~\cite{li2026diffusion}. We test this in the scarce-data setting, with the real images always
+in the training set and conventional augmentation as a control. In our benchmark the two disagree:
+among our three generated sets, the ones closest to the real training images help least. LoRA-adapted pools
+are closer to the real data than class-prompt pools (lower FID and higher recall), and SD img2img edits of
+the real images closer still, yet with pretrained classifiers the class-prompt set gives the largest gain at
+every budget, and the img2img set a smaller gain than the LoRA set in 5 of 8 cells. No set-level measure we test, FID, precision or
+recall, predicts which set will help, and in a first per-class analysis no precision, recall or diversity
+measure predicts which classes gain. Second, \emph{why does the effect reverse with initialization?} The same images that help pretrained
+classifiers lose to RandAugment for randomly initialized ones at most budgets. A recent systematic study of
+diffusion-based augmentation~\cite{li2026diffusion} starts from ImageNet weights for some datasets and trains
+from scratch on others, so it cannot separate the two, and it has no RandAugment control; our design pairs
+both initializations on the same data, budgets and generated images. We test candidate explanations for
+this sign flip (diversity of the generated images, their distance from the real data, and how well a
+classifier trained on real images recognises them) and report which quality measures, if any, predict the
+downstream gain. The aim is a practical rule for when to add generated images, and a warning about the
+measures commonly used to choose them.
+
+% TODO: add the GAN set (fourth generated set) and the Stage 2 checks (ConvNeXt-T, 2:1 and 5:1,
+% Mixup/CutMix, stronger augmentation policies) to the paragraph above once their results are in.
+
+\paragraph{Contributions.}
+\todo{2-4 bullets, one or two lines each, each pointing to the section with its evidence}
