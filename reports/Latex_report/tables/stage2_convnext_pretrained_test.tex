@@ -1,0 +1,16 @@
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{Stage 2, ConvNeXt-T, the third architecture, pretrained initialization: change in test top-1 accuracy (percentage points), paired by training seed, mean $\pm$ sample SD over 5 seeds. SD: Stable Diffusion with class prompts (1:1 unless a ratio is given); RA: RandAugment. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise.}
+\label{tab:stage2-convnext-pretrained-test}
+\begin{tabular}{llrrrr}
+\toprule
+Model & Images/class & SD$-$real & RA$-$real & SD$-$RA & SD+RA$-$RA \\
+\midrule
+ConvNeXt-T & 5 & +13.97 $\pm$ 1.30 $\uparrow$ & +5.32 $\pm$ 0.58 $\uparrow$ & +8.65 $\pm$ 0.93 $\uparrow$ & +12.51 $\pm$ 0.40 $\uparrow$ \\
+ConvNeXt-T & 20 & +3.55 $\pm$ 0.66 $\uparrow$ & +1.88 $\pm$ 0.48 $\uparrow$ & +1.67 $\pm$ 0.18 $\uparrow$ & +2.61 $\pm$ 0.14 $\uparrow$ \\
+ConvNeXt-T & full & -0.14 $\pm$ 0.18 $\sim$ & +0.29 $\pm$ 0.28 $\sim$ & -0.43 $\pm$ 0.17 $\downarrow$ & -0.30 $\pm$ 0.16 $\downarrow$ \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,11 @@
+treatment,control,init,model,budget,seeds,changes,mean,sd,verdict
+sd_prompt_only,real_only,scratch,resnet50,5,0 1 2,-2.47 -3.54 -3.13,-3.0467,0.5398,loss
+sd_prompt_only,real_only,scratch,resnet50,10,0 1 2,-6.66 -5.35 -5.98,-5.9967,0.6552,loss
+sd_prompt_only,real_only,scratch,resnet50,20,0 1 2,-10.07 -9.76 -9.86,-9.8967,0.1582,loss
+sd_prompt_only,real_only,scratch,resnet50,50,0 1 2,-14.33 -15.16 -13.36,-14.2833,0.9009,loss
+sd_prompt_only,real_only,scratch,resnet50,full,0 1 2,-35.09 -37.29 -37.1,-36.4933,1.219,loss
+sd_prompt_only,real_only,scratch,vit_b_16,5,0 1 2,-2.04 -2.47 -1.91,-2.14,0.2931,loss
+sd_prompt_only,real_only,scratch,vit_b_16,10,0 1 2,-4.28 -3.89 -4.27,-4.1467,0.2223,loss
+sd_prompt_only,real_only,scratch,vit_b_16,20,0 1 2,-6.01 -5.7 -6.32,-6.01,0.31,loss
+sd_prompt_only,real_only,scratch,vit_b_16,50,0 1 2,-11.35 -10.62 -11.18,-11.05,0.382,loss
+sd_prompt_only,real_only,scratch,vit_b_16,full,0 1 2,-32.21 -32.23 -31.81,-32.0833,0.2369,loss

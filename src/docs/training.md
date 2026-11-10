@@ -7,7 +7,7 @@
 | `--config` | `src/component/configs/train_pretrained.json` or `train_scratch.json` |
 | `--model` | `resnet50`, `vit_b_16` |
 | `--init` | `pretrained` (ImageNet weights), `scratch` (random initialization) |
-| `--condition` | `real_only`, `randaugment`, `sd_prompt`, `sd_prompt_randaugment`, `sd_lora`, `sd_prompt_only`, `sd_img2img` (synthetic conditions need `--synthetic-pool`; see [synthetic data](synthetic-data.md)) |
+| `--condition` | `real_only`, `randaugment`, `mixup`, `cutmix`, `sd_prompt`, `sd_prompt_randaugment`, `sd_lora`, `sd_prompt_only`, `sd_img2img` (synthetic conditions need `--synthetic-pool`; see [synthetic data](synthetic-data.md)) |
 | `--budget` | `5`, `10`, `20`, `50`, `full` (images per class, from the split manifest) |
 | `--seed` | training seed, e.g. `0`, `1`, `2` |
 | `--steps` | overrides the config's step budget; used for pilot runs |
@@ -182,7 +182,7 @@ Run it when no training job is using the GPU. The command refuses to run without
 ## Protocol
 
 - Images are 32×32 CIFAR-100 images, upsampled to 224×224 (bilinear) and normalized with the ImageNet mean and standard deviation.
-- `real_only` applies no augmentation. `randaugment` applies RandAugment (2 operations, magnitude 9) to the 32×32 image before upsampling. `sd_prompt_only` trains on the SD class-prompt images alone, with as many per class as the real budget has, and is validated on real images like every other condition. `src/shellscripts/run_sd_prompt_only.sh` runs it for both classifiers at every budget with seeds 0 to 2. `sd_img2img` adds SD img2img edits of the run's own real training images, 1:1 (see [synthetic data](synthetic-data.md)).
+- `real_only` applies no augmentation. `randaugment` applies RandAugment (2 operations, magnitude 9) to the 32×32 image before upsampling. `mixup` and `cutmix` mix every 32×32 batch with a shuffled copy of itself and train on the mixed soft labels. They use the torchvision classification reference values: Mixup alpha 0.2 and CutMix alpha 1.0. The random draws depend only on the seed and the step, so resumed runs mix the same way. `src/shellscripts/run_mixing.sh` runs both for ResNet-50 and ViT-B/16 at every budget with seeds 0 to 4. `sd_prompt_only` trains on the SD class-prompt images alone, with as many per class as the real budget has, and is validated on real images like every other condition. `src/shellscripts/run_sd_prompt_only.sh` runs it for both classifiers at every budget with seeds 0 to 2. `sd_img2img` adds SD img2img edits of the run's own real training images, 1:1 (see [synthetic data](synthetic-data.md)).
 - Training runs for a fixed number of optimizer steps: linear warmup over 5% of the steps, then cosine decay; gradient norm clipped at 1.0; label smoothing 0.1; bf16 mixed precision on the GPU.
 - The validation set is scored 20 times at equal step intervals. The best checkpoint has the highest validation accuracy; ties go to the lower validation loss, then the earlier step.
 - Every run is seeded (Python, NumPy, PyTorch, deterministic cuDNN), and the sample order and the augmentation of each sample depend only on the seed and the step. A resumed run therefore sees the same batches and augmentations as an uninterrupted one, which the unit tests check on the CPU. On the GPU, some kernels (for example the attention backward pass of ViT-B/16) are not guaranteed to be deterministic, so repeated GPU runs with the same seed can differ slightly; the differences between seeds are measured by the training seeds (three, or five for the cells with seeds 3 and 4).
@@ -202,3 +202,23 @@ Each run writes to `runs/<init>_<model>_<condition>_b<budget>_s<seed>/`:
 | `train.log` | Timestamped progress: the start or resume step, one line per validation (training loss, validation accuracy and loss, minutes) and the final best step. The same lines go to the console |
 
 `last.pt` holds the full training state while the run is in progress and is removed when it completes. If a run is interrupted, run the same command again to resume. The runner refuses to resume with different settings and refuses to overwrite a completed run.
+
+## Stage 2 extras: ConvNeXt-Tiny, synthetic:real ratios, Mixup and CutMix
+
+These runs test whether the Stage 1 findings hold beyond the two Stage 1 models and settings. Each one keeps the arm's step budgets and, for ResNet-50 and ViT-B/16, its learning rates, so it pairs with the Stage 1 runs of the same seed. Runs go to their own folders, apart from `runs/stage1-<init>`.
+
+| Script | Runs | Folder |
+|---|---|---|
+| `pilot_convnext.sh` | ConvNeXt-Tiny learning rates at 50 images per class, pilot seed 100: AdamW 5e-5, 1e-4, 3e-4 (pretrained) and 3e-4, 1e-3, 3e-3 (scratch) | `runs/pilot-<init>/lr_<lr>` |
+| `run_convnext.sh` | ConvNeXt-Tiny, seeds 0-2. Pretrained: real-only, RandAugment, SD, SD + RandAugment at 5, 20, full (36). Scratch: real-only, RandAugment, SD at 5 and 50 (18) | `runs/stage2-convnext-<init>` |
+| `run_sd_prompt_ratios.sh` | SD class prompts at 2:1 and 5:1, ResNet-50 and ViT-B/16, seeds 0-2. Pretrained at 5-50 (48), scratch at 5 and 50 (24) | `runs/stage2-ratio-<init>/r<ratio>` |
+| `run_mixup_cutmix.sh` | Mixup and CutMix, ResNet-50 and ViT-B/16, seeds 0-2. Pretrained at 5, 20, full (36), scratch at 5 and 50 (24) | `runs/stage2-mixing-<init>` |
+
+The scratch arm leaves out the full training set: from random weights it takes 50,000 steps per run. The ConvNeXt learning rate of each arm is chosen by the same rule as for the Stage 1 models, the highest validation accuracy at 50 images per class in the pilot, and `pick_lr.py` writes it into `train_<init>.json` before `run_convnext.sh`; the values in the configs until then are the pilot's starting points. `run_stage2.sh` runs everything in order: the pilot and the learning-rate choice, ConvNeXt, the ratios, then Mixup and CutMix (192 runs, about 60 GPU hours). For ConvNeXt-T from random initialization the pilot covered 3e-4, 1e-3, 3e-3 and 1e-2 (validation accuracy at 50 images per class 20.38, 22.04, 22.24 and 20.74), so 3e-3 is not at the edge of the range tried. Stage 2 seeds 0–2 were trained in an environment with Python 3.13 and PyTorch 2.13 and are paired with Stage 1 real-only and RandAugment runs from the pinned environment (Python 3.12, PyTorch 2.12), all on A10G GPUs; seeds 3 and 4 use the pinned environment on both sides.
+
+`src/component/stage2_results.py` pairs the Stage 2 runs with their controls: the Stage 1 folders give real-only, RandAugment and 1:1 SD for ResNet-50 and ViT-B/16. It writes one table per study and initialization (`tables/stage2_<convnext|ratio|mixing>_<init>.tex`), `stage2_accuracy.csv`, `stage2_paired.csv` and the figure `fig/stage2_ratio_gain`; with `--split test` it uses the test scores and adds `_test` to every name. `analyze_results` names a run at a ratio other than 1:1 `<condition>_r<ratio>`, so 2:1 and 5:1 runs are never pooled with 1:1.
+
+```bash
+python -m src.component.stage2_results
+python -m src.component.stage2_results --split test
+```

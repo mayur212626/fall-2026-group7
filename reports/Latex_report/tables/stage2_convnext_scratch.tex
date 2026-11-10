@@ -1,0 +1,15 @@
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{Stage 2, ConvNeXt-T, the third architecture, scratch initialization: change in validation top-1 accuracy (percentage points), paired by training seed, mean $\pm$ sample SD over 5 seeds. SD: Stable Diffusion with class prompts (1:1 unless a ratio is given); RA: RandAugment. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise.}
+\label{tab:stage2-convnext-scratch}
+\begin{tabular}{llrrrr}
+\toprule
+Model & Images/class & SD$-$real & RA$-$real & SD$-$RA & SD+RA$-$RA \\
+\midrule
+ConvNeXt-T & 5 & +0.88 $\pm$ 0.21 $\uparrow$ & +6.98 $\pm$ 0.38 $\uparrow$ & -6.10 $\pm$ 0.45 $\downarrow$ & -- \\
+ConvNeXt-T & 50 & +8.73 $\pm$ 1.05 $\uparrow$ & +13.14 $\pm$ 1.81 $\uparrow$ & -4.41 $\pm$ 1.22 $\downarrow$ & -- \\
+\bottomrule
+\end{tabular}
+\end{table}

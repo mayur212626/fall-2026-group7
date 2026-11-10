@@ -1,0 +1,18 @@
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{Stage 2, SD class prompts against Mixup and CutMix, scratch initialization: change in test top-1 accuracy (percentage points), paired by training seed, mean $\pm$ sample SD over 5 seeds. SD: Stable Diffusion with class prompts (1:1 unless a ratio is given); RA: RandAugment. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise.}
+\label{tab:stage2-mixing-scratch-test}
+\begin{tabular}{llrrrrrr}
+\toprule
+Model & Images/class & RA$-$real & Mixup$-$real & CutMix$-$real & SD$-$RA & SD$-$Mixup & SD$-$CutMix \\
+\midrule
+ResNet-50 & 5 & +5.37 $\pm$ 0.50 $\uparrow$ & +1.82 $\pm$ 0.42 $\uparrow$ & +0.35 $\pm$ 0.57 $\sim$ & -3.57 $\pm$ 0.59 $\downarrow$ & -0.03 $\pm$ 0.86 $\sim$ & +1.45 $\pm$ 0.79 $\uparrow$ \\
+ResNet-50 & 50 & +8.88 $\pm$ 2.88 $\uparrow$ & +0.13 $\pm$ 2.11 $\sim$ & -0.46 $\pm$ 0.81 $\sim$ & -0.22 $\pm$ 2.22 $\sim$ & +8.52 $\pm$ 1.98 $\uparrow$ & +9.11 $\pm$ 2.60 $\uparrow$ \\
+\midrule
+ViT-B/16 & 5 & +2.33 $\pm$ 0.55 $\uparrow$ & +2.45 $\pm$ 0.45 $\uparrow$ & +0.37 $\pm$ 0.31 $\sim$ & -0.82 $\pm$ 0.49 $\downarrow$ & -0.94 $\pm$ 0.40 $\downarrow$ & +1.14 $\pm$ 0.22 $\uparrow$ \\
+ViT-B/16 & 50 & +9.08 $\pm$ 0.32 $\uparrow$ & +4.55 $\pm$ 0.20 $\uparrow$ & +4.07 $\pm$ 0.15 $\uparrow$ & -5.83 $\pm$ 0.44 $\downarrow$ & -1.30 $\pm$ 0.26 $\downarrow$ & -0.83 $\pm$ 0.38 $\downarrow$ \\
+\bottomrule
+\end{tabular}
+\end{table}

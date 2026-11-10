@@ -1,0 +1,11 @@
+init,model,budget,seeds,changes,mean,sd,verdict
+scratch,resnet50,5,0 1 2 3 4,5.56 4.91 6.07 4.86 5.43,5.366,0.5003,gain
+scratch,resnet50,10,0 1 2,9.24 8.42 9.65,9.1033,0.6263,gain
+scratch,resnet50,20,0 1 2,9.26 12.59 8.6,10.15,2.1387,gain
+scratch,resnet50,50,0 1 2 3 4,7.54 6.13 13.74 8.46 8.51,8.876,2.8849,gain
+scratch,resnet50,full,0 1 2,10.11 8.84 10.83,9.9267,1.0076,gain
+scratch,vit_b_16,5,0 1 2 3 4,2.99 2.59 2.46 1.57 2.02,2.326,0.5463,gain
+scratch,vit_b_16,10,0 1 2,3.11 3.38 3.17,3.22,0.1418,gain
+scratch,vit_b_16,20,0 1 2,5.72 5.87 4.76,5.45,0.6022,gain
+scratch,vit_b_16,50,0 1 2 3 4,9.35 9.46 9.0 8.85 8.73,9.078,0.3159,gain
+scratch,vit_b_16,full,0 1 2,14.94 13.51 14.06,14.17,0.7213,gain
