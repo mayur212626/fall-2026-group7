@@ -2,13 +2,13 @@ treatment,control,init,model,budget,seeds,changes,mean,sd,verdict
 sd_prompt,randaugment,pretrained,resnet50,5,0 1 2 3 4,3.65 3.31 4.79 2.38 3.0,3.426,0.8944,gain
 sd_prompt,randaugment,pretrained,resnet50,10,0 1 2 3 4,3.08 3.96 1.81 4.46 2.76,3.214,1.0373,gain
 sd_prompt,randaugment,pretrained,resnet50,20,0 1 2 3 4,2.8 2.79 1.99 2.06 1.63,2.254,0.5201,gain
-sd_prompt,randaugment,pretrained,resnet50,50,0 1 2,1.52 1.48 1.01,1.3367,0.2836,gain
-sd_prompt,randaugment,pretrained,resnet50,full,0 1 2,-0.78 -0.39 -1.09,-0.7533,0.3508,loss
+sd_prompt,randaugment,pretrained,resnet50,50,0 1 2 3 4,1.52 1.48 1.01 0.96 1.19,1.232,0.2596,gain
+sd_prompt,randaugment,pretrained,resnet50,full,0 1 2 3 4,-0.78 -0.39 -1.09 -0.91 -0.73,-0.78,0.2587,loss
 sd_prompt,randaugment,pretrained,vit_b_16,5,0 1 2 3 4,3.8 3.78 2.82 4.84 2.59,3.566,0.899,gain
 sd_prompt,randaugment,pretrained,vit_b_16,10,0 1 2 3 4,1.97 1.13 2.14 1.44 0.77,1.49,0.5708,gain
 sd_prompt,randaugment,pretrained,vit_b_16,20,0 1 2 3 4,-0.79 -0.46 0.29 0.15 -0.09,-0.18,0.444,inconclusive
-sd_prompt,randaugment,pretrained,vit_b_16,50,0 1 2,-1.77 -1.15 -0.81,-1.2433,0.4868,loss
-sd_prompt,randaugment,pretrained,vit_b_16,full,0 1 2,-1.04 -1.35 -1.11,-1.1667,0.1626,loss
+sd_prompt,randaugment,pretrained,vit_b_16,50,0 1 2 3 4,-1.77 -1.15 -0.81 -0.69 -0.69,-1.022,0.4586,loss
+sd_prompt,randaugment,pretrained,vit_b_16,full,0 1 2 3 4,-1.04 -1.35 -1.11 -1.23 -1.2,-1.186,0.1184,loss
 sd_lora,randaugment,pretrained,resnet50,5,0 1 2,1.99 0.82 3.6,2.1367,1.3958,gain
 sd_lora,randaugment,pretrained,resnet50,10,0 1 2,0.76 1.73 0.21,0.9,0.7696,gain
 sd_lora,randaugment,pretrained,resnet50,20,0 1 2,1.79 1.64 0.42,1.2833,0.7514,gain
