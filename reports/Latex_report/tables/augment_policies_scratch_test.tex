@@ -1,0 +1,17 @@
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\caption{Augmentation, conventional augmentation policies against real-only, scratch initialization: change in test top-1 accuracy (percentage points), paired by training seed, mean $\pm$ sample SD over 5 seeds. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise. RA: RandAugment, TA: TrivialAugment, AA: AutoAugment (CIFAR-10 policy), SD: Stable Diffusion class prompts at 1:1 unless a ratio is given.}
+\label{tab:augment-policies-scratch-test}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llrrrr}
+\toprule
+Model & Images/class & RA$-$real & TA$-$real & AA$-$real & AugMix$-$real \\
+\midrule
+ResNet-50 & 5 & +5.37 $\pm$ 0.50 $\uparrow$ & +2.58 $\pm$ 0.45 $\uparrow$ & +2.59 $\pm$ 0.64 $\uparrow$ & +2.67 $\pm$ 0.81 $\uparrow$ \\
+\midrule
+ViT-B/16 & 5 & +2.33 $\pm$ 0.55 $\uparrow$ & +1.20 $\pm$ 0.38 $\uparrow$ & +1.50 $\pm$ 0.36 $\uparrow$ & +0.90 $\pm$ 0.36 $\uparrow$ \\
+\bottomrule
+\end{tabular}}
+\end{table}

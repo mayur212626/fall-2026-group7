@@ -1,0 +1,253 @@
+init,model,budget,condition,n,seeds,mean,sd
+pretrained,resnet50,5,augmix,5,0 1 2 3 4,39.328,0.5285
+pretrained,resnet50,5,autoaugment,5,0 1 2 3 4,42.444,0.8198
+pretrained,resnet50,5,cutmix,5,0 1 2 3 4,36.492,0.7153
+pretrained,resnet50,5,mixup,5,0 1 2 3 4,37.028,0.8108
+pretrained,resnet50,5,randaugment,5,0 1 2 3 4,43.108,1.0382
+pretrained,resnet50,5,real_only,5,0 1 2 3 4,35.66,0.9195
+pretrained,resnet50,5,sd_img2img,3,0 1 2,40.88,0.6083
+pretrained,resnet50,5,sd_lora,3,0 1 2,45.2,0.3606
+pretrained,resnet50,5,sd_prompt,5,0 1 2 3 4,47.076,0.8261
+pretrained,resnet50,5,sd_prompt_augmix,5,0 1 2 3 4,49.632,0.9005
+pretrained,resnet50,5,sd_prompt_autoaugment,5,0 1 2 3 4,53.228,0.3276
+pretrained,resnet50,5,sd_prompt_cutmix,5,0 1 2 3 4,49.588,0.7599
+pretrained,resnet50,5,sd_prompt_only,3,0 1 2,27.3867,0.9375
+pretrained,resnet50,5,sd_prompt_r2,5,0 1 2 3 4,50.308,0.8555
+pretrained,resnet50,5,sd_prompt_r5,5,0 1 2 3 4,55.732,0.6204
+pretrained,resnet50,5,sd_prompt_randaugment,5,0 1 2 3 4,52.768,1.1096
+pretrained,resnet50,5,sd_prompt_randaugment_cutmix,5,0 1 2 3 4,55.312,0.5784
+pretrained,resnet50,5,sd_prompt_randaugment_r5,5,0 1 2 3 4,58.716,0.9945
+pretrained,resnet50,5,sd_prompt_trivialaugment,5,0 1 2 3 4,52.716,0.7453
+pretrained,resnet50,5,trivialaugment,5,0 1 2 3 4,42.296,0.43
+pretrained,resnet50,10,randaugment,5,0 1 2 3 4,53.456,0.3251
+pretrained,resnet50,10,real_only,5,0 1 2 3 4,49.872,0.9316
+pretrained,resnet50,10,sd_img2img,3,0 1 2,54.6733,0.2831
+pretrained,resnet50,10,sd_lora,3,0 1 2,55.44,0.3219
+pretrained,resnet50,10,sd_prompt,5,0 1 2 3 4,56.752,0.8411
+pretrained,resnet50,10,sd_prompt_only,3,0 1 2,33.52,0.6954
+pretrained,resnet50,10,sd_prompt_r2,5,0 1 2 3 4,59.584,0.5688
+pretrained,resnet50,10,sd_prompt_r5,5,0 1 2 3 4,61.984,0.7131
+pretrained,resnet50,10,sd_prompt_randaugment,5,0 1 2 3 4,60.028,0.1863
+pretrained,resnet50,20,augmix,5,0 1 2 3 4,60.764,0.3176
+pretrained,resnet50,20,autoaugment,5,0 1 2 3 4,63.692,0.8625
+pretrained,resnet50,20,cutmix,5,0 1 2 3 4,61.704,0.6217
+pretrained,resnet50,20,mixup,5,0 1 2 3 4,62.844,0.3713
+pretrained,resnet50,20,randaugment,5,0 1 2 3 4,63.152,0.4789
+pretrained,resnet50,20,real_only,5,0 1 2 3 4,59.728,0.4275
+pretrained,resnet50,20,sd_img2img,3,0 1 2,64.04,0.5973
+pretrained,resnet50,20,sd_lora,3,0 1 2,64.64,0.5546
+pretrained,resnet50,20,sd_prompt,5,0 1 2 3 4,65.684,0.3057
+pretrained,resnet50,20,sd_prompt_augmix,5,0 1 2 3 4,65.16,0.2379
+pretrained,resnet50,20,sd_prompt_autoaugment,5,0 1 2 3 4,68.176,0.4248
+pretrained,resnet50,20,sd_prompt_cutmix,5,0 1 2 3 4,68.0,0.7218
+pretrained,resnet50,20,sd_prompt_only,3,0 1 2,37.2667,0.7336
+pretrained,resnet50,20,sd_prompt_r2,5,0 1 2 3 4,66.504,0.7436
+pretrained,resnet50,20,sd_prompt_r5,5,0 1 2 3 4,67.208,0.436
+pretrained,resnet50,20,sd_prompt_randaugment,5,0 1 2 3 4,66.84,0.6216
+pretrained,resnet50,20,sd_prompt_randaugment_cutmix,5,0 1 2 3 4,70.2,0.4559
+pretrained,resnet50,20,sd_prompt_randaugment_r5,5,0 1 2 3 4,68.768,0.3554
+pretrained,resnet50,20,sd_prompt_trivialaugment,5,0 1 2 3 4,68.064,0.4213
+pretrained,resnet50,20,trivialaugment,5,0 1 2 3 4,63.696,0.3724
+pretrained,resnet50,50,augmix,5,0 1 2 3 4,70.852,0.2827
+pretrained,resnet50,50,autoaugment,5,0 1 2 3 4,72.944,0.3913
+pretrained,resnet50,50,randaugment,5,0 1 2 3 4,72.28,0.3228
+pretrained,resnet50,50,real_only,5,0 1 2 3 4,71.296,0.2868
+pretrained,resnet50,50,sd_img2img,3,0 1 2,73.18,0.28
+pretrained,resnet50,50,sd_lora,3,0 1 2,72.2933,0.6601
+pretrained,resnet50,50,sd_prompt,5,0 1 2 3 4,73.508,0.2356
+pretrained,resnet50,50,sd_prompt_augmix,5,0 1 2 3 4,73.008,0.488
+pretrained,resnet50,50,sd_prompt_autoaugment,5,0 1 2 3 4,74.812,0.2138
+pretrained,resnet50,50,sd_prompt_cutmix,5,0 1 2 3 4,75.744,0.3011
+pretrained,resnet50,50,sd_prompt_only,3,0 1 2,40.66,0.275
+pretrained,resnet50,50,sd_prompt_r2,5,0 1 2 3 4,73.712,0.1775
+pretrained,resnet50,50,sd_prompt_r5,5,0 1 2 3 4,74.084,0.3846
+pretrained,resnet50,50,sd_prompt_randaugment,3,0 1 2,74.3533,0.3443
+pretrained,resnet50,50,sd_prompt_randaugment_cutmix,5,0 1 2 3 4,76.576,0.4702
+pretrained,resnet50,50,sd_prompt_randaugment_r5,5,0 1 2 3 4,75.1,0.1428
+pretrained,resnet50,50,sd_prompt_trivialaugment,5,0 1 2 3 4,75.032,0.2587
+pretrained,resnet50,50,trivialaugment,5,0 1 2 3 4,73.816,0.3874
+pretrained,resnet50,full,cutmix,5,0 1 2 3 4,85.744,0.178
+pretrained,resnet50,full,mixup,5,0 1 2 3 4,85.008,0.2344
+pretrained,resnet50,full,randaugment,5,0 1 2 3 4,85.3,0.2302
+pretrained,resnet50,full,real_only,5,0 1 2 3 4,84.036,0.3011
+pretrained,resnet50,full,sd_lora,3,0 1 2,84.0867,0.4163
+pretrained,resnet50,full,sd_prompt,5,0 1 2 3 4,84.504,0.3315
+pretrained,resnet50,full,sd_prompt_only,3,0 1 2,39.42,0.14
+pretrained,resnet50,full,sd_prompt_randaugment,3,0 1 2,85.4,0.2615
+pretrained,vit_b_16,5,augmix,5,0 1 2 3 4,54.568,1.3326
+pretrained,vit_b_16,5,autoaugment,5,0 1 2 3 4,57.36,1.4985
+pretrained,vit_b_16,5,cutmix,5,0 1 2 3 4,50.664,1.3119
+pretrained,vit_b_16,5,mixup,5,0 1 2 3 4,52.36,1.2567
+pretrained,vit_b_16,5,randaugment,5,0 1 2 3 4,56.652,1.939
+pretrained,vit_b_16,5,real_only,5,0 1 2 3 4,46.488,1.4224
+pretrained,vit_b_16,5,sd_img2img,3,0 1 2,54.9533,1.5988
+pretrained,vit_b_16,5,sd_lora,3,0 1 2,58.5733,1.0715
+pretrained,vit_b_16,5,sd_prompt,5,0 1 2 3 4,60.972,1.603
+pretrained,vit_b_16,5,sd_prompt_augmix,5,0 1 2 3 4,66.72,1.3455
+pretrained,vit_b_16,5,sd_prompt_autoaugment,5,0 1 2 3 4,68.712,1.0068
+pretrained,vit_b_16,5,sd_prompt_cutmix,5,0 1 2 3 4,65.776,1.2475
+pretrained,vit_b_16,5,sd_prompt_only,3,0 1 2,42.88,2.9301
+pretrained,vit_b_16,5,sd_prompt_r2,5,0 1 2 3 4,64.932,1.745
+pretrained,vit_b_16,5,sd_prompt_r5,5,0 1 2 3 4,68.056,0.9722
+pretrained,vit_b_16,5,sd_prompt_randaugment,5,0 1 2 3 4,67.88,1.2112
+pretrained,vit_b_16,5,sd_prompt_randaugment_cutmix,5,0 1 2 3 4,68.204,0.8084
+pretrained,vit_b_16,5,sd_prompt_randaugment_r5,5,0 1 2 3 4,70.844,0.5343
+pretrained,vit_b_16,5,sd_prompt_trivialaugment,5,0 1 2 3 4,68.14,1.3678
+pretrained,vit_b_16,5,trivialaugment,5,0 1 2 3 4,56.336,1.643
+pretrained,vit_b_16,10,randaugment,5,0 1 2 3 4,69.1,1.087
+pretrained,vit_b_16,10,real_only,5,0 1 2 3 4,61.292,1.0349
+pretrained,vit_b_16,10,sd_img2img,3,0 1 2,67.58,1.6457
+pretrained,vit_b_16,10,sd_lora,3,0 1 2,68.2267,1.6171
+pretrained,vit_b_16,10,sd_prompt,5,0 1 2 3 4,70.66,0.8768
+pretrained,vit_b_16,10,sd_prompt_only,3,0 1 2,52.0733,2.6428
+pretrained,vit_b_16,10,sd_prompt_r2,5,0 1 2 3 4,71.916,0.7409
+pretrained,vit_b_16,10,sd_prompt_r5,5,0 1 2 3 4,72.832,0.7352
+pretrained,vit_b_16,10,sd_prompt_randaugment,5,0 1 2 3 4,74.152,0.4514
+pretrained,vit_b_16,20,augmix,5,0 1 2 3 4,75.212,0.7211
+pretrained,vit_b_16,20,autoaugment,5,0 1 2 3 4,76.556,0.483
+pretrained,vit_b_16,20,cutmix,5,0 1 2 3 4,75.3,0.5666
+pretrained,vit_b_16,20,mixup,5,0 1 2 3 4,75.748,0.6814
+pretrained,vit_b_16,20,randaugment,5,0 1 2 3 4,75.968,0.5116
+pretrained,vit_b_16,20,real_only,5,0 1 2 3 4,72.148,0.7773
+pretrained,vit_b_16,20,sd_img2img,3,0 1 2,74.9733,0.7393
+pretrained,vit_b_16,20,sd_lora,3,0 1 2,74.54,0.3747
+pretrained,vit_b_16,20,sd_prompt,5,0 1 2 3 4,75.788,0.7649
+pretrained,vit_b_16,20,sd_prompt_augmix,5,0 1 2 3 4,77.412,0.4747
+pretrained,vit_b_16,20,sd_prompt_autoaugment,5,0 1 2 3 4,78.476,0.448
+pretrained,vit_b_16,20,sd_prompt_cutmix,5,0 1 2 3 4,78.6,0.5644
+pretrained,vit_b_16,20,sd_prompt_only,3,0 1 2,56.76,1.6675
+pretrained,vit_b_16,20,sd_prompt_r2,5,0 1 2 3 4,76.168,0.5765
+pretrained,vit_b_16,20,sd_prompt_r5,5,0 1 2 3 4,76.552,0.2488
+pretrained,vit_b_16,20,sd_prompt_randaugment,5,0 1 2 3 4,77.78,0.4561
+pretrained,vit_b_16,20,sd_prompt_randaugment_cutmix,5,0 1 2 3 4,79.42,0.465
+pretrained,vit_b_16,20,sd_prompt_randaugment_r5,5,0 1 2 3 4,78.104,0.3618
+pretrained,vit_b_16,20,sd_prompt_trivialaugment,5,0 1 2 3 4,78.712,0.2678
+pretrained,vit_b_16,20,trivialaugment,5,0 1 2 3 4,76.1,0.547
+pretrained,vit_b_16,50,augmix,5,0 1 2 3 4,81.464,0.3607
+pretrained,vit_b_16,50,autoaugment,5,0 1 2 3 4,82.316,0.2868
+pretrained,vit_b_16,50,randaugment,5,0 1 2 3 4,81.952,0.4296
+pretrained,vit_b_16,50,real_only,5,0 1 2 3 4,80.132,0.2261
+pretrained,vit_b_16,50,sd_img2img,3,0 1 2,80.8267,0.4347
+pretrained,vit_b_16,50,sd_lora,3,0 1 2,80.2467,0.5281
+pretrained,vit_b_16,50,sd_prompt,5,0 1 2 3 4,80.904,0.5121
+pretrained,vit_b_16,50,sd_prompt_augmix,5,0 1 2 3 4,81.964,0.4241
+pretrained,vit_b_16,50,sd_prompt_autoaugment,5,0 1 2 3 4,82.896,0.3887
+pretrained,vit_b_16,50,sd_prompt_cutmix,5,0 1 2 3 4,83.32,0.3432
+pretrained,vit_b_16,50,sd_prompt_only,3,0 1 2,60.38,0.9353
+pretrained,vit_b_16,50,sd_prompt_r2,5,0 1 2 3 4,81.012,0.2999
+pretrained,vit_b_16,50,sd_prompt_r5,5,0 1 2 3 4,81.328,0.1254
+pretrained,vit_b_16,50,sd_prompt_randaugment,3,0 1 2,82.5933,0.5155
+pretrained,vit_b_16,50,sd_prompt_randaugment_cutmix,5,0 1 2 3 4,84.06,0.1049
+pretrained,vit_b_16,50,sd_prompt_randaugment_r5,5,0 1 2 3 4,82.156,0.1187
+pretrained,vit_b_16,50,sd_prompt_trivialaugment,5,0 1 2 3 4,82.756,0.3889
+pretrained,vit_b_16,50,trivialaugment,5,0 1 2 3 4,82.244,0.1851
+pretrained,vit_b_16,full,cutmix,5,0 1 2 3 4,90.432,0.2184
+pretrained,vit_b_16,full,mixup,5,0 1 2 3 4,89.912,0.2274
+pretrained,vit_b_16,full,randaugment,5,0 1 2 3 4,89.904,0.2202
+pretrained,vit_b_16,full,real_only,5,0 1 2 3 4,88.64,0.2267
+pretrained,vit_b_16,full,sd_lora,3,0 1 2,88.1267,0.0643
+pretrained,vit_b_16,full,sd_prompt,5,0 1 2 3 4,88.664,0.2343
+pretrained,vit_b_16,full,sd_prompt_only,3,0 1 2,59.2133,1.2117
+pretrained,vit_b_16,full,sd_prompt_randaugment,3,0 1 2,89.4667,0.3252
+scratch,resnet50,5,augmix,5,0 1 2 3 4,11.86,0.4042
+scratch,resnet50,5,autoaugment,5,0 1 2 3 4,12.176,0.7635
+scratch,resnet50,5,cutmix,5,0 1 2 3 4,9.232,0.469
+scratch,resnet50,5,mixup,5,0 1 2 3 4,10.488,0.4312
+scratch,resnet50,5,randaugment,5,0 1 2 3 4,14.764,0.5023
+scratch,resnet50,5,real_only,5,0 1 2 3 4,8.828,0.2941
+scratch,resnet50,5,sd_img2img,3,0 1 2,9.9333,0.4206
+scratch,resnet50,5,sd_lora,3,0 1 2,10.0933,0.5714
+scratch,resnet50,5,sd_prompt,5,0 1 2 3 4,10.608,0.6265
+scratch,resnet50,5,sd_prompt_augmix,5,0 1 2 3 4,13.576,0.5789
+scratch,resnet50,5,sd_prompt_autoaugment,5,0 1 2 3 4,14.912,0.3495
+scratch,resnet50,5,sd_prompt_cutmix,5,0 1 2 3 4,11.324,0.5356
+scratch,resnet50,5,sd_prompt_only,3,0 1 2,6.0333,0.1206
+scratch,resnet50,5,sd_prompt_r2,5,0 1 2 3 4,12.968,0.6278
+scratch,resnet50,5,sd_prompt_r5,5,0 1 2 3 4,17.564,1.6639
+scratch,resnet50,5,sd_prompt_randaugment,3,0 1 2,17.7067,1.31
+scratch,resnet50,5,sd_prompt_randaugment_cutmix,5,0 1 2 3 4,16.416,0.8996
+scratch,resnet50,5,sd_prompt_randaugment_r5,5,0 1 2 3 4,24.028,0.6873
+scratch,resnet50,5,sd_prompt_trivialaugment,5,0 1 2 3 4,14.932,0.8733
+scratch,resnet50,5,trivialaugment,5,0 1 2 3 4,12.144,0.3928
+scratch,resnet50,10,randaugment,3,0 1 2,22.6533,0.7778
+scratch,resnet50,10,real_only,3,0 1 2,13.3,0.694
+scratch,resnet50,10,sd_img2img,3,0 1 2,14.1333,0.6204
+scratch,resnet50,10,sd_lora,3,0 1 2,15.2267,0.5608
+scratch,resnet50,10,sd_prompt,3,0 1 2,15.3533,0.5327
+scratch,resnet50,10,sd_prompt_only,3,0 1 2,7.8467,0.1848
+scratch,resnet50,10,sd_prompt_randaugment,3,0 1 2,27.6867,3.1933
+scratch,resnet50,20,randaugment,3,0 1 2,29.74,2.5006
+scratch,resnet50,20,real_only,3,0 1 2,19.1933,0.2928
+scratch,resnet50,20,sd_img2img,3,0 1 2,21.2533,0.3101
+scratch,resnet50,20,sd_lora,3,0 1 2,25.1733,1.6447
+scratch,resnet50,20,sd_prompt,3,0 1 2,24.6267,1.6638
+scratch,resnet50,20,sd_prompt_only,3,0 1 2,10.2133,0.363
+scratch,resnet50,20,sd_prompt_randaugment,3,0 1 2,33.1,2.3223
+scratch,resnet50,50,cutmix,5,0 1 2 3 4,28.612,1.1158
+scratch,resnet50,50,mixup,5,0 1 2 3 4,29.336,1.2502
+scratch,resnet50,50,randaugment,5,0 1 2 3 4,38.796,2.5105
+scratch,resnet50,50,real_only,5,0 1 2 3 4,29.32,1.3071
+scratch,resnet50,50,sd_img2img,3,0 1 2,32.2533,1.5546
+scratch,resnet50,50,sd_lora,3,0 1 2,36.8933,2.105
+scratch,resnet50,50,sd_prompt,5,0 1 2 3 4,37.956,2.6171
+scratch,resnet50,50,sd_prompt_only,3,0 1 2,16.06,0.4583
+scratch,resnet50,50,sd_prompt_r2,5,0 1 2 3 4,42.448,2.2619
+scratch,resnet50,50,sd_prompt_r5,5,0 1 2 3 4,44.288,0.8613
+scratch,resnet50,50,sd_prompt_randaugment,3,0 1 2,44.6733,3.1262
+scratch,resnet50,full,randaugment,3,0 1 2,65.2667,1.2801
+scratch,resnet50,full,real_only,3,0 1 2,54.98,0.9877
+scratch,resnet50,full,sd_lora,3,0 1 2,62.2333,1.4508
+scratch,resnet50,full,sd_prompt,3,0 1 2,59.8467,2.539
+scratch,resnet50,full,sd_prompt_only,3,0 1 2,19.0733,0.6018
+scratch,resnet50,full,sd_prompt_randaugment,3,0 1 2,64.7533,0.8026
+scratch,vit_b_16,5,augmix,5,0 1 2 3 4,8.32,0.2717
+scratch,vit_b_16,5,autoaugment,5,0 1 2 3 4,9.228,0.3183
+scratch,vit_b_16,5,cutmix,5,0 1 2 3 4,7.652,0.1425
+scratch,vit_b_16,5,mixup,5,0 1 2 3 4,9.576,0.2578
+scratch,vit_b_16,5,randaugment,5,0 1 2 3 4,9.852,0.1814
+scratch,vit_b_16,5,real_only,5,0 1 2 3 4,7.568,0.3735
+scratch,vit_b_16,5,sd_img2img,3,0 1 2,8.06,0.38
+scratch,vit_b_16,5,sd_lora,3,0 1 2,8.9,0.2078
+scratch,vit_b_16,5,sd_prompt,5,0 1 2 3 4,9.204,0.2051
+scratch,vit_b_16,5,sd_prompt_augmix,5,0 1 2 3 4,10.312,0.0965
+scratch,vit_b_16,5,sd_prompt_autoaugment,5,0 1 2 3 4,11.48,0.2557
+scratch,vit_b_16,5,sd_prompt_cutmix,5,0 1 2 3 4,9.7,0.2445
+scratch,vit_b_16,5,sd_prompt_only,3,0 1 2,5.42,0.14
+scratch,vit_b_16,5,sd_prompt_r2,5,0 1 2 3 4,10.168,0.2382
+scratch,vit_b_16,5,sd_prompt_r5,5,0 1 2 3 4,11.536,0.5317
+scratch,vit_b_16,5,sd_prompt_randaugment,3,0 1 2,12.0,0.1778
+scratch,vit_b_16,5,sd_prompt_randaugment_cutmix,5,0 1 2 3 4,12.392,0.4275
+scratch,vit_b_16,5,sd_prompt_randaugment_r5,5,0 1 2 3 4,14.512,0.3903
+scratch,vit_b_16,5,sd_prompt_trivialaugment,5,0 1 2 3 4,10.88,0.3464
+scratch,vit_b_16,5,trivialaugment,5,0 1 2 3 4,8.752,0.1647
+scratch,vit_b_16,10,randaugment,3,0 1 2,13.3933,0.0115
+scratch,vit_b_16,10,real_only,3,0 1 2,10.0267,0.3101
+scratch,vit_b_16,10,sd_img2img,3,0 1 2,10.86,0.4583
+scratch,vit_b_16,10,sd_lora,3,0 1 2,11.9333,0.39
+scratch,vit_b_16,10,sd_prompt,3,0 1 2,12.0,0.6245
+scratch,vit_b_16,10,sd_prompt_only,3,0 1 2,6.7333,0.2656
+scratch,vit_b_16,10,sd_prompt_randaugment,3,0 1 2,16.5667,0.6816
+scratch,vit_b_16,20,randaugment,3,0 1 2,18.12,0.5048
+scratch,vit_b_16,20,real_only,3,0 1 2,13.5533,0.2845
+scratch,vit_b_16,20,sd_img2img,3,0 1 2,14.72,0.2163
+scratch,vit_b_16,20,sd_lora,3,0 1 2,15.4267,0.7223
+scratch,vit_b_16,20,sd_prompt,3,0 1 2,16.1533,0.3711
+scratch,vit_b_16,20,sd_prompt_only,3,0 1 2,8.1667,0.358
+scratch,vit_b_16,20,sd_prompt_randaugment,3,0 1 2,21.32,0.3672
+scratch,vit_b_16,50,cutmix,5,0 1 2 3 4,23.216,0.292
+scratch,vit_b_16,50,mixup,5,0 1 2 3 4,23.752,0.2221
+scratch,vit_b_16,50,randaugment,5,0 1 2 3 4,27.756,0.3198
+scratch,vit_b_16,50,real_only,5,0 1 2 3 4,19.776,0.4967
+scratch,vit_b_16,50,sd_img2img,3,0 1 2,21.6867,0.1747
+scratch,vit_b_16,50,sd_lora,3,0 1 2,22.3267,0.6955
+scratch,vit_b_16,50,sd_prompt,5,0 1 2 3 4,22.848,0.3405
+scratch,vit_b_16,50,sd_prompt_only,3,0 1 2,9.16,0.4133
+scratch,vit_b_16,50,sd_prompt_r2,5,0 1 2 3 4,23.872,0.4965
+scratch,vit_b_16,50,sd_prompt_r5,5,0 1 2 3 4,25.376,0.2017
+scratch,vit_b_16,50,sd_prompt_randaugment,3,0 1 2,30.5533,0.431
+scratch,vit_b_16,full,randaugment,3,0 1 2,59.1533,0.3055
+scratch,vit_b_16,full,real_only,3,0 1 2,44.18,0.4703
+scratch,vit_b_16,full,sd_lora,3,0 1 2,50.2667,0.5988
+scratch,vit_b_16,full,sd_prompt,3,0 1 2,48.1333,0.4717
+scratch,vit_b_16,full,sd_prompt_only,3,0 1 2,12.8933,0.1553
+scratch,vit_b_16,full,sd_prompt_randaugment,3,0 1 2,61.1533,0.7292

@@ -1,0 +1,17 @@
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\caption{Augmentation, SD class-prompt images added on top of each conventional augmentation, scratch initialization: change in validation top-1 accuracy (percentage points), paired by training seed, mean $\pm$ sample SD over 3 or 5 seeds. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise. RA: RandAugment, TA: TrivialAugment, AA: AutoAugment (CIFAR-10 policy), SD: Stable Diffusion class prompts at 1:1 unless a ratio is given.}
+\label{tab:augment-stacked-scratch}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llrrrrrr}
+\toprule
+Model & Images/class & SD+RA$-$RA & SD+TA$-$TA & SD+AA$-$AA & SD+AugMix$-$AugMix & SD+RA+CutMix$-$RA & SD 5:1+RA$-$RA \\
+\midrule
+ResNet-50 & 5 & +2.83 $\pm$ 0.92 $\uparrow$ & +2.79 $\pm$ 0.91 $\uparrow$ & +2.74 $\pm$ 0.58 $\uparrow$ & +1.72 $\pm$ 0.92 $\uparrow$ & +1.65 $\pm$ 1.32 $\uparrow$ & +9.26 $\pm$ 0.69 $\uparrow$ \\
+\midrule
+ViT-B/16 & 5 & +2.04 $\pm$ 0.24 $\uparrow$ & +2.13 $\pm$ 0.40 $\uparrow$ & +2.25 $\pm$ 0.17 $\uparrow$ & +1.99 $\pm$ 0.36 $\uparrow$ & +2.54 $\pm$ 0.42 $\uparrow$ & +4.66 $\pm$ 0.42 $\uparrow$ \\
+\bottomrule
+\end{tabular}}
+\end{table}

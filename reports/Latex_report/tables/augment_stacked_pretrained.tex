@@ -1,0 +1,21 @@
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\caption{Augmentation, SD class-prompt images added on top of each conventional augmentation, pretrained initialization: change in validation top-1 accuracy (percentage points), paired by training seed, mean $\pm$ sample SD over 3 or 5 seeds. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise. RA: RandAugment, TA: TrivialAugment, AA: AutoAugment (CIFAR-10 policy), SD: Stable Diffusion class prompts at 1:1 unless a ratio is given.}
+\label{tab:augment-stacked-pretrained}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llrrrrrr}
+\toprule
+Model & Images/class & SD+RA$-$RA & SD+TA$-$TA & SD+AA$-$AA & SD+AugMix$-$AugMix & SD+RA+CutMix$-$RA & SD 5:1+RA$-$RA \\
+\midrule
+ResNet-50 & 5 & +9.66 $\pm$ 0.46 $\uparrow$ & +10.42 $\pm$ 0.63 $\uparrow$ & +10.78 $\pm$ 0.94 $\uparrow$ & +10.30 $\pm$ 0.77 $\uparrow$ & +12.20 $\pm$ 0.92 $\uparrow$ & +15.61 $\pm$ 1.68 $\uparrow$ \\
+ResNet-50 & 20 & +3.69 $\pm$ 0.30 $\uparrow$ & +4.37 $\pm$ 0.71 $\uparrow$ & +4.48 $\pm$ 1.08 $\uparrow$ & +4.40 $\pm$ 0.49 $\uparrow$ & +7.05 $\pm$ 0.71 $\uparrow$ & +5.62 $\pm$ 0.77 $\uparrow$ \\
+ResNet-50 & 50 & +2.17 $\pm$ 0.62 $\uparrow$ & +1.22 $\pm$ 0.52 $\uparrow$ & +1.87 $\pm$ 0.31 $\uparrow$ & +2.16 $\pm$ 0.61 $\uparrow$ & +4.30 $\pm$ 0.48 $\uparrow$ & +2.82 $\pm$ 0.27 $\uparrow$ \\
+\midrule
+ViT-B/16 & 5 & +11.23 $\pm$ 0.96 $\uparrow$ & +11.80 $\pm$ 1.09 $\uparrow$ & +11.35 $\pm$ 0.66 $\uparrow$ & +12.15 $\pm$ 0.71 $\uparrow$ & +11.55 $\pm$ 1.55 $\uparrow$ & +14.19 $\pm$ 1.66 $\uparrow$ \\
+ViT-B/16 & 20 & +1.81 $\pm$ 0.30 $\uparrow$ & +2.61 $\pm$ 0.52 $\uparrow$ & +1.92 $\pm$ 0.33 $\uparrow$ & +2.20 $\pm$ 0.73 $\uparrow$ & +3.45 $\pm$ 0.38 $\uparrow$ & +2.14 $\pm$ 0.81 $\uparrow$ \\
+ViT-B/16 & 50 & +0.57 $\pm$ 0.02 $\uparrow$ & +0.51 $\pm$ 0.31 $\uparrow$ & +0.58 $\pm$ 0.29 $\uparrow$ & +0.50 $\pm$ 0.58 $\sim$ & +2.11 $\pm$ 0.42 $\uparrow$ & +0.20 $\pm$ 0.43 $\sim$ \\
+\bottomrule
+\end{tabular}}
+\end{table}
