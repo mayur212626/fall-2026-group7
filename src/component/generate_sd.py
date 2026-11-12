@@ -34,6 +34,14 @@ With ``--lora-dir`` the pipeline first loads a LoRA adapter from
 token (``"a photo of a cfr bear."``), which is the ``sd_lora`` condition.
 
     python -m src.component.generate_sd --output-dir data/synthetic/sd15_prompt
+
+With ``--dataset flowers102`` or ``ham10000`` (Stage 3) the class names and
+prompt templates come from ``stage3_data``, the pool size defaults to that
+dataset's (enough for 5:1 at its largest budget), and every image goes through
+the same ``prepare_image`` as the real images (short side 256, center crop
+224), so real and generated images are reduced identically.
+
+    python -m src.component.generate_sd --dataset ham10000 --output-dir data/synthetic/sd15_prompt_ham10000
     python -m src.component.generate_sd --output-dir data/synthetic/sd15_lora_b5 \
         --lora-dir data/lora/sd15_lora_b5 --per-class 5 --generator-id lora_sd_b5
 """
@@ -50,6 +58,8 @@ import numpy as np
 from PIL import Image
 
 from src.component.generator_registry import REGISTRY, generation_fields, set_row
+from src.component.stage3_data import DATASETS as STAGE3_DATASETS
+from src.component.stage3_data import STORED_SIZE, prepare_image
 from src.component.synthetic_pool import save_pool
 
 MODEL_ID = "stable-diffusion-v1-5/stable-diffusion-v1-5"
@@ -89,7 +99,7 @@ def class_phrase(name: str) -> str:
     return CLASS_PHRASES.get(name, name.replace("_", " "))
 
 
-def prompt_for(name: str, index: int, identifier: str | None = None) -> str:
+def prompt_for(name: str, index: int, identifier: str | None = None, templates: tuple[str, ...] = TEMPLATES) -> str:
     """Return the prompt of image ``index`` of class ``name``; templates repeat in order.
 
     With an ``identifier`` (the LoRA token), the class is written as
@@ -99,7 +109,7 @@ def prompt_for(name: str, index: int, identifier: str | None = None) -> str:
     if identifier:
         phrase = f"{identifier} {phrase}"
     article = "an" if phrase[0] in "aeiou" else "a"
-    return TEMPLATES[index % len(TEMPLATES)].format(article=article, name=phrase)
+    return templates[index % len(templates)].format(article=article, name=phrase)
 
 
 def image_seed(generation_seed: int, label: int, index: int) -> int:
@@ -132,17 +142,21 @@ def generate_class(
         pipe: A diffusers text-to-image pipeline (or any callable with the same
             keyword arguments that returns an object with ``.images``).
         make_generator: Builds a seeded random generator from an image seed.
-        settings: ``steps``, ``guidance``, ``size`` and optionally ``negative_prompt``.
+        settings: ``steps``, ``guidance``, ``size`` and optionally ``negative_prompt``, ``templates``
+            and ``output_size`` (Stage 3: 224, reduced with ``stage3_data.prepare_image``).
         identifier: LoRA identifier token added before the class name.
         preview_dir, preview: Save the first ``preview`` full-size images as JPEG.
     """
-    images = np.empty((per_class, OUTPUT_SIZE, OUTPUT_SIZE, 3), dtype=np.uint8)
+    output_size = settings.get("output_size", OUTPUT_SIZE)
+    templates = settings.get("templates", TEMPLATES)
+    reduce = downsample if output_size == OUTPUT_SIZE else (lambda image: prepare_image(image, output_size))
+    images = np.empty((per_class, output_size, output_size, 3), dtype=np.uint8)
     seeds = np.empty(per_class, dtype=np.int64)
     for start in range(0, per_class, batch_size):
         indices = range(start, min(start + batch_size, per_class))
         batch_seeds = [image_seed(generation_seed, label, i) for i in indices]
         output = pipe(
-            prompt=[prompt_for(name, i, identifier) for i in indices],
+            prompt=[prompt_for(name, i, identifier, templates) for i in indices],
             negative_prompt=[settings.get("negative_prompt", NEGATIVE_PROMPT)] * len(indices),
             num_inference_steps=settings["steps"],
             guidance_scale=settings["guidance"],
@@ -151,7 +165,7 @@ def generate_class(
             generator=[make_generator(s) for s in batch_seeds],
         )
         for i, seed, image in zip(indices, batch_seeds, output.images, strict=True):
-            images[i] = downsample(image)
+            images[i] = reduce(image)
             seeds[i] = seed
             if preview_dir is not None and i < preview:
                 preview_dir.mkdir(parents=True, exist_ok=True)
@@ -224,9 +238,11 @@ def load_pipeline(model: str, revision: str | None, device: str):
 def main() -> None:
     """Generate (or resume) the pool, merge it, and record it in the registry."""
     parser = argparse.ArgumentParser(description="Generate the Stable Diffusion class-prompt pool.")
-    parser.add_argument("--output-dir", type=Path, default=Path("data/synthetic/sd15_prompt"))
+    parser.add_argument("--dataset", choices=["cifar100", *STAGE3_DATASETS], default="cifar100")
+    parser.add_argument("--output-dir", type=Path, help="default: data/synthetic/sd15_prompt (CIFAR-100) or "
+                        "data/synthetic/sd15_prompt_<dataset>")
     parser.add_argument("--data-root", type=Path, default=Path("data/cifar100"))
-    parser.add_argument("--per-class", type=int, default=450)
+    parser.add_argument("--per-class", type=int, help="default: 450 (CIFAR-100), 50 (Flowers-102), 250 (HAM10000)")
     parser.add_argument("--classes", type=int, nargs="*", help="only these class labels (for a quick check)")
     parser.add_argument("--generation-seed", type=int, default=0)
     parser.add_argument("--batch-size", type=int, default=16)
@@ -244,9 +260,21 @@ def main() -> None:
     import diffusers
     import torch
     import transformers
-    from torchvision.datasets import CIFAR100
 
-    class_names = CIFAR100(args.data_root, train=True, download=False).classes
+    stage3 = STAGE3_DATASETS.get(args.dataset)
+    if args.output_dir is None:
+        args.output_dir = Path("data/synthetic") / ("sd15_prompt" if stage3 is None else f"sd15_prompt_{args.dataset}")
+    if args.per_class is None:
+        args.per_class = 450 if stage3 is None else stage3["sd_per_class"]
+    if stage3 is None:
+        from torchvision.datasets import CIFAR100
+
+        class_names = CIFAR100(args.data_root, train=True, download=False).classes
+        templates, output_size = TEMPLATES, OUTPUT_SIZE
+    else:
+        if args.lora_dir:
+            parser.error("--lora-dir is only used with CIFAR-100")
+        class_names, templates, output_size = stage3["classes"], stage3["templates"], STORED_SIZE
     labels = args.classes if args.classes else list(range(len(class_names)))
     device = "cuda" if torch.cuda.is_available() else "cpu"
     pipe, revision = load_pipeline(args.model, args.revision, device)
@@ -260,8 +288,10 @@ def main() -> None:
         pipe.load_lora_weights(str(args.lora_dir))
         identifier = lora["identifier"]
         negative_prompt = LORA_NEGATIVE_PROMPT
-    generator_id = args.generator_id or (f"lora_sd_b{lora['budget']}" if lora else GENERATOR_ID)
-    settings = {"steps": args.steps, "guidance": args.guidance, "size": args.size, "negative_prompt": negative_prompt}
+    default_id = GENERATOR_ID if stage3 is None else f"{GENERATOR_ID}_{args.dataset}"
+    generator_id = args.generator_id or (f"lora_sd_b{lora['budget']}" if lora else default_id)
+    settings = {"steps": args.steps, "guidance": args.guidance, "size": args.size, "negative_prompt": negative_prompt,
+                "templates": templates, "output_size": output_size}
 
     def make_generator(seed: int):
         return torch.Generator(device=device).manual_seed(seed)
@@ -301,19 +331,22 @@ def main() -> None:
         "steps": args.steps,
         "guidance": args.guidance,
         "size": args.size,
-        "output_size": OUTPUT_SIZE,
-        "resize": "PIL bicubic (antialiased)",
+        "dataset": args.dataset,
+        "output_size": output_size,
+        "resize": "PIL bicubic (antialiased)" if stage3 is None else
+                  "short side to 256, PIL bicubic (antialiased), center crop 224 (as the real images)",
         "dtype": "float16",
         "safety_checker": "disabled",
         "per_class": args.per_class,
         "generation_seed": args.generation_seed,
         "seed_rule": "numpy SeedSequence([generation_seed, label, index]), uint32",
-        "templates": list(TEMPLATES),
+        "templates": list(templates),
         "template_rule": "index mod number of templates",
         "identifier": identifier,
         "lora": lora,
         "negative_prompt": negative_prompt,
         "class_phrases": {name: class_phrase(name) for name in class_names},
+        "class_names": list(class_names),
         "pool": str(pool_path),
         "pool_sha256": sha,
         "images": args.per_class * len(class_names),
