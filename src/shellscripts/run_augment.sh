@@ -1,18 +1,19 @@
 #!/usr/bin/env bash
 # Stacked augmentation: conventional policies on their own and SD class-prompt
-# images on top of them, ResNet-50 and ViT-B/16, seeds 0, 1, 2 (set SEEDS for
-# others), with each arm's learning rates and step budgets, so every run pairs
-# with the Stage 1 real-only, RandAugment and SD runs of the same seed.
+# images on top of them, ResNet-50 and ViT-B/16, seeds 0, 1, 2 by default (the
+# results use 0-4: run again with SEEDS="3 4"), with each arm's learning rates
+# and step budgets, so every run pairs with the Stage 1 real-only, RandAugment
+# and SD runs of the same seed.
 #   Conditions: TrivialAugment, AutoAugment (CIFAR-10 policy), AugMix; SD with
 #               each of them; SD + CutMix; SD + RandAugment + CutMix; and
 #               SD + RandAugment at 5:1 (9 conditions).
-#   Pretrained: 5, 20 and 50 images per class (162 runs).
-#   Scratch:    5 and 50 images per class (108 runs).
+#   Pretrained: 5, 20 and 50 images per class (54 runs per seed, 270 for 0-4).
+#   Scratch:    5 and 50 images per class (36 runs per seed, 180 for 0-4).
 # Runs go to runs/augment-<init>. Completed runs are skipped and an interrupted
 # run resumes. Give each GPU one part to share the work:
-#   bash src/shellscripts/run_augment.sh pretrained      # ~18 GPU hours
-#   bash src/shellscripts/run_augment.sh scratch 5       # ~11 GPU hours
-#   bash src/shellscripts/run_augment.sh scratch 50      # ~45 GPU hours
+#   bash src/shellscripts/run_augment.sh pretrained      # ~8 GPU hours per seed
+#   bash src/shellscripts/run_augment.sh scratch 5       # ~2.6 GPU hours per seed
+#   bash src/shellscripts/run_augment.sh scratch 50      # ~14 GPU hours per seed
 # Run from the repository root, in tmux, in the pinned environment.
 set -euo pipefail
 

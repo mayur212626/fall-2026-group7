@@ -2,7 +2,7 @@
 \centering
 \small
 \setlength{\tabcolsep}{4pt}
-\caption{Best SD-based against best conventional augmentation, scratch initialization, both chosen by mean validation accuracy: validation accuracy (\%, mean $\pm$ SD) of real-only and of the two chosen conditions, and the change in validation top-1 accuracy (percentage points), paired by training seed, mean $\pm$ sample SD over 3 or 5 seeds. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise.}
+\caption{Best SD-based against best conventional augmentation, scratch initialization, both chosen by mean validation accuracy: validation accuracy (\%, mean $\pm$ SD) of real-only and of the two chosen conditions, and the change in validation top-1 accuracy (percentage points), paired by training seed, mean $\pm$ sample SD over 3 or 5 seeds. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise. The accuracies average every seed of each condition and the change only the seeds both conditions share, so where their seeds differ the two need not subtract exactly. At 10, 20, 50 and full images per class TrivialAugment, AutoAugment, AugMix and the stacked conditions were not run, so the best conditions there are chosen from fewer candidates.}
 \label{tab:augment-best-scratch}
 \begin{tabular}{llrlrlrr}
 \toprule

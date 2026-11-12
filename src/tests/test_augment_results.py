@@ -48,6 +48,17 @@ class BestTest(unittest.TestCase):
         table = au.best_table([c], au.aggregate(test, "accuracy"), "pretrained", "accuracy", "test")
         self.assertIn(r"\label{tab:augment-best-pretrained-test}", table)
         self.assertIn("ResNet-50 & 5 & 40.00 $\\pm$ 1.00 & TA", table)
+        self.assertIn("need not subtract exactly", table)
+        self.assertNotIn("fewer candidates", table)  # TrivialAugment was run at this budget
+
+    def test_budgets_without_the_new_conditions_are_named(self) -> None:
+        validation = rows("pretrained", "full", {"randaugment": [80, 81, 82], "cutmix": [81, 82, 83],
+                                                 "sd_prompt_randaugment": [80.5, 81.5, 82.5]})
+        changes = au.best_changes(validation, au.choose_best(validation, "accuracy"), "accuracy")
+        table = au.best_table(changes, au.aggregate(validation, "accuracy"), "pretrained", "accuracy", "validation")
+        self.assertIn("At full images per class TrivialAugment, AutoAugment, AugMix and the stacked conditions", table)
+        self.assertEqual(au._join(["10", "full"]), "10 and full")
+        self.assertEqual(au._join(["10", "50", "full"]), "10, 50 and full")
 
 
 if __name__ == "__main__":

@@ -120,6 +120,11 @@ def _caption_tail(cells: list[dict], metric: str, split: str) -> str:
             r"in sign, $\sim$ inconclusive otherwise.")
 
 
+def _join(items: list[str]) -> str:
+    """'a', 'a and b', 'a, b and c'."""
+    return items[0] if len(items) == 1 else ", ".join(items[:-1]) + " and " + items[-1]
+
+
 def study_table(changes: list[dict], study: str, init: str, metric: str, split: str) -> str:
     """Booktabs table of one study for one initialization: one column per comparison."""
     labels = [label for _, _, label in STUDIES[study]]
@@ -156,11 +161,18 @@ def best_table(changes: list[dict], means: list[dict], init: str, metric: str, s
     score = {(g["model"], g["budget"], g["condition"]): g for g in means if g["init"] == init}
     rows = sorted((c for c in changes if c["init"] == init),
                   key=lambda c: (list(MODEL_NAMES).index(c["model"]), _budget_key(c["budget"])))
+    # budgets where this study's new conditions were not run: the choice there has fewer candidates
+    fewer = sorted({c["budget"] for c in rows
+                    if (c["model"], c["budget"], STUDY_KEYS["policies"]) not in score}, key=_budget_key)
+    note = (rf" At {_join(fewer)} images per class TrivialAugment, AutoAugment, AugMix and the stacked conditions "
+            r"were not run, so the best conditions there are chosen from fewer candidates." if fewer else "")
     lines = [
         r"\begin{table}[H]", r"\centering", r"\small", r"\setlength{\tabcolsep}{4pt}",
         rf"\caption{{Best SD-based against best conventional augmentation, {init} initialization, both chosen by "
         rf"mean validation accuracy: {split} accuracy (\%, mean $\pm$ SD) of real-only and of the two chosen "
-        r"conditions, and the " + _caption_tail(rows, metric, split) + "}",
+        r"conditions, and the " + _caption_tail(rows, metric, split)
+        + r" The accuracies average every seed of each condition and the change only the seeds both conditions "
+          r"share, so where their seeds differ the two need not subtract exactly." + note + "}",
         rf"\label{{tab:augment-best-{init}{'-test' if split == 'test' else ''}}}",
         r"\begin{tabular}{llrlrlrr}",
         r"\toprule",
