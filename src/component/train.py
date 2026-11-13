@@ -60,7 +60,8 @@ from src.component.synthetic_pool import file_sha256, load_pool
 SUMMARY_KEYS = ("accuracy", "macro_f1", "balanced_accuracy", "loss")
 LOG_FORMAT = "%(asctime)s %(message)s"
 # Conditions that add generated images to the real training images.
-SYNTHETIC_CONDITIONS = ("sd_prompt", "sd_lora", "sd_prompt_randaugment", "sd_prompt_only", "sd_img2img")
+SYNTHETIC_CONDITIONS = ("sd_prompt", "sd_lora", "sd_prompt_randaugment", "sd_prompt_only", "sd_img2img",
+                        "gan")
 # Synthetic conditions that train on the generated images alone, without the real ones.
 SYNTHETIC_ONLY_CONDITIONS = ("sd_prompt_only",)
 # Conditions that mix each training batch with a shuffled copy of itself (src/component/mixing.py).
