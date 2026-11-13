@@ -1,0 +1,23 @@
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{Best SD-based against best conventional augmentation, scratch initialization, both chosen by mean validation accuracy: test accuracy (\%, mean $\pm$ SD) of real-only and of the two chosen conditions, and the change in test top-1 accuracy (percentage points), paired by training seed, mean $\pm$ sample SD over 3 or 5 seeds. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise. The accuracies average every seed of each condition and the change only the seeds both conditions share, so where their seeds differ the two need not subtract exactly. At 10, 20, 50 and full images per class TrivialAugment, AutoAugment, AugMix and the stacked conditions were not run, so the best conditions there are chosen from fewer candidates.}
+\label{tab:augment-best-scratch-test}
+\begin{tabular}{llrlrlrr}
+\toprule
+Model & Images/class & Real-only & Best conventional & & Best SD-based & & Change \\
+\midrule
+ResNet-50 & 5 & 9.06 $\pm$ 0.49 & RA & 14.43 $\pm$ 0.28 & SD 5:1+RA & 23.88 $\pm$ 0.75 & +9.45 $\pm$ 0.62 $\uparrow$ \\
+ResNet-50 & 10 & 13.38 $\pm$ 0.39 & RA & 22.48 $\pm$ 0.89 & SD+RA & 28.02 $\pm$ 2.98 & +5.54 $\pm$ 3.78 $\uparrow$ \\
+ResNet-50 & 20 & 19.86 $\pm$ 0.01 & RA & 30.01 $\pm$ 2.14 & SD+RA & 33.39 $\pm$ 2.43 & +3.38 $\pm$ 0.46 $\uparrow$ \\
+ResNet-50 & 50 & 29.74 $\pm$ 1.03 & RA & 38.61 $\pm$ 2.55 & SD+RA & 44.55 $\pm$ 3.53 & +5.17 $\pm$ 5.69 $\sim$ \\
+ResNet-50 & full & 55.21 $\pm$ 1.19 & RA & 65.14 $\pm$ 0.80 & SD+RA & 64.38 $\pm$ 0.82 & -0.75 $\pm$ 0.45 $\downarrow$ \\
+ViT-B/16 & 5 & 7.60 $\pm$ 0.39 & RA & 9.93 $\pm$ 0.28 & SD 5:1+RA & 14.53 $\pm$ 0.36 & +4.60 $\pm$ 0.45 $\uparrow$ \\
+ViT-B/16 & 10 & 10.76 $\pm$ 0.15 & RA & 13.98 $\pm$ 0.12 & SD+RA & 16.62 $\pm$ 0.58 & +2.64 $\pm$ 0.65 $\uparrow$ \\
+ViT-B/16 & 20 & 13.82 $\pm$ 0.31 & RA & 19.27 $\pm$ 0.30 & SD+RA & 21.87 $\pm$ 0.23 & +2.60 $\pm$ 0.26 $\uparrow$ \\
+ViT-B/16 & 50 & 19.95 $\pm$ 0.22 & RA & 29.03 $\pm$ 0.28 & SD+RA & 31.87 $\pm$ 0.21 & +2.72 $\pm$ 0.49 $\uparrow$ \\
+ViT-B/16 & full & 44.77 $\pm$ 0.24 & RA & 58.94 $\pm$ 0.60 & SD+RA & 61.38 $\pm$ 0.82 & +2.45 $\pm$ 0.86 $\uparrow$ \\
+\bottomrule
+\end{tabular}
+\end{table}

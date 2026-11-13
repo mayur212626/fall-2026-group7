@@ -222,3 +222,24 @@ The scratch arm leaves out the full training set: from random weights it takes 5
 python -m src.component.stage2_results
 python -m src.component.stage2_results --split test
 ```
+
+## Stacked augmentation and ensembles
+
+`run_augment.sh` trains three more conventional policies (TrivialAugment, AutoAugment with its CIFAR-10 policy, and AugMix, all torchvision defaults) and stacks SD class-prompt images on top of each of them, plus SD + CutMix, SD + RandAugment + CutMix and SD + RandAugment at 5:1. The grid is ResNet-50 and ViT-B/16, seeds 0–2 by default (the results use 0–4, run with `SEEDS="3 4"`), pretrained at 5, 20 and 50 images per class and scratch at 5 and 50, with each arm's learning rates and step budgets, into `runs/augment-<init>`:
+
+```bash
+bash src/shellscripts/run_augment.sh pretrained      # 54 runs per seed
+bash src/shellscripts/run_augment.sh scratch 5       # 18 runs per seed
+bash src/shellscripts/run_augment.sh scratch 50      # 18 runs per seed
+SEEDS="3 4" bash src/shellscripts/run_augment.sh pretrained   # seeds 3 and 4 (likewise for scratch)
+python -m src.component.augment_results              # add --split test after the test evaluation
+```
+
+`augment_results.py` writes three tables per initialization: each policy against real-only, SD on top of each policy against the same policy, and the best SD-based condition against the best conventional one. Both best conditions are chosen by mean validation accuracy, so the test table compares the conditions validation chose. At budgets where the new conditions were not run (10 images per class, the full set, scratch 50 so far), the choice has fewer candidates, and the tables say so.
+
+`ensemble.py` averages the softmax outputs of two classifiers with equal weights. The `export` step saves each run's validation (and, once scored, test) probabilities to `probs.npz` in the run folder, so machines exchange these small files instead of checkpoints; `combine` scores the ensembles. An ensemble of a real-data and a generated-data classifier is compared with an ensemble of two real-data classifiers of different seeds, since any two averaged models beat one:
+
+```bash
+python -m src.component.ensemble export --root runs/stage1-pretrained --splits validation test
+python -m src.component.ensemble combine --split validation
+```

@@ -1,0 +1,137 @@
+treatment,control,label,init,model,budget,seeds,changes,mean,sd,verdict
+real+SD,real+real,(real+SD)$-$(real+real),pretrained,convnext_tiny,5,0 1 2 3 4,6.91 7.41 8.19 7.65 7.99,7.63,0.5026,gain
+real+SD,real+real,(real+SD)$-$(real+real),pretrained,convnext_tiny,20,0 1 2 3 4,2.51 1.28 1.4 1.85 2.16,1.84,0.5144,gain
+real+SD,real+real,(real+SD)$-$(real+real),pretrained,convnext_tiny,full,0 1 2 3 4,0.07 0.17 0.15 0.06 0.12,0.114,0.0483,gain
+real+SD,real+real,(real+SD)$-$(real+real),pretrained,resnet50,5,0 1 2 3 4,7.64 8.83 8.27 6.66 8.88,8.056,0.9281,gain
+real+SD,real+real,(real+SD)$-$(real+real),pretrained,resnet50,10,0 1 2 3 4,5.51 5.37 5.29 5.62 4.54,5.266,0.4252,gain
+real+SD,real+real,(real+SD)$-$(real+real),pretrained,resnet50,20,0 1 2 3 4,3.7 4.16 3.96 3.91 4.24,3.994,0.2137,gain
+real+SD,real+real,(real+SD)$-$(real+real),pretrained,resnet50,50,0 1 2 3 4,1.25 1.49 1.56 1.13 1.27,1.34,0.1789,gain
+real+SD,real+real,(real+SD)$-$(real+real),pretrained,resnet50,full,0 1 2 3 4,-0.02 0.18 0.57 0.4 0.21,0.268,0.2251,inconclusive
+real+SD,real+real,(real+SD)$-$(real+real),pretrained,vit_b_16,5,0 1 2 3 4,5.48 7.46 8.08 6.23 6.48,6.746,1.0282,gain
+real+SD,real+real,(real+SD)$-$(real+real),pretrained,vit_b_16,10,0 1 2 3 4,4.7 3.46 4.85 4.22 4.07,4.26,0.5521,gain
+real+SD,real+real,(real+SD)$-$(real+real),pretrained,vit_b_16,20,0 1 2 3 4,1.3 0.87 1.64 1.58 2.54,1.586,0.6139,gain
+real+SD,real+real,(real+SD)$-$(real+real),pretrained,vit_b_16,50,0 1 2 3 4,0.02 0.2 0.21 0.1 0.38,0.182,0.1354,gain
+real+SD,real+real,(real+SD)$-$(real+real),pretrained,vit_b_16,full,0 1 2 3 4,0.21 0.04 0.34 0.16 -0.22,0.106,0.2116,inconclusive
+real+SD,real+real,(real+SD)$-$(real+real),scratch,convnext_tiny,5,0 1 2 3 4,1.01 0.77 0.99 1.16 1.38,1.062,0.2258,gain
+real+SD,real+real,(real+SD)$-$(real+real),scratch,convnext_tiny,50,0 1 2 3 4,7.06 5.4 7.15 8.03 6.6,6.848,0.9607,gain
+real+SD,real+real,(real+SD)$-$(real+real),scratch,resnet50,5,0 1 2 3 4,1.59 2.1 1.9 1.49 2.54,1.924,0.4216,gain
+real+SD,real+real,(real+SD)$-$(real+real),scratch,resnet50,10,0 1 2,3.12 2.95 2.58,2.8833,0.2761,gain
+real+SD,real+real,(real+SD)$-$(real+real),scratch,resnet50,20,0 1 2,4.49 6.68 4.5,5.2233,1.2615,gain
+real+SD,real+real,(real+SD)$-$(real+real),scratch,resnet50,50,0 1 2 3 4,2.78 6.75 10.27 5.83 7.0,6.526,2.6837,gain
+real+SD,real+real,(real+SD)$-$(real+real),scratch,resnet50,full,0 1 2,1.04 3.65 3.42,2.7033,1.4451,gain
+real+SD,real+real,(real+SD)$-$(real+real),scratch,vit_b_16,5,0 1 2 3 4,0.82 0.91 0.43 1.26 0.73,0.83,0.3006,gain
+real+SD,real+real,(real+SD)$-$(real+real),scratch,vit_b_16,10,0 1 2,1.51 0.87 0.89,1.09,0.3639,gain
+real+SD,real+real,(real+SD)$-$(real+real),scratch,vit_b_16,20,0 1 2,2.07 1.57 1.41,1.6833,0.3443,gain
+real+SD,real+real,(real+SD)$-$(real+real),scratch,vit_b_16,50,0 1 2 3 4,2.7 2.25 2.29 1.89 2.18,2.262,0.2906,gain
+real+SD,real+real,(real+SD)$-$(real+real),scratch,vit_b_16,full,0 1 2,2.0 2.15 2.21,2.12,0.1082,gain
+real+SDonly,real+real,(real+SDonly)$-$(real+real),pretrained,resnet50,5,0 1 2,0.39 1.39 0.54,0.7733,0.5393,gain
+real+SDonly,real+real,(real+SDonly)$-$(real+real),pretrained,resnet50,10,0 1 2,-1.34 -1.08 -2.35,-1.59,0.6709,loss
+real+SDonly,real+real,(real+SDonly)$-$(real+real),pretrained,resnet50,20,0 1 2,-3.35 -2.79 -3.31,-3.15,0.3124,loss
+real+SDonly,real+real,(real+SDonly)$-$(real+real),pretrained,resnet50,50,0 1 2,-4.49 -4.5 -5.31,-4.7667,0.4706,loss
+real+SDonly,real+real,(real+SDonly)$-$(real+real),pretrained,resnet50,full,0 1 2,-5.77 -5.04 -5.13,-5.3133,0.398,loss
+real+SDonly,real+real,(real+SDonly)$-$(real+real),pretrained,vit_b_16,5,0 1 2,-1.14 0.79 0.91,0.1867,1.1505,inconclusive
+real+SDonly,real+real,(real+SDonly)$-$(real+real),pretrained,vit_b_16,10,0 1 2,-1.69 -2.13 -1.54,-1.7867,0.3066,loss
+real+SDonly,real+real,(real+SDonly)$-$(real+real),pretrained,vit_b_16,20,0 1 2,-2.44 -2.78 -1.86,-2.36,0.4652,loss
+real+SDonly,real+real,(real+SDonly)$-$(real+real),pretrained,vit_b_16,50,0 1 2,-2.39 -2.62 -1.76,-2.2567,0.4452,loss
+real+SDonly,real+real,(real+SDonly)$-$(real+real),pretrained,vit_b_16,full,0 1 2,-3.58 -3.33 -2.08,-2.9967,0.8036,loss
+real+SDonly,real+real,(real+SDonly)$-$(real+real),scratch,resnet50,5,0 1 2,-0.64 -0.6 -0.58,-0.6067,0.0306,loss
+real+SDonly,real+real,(real+SDonly)$-$(real+real),scratch,resnet50,10,0 1 2,-3.52 -2.78 -2.92,-3.0733,0.3931,loss
+real+SDonly,real+real,(real+SDonly)$-$(real+real),scratch,resnet50,20,0 1 2,-5.06 -4.64 -4.85,-4.85,0.21,loss
+real+SDonly,real+real,(real+SDonly)$-$(real+real),scratch,resnet50,50,0 1 2,-6.24 -5.29 -4.73,-5.42,0.7633,loss
+real+SDonly,real+real,(real+SDonly)$-$(real+real),scratch,resnet50,full,0 1 2,-9.75 -7.31 -7.56,-8.2067,1.3424,loss
+real+SDonly,real+real,(real+SDonly)$-$(real+real),scratch,vit_b_16,5,0 1 2,0.19 -0.16 -0.22,-0.0633,0.2214,inconclusive
+real+SDonly,real+real,(real+SDonly)$-$(real+real),scratch,vit_b_16,10,0 1 2,-1.08 -1.14 -1.64,-1.2867,0.3075,loss
+real+SDonly,real+real,(real+SDonly)$-$(real+real),scratch,vit_b_16,20,0 1 2,-2.13 -2.53 -2.32,-2.3267,0.2001,loss
+real+SDonly,real+real,(real+SDonly)$-$(real+real),scratch,vit_b_16,50,0 1 2,-8.46 -6.82 -8.32,-7.8667,0.9091,loss
+real+SDonly,real+real,(real+SDonly)$-$(real+real),scratch,vit_b_16,full,0 1 2,-10.45 -11.48 -10.88,-10.9367,0.5173,loss
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),pretrained,convnext_tiny,5,0 1 2 3 4,4.18 4.72 5.48 5.24 5.1,4.944,0.5082,gain
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),pretrained,convnext_tiny,20,0 1 2 3 4,1.89 1.03 1.22 1.87 1.25,1.452,0.3998,gain
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),pretrained,convnext_tiny,full,0 1 2 3 4,0.21 0.44 0.17 0.06 0.13,0.202,0.1441,gain
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),pretrained,resnet50,5,0 1 2 3 4,2.59 3.71 2.67 2.31 3.52,2.96,0.6164,gain
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),pretrained,resnet50,10,0 1 2 3 4,3.44 2.39 3.46 3.39 3.45,3.226,0.4681,gain
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),pretrained,resnet50,20,0 1 2 3 4,2.48 2.38 1.81 1.41 3.15,2.246,0.6669,gain
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),pretrained,resnet50,50,0 1 2 3 4,1.22 1.84 1.29 1.16 1.56,1.414,0.283,gain
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),pretrained,resnet50,full,0 1 2 3 4,0.5 0.06 -0.02 0.75 0.31,0.32,0.3165,inconclusive
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),pretrained,vit_b_16,5,0 1 2 3 4,0.08 1.88 3.34 1.35 2.75,1.88,1.2658,gain
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),pretrained,vit_b_16,10,0 1 2 3 4,0.45 0.62 2.35 1.47 1.63,1.304,0.7786,gain
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),pretrained,vit_b_16,20,0 1 2 3 4,0.0 0.68 1.11 0.58 0.91,0.656,0.4205,inconclusive
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),pretrained,vit_b_16,50,0 1 2 3 4,0.22 -0.04 0.15 -0.05 -0.07,0.042,0.1333,inconclusive
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),pretrained,vit_b_16,full,0 1 2 3 4,-0.45 -0.32 -0.22 -0.18 0.05,-0.224,0.1853,inconclusive
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),scratch,convnext_tiny,5,0 1 2 3 4,-0.98 -0.87 -0.38 -0.32 -1.6,-0.83,0.5195,loss
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),scratch,convnext_tiny,50,0 1 2 3 4,-3.25 -0.4 -4.14 -2.34 -2.86,-2.598,1.3937,loss
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),scratch,resnet50,5,0 1 2 3 4,0.03 -0.01 0.36 0.5 0.51,0.278,0.2521,inconclusive
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),scratch,resnet50,10,0 1 2,0.43 -0.25 -0.32,-0.0467,0.4143,inconclusive
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),scratch,resnet50,20,0 1 2,-1.95 2.6 0.37,0.34,2.2751,inconclusive
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),scratch,resnet50,50,0 1 2 3 4,0.54 -2.44 2.58 0.64 1.75,0.614,1.9032,inconclusive
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),scratch,resnet50,full,0 1 2,-0.86 -0.53 0.32,-0.3567,0.6088,inconclusive
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),scratch,vit_b_16,5,0 1 2 3 4,0.2 0.03 0.07 0.76 0.03,0.218,0.3109,gain
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),scratch,vit_b_16,10,0 1 2,0.41 0.09 0.48,0.3267,0.2079,gain
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),scratch,vit_b_16,20,0 1 2,0.43 0.21 -0.1,0.18,0.2663,inconclusive
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),scratch,vit_b_16,50,0 1 2 3 4,-1.21 -0.84 -1.49 -1.13 -1.88,-1.31,0.3939,loss
+RA+SD,RA+RA,(RA+SD)$-$(RA+RA),scratch,vit_b_16,full,0 1 2,-3.52 -3.8 -3.82,-3.7133,0.1677,loss
+RA+SDonly,RA+RA,(RA+SDonly)$-$(RA+RA),pretrained,resnet50,5,0 1 2,-1.16 0.69 -0.89,-0.4533,0.9993,inconclusive
+RA+SDonly,RA+RA,(RA+SDonly)$-$(RA+RA),pretrained,resnet50,10,0 1 2,-0.81 -1.28 -0.24,-0.7767,0.5208,loss
+RA+SDonly,RA+RA,(RA+SDonly)$-$(RA+RA),pretrained,resnet50,20,0 1 2,-2.32 -2.63 -2.92,-2.6233,0.3001,loss
+RA+SDonly,RA+RA,(RA+SDonly)$-$(RA+RA),pretrained,resnet50,50,0 1 2,-3.79 -3.57 -4.4,-3.92,0.43,loss
+RA+SDonly,RA+RA,(RA+SDonly)$-$(RA+RA),pretrained,resnet50,full,0 1 2,-5.33 -5.3 -5.02,-5.2167,0.171,loss
+RA+SDonly,RA+RA,(RA+SDonly)$-$(RA+RA),pretrained,vit_b_16,5,0 1 2,-2.27 -0.66 1.27,-0.5533,1.7724,inconclusive
+RA+SDonly,RA+RA,(RA+SDonly)$-$(RA+RA),pretrained,vit_b_16,10,0 1 2,-1.83 -1.18 -0.07,-1.0267,0.89,loss
+RA+SDonly,RA+RA,(RA+SDonly)$-$(RA+RA),pretrained,vit_b_16,20,0 1 2,-1.2 -0.64 -0.29,-0.71,0.459,loss
+RA+SDonly,RA+RA,(RA+SDonly)$-$(RA+RA),pretrained,vit_b_16,50,0 1 2,-1.01 -1.69 -1.08,-1.26,0.374,loss
+RA+SDonly,RA+RA,(RA+SDonly)$-$(RA+RA),pretrained,vit_b_16,full,0 1 2,-4.19 -3.37 -2.3,-3.2867,0.9478,loss
+RA+SDonly,RA+RA,(RA+SDonly)$-$(RA+RA),scratch,resnet50,5,0 1 2,-0.77 -1.3 -0.73,-0.9333,0.3182,loss
+RA+SDonly,RA+RA,(RA+SDonly)$-$(RA+RA),scratch,resnet50,10,0 1 2,-3.4 -4.1 -3.04,-3.5133,0.539,loss
+RA+SDonly,RA+RA,(RA+SDonly)$-$(RA+RA),scratch,resnet50,20,0 1 2,-5.48 -2.22 -3.85,-3.85,1.63,loss
+RA+SDonly,RA+RA,(RA+SDonly)$-$(RA+RA),scratch,resnet50,50,0 1 2,-2.47 -6.65 -1.86,-3.66,2.6073,loss
+RA+SDonly,RA+RA,(RA+SDonly)$-$(RA+RA),scratch,resnet50,full,0 1 2,-7.01 -7.03 -5.58,-6.54,0.8314,loss
+RA+SDonly,RA+RA,(RA+SDonly)$-$(RA+RA),scratch,vit_b_16,5,0 1 2,-0.57 -1.05 -0.4,-0.6733,0.3371,loss
+RA+SDonly,RA+RA,(RA+SDonly)$-$(RA+RA),scratch,vit_b_16,10,0 1 2,-1.37 -2.05 -1.67,-1.6967,0.3408,loss
+RA+SDonly,RA+RA,(RA+SDonly)$-$(RA+RA),scratch,vit_b_16,20,0 1 2,-3.63 -2.94 -3.34,-3.3033,0.3465,loss
+RA+SDonly,RA+RA,(RA+SDonly)$-$(RA+RA),scratch,vit_b_16,50,0 1 2,-14.29 -9.88 -13.24,-12.47,2.3036,loss
+RA+SDonly,RA+RA,(RA+SDonly)$-$(RA+RA),scratch,vit_b_16,full,0 1 2,-12.86 -16.56 -13.91,-14.4433,1.9068,loss
+RA+SD+RA,RA+RA,(RA+SD+RA)$-$(RA+RA),pretrained,convnext_tiny,5,0 1 2 3 4,8.15 8.02 8.94 8.58 8.05,8.348,0.4,gain
+RA+SD+RA,RA+RA,(RA+SD+RA)$-$(RA+RA),pretrained,convnext_tiny,20,0 1 2 3 4,1.73 1.45 1.17 1.92 1.65,1.584,0.2863,gain
+RA+SD+RA,RA+RA,(RA+SD+RA)$-$(RA+RA),pretrained,convnext_tiny,full,0 1 2 3 4,-0.12 0.5 -0.23 -0.03 0.24,0.072,0.2958,inconclusive
+RA+SD+RA,RA+RA,(RA+SD+RA)$-$(RA+RA),pretrained,resnet50,5,0 1 2 3 4,5.82 7.74 5.86 5.91 7.44,6.554,0.9522,gain
+RA+SD+RA,RA+RA,(RA+SD+RA)$-$(RA+RA),pretrained,resnet50,10,0 1 2 3 4,4.93 3.97 4.59 4.36 4.91,4.552,0.4025,gain
+RA+SD+RA,RA+RA,(RA+SD+RA)$-$(RA+RA),pretrained,resnet50,20,0 1 2 3 4,2.34 2.58 2.17 1.74 3.61,2.488,0.6982,gain
+RA+SD+RA,RA+RA,(RA+SD+RA)$-$(RA+RA),pretrained,resnet50,50,0 1 2,1.09 1.26 1.48,1.2767,0.1955,gain
+RA+SD+RA,RA+RA,(RA+SD+RA)$-$(RA+RA),pretrained,resnet50,full,0 1 2,0.5 0.17 0.09,0.2533,0.2173,gain
+RA+SD+RA,RA+RA,(RA+SD+RA)$-$(RA+RA),pretrained,vit_b_16,5,0 1 2 3 4,5.51 6.26 8.1 6.74 7.39,6.8,0.9997,gain
+RA+SD+RA,RA+RA,(RA+SD+RA)$-$(RA+RA),pretrained,vit_b_16,10,0 1 2 3 4,2.75 2.31 3.12 3.05 3.67,2.98,0.5006,gain
+RA+SD+RA,RA+RA,(RA+SD+RA)$-$(RA+RA),pretrained,vit_b_16,20,0 1 2 3 4,0.86 1.2 1.66 1.36 1.61,1.338,0.3262,gain
+RA+SD+RA,RA+RA,(RA+SD+RA)$-$(RA+RA),pretrained,vit_b_16,50,0 1 2,0.34 -0.22 -0.03,0.03,0.2848,inconclusive
+RA+SD+RA,RA+RA,(RA+SD+RA)$-$(RA+RA),pretrained,vit_b_16,full,0 1 2,-0.31 -0.21 -0.15,-0.2233,0.0808,loss
+RA+SD+RA,RA+RA,(RA+SD+RA)$-$(RA+RA),scratch,resnet50,5,0 1 2,2.36 2.66 3.64,2.8867,0.6694,gain
+RA+SD+RA,RA+RA,(RA+SD+RA)$-$(RA+RA),scratch,resnet50,10,0 1 2,5.06 8.01 2.5,5.19,2.7573,gain
+RA+SD+RA,RA+RA,(RA+SD+RA)$-$(RA+RA),scratch,resnet50,20,0 1 2,0.61 5.76 2.93,3.1,2.5792,gain
+RA+SD+RA,RA+RA,(RA+SD+RA)$-$(RA+RA),scratch,resnet50,50,0 1 2,8.1 0.52 3.08,3.9,3.856,gain
+RA+SD+RA,RA+RA,(RA+SD+RA)$-$(RA+RA),scratch,resnet50,full,0 1 2,1.2 -0.11 1.45,0.8467,0.8379,inconclusive
+RA+SD+RA,RA+RA,(RA+SD+RA)$-$(RA+RA),scratch,vit_b_16,5,0 1 2,0.95 1.27 1.02,1.08,0.1682,gain
+RA+SD+RA,RA+RA,(RA+SD+RA)$-$(RA+RA),scratch,vit_b_16,10,0 1 2,2.2 0.92 2.0,1.7067,0.6886,gain
+RA+SD+RA,RA+RA,(RA+SD+RA)$-$(RA+RA),scratch,vit_b_16,20,0 1 2,2.42 1.95 1.58,1.9833,0.421,gain
+RA+SD+RA,RA+RA,(RA+SD+RA)$-$(RA+RA),scratch,vit_b_16,50,0 1 2,1.98 2.05 2.16,2.0633,0.0907,gain
+RA+SD+RA,RA+RA,(RA+SD+RA)$-$(RA+RA),scratch,vit_b_16,full,0 1 2,2.04 1.55 1.77,1.7867,0.2454,gain
+RA+SD+RA,sd_prompt_randaugment,(RA+SD+RA)$-$SD+RA,pretrained,convnext_tiny,5,0 1 2 3 4,-1.5 -0.93 -0.4 -1.1 -1.2,-1.026,0.4067,loss
+RA+SD+RA,sd_prompt_randaugment,(RA+SD+RA)$-$SD+RA,pretrained,convnext_tiny,20,0 1 2 3 4,0.56 0.55 0.26 0.57 0.66,0.52,0.1518,gain
+RA+SD+RA,sd_prompt_randaugment,(RA+SD+RA)$-$SD+RA,pretrained,convnext_tiny,full,0 1 2 3 4,0.86 1.16 0.53 0.99 0.98,0.904,0.2348,gain
+RA+SD+RA,sd_prompt_randaugment,(RA+SD+RA)$-$SD+RA,pretrained,resnet50,5,0 1 2 3 4,0.81 1.01 0.29 0.58 0.3,0.598,0.3157,gain
+RA+SD+RA,sd_prompt_randaugment,(RA+SD+RA)$-$SD+RA,pretrained,resnet50,10,0 1 2 3 4,0.96 1.06 1.1 0.62 0.76,0.9,0.2045,gain
+RA+SD+RA,sd_prompt_randaugment,(RA+SD+RA)$-$SD+RA,pretrained,resnet50,20,0 1 2 3 4,1.29 1.38 2.27 2.1 1.72,1.752,0.4308,gain
+RA+SD+RA,sd_prompt_randaugment,(RA+SD+RA)$-$SD+RA,pretrained,resnet50,50,0 1 2,2.04 1.68 1.83,1.85,0.1808,gain
+RA+SD+RA,sd_prompt_randaugment,(RA+SD+RA)$-$SD+RA,pretrained,resnet50,full,0 1 2,1.61 1.31 1.41,1.4433,0.1528,gain
+RA+SD+RA,sd_prompt_randaugment,(RA+SD+RA)$-$SD+RA,pretrained,vit_b_16,5,0 1 2 3 4,-0.58 0.52 -0.45 -0.69 -0.51,-0.342,0.4901,inconclusive
+RA+SD+RA,sd_prompt_randaugment,(RA+SD+RA)$-$SD+RA,pretrained,vit_b_16,10,0 1 2 3 4,0.23 0.71 0.18 0.42 0.12,0.332,0.2393,gain
+RA+SD+RA,sd_prompt_randaugment,(RA+SD+RA)$-$SD+RA,pretrained,vit_b_16,20,0 1 2 3 4,1.2 1.09 0.78 0.67 0.65,0.878,0.2517,gain
+RA+SD+RA,sd_prompt_randaugment,(RA+SD+RA)$-$SD+RA,pretrained,vit_b_16,50,0 1 2,1.27 1.19 0.93,1.13,0.1778,gain
+RA+SD+RA,sd_prompt_randaugment,(RA+SD+RA)$-$SD+RA,pretrained,vit_b_16,full,0 1 2,0.59 1.28 0.97,0.9467,0.3456,gain
+RA+SD+RA,sd_prompt_randaugment,(RA+SD+RA)$-$SD+RA,scratch,resnet50,5,0 1 2,0.73 1.19 1.19,1.0367,0.2656,gain
+RA+SD+RA,sd_prompt_randaugment,(RA+SD+RA)$-$SD+RA,scratch,resnet50,10,0 1 2,1.2 0.79 1.7,1.23,0.4557,gain
+RA+SD+RA,sd_prompt_randaugment,(RA+SD+RA)$-$SD+RA,scratch,resnet50,20,0 1 2,2.43 2.77 2.29,2.4967,0.2468,gain
+RA+SD+RA,sd_prompt_randaugment,(RA+SD+RA)$-$SD+RA,scratch,resnet50,50,0 1 2,0.21 1.77 5.51,2.4967,2.7237,gain
+RA+SD+RA,sd_prompt_randaugment,(RA+SD+RA)$-$SD+RA,scratch,resnet50,full,0 1 2,3.96 3.49 3.27,3.5733,0.3525,gain
+RA+SD+RA,sd_prompt_randaugment,(RA+SD+RA)$-$SD+RA,scratch,vit_b_16,5,0 1 2,-0.22 0.51 -0.15,0.0467,0.4028,inconclusive
+RA+SD+RA,sd_prompt_randaugment,(RA+SD+RA)$-$SD+RA,scratch,vit_b_16,10,0 1 2,-0.16 0.1 0.09,0.01,0.1473,inconclusive
+RA+SD+RA,sd_prompt_randaugment,(RA+SD+RA)$-$SD+RA,scratch,vit_b_16,20,0 1 2,1.01 0.61 0.47,0.6967,0.2802,gain
+RA+SD+RA,sd_prompt_randaugment,(RA+SD+RA)$-$SD+RA,scratch,vit_b_16,50,0 1 2,1.54 0.76 0.97,1.09,0.4036,gain
+RA+SD+RA,sd_prompt_randaugment,(RA+SD+RA)$-$SD+RA,scratch,vit_b_16,full,0 1 2,2.1 2.37 1.51,1.9933,0.4398,gain

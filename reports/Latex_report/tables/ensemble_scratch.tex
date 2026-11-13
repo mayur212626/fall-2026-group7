@@ -1,0 +1,28 @@
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\caption{Ensembles, scratch initialization: change in validation top-1 accuracy (percentage points) of an equal-weight average of two classifiers' softmax outputs. Each ensemble of a real-data and a generated-data classifier is compared with an ensemble of two real-data classifiers of different seeds, paired by seed, mean $\pm$ sample SD over 3 or 5 seeds. SDonly: trained on SD class-prompt images alone; SD+RA: real and SD images with RandAugment. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise.}
+\label{tab:ensemble-scratch}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llrrrrrr}
+\toprule
+Model & Images/class & (real+SD)$-$(real+real) & (real+SDonly)$-$(real+real) & (RA+SD)$-$(RA+RA) & (RA+SDonly)$-$(RA+RA) & (RA+SD+RA)$-$(RA+RA) & (RA+SD+RA)$-$SD+RA \\
+\midrule
+ResNet-50 & 5 & +1.78 $\pm$ 0.39 $\uparrow$ & -0.55 $\pm$ 0.58 $\downarrow$ & +0.30 $\pm$ 0.10 $\uparrow$ & -1.06 $\pm$ 0.37 $\downarrow$ & +2.95 $\pm$ 0.65 $\uparrow$ & +0.83 $\pm$ 0.65 $\uparrow$ \\
+ResNet-50 & 10 & +2.39 $\pm$ 0.24 $\uparrow$ & -2.62 $\pm$ 0.77 $\downarrow$ & -0.19 $\pm$ 0.80 $\sim$ & -3.31 $\pm$ 1.24 $\downarrow$ & +5.35 $\pm$ 2.70 $\uparrow$ & +1.56 $\pm$ 0.36 $\uparrow$ \\
+ResNet-50 & 20 & +5.45 $\pm$ 1.12 $\uparrow$ & -4.24 $\pm$ 0.14 $\downarrow$ & +0.19 $\pm$ 2.05 $\sim$ & -3.76 $\pm$ 1.70 $\downarrow$ & +3.36 $\pm$ 1.70 $\uparrow$ & +2.63 $\pm$ 0.16 $\uparrow$ \\
+ResNet-50 & 50 & +6.81 $\pm$ 3.15 $\uparrow$ & -5.76 $\pm$ 1.17 $\downarrow$ & +0.45 $\pm$ 2.07 $\sim$ & -3.56 $\pm$ 2.93 $\downarrow$ & +3.79 $\pm$ 4.33 $\sim$ & +1.82 $\pm$ 2.51 $\uparrow$ \\
+ResNet-50 & full & +2.77 $\pm$ 2.08 $\uparrow$ & -8.77 $\pm$ 1.68 $\downarrow$ & -0.35 $\pm$ 0.88 $\sim$ & -7.32 $\pm$ 1.45 $\downarrow$ & +0.78 $\pm$ 0.57 $\uparrow$ & +3.41 $\pm$ 0.30 $\uparrow$ \\
+\midrule
+ViT-B/16 & 5 & +0.92 $\pm$ 0.17 $\uparrow$ & -0.34 $\pm$ 0.50 $\sim$ & +0.52 $\pm$ 0.14 $\uparrow$ & -0.45 $\pm$ 0.12 $\downarrow$ & +1.53 $\pm$ 0.54 $\uparrow$ & -0.15 $\pm$ 0.19 $\sim$ \\
+ViT-B/16 & 10 & +1.36 $\pm$ 0.11 $\uparrow$ & -1.05 $\pm$ 0.44 $\downarrow$ & +0.43 $\pm$ 0.21 $\uparrow$ & -1.68 $\pm$ 0.40 $\downarrow$ & +2.24 $\pm$ 0.51 $\uparrow$ & -0.11 $\pm$ 0.47 $\sim$ \\
+ViT-B/16 & 20 & +1.50 $\pm$ 0.43 $\uparrow$ & -2.37 $\pm$ 0.34 $\downarrow$ & +0.65 $\pm$ 0.47 $\uparrow$ & -2.57 $\pm$ 0.24 $\downarrow$ & +2.25 $\pm$ 0.20 $\uparrow$ & +0.10 $\pm$ 0.30 $\sim$ \\
+ViT-B/16 & 50 & +2.29 $\pm$ 0.53 $\uparrow$ & -7.50 $\pm$ 0.84 $\downarrow$ & -0.80 $\pm$ 0.45 $\downarrow$ & -11.09 $\pm$ 1.31 $\downarrow$ & +2.33 $\pm$ 0.27 $\uparrow$ & +1.01 $\pm$ 0.39 $\uparrow$ \\
+ViT-B/16 & full & +2.39 $\pm$ 0.43 $\uparrow$ & -11.06 $\pm$ 0.83 $\downarrow$ & -4.31 $\pm$ 0.60 $\downarrow$ & -15.25 $\pm$ 2.47 $\downarrow$ & +1.31 $\pm$ 0.23 $\uparrow$ & +2.03 $\pm$ 0.29 $\uparrow$ \\
+\midrule
+ConvNeXt-T & 5 & +0.77 $\pm$ 0.36 $\uparrow$ & -- & -0.88 $\pm$ 0.37 $\downarrow$ & -- & -- & -- \\
+ConvNeXt-T & 50 & +7.10 $\pm$ 0.70 $\uparrow$ & -- & -2.22 $\pm$ 1.36 $\downarrow$ & -- & -- & -- \\
+\bottomrule
+\end{tabular}}
+\end{table}

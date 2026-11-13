@@ -59,16 +59,31 @@ from src.component.synthetic_pool import file_sha256, load_pool
 
 SUMMARY_KEYS = ("accuracy", "macro_f1", "balanced_accuracy", "loss")
 LOG_FORMAT = "%(asctime)s %(message)s"
+# Conventional per-image augmentation policies besides RandAugment (src/component/data.py).
+POLICY_CONDITIONS = ("trivialaugment", "autoaugment", "augmix")
+# SD class-prompt images combined with a conventional augmentation, applied to every training image,
+# real and generated (and, for the CutMix ones, to every batch).
+STACKED_CONDITIONS = ("sd_prompt_trivialaugment", "sd_prompt_autoaugment", "sd_prompt_augmix",
+                      "sd_prompt_cutmix", "sd_prompt_randaugment_cutmix")
 # Conditions that add generated images to the real training images.
-SYNTHETIC_CONDITIONS = ("sd_prompt", "sd_lora", "sd_prompt_randaugment", "sd_prompt_only", "sd_img2img",
-                        "gan")
+SYNTHETIC_CONDITIONS = ("sd_prompt", "sd_lora", "sd_prompt_randaugment", "sd_prompt_only",
+                        "sd_img2img", "gan") + STACKED_CONDITIONS
 # Synthetic conditions that train on the generated images alone, without the real ones.
 SYNTHETIC_ONLY_CONDITIONS = ("sd_prompt_only",)
 # Conditions that mix each training batch with a shuffled copy of itself (src/component/mixing.py).
 MIXING_CONDITIONS = tuple(MIXING)
-CONDITIONS = ("real_only", "randaugment") + SYNTHETIC_CONDITIONS + MIXING_CONDITIONS
+CONDITIONS = ("real_only", "randaugment") + POLICY_CONDITIONS + SYNTHETIC_CONDITIONS + MIXING_CONDITIONS
 # Conditions that apply RandAugment to every training image, real and generated.
-AUGMENTED_CONDITIONS = ("randaugment", "sd_prompt_randaugment")
+AUGMENTED_CONDITIONS = ("randaugment", "sd_prompt_randaugment", "sd_prompt_randaugment_cutmix")
+# condition -> per-image policy other than RandAugment
+CONDITION_POLICY = {
+    "trivialaugment": "trivialaugment", "autoaugment": "autoaugment", "augmix": "augmix",
+    "sd_prompt_trivialaugment": "trivialaugment", "sd_prompt_autoaugment": "autoaugment",
+    "sd_prompt_augmix": "augmix",
+}
+# condition -> batch mixing method
+CONDITION_MIXING = {"mixup": "mixup", "cutmix": "cutmix", "sd_prompt_cutmix": "cutmix",
+                    "sd_prompt_randaugment_cutmix": "cutmix"}
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -412,8 +427,9 @@ def make_settings(
     }
     if synthetic is not None:
         settings["synthetic"] = synthetic
-    if condition in MIXING_CONDITIONS:
-        settings["mixing"] = {"method": condition, **MIXING[condition]}
+    if condition in CONDITION_MIXING:
+        method = CONDITION_MIXING[condition]
+        settings["mixing"] = {"method": method, **MIXING[method]}
     return settings
 
 
@@ -495,7 +511,8 @@ def main() -> None:
         parser.error(str(error))
 
     train_set = CifarImages(
-        train_images, train_labels, train_indices, randaugment=args.condition in AUGMENTED_CONDITIONS
+        train_images, train_labels, train_indices, randaugment=args.condition in AUGMENTED_CONDITIONS,
+        policy=CONDITION_POLICY.get(args.condition),
     )
     val_set = CifarImages(images, labels, manifest["validation_indices"], randaugment=False)
 

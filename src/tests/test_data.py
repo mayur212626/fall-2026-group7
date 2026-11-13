@@ -6,6 +6,7 @@ import numpy as np
 import torch
 
 from src.component.data import (
+    AUGMENT_POLICIES,
     IMAGENET_MEAN,
     IMAGENET_STD,
     CifarImages,
@@ -55,6 +56,32 @@ class CifarImagesTest(unittest.TestCase):
         again = [dataset[(0, seed)][0] for seed in range(5)]
         self.assertTrue(all(torch.equal(a, b) for a, b in zip(first, again, strict=True)))
         self.assertTrue(any(not torch.equal(first[0], other) for other in first[1:]))
+
+
+class AugmentPolicyTest(unittest.TestCase):
+    def setUp(self) -> None:
+        self.images = fake_images(4)
+        self.labels = list(range(4))
+
+    def test_every_policy_depends_only_on_visit_seed_and_keeps_uint8(self) -> None:
+        for policy in AUGMENT_POLICIES:
+            dataset = CifarImages(self.images, self.labels, [2], randaugment=False, policy=policy)
+            first = [dataset[(0, seed)][0] for seed in range(6)]
+            again = [dataset[(0, seed)][0] for seed in range(6)]
+            self.assertTrue(all(torch.equal(a, b) for a, b in zip(first, again, strict=True)), policy)
+            self.assertTrue(any(not torch.equal(first[0], other) for other in first[1:]), policy)
+            self.assertEqual((first[0].dtype, tuple(first[0].shape)), (torch.uint8, (3, 32, 32)))
+
+    def test_randaugment_flag_is_the_randaugment_policy(self) -> None:
+        flag = CifarImages(self.images, self.labels, [1], randaugment=True)
+        named = CifarImages(self.images, self.labels, [1], randaugment=False, policy="randaugment")
+        self.assertTrue(torch.equal(flag[(0, 7)][0], named[(0, 7)][0]))
+
+    def test_unknown_or_double_policy_is_refused(self) -> None:
+        with self.assertRaises(ValueError):
+            CifarImages(self.images, self.labels, [0], randaugment=False, policy="colorjitter")
+        with self.assertRaises(ValueError):
+            CifarImages(self.images, self.labels, [0], randaugment=True, policy="augmix")
 
 
 class StepBatchSamplerTest(unittest.TestCase):

@@ -1,0 +1,23 @@
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{Best SD-based against best conventional augmentation, pretrained initialization, both chosen by mean validation accuracy: validation accuracy (\%, mean $\pm$ SD) of real-only and of the two chosen conditions, and the change in validation top-1 accuracy (percentage points), paired by training seed, mean $\pm$ sample SD over 3 or 5 seeds. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise. The accuracies average every seed of each condition and the change only the seeds both conditions share, so where their seeds differ the two need not subtract exactly. At 10 and full images per class TrivialAugment, AutoAugment, AugMix and the stacked conditions were not run, so the best conditions there are chosen from fewer candidates.}
+\label{tab:augment-best-pretrained}
+\begin{tabular}{llrlrlrr}
+\toprule
+Model & Images/class & Real-only & Best conventional & & Best SD-based & & Change \\
+\midrule
+ResNet-50 & 5 & 35.66 $\pm$ 0.92 & RA & 43.11 $\pm$ 1.04 & SD 5:1+RA & 58.72 $\pm$ 0.99 & +15.61 $\pm$ 1.68 $\uparrow$ \\
+ResNet-50 & 10 & 49.87 $\pm$ 0.93 & RA & 53.46 $\pm$ 0.33 & SD 5:1 & 61.98 $\pm$ 0.71 & +8.53 $\pm$ 0.63 $\uparrow$ \\
+ResNet-50 & 20 & 59.73 $\pm$ 0.43 & TA & 63.70 $\pm$ 0.37 & SD+RA+CutMix & 70.20 $\pm$ 0.46 & +6.50 $\pm$ 0.56 $\uparrow$ \\
+ResNet-50 & 50 & 71.30 $\pm$ 0.29 & TA & 73.82 $\pm$ 0.39 & SD+RA+CutMix & 76.58 $\pm$ 0.47 & +2.76 $\pm$ 0.63 $\uparrow$ \\
+ResNet-50 & full & 84.04 $\pm$ 0.30 & CutMix & 85.74 $\pm$ 0.18 & SD+RA & 85.40 $\pm$ 0.26 & -0.29 $\pm$ 0.48 $\sim$ \\
+ViT-B/16 & 5 & 46.49 $\pm$ 1.42 & AA & 57.36 $\pm$ 1.50 & SD 5:1+RA & 70.84 $\pm$ 0.53 & +13.48 $\pm$ 1.03 $\uparrow$ \\
+ViT-B/16 & 10 & 61.29 $\pm$ 1.03 & RA & 69.10 $\pm$ 1.09 & SD+RA & 74.15 $\pm$ 0.45 & +5.05 $\pm$ 0.72 $\uparrow$ \\
+ViT-B/16 & 20 & 72.15 $\pm$ 0.78 & AA & 76.56 $\pm$ 0.48 & SD+RA+CutMix & 79.42 $\pm$ 0.46 & +2.86 $\pm$ 0.32 $\uparrow$ \\
+ViT-B/16 & 50 & 80.13 $\pm$ 0.23 & AA & 82.32 $\pm$ 0.29 & SD+RA+CutMix & 84.06 $\pm$ 0.10 & +1.74 $\pm$ 0.30 $\uparrow$ \\
+ViT-B/16 & full & 88.64 $\pm$ 0.23 & CutMix & 90.43 $\pm$ 0.22 & SD+RA & 89.47 $\pm$ 0.33 & -0.85 $\pm$ 0.47 $\downarrow$ \\
+\bottomrule
+\end{tabular}
+\end{table}

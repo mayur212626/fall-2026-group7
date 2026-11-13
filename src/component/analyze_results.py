@@ -43,14 +43,30 @@ CONDITION_NAMES = {
     "sd_prompt_r5": "SD class prompts 5:1",
     "mixup": "Mixup",
     "cutmix": "CutMix",
+    "trivialaugment": "TrivialAugment",
+    "autoaugment": "AutoAugment",
+    "augmix": "AugMix",
+    "sd_prompt_trivialaugment": "SD class prompts + TrivialAugment",
+    "sd_prompt_autoaugment": "SD class prompts + AutoAugment",
+    "sd_prompt_augmix": "SD class prompts + AugMix",
+    "sd_prompt_cutmix": "SD class prompts + CutMix",
+    "sd_prompt_randaugment_cutmix": "SD class prompts + RandAugment + CutMix",
+    "sd_prompt_randaugment_r5": "SD class prompts 5:1 + RandAugment",
 }
 CONDITION_LINES = {"real_only": "-", "randaugment": "--", "sd_prompt": ":", "sd_lora": "-.",
                    "sd_prompt_randaugment": (0, (3, 1, 1, 1, 1, 1)), "sd_prompt_only": (0, (1, 3)), "sd_img2img": (0, (5, 2)),
                    "sd_prompt_r2": (0, (1, 1)), "sd_prompt_r5": (0, (4, 1, 1, 1)), "mixup": (0, (6, 2)),
-                   "cutmix": (0, (2, 2))}
+                   "cutmix": (0, (2, 2)), "trivialaugment": (0, (8, 2)), "autoaugment": (0, (8, 2, 2, 2)),
+                   "augmix": (0, (2, 4)), "sd_prompt_trivialaugment": (0, (3, 3)),
+                   "sd_prompt_autoaugment": (0, (3, 1, 3, 3)), "sd_prompt_augmix": (0, (1, 2, 3, 2)),
+                   "sd_prompt_cutmix": (0, (4, 2, 1, 2)), "sd_prompt_randaugment_cutmix": (0, (6, 1, 1, 1)),
+                   "sd_prompt_randaugment_r5": (0, (5, 1))}
 CONDITION_MARKERS = {"real_only": "o", "randaugment": "o", "sd_prompt": "^", "sd_lora": "v",
                      "sd_prompt_randaugment": "s", "sd_prompt_only": "D", "sd_img2img": "P",
-                     "sd_prompt_r2": "h", "sd_prompt_r5": "X", "mixup": "<", "cutmix": ">"}
+                     "sd_prompt_r2": "h", "sd_prompt_r5": "X", "mixup": "<", "cutmix": ">",
+                     "trivialaugment": "d", "autoaugment": "p", "augmix": "*", "sd_prompt_trivialaugment": "1",
+                     "sd_prompt_autoaugment": "2", "sd_prompt_augmix": "3", "sd_prompt_cutmix": "4",
+                     "sd_prompt_randaugment_cutmix": "8", "sd_prompt_randaugment_r5": "H"}
 # Synthetic conditions compared with RandAugment, the strongest real-data control.
 RANDAUGMENT_COMPARISONS = {"sd_prompt": "SD$-$RA", "sd_lora": "LoRA$-$RA", "sd_prompt_randaugment": "SD+RA$-$RA"}
 VERDICT_MARKS = {"gain": r"$\uparrow$", "loss": r"$\downarrow$", "inconclusive": r"$\sim$"}
