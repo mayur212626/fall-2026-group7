@@ -45,5 +45,21 @@ class ChooseTest(unittest.TestCase):
         self.assertEqual(after, before)
 
 
+
+class MetricTest(unittest.TestCase):
+    def test_stage3_pilots_choose_by_balanced_accuracy(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            for lr, accuracy, balanced in ((1e-4, 80.0, 50.0), (3e-4, 78.0, 60.0)):
+                run = root / f"lr_{lr}" / f"scratch_resnet50_real_only_b20_s100"
+                run.mkdir(parents=True)
+                settings = {"model": "resnet50", "budget": "20", "condition": "real_only", "recipe": {"lr": lr}}
+                (run / "config.json").write_text(json.dumps({"settings": settings}))
+                (run / "result.json").write_text(json.dumps({"best_validation": {
+                    "accuracy": accuracy, "balanced_accuracy": balanced, "loss": 1.0}}))
+            self.assertEqual(cp.choose(cp.pilot_results(root, "resnet50", "20"))["lr"], 1e-4)
+            self.assertEqual(cp.choose(cp.pilot_results(root, "resnet50", "20", "balanced_accuracy"))["lr"], 3e-4)
+
+
 if __name__ == "__main__":
     unittest.main()
