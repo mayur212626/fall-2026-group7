@@ -67,7 +67,7 @@ STACKED_CONDITIONS = ("sd_prompt_trivialaugment", "sd_prompt_autoaugment", "sd_p
                       "sd_prompt_cutmix", "sd_prompt_randaugment_cutmix")
 # Conditions that add generated images to the real training images.
 SYNTHETIC_CONDITIONS = ("sd_prompt", "sd_lora", "sd_prompt_randaugment", "sd_prompt_only",
-                        "sd_img2img") + STACKED_CONDITIONS
+                        "sd_img2img", "gan") + STACKED_CONDITIONS
 # Synthetic conditions that train on the generated images alone, without the real ones.
 SYNTHETIC_ONLY_CONDITIONS = ("sd_prompt_only",)
 # Conditions that mix each training batch with a shuffled copy of itself (src/component/mixing.py).
