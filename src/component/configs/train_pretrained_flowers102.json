@@ -12,7 +12,7 @@
     "10": 800
   },
   "models": {
-    "resnet50": {"optimizer": "adamw", "lr": 0.0003, "weight_decay": 0.05},
-    "vit_b_16": {"optimizer": "adamw", "lr": 5e-05, "weight_decay": 0.05}
+    "resnet50": {"optimizer": "adamw", "lr": 0.001, "weight_decay": 0.05},
+    "vit_b_16": {"optimizer": "adamw", "lr": 0.0002, "weight_decay": 0.05}
   }
 }
