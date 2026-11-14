@@ -1,0 +1,18 @@
+\section{Limitations}
+\label{sec:limitations}
+
+% Moved from the report. State each weakness and why it does not undermine the main claims.
+
+\textbf{One dataset at low resolution.} The study uses CIFAR-100 only, and its $32\times32$ images are upsampled to $224\times224$ for the classifiers. Results may differ for datasets with larger images or other domains.
+
+\textbf{Seeds.} \todo{rewrite for five seeds (0-4) in every reported cell; the report's version described three.} With few training seeds, a gain or loss is declared only when all seeds agree, and the standard deviations are themselves uncertain. In the baselines, the standard deviation of the paired change reaches 4.7 points (ResNet-50 from random initialization, 50 images per class), so the study can resolve only effects larger than this spread; smaller effects are reported as inconclusive.
+
+\textbf{Fixed step budgets.} The step budgets were chosen in pilots on the real-only condition and are equal across conditions, so the comparison holds the training compute fixed. Some runs reached their best validation score at the final step: in the pretrained arm 1 of 30 real-only and 8 of 30 RandAugment runs, and in the random-initialization arm 6 of 30 and 13 of 30. Because the cosine schedule ends at a learning rate of zero, the last steps are often the best, but augmented runs might also gain from longer training, so the RandAugment gains may be understated. In the synthetic-data conditions the same step budget is spread over twice as many images, so each real image is seen about half as often as in the real-only run; the exposures are recorded for every run.
+
+\textbf{One fixed recipe from scratch.} \todo{absolute accuracy from random initialization is low (best at the full budget about 65\%) because every condition shares one recipe and step budget; say why this is the right control and what it costs.}
+
+\textbf{Outside pretraining.} The ImageNet weights of the pretrained classifiers and the web-scale training data of Stable Diffusion are outside our control. The diffusion training data may contain images similar to, or taken from, CIFAR-100, so any benefit of generated images may partly reflect that exposure. The random-initialization arm removes the classifier's outside knowledge but not the generator's.
+% TODO: the GAN set removes the generator's outside knowledge too; say so here.
+
+\textbf{Two software environments.} The synthetic-data runs with seeds 0 to 2 were trained with newer Python, PyTorch, Torchvision and NumPy versions than the real-only and RandAugment runs they are paired with (Section~\ref{sec:setup}). For seeds 3 and 4, both sides of each pair used the same versions. The recipe, split and step budgets are identical, but a version change can shift accuracy slightly, so small paired changes between the two groups should be read with that in mind.
+% TODO: if the baseline rerun in the newer environment is done, give the measured shift.

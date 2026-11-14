@@ -1,0 +1,60 @@
+% SynthAug-Bench paper.
+% Journal-neutral draft: plain article class, one file per section in sections/.
+% Moving to the chosen journal's template means swapping the class, the front matter and the
+% bibliography style; the section files stay as they are.
+% Tables and figures are read from the report (reports/Latex_report/), so each exists once.
+% Compile from this folder: pdflatex main, bibtex main, pdflatex main, pdflatex main.
+
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\graphicspath{{../../reports/Latex_report/fig/}{Fig/}}
+\newcommand{\tabledir}{../../reports/Latex_report/tables}
+
+% Inputs a generated table when it exists, otherwise prints a visible placeholder, so the draft
+% compiles before every result is on main.
+\newcommand{\resulttable}[1]{%
+  \IfFileExists{\tabledir/#1.tex}{\input{\tabledir/#1.tex}}{%
+    \begin{center}\fbox{\parbox{0.9\linewidth}{\centering\small\textcolor{red}{%
+      Table pending: \texttt{\detokenize{#1}.tex}}}}\end{center}}}
+
+% Marks text still to be written; remove every \todo before submission.
+\newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
+
+\title{SynthAug-Bench: When Does Synthetic Data Augmentation Help Image Classification?}
+% TODO: final title once the main claim is fixed (candidate: the initialization sign flip).
+\author{%
+  Mayur Patil \and Manoj Kodihalli Venkatesh\\
+  Data Science Program, The George Washington University
+  % TODO: decide author order, the supervisor's role (co-author or acknowledgment) and emails.
+}
+\date{}
+
+\begin{document}
+\maketitle
+
+\input{sections/abstract}
+\input{sections/introduction}
+\input{sections/related_work}
+\input{sections/method}
+\input{sections/setup}
+\input{sections/results}
+\input{sections/discussion}
+\input{sections/limitations}
+\input{sections/conclusion}
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\appendix
+\input{sections/appendix}
+
+\end{document}
