@@ -1,0 +1,21 @@
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{Stage 3, HAM10000, scratch initialization: test balanced accuracy (\%, mean $\pm$ SD over seeds) of real-only, the best conventional augmentation (chosen by mean validation balanced accuracy), SD class prompts at 1:1, and SD 5:1 + RandAugment, and the paired change of SD 5:1 + RandAugment over the best conventional augmentation (percentage points; $\uparrow$/$\downarrow$ when every seed agrees, $\sim$ otherwise).}
+\label{tab:stage3-ham10000-scores-scratch-test}
+\begin{tabular}{llrlrrrr}
+\toprule
+Model & Images/class & Real-only & \multicolumn{2}{l}{Best conventional} & SD 1:1 & SD 5:1+RA & Change \\
+\midrule
+ResNet-50 & 5 & 36.46 $\pm$ 2.26 & TA & 41.10 $\pm$ 0.85 & 27.93 $\pm$ 3.29 & 29.98 $\pm$ 3.36 & -11.12 $\pm$ 4.01 $\downarrow$ \\
+ResNet-50 & 10 & 34.14 $\pm$ 0.78 & TA & 40.79 $\pm$ 1.97 & 32.38 $\pm$ 2.79 & 32.81 $\pm$ 1.60 & -7.97 $\pm$ 2.43 $\downarrow$ \\
+ResNet-50 & 20 & 36.16 $\pm$ 1.06 & TA & 47.88 $\pm$ 1.16 & 30.62 $\pm$ 1.93 & 38.91 $\pm$ 0.81 & -8.97 $\pm$ 1.04 $\downarrow$ \\
+ResNet-50 & 50 & 40.92 $\pm$ 0.88 & TA & 57.91 $\pm$ 4.06 & 33.68 $\pm$ 1.17 & 47.78 $\pm$ 2.18 & -10.12 $\pm$ 4.85 $\downarrow$ \\
+ViT-B/16 & 5 & 40.11 $\pm$ 0.66 & RA & 40.86 $\pm$ 1.50 & 37.24 $\pm$ 1.63 & 40.43 $\pm$ 2.14 & -0.43 $\pm$ 1.50 $\sim$ \\
+ViT-B/16 & 10 & 44.47 $\pm$ 1.24 & AugMix & 46.49 $\pm$ 1.55 & 40.25 $\pm$ 1.46 & 42.96 $\pm$ 2.05 & -3.54 $\pm$ 2.61 $\sim$ \\
+ViT-B/16 & 20 & 44.23 $\pm$ 1.04 & Mixup & 47.59 $\pm$ 2.55 & 43.63 $\pm$ 1.82 & 47.25 $\pm$ 2.19 & -0.33 $\pm$ 3.86 $\sim$ \\
+ViT-B/16 & 50 & 47.80 $\pm$ 2.67 & TA & 52.79 $\pm$ 2.30 & 45.43 $\pm$ 1.96 & 50.05 $\pm$ 1.63 & -2.74 $\pm$ 3.13 $\sim$ \\
+\bottomrule
+\end{tabular}
+\end{table}
