@@ -1,0 +1,21 @@
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\caption{Stage 3, Flowers-102, Stable Diffusion class-prompt images against their controls, pretrained initialization: change in test balanced accuracy (percentage points), paired by training seed, mean $\pm$ sample SD over 5 seeds. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise. RA: RandAugment, TA: TrivialAugment, AA: AutoAugment (ImageNet policy); SD: Stable Diffusion class prompts at 1:1 unless a ratio is given; best conv.: the conventional augmentation with the highest mean validation balanced accuracy in that row (named in the scores table).}
+\label{tab:stage3-flowers102-sd-pretrained-test}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llrrrrr}
+\toprule
+Model & Images/class & SD$-$real & SD$-$RA & SD+RA$-$RA & SD 5:1+RA$-$RA & SD 5:1+RA$-$best conv. \\
+\midrule
+ResNet-50 & 2 & +1.37 $\pm$ 1.13 $\uparrow$ & -3.16 $\pm$ 1.31 $\downarrow$ & +0.32 $\pm$ 1.38 $\sim$ & -2.79 $\pm$ 1.41 $\downarrow$ & -2.79 $\pm$ 1.41 $\downarrow$ \\
+ResNet-50 & 5 & -0.58 $\pm$ 1.38 $\sim$ & -2.45 $\pm$ 0.58 $\downarrow$ & -1.69 $\pm$ 0.79 $\downarrow$ & -6.05 $\pm$ 0.83 $\downarrow$ & -6.32 $\pm$ 0.23 $\downarrow$ \\
+ResNet-50 & 10 & -1.90 $\pm$ 0.52 $\downarrow$ & -1.57 $\pm$ 0.38 $\downarrow$ & -0.94 $\pm$ 0.39 $\downarrow$ & -3.57 $\pm$ 0.87 $\downarrow$ & -3.75 $\pm$ 0.57 $\downarrow$ \\
+\midrule
+ViT-B/16 & 2 & +0.67 $\pm$ 1.82 $\sim$ & -7.37 $\pm$ 0.83 $\downarrow$ & +1.08 $\pm$ 0.83 $\sim$ & -2.64 $\pm$ 0.88 $\downarrow$ & -3.27 $\pm$ 1.09 $\downarrow$ \\
+ViT-B/16 & 5 & -1.77 $\pm$ 0.56 $\downarrow$ & -4.94 $\pm$ 1.23 $\downarrow$ & -1.85 $\pm$ 0.89 $\downarrow$ & -7.26 $\pm$ 1.03 $\downarrow$ & -6.68 $\pm$ 1.01 $\downarrow$ \\
+ViT-B/16 & 10 & -2.85 $\pm$ 0.13 $\downarrow$ & -3.11 $\pm$ 0.34 $\downarrow$ & -2.07 $\pm$ 0.48 $\downarrow$ & -5.16 $\pm$ 0.66 $\downarrow$ & -5.16 $\pm$ 0.66 $\downarrow$ \\
+\bottomrule
+\end{tabular}}
+\end{table}

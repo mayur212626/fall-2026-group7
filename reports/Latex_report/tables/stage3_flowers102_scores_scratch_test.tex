@@ -1,0 +1,19 @@
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{Stage 3, Flowers-102, scratch initialization: test balanced accuracy (\%, mean $\pm$ SD over seeds) of real-only, the best conventional augmentation (chosen by mean validation balanced accuracy), SD class prompts at 1:1, and SD 5:1 + RandAugment, and the paired change of SD 5:1 + RandAugment over the best conventional augmentation (percentage points; $\uparrow$/$\downarrow$ when every seed agrees, $\sim$ otherwise).}
+\label{tab:stage3-flowers102-scores-scratch-test}
+\begin{tabular}{llrlrrrr}
+\toprule
+Model & Images/class & Real-only & \multicolumn{2}{l}{Best conventional} & SD 1:1 & SD 5:1+RA & Change \\
+\midrule
+ResNet-50 & 2 & 19.66 $\pm$ 0.38 & TA & 30.94 $\pm$ 1.08 & 16.92 $\pm$ 0.56 & 31.33 $\pm$ 0.95 & +0.40 $\pm$ 0.61 $\sim$ \\
+ResNet-50 & 5 & 32.29 $\pm$ 0.79 & RA & 50.22 $\pm$ 0.69 & 27.84 $\pm$ 1.14 & 42.95 $\pm$ 1.82 & -7.27 $\pm$ 1.87 $\downarrow$ \\
+ResNet-50 & 10 & 46.66 $\pm$ 2.59 & RA & 66.83 $\pm$ 0.42 & 42.35 $\pm$ 0.41 & 62.39 $\pm$ 1.11 & -4.45 $\pm$ 0.71 $\downarrow$ \\
+ViT-B/16 & 2 & 15.95 $\pm$ 0.25 & RA & 24.94 $\pm$ 0.63 & 15.23 $\pm$ 0.56 & 24.59 $\pm$ 0.80 & -0.35 $\pm$ 0.78 $\sim$ \\
+ViT-B/16 & 5 & 27.62 $\pm$ 1.04 & RA & 38.48 $\pm$ 0.80 & 26.07 $\pm$ 0.87 & 34.87 $\pm$ 0.41 & -3.61 $\pm$ 1.18 $\downarrow$ \\
+ViT-B/16 & 10 & 36.98 $\pm$ 0.75 & RA & 48.93 $\pm$ 0.64 & 34.88 $\pm$ 0.65 & 46.42 $\pm$ 0.45 & -2.51 $\pm$ 0.66 $\downarrow$ \\
+\bottomrule
+\end{tabular}
+\end{table}
