@@ -75,7 +75,7 @@ POLICY_CONDITIONS = ("trivialaugment", "autoaugment", "augmix")
 STACKED_CONDITIONS = ("sd_prompt_trivialaugment", "sd_prompt_autoaugment", "sd_prompt_augmix",
                       "sd_prompt_cutmix", "sd_prompt_randaugment_cutmix")
 # Conditions that add generated images to the real training images.
-SYNTHETIC_CONDITIONS = ("sd_prompt", "sd_lora", "sd_prompt_randaugment", "sd_prompt_only",
+SYNTHETIC_CONDITIONS = ("sd_prompt", "sd_lora", "sd_lora_randaugment", "sd_prompt_randaugment", "sd_prompt_only",
                         "sd_img2img") + STACKED_CONDITIONS
 # Synthetic conditions that train on the generated images alone, without the real ones.
 SYNTHETIC_ONLY_CONDITIONS = ("sd_prompt_only",)
@@ -83,7 +83,7 @@ SYNTHETIC_ONLY_CONDITIONS = ("sd_prompt_only",)
 MIXING_CONDITIONS = tuple(MIXING)
 CONDITIONS = ("real_only", "randaugment") + POLICY_CONDITIONS + SYNTHETIC_CONDITIONS + MIXING_CONDITIONS
 # Conditions that apply RandAugment to every training image, real and generated.
-AUGMENTED_CONDITIONS = ("randaugment", "sd_prompt_randaugment", "sd_prompt_randaugment_cutmix")
+AUGMENTED_CONDITIONS = ("randaugment", "sd_prompt_randaugment", "sd_prompt_randaugment_cutmix", "sd_lora_randaugment")
 # condition -> per-image policy other than RandAugment
 CONDITION_POLICY = {
     "trivialaugment": "trivialaugment", "autoaugment": "autoaugment", "augmix": "augmix",

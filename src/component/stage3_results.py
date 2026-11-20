@@ -8,6 +8,10 @@ Stages 1 and 2 (a gain or a loss only when every seed agrees in sign):
                   ours over the best conventional one
     conventional  each conventional augmentation against real-only
     sd            SD-based conditions against their controls
+    lora          the LoRA follow-up (added after the Stage 3 test results):
+                  LoRA-adapted SD against real-only, RandAugment, class-prompt
+                  SD and the best conventional augmentation; written only when
+                  LoRA runs exist
 
 The best conventional augmentation (RandAugment, TrivialAugment, AutoAugment,
 AugMix, Mixup or CutMix) of each model and budget is chosen by mean validation
@@ -40,7 +44,7 @@ OURS = "sd_prompt_randaugment_r5"
 BEST = "best_conventional"
 SHORT = {"real_only": "real", "randaugment": "RA", "trivialaugment": "TA", "autoaugment": "AA", "augmix": "AugMix",
          "mixup": "Mixup", "cutmix": "CutMix", "sd_prompt": "SD", "sd_prompt_randaugment": "SD+RA",
-         OURS: "SD 5:1+RA", BEST: "best conv."}
+         OURS: "SD 5:1+RA", BEST: "best conv.", "sd_lora": "LoRA", "sd_lora_randaugment": "LoRA+RA"}
 STUDIES = {
     "conventional": [(c, "real_only", f"{SHORT[c]}$-$real") for c in CONVENTIONAL],
     "sd": [
@@ -50,10 +54,18 @@ STUDIES = {
         (OURS, "randaugment", "SD 5:1+RA$-$RA"),
         (OURS, BEST, "SD 5:1+RA$-$best conv."),
     ],
+    "lora": [
+        ("sd_lora", "real_only", "LoRA$-$real"),
+        ("sd_lora_randaugment", "randaugment", "LoRA+RA$-$RA"),
+        ("sd_lora", "sd_prompt", "LoRA$-$SD"),
+        ("sd_lora_randaugment", BEST, "LoRA+RA$-$best conv."),
+    ],
 }
 CAPTIONS = {
     "conventional": "conventional augmentation against real-only",
     "sd": "Stable Diffusion class-prompt images against their controls",
+    "lora": ("LoRA-adapted Stable Diffusion (follow-up experiment added after the Stage 3 test results; an adapter "
+             "per budget fitted on that budget's training images only, images at 1:1) against its controls"),
 }
 METRIC_WORDS = {"balanced_accuracy": "balanced accuracy", "accuracy": "top-1 accuracy", "macro_f1": "macro-F1"}
 MIN_SEEDS = 3
@@ -115,7 +127,8 @@ def study_table(changes: list[dict], dataset: str, study: str, init: str, metric
         rf"\caption{{Stage 3, {DATASETS[dataset]['display']}, {CAPTIONS[study]}, {init} initialization: "
         + _caption_tail(list(cell.values()), metric, split)
         + r" RA: RandAugment, TA: TrivialAugment, AA: AutoAugment (ImageNet policy); SD: Stable Diffusion class "
-          r"prompts at 1:1 unless a ratio is given; best conv.: the conventional augmentation with the highest "
+          r"prompts at 1:1 unless a ratio is given; LoRA: Stable Diffusion with the budget's LoRA adapter, 1:1; "
+          r"best conv.: the conventional augmentation with the highest "
           r"mean validation balanced accuracy in that row (named in the scores table).}",
         rf"\label{{{_label(dataset, study, init, split)}}}",
         r"\resizebox{\linewidth}{!}{%",
@@ -220,7 +233,7 @@ def main() -> None:
 
     print(f"\n{DATASETS[args.dataset]['display']}, {args.split} {METRIC_WORDS[args.metric]}: paired change (pp)")
     for c in all_changes:
-        if c["study"] == "sd":
+        if c["study"] in ("sd", "lora"):
             vs = f" (vs {SHORT[c['best']]})" if c["best"] else ""
             print(f"  {c['init']:<10} {MODEL_NAMES[c['model']]:<10} b{c['budget']:<3} {c['label']:<26} "
                   f"{c['mean']:+6.2f}  ({len(c['seeds'])} seeds, {c['verdict']}){vs}")

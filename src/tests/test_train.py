@@ -367,5 +367,14 @@ class Stage3SettingsTest(unittest.TestCase):
         self.assertTrue(result["reload_check_passed"])
 
 
+class LoraConditionTest(unittest.TestCase):
+    def test_sd_lora_randaugment_is_synthetic_and_uses_randaugment(self) -> None:
+        from src.component.train import SYNTHETIC_CONDITIONS
+
+        self.assertIn("sd_lora_randaugment", SYNTHETIC_CONDITIONS)
+        self.assertEqual(augment_policy("sd_lora_randaugment", "ham10000"), "randaugment")
+        self.assertIsNone(augment_policy("sd_lora", "ham10000"))
+
+
 if __name__ == "__main__":
     unittest.main()

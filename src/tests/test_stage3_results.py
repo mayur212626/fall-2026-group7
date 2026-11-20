@@ -58,5 +58,22 @@ class TablesTest(unittest.TestCase):
         self.assertEqual({c["label"] for c in changes}, {"RA$-$real", "AugMix$-$real"})
 
 
+class LoraStudyTest(unittest.TestCase):
+    def test_lora_comparisons(self) -> None:
+        data = rows("scratch", "5", {"real_only": [10, 11, 12], "randaugment": [20, 21, 22], "augmix": [15, 16, 17],
+                                     "sd_prompt": [9, 10, 11], "sd_lora": [14, 15, 16],
+                                     "sd_lora_randaugment": [23, 24, 26]})
+        best = s3.choose_conventional(data)
+        changes = {c["label"]: c for c in s3.study_changes(data, "lora", "balanced_accuracy", best)}
+        self.assertEqual(set(changes), {"LoRA$-$real", "LoRA+RA$-$RA", "LoRA$-$SD", "LoRA+RA$-$best conv."})
+        self.assertAlmostEqual(changes["LoRA$-$SD"]["mean"], 5.0)
+        self.assertEqual(changes["LoRA+RA$-$best conv."]["best"], "randaugment")
+        self.assertEqual(changes["LoRA+RA$-$RA"]["verdict"], "gain")
+
+    def test_no_lora_runs_no_lora_table(self) -> None:
+        data = rows("scratch", "5", {"real_only": [10, 11, 12], "randaugment": [20, 21, 22]})
+        self.assertEqual(s3.study_changes(data, "lora", "balanced_accuracy", s3.choose_conventional(data)), [])
+
+
 if __name__ == "__main__":
     unittest.main()

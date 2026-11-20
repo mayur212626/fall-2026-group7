@@ -42,6 +42,13 @@ the same ``prepare_image`` as the real images (short side 256, center crop
 224), so real and generated images are reduced identically.
 
     python -m src.component.generate_sd --dataset ham10000 --output-dir data/synthetic/sd15_prompt_ham10000
+
+A Stage 3 LoRA pool (follow-up experiment) passes the adapter from
+``train_lora --dataset`` and as many images per class as the budget has real
+ones (1:1):
+
+    python -m src.component.generate_sd --dataset ham10000 --lora-dir data/lora/sd15_lora_ham10000_b5 \
+        --output-dir data/synthetic/sd15_lora_ham10000_b5 --per-class 5
     python -m src.component.generate_sd --output-dir data/synthetic/sd15_lora_b5 \
         --lora-dir data/lora/sd15_lora_b5 --per-class 5 --generator-id lora_sd_b5
 """
@@ -254,7 +261,8 @@ def main() -> None:
     parser.add_argument("--revision", help="model commit; default: the current one, recorded in pool.json")
     parser.add_argument("--registry", type=Path, default=REGISTRY)
     parser.add_argument("--lora-dir", type=Path, help="LoRA adapter from train_lora (sd_lora condition)")
-    parser.add_argument("--generator-id", help="registry name: sd_prompt (default) or lora_sd_b<budget>")
+    parser.add_argument("--generator-id", help="registry name: sd_prompt (default), lora_sd_b<budget> "
+                        "or lora_sd_<dataset>_b<budget>")
     args = parser.parse_args()
 
     import diffusers
@@ -272,8 +280,6 @@ def main() -> None:
         class_names = CIFAR100(args.data_root, train=True, download=False).classes
         templates, output_size = TEMPLATES, OUTPUT_SIZE
     else:
-        if args.lora_dir:
-            parser.error("--lora-dir is only used with CIFAR-100")
         class_names, templates, output_size = stage3["classes"], stage3["templates"], STORED_SIZE
     labels = args.classes if args.classes else list(range(len(class_names)))
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -283,13 +289,17 @@ def main() -> None:
     negative_prompt = NEGATIVE_PROMPT
     if args.lora_dir:
         lora = json.loads((args.lora_dir / "lora.json").read_text(encoding="utf-8"))
+        if lora.get("dataset", "cifar100") != args.dataset:
+            raise ValueError(f"adapter was trained on {lora.get('dataset', 'cifar100')}, not {args.dataset}")
         if lora["revision"] != revision:
             raise ValueError(f"adapter was trained on revision {lora['revision']}, pipeline has {revision}")
         pipe.load_lora_weights(str(args.lora_dir))
         identifier = lora["identifier"]
         negative_prompt = LORA_NEGATIVE_PROMPT
     default_id = GENERATOR_ID if stage3 is None else f"{GENERATOR_ID}_{args.dataset}"
-    generator_id = args.generator_id or (f"lora_sd_b{lora['budget']}" if lora else default_id)
+    if lora:
+        default_id = f"lora_sd_b{lora['budget']}" if stage3 is None else f"lora_sd_{args.dataset}_b{lora['budget']}"
+    generator_id = args.generator_id or default_id
     settings = {"steps": args.steps, "guidance": args.guidance, "size": args.size, "negative_prompt": negative_prompt,
                 "templates": templates, "output_size": output_size}
 
