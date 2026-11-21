@@ -146,6 +146,8 @@ Class-prompt Stable Diffusion images lowered accuracy on both Stage 3 datasets. 
   - LoRA − class-prompt SD
   - LoRA+RA − the best conventional augmentation, chosen on validation
 - **Memorization check:** the adapters keep CIFAR's step counts on far fewer images (HAM10000 at 5 per class is 35 images), so they may learn to reproduce them. `pool_memorization` compares each generated image's similarity to its nearest training image (ImageNet ResNet-50 features) with the same for held-out validation images. A gain from a pool that copies its training images is not reported as a gain from generation.
+- **Decision rule** (fixed in `pool_memorization.verdict` before any LoRA pool was generated): a pool is **flagged** when more than 5% of its images are above the held-out 99th percentile or more than 1% are above cosine 0.95. A gain from a flagged pool is reported as memorization, not as a gain from generation.
+- **One set of pools per dataset:** generate the adapters and pools on one instance, then copy `data/lora/sd15_lora_<dataset>_b*` and `data/synthetic/sd15_lora_<dataset>_b*` to the other instances and check that each `pool.npz` sha256 matches. Generating them on each instance may not give identical images, since the instances do not all run the same NVIDIA driver. Flowers-102 runs all its LoRA runs on one instance.
 
 ```bash
 bash src/shellscripts/stage3_lora_setup.sh ham10000        # adapters, pools, memorization check, grids
