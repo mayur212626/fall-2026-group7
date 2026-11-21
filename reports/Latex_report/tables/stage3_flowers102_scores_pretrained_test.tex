@@ -1,0 +1,19 @@
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{Stage 3, Flowers-102, pretrained initialization: test balanced accuracy (\%, mean $\pm$ SD over seeds) of real-only, the best conventional augmentation (chosen by mean validation balanced accuracy), SD class prompts at 1:1, and SD 5:1 + RandAugment, and the paired change of SD 5:1 + RandAugment over the best conventional augmentation (percentage points; $\uparrow$/$\downarrow$ when every seed agrees, $\sim$ otherwise).}
+\label{tab:stage3-flowers102-scores-pretrained-test}
+\begin{tabular}{llrlrrrr}
+\toprule
+Model & Images/class & Real-only & \multicolumn{2}{l}{Best conventional} & SD 1:1 & SD 5:1+RA & Change \\
+\midrule
+ResNet-50 & 2 & 69.08 $\pm$ 0.70 & RA & 73.61 $\pm$ 0.86 & 70.45 $\pm$ 1.26 & 70.81 $\pm$ 0.71 & -2.79 $\pm$ 1.41 $\downarrow$ \\
+ResNet-50 & 5 & 87.35 $\pm$ 1.23 & AA & 89.48 $\pm$ 0.43 & 86.77 $\pm$ 0.23 & 83.16 $\pm$ 0.62 & -6.32 $\pm$ 0.23 $\downarrow$ \\
+ResNet-50 & 10 & 94.43 $\pm$ 0.28 & AugMix & 94.28 $\pm$ 0.39 & 92.52 $\pm$ 0.36 & 90.53 $\pm$ 0.56 & -3.75 $\pm$ 0.57 $\downarrow$ \\
+ViT-B/16 & 2 & 65.90 $\pm$ 1.77 & TA & 74.57 $\pm$ 1.22 & 66.57 $\pm$ 0.88 & 71.30 $\pm$ 1.02 & -3.27 $\pm$ 1.09 $\downarrow$ \\
+ViT-B/16 & 5 & 86.98 $\pm$ 0.44 & TA & 89.56 $\pm$ 0.43 & 85.21 $\pm$ 0.83 & 82.88 $\pm$ 0.61 & -6.68 $\pm$ 1.01 $\downarrow$ \\
+ViT-B/16 & 10 & 94.70 $\pm$ 0.22 & RA & 94.96 $\pm$ 0.25 & 91.85 $\pm$ 0.26 & 89.80 $\pm$ 0.65 & -5.16 $\pm$ 0.66 $\downarrow$ \\
+\bottomrule
+\end{tabular}
+\end{table}

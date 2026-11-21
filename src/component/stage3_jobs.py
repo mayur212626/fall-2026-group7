@@ -10,6 +10,10 @@ times the measured time per step of its model on an A10G.
 
     python -m src.component.stage3_jobs --dataset ham10000 --seeds 0 1 2 --parts 3 --summary
     python -m src.component.stage3_jobs --dataset ham10000 --seeds 0 1 2 --parts 3 --part 2
+    python -m src.component.stage3_jobs --dataset ham10000 --grid lora --seeds 0 1 2 3 4 --parts 3 --summary
+
+``--grid lora`` lists the LoRA follow-up instead (``sd_lora`` and
+``sd_lora_randaugment`` at 1:1, each budget with its own adapter's pool).
 
 Each printed line is ``init model condition ratio budget seed run_name``;
 ``run_stage3.sh`` reads them. The split depends only on the arguments, so every
@@ -29,6 +33,10 @@ CONDITIONS = [
     ("real_only", 1), ("randaugment", 1), ("trivialaugment", 1), ("autoaugment", 1), ("augmix", 1),
     ("mixup", 1), ("cutmix", 1), ("sd_prompt", 1), ("sd_prompt_randaugment", 1), ("sd_prompt_randaugment", 5),
 ]
+# LoRA follow-up (added after the Stage 3 test results): an adapter per budget, generated images at 1:1,
+# without and with RandAugment.
+LORA_CONDITIONS = [("sd_lora", 1), ("sd_lora_randaugment", 1)]
+GRIDS = {"main": CONDITIONS, "lora": LORA_CONDITIONS}
 # Seconds per optimizer step at batch 128 and 224x224 on an A10G, from the CIFAR-100 runs
 # (ViT-B/16 from scratch at 50 images per class: 8,000 steps in about 62 minutes).
 SECONDS_PER_STEP = {"resnet50": 0.24, "vit_b_16": 0.47}
@@ -46,14 +54,15 @@ def load_steps(dataset: str, configs: Path = CONFIGS) -> dict[str, dict[str, int
             for init in INITS}
 
 
-def all_jobs(steps: dict[str, dict[str, int]], seeds: list[int]) -> list[dict]:
+def all_jobs(steps: dict[str, dict[str, int]], seeds: list[int],
+             conditions: list[tuple[str, int]] = CONDITIONS) -> list[dict]:
     """Every run of the grid for ``seeds``, in seed, initialization, budget, model, condition order."""
     jobs = []
     for seed in seeds:
         for init in INITS:
             for budget in sorted(steps[init], key=int):
                 for model in MODELS:
-                    for condition, ratio in CONDITIONS:
+                    for condition, ratio in conditions:
                         jobs.append({
                             "init": init, "model": model, "condition": condition, "ratio": ratio, "budget": budget,
                             "seed": seed, "name": run_name(init, model, condition, budget, seed, ratio),
@@ -84,6 +93,7 @@ def split(jobs: list[dict], parts: int) -> list[list[dict]]:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--dataset", choices=["flowers102", "ham10000"], required=True)
+    parser.add_argument("--grid", choices=list(GRIDS), default="main")
     parser.add_argument("--seeds", type=int, nargs="+", default=[0, 1, 2])
     parser.add_argument("--parts", type=int, default=1)
     parser.add_argument("--part", type=int, default=1, help="1-based")
@@ -92,10 +102,10 @@ def main() -> None:
     if not 1 <= args.part <= args.parts:
         parser.error("--part must be between 1 and --parts")
 
-    parts = split(all_jobs(load_steps(args.dataset), args.seeds), args.parts)
+    parts = split(all_jobs(load_steps(args.dataset), args.seeds, GRIDS[args.grid]), args.parts)
     if args.summary:
         total = sum(j["hours"] for part in parts for j in part)
-        print(f"{args.dataset}, seeds {' '.join(map(str, args.seeds))}: {sum(map(len, parts))} runs, "
+        print(f"{args.dataset} ({args.grid} grid), seeds {' '.join(map(str, args.seeds))}: {sum(map(len, parts))} runs, "
               f"~{total:.0f} GPU hours (estimate)")
         for i, part in enumerate(parts, 1):
             print(f"  part {i}: {len(part)} runs, ~{sum(j['hours'] for j in part):.0f} hours")
