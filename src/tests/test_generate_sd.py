@@ -115,5 +115,29 @@ class ShardsTest(unittest.TestCase):
         self.assertEqual(len(sha), 64)
 
 
+
+class Stage3PoolTest(unittest.TestCase):
+    def test_dataset_templates(self) -> None:
+        from src.component.stage3_data import DATASETS
+
+        templates = DATASETS["ham10000"]["templates"]
+        self.assertEqual(prompt_for("melanoma", 0, templates=templates), "a dermoscopy image of melanoma.")
+        self.assertEqual(prompt_for("actinic keratosis", 1, templates=templates),
+                         "a dermoscopic image of an actinic keratosis skin lesion.")
+        flowers = DATASETS["flowers102"]["templates"]
+        self.assertEqual(prompt_for("english marigold", 0, templates=flowers),
+                         "a photo of an english marigold, a type of flower.")
+
+    def test_stage3_images_are_cropped_to_224(self) -> None:
+        from src.component.stage3_data import DATASETS
+
+        pipe = FakePipeline()
+        templates = DATASETS["flowers102"]["templates"]
+        shard = generate_class(pipe, 0, "rose", 3, 0, 2, {**SETTINGS, "size": 512, "output_size": 224,
+                                                         "templates": templates}, lambda s: s)
+        self.assertEqual(shard["images"].shape, (3, 224, 224, 3))
+        self.assertEqual(pipe.calls[0]["prompt"][1], "a close-up photo of a rose, a type of flower.")
+
+
 if __name__ == "__main__":
     unittest.main()

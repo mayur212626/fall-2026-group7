@@ -146,5 +146,28 @@ class ToModelInputTest(unittest.TestCase):
             self.assertTrue(torch.allclose(result[:, channel], torch.tensor(value), atol=1e-5))
 
 
+
+class Stage3ImagesTest(unittest.TestCase):
+    def test_imagenet_autoaugment_on_224_images(self) -> None:
+        images = np.random.default_rng(0).integers(0, 256, (2, 224, 224, 3), dtype=np.uint8)
+        dataset = CifarImages(images, [0, 1], [0, 1], randaugment=False, policy="autoaugment_imagenet")
+        image, label, _ = dataset[(1, 7)]
+        self.assertEqual((image.shape, image.dtype, label), ((3, 224, 224), torch.uint8, 1))
+        self.assertTrue(torch.equal(image, dataset[(1, 7)][0]))
+        self.assertIn("autoaugment_imagenet", AUGMENT_POLICIES)
+
+    def test_read_only_memory_mapped_images(self) -> None:
+        import tempfile
+        from pathlib import Path
+
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "images.npy"
+            np.save(path, np.zeros((2, 8, 8, 3), dtype=np.uint8))
+            images = np.load(path, mmap_mode="r")
+            image, _, _ = CifarImages(images, [0, 0], [0, 1], randaugment=True)[(0, 3)]
+            self.assertEqual(image.shape, (3, 8, 8))
+            del images
+
+
 if __name__ == "__main__":
     unittest.main()

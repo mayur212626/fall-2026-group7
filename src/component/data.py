@@ -1,6 +1,7 @@
-"""CIFAR-100 data pipeline.
+"""Image data pipeline for CIFAR-100 and the Stage 3 datasets.
 
-Images stay as 32x32 uint8 tensors on the CPU, where the augmentation policy
+Images stay as uint8 tensors on the CPU (32x32 for CIFAR-100, 224x224 for
+Flowers-102 and HAM10000, see ``stage3_data``), where the augmentation policy
 (RandAugment, TrivialAugment, AutoAugment or AugMix) is applied.
 ``to_model_input`` resizes and normalizes whole batches on the training
 device. The training order is a fixed function of the seed and the step, so
@@ -22,11 +23,13 @@ IMAGENET_STD = (0.229, 0.224, 0.225)
 RANDAUGMENT_OPS = 2
 RANDAUGMENT_MAGNITUDE = 9
 # Per-image augmentation policies, all torchvision defaults except RandAugment's two operations at
-# magnitude 9. AutoAugment uses its CIFAR-10 policy, the one learned on 32x32 natural images.
+# magnitude 9. AutoAugment uses its CIFAR-10 policy, the one learned on 32x32 natural images; the
+# Stage 3 datasets (224x224 flower and skin-lesion photos) use its ImageNet policy instead.
 AUGMENT_POLICIES = {
     "randaugment": lambda: v2.RandAugment(num_ops=RANDAUGMENT_OPS, magnitude=RANDAUGMENT_MAGNITUDE),
     "trivialaugment": lambda: v2.TrivialAugmentWide(),
     "autoaugment": lambda: v2.AutoAugment(v2.AutoAugmentPolicy.CIFAR10),
+    "autoaugment_imagenet": lambda: v2.AutoAugment(v2.AutoAugmentPolicy.IMAGENET),
     "augmix": lambda: v2.AugMix(),
 }
 
@@ -88,7 +91,8 @@ class CifarImages(Dataset):
     def __getitem__(self, item: tuple[int, int]) -> tuple[torch.Tensor, int, int]:
         position, visit_seed = item
         image_id = self.indices[position]
-        image = torch.from_numpy(self.images[image_id]).permute(2, 0, 1).contiguous()  # (3, 32, 32)
+        # np.array copies, so memory-mapped (read-only) Stage 3 arrays work too
+        image = torch.from_numpy(np.array(self.images[image_id])).permute(2, 0, 1).contiguous()  # (3, H, W)
         if self.augment is not None:
             with torch.random.fork_rng(devices=[]):
                 torch.manual_seed(visit_seed)

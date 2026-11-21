@@ -1,4 +1,4 @@
-"""Training runner for the CIFAR-100 classification benchmark.
+"""Training runner for the classification benchmark: CIFAR-100 and the Stage 3 datasets.
 
 One call trains one model, initialization, condition, data budget and seed
 for a fixed number of optimizer steps, validating at equal intervals. Each
@@ -13,6 +13,12 @@ run writes to its own directory:
 
 Running the same command again resumes an interrupted run from ``last.pt``.
 The test set is never used here.
+
+``--dataset flowers102`` or ``ham10000`` trains on a Stage 3 dataset
+(``stage3_data``): its images, manifest and class count replace CIFAR-100's,
+the best checkpoint is chosen by validation balanced accuracy (both test sets
+are imbalanced) and AutoAugment uses its ImageNet policy. These choices are
+stored in the run settings; CIFAR-100 runs keep exactly their old settings.
 
 Example, from the repository root:
 
@@ -55,6 +61,9 @@ from src.component.data import (
 from src.component.metrics import classification_metrics
 from src.component.mixing import MIXING, mix_batch
 from src.component.models import MODELS, build_model, weights_name
+from src.component.stage3_data import DATASETS as STAGE3_DATASETS
+from src.component.stage3_data import SELECTION_METRIC as STAGE3_SELECTION_METRIC
+from src.component.stage3_data import load_images
 from src.component.synthetic_pool import file_sha256, load_pool
 
 SUMMARY_KEYS = ("accuracy", "macro_f1", "balanced_accuracy", "loss")
@@ -81,6 +90,7 @@ CONDITION_POLICY = {
     "sd_prompt_trivialaugment": "trivialaugment", "sd_prompt_autoaugment": "autoaugment",
     "sd_prompt_augmix": "augmix",
 }
+DATASETS = ("cifar100", *STAGE3_DATASETS)
 # condition -> batch mixing method
 CONDITION_MIXING = {"mixup": "mixup", "cutmix": "cutmix", "sd_prompt_cutmix": "cutmix",
                     "sd_prompt_randaugment_cutmix": "cutmix"}
@@ -121,16 +131,27 @@ def lr_factor(step: int, total_steps: int, warmup_steps: int) -> float:
     return 0.5 * (1 + math.cos(math.pi * progress))
 
 
-def is_better(candidate: dict, best: dict | None) -> bool:
-    """Checkpoint rule: higher validation accuracy, then lower validation loss.
+def is_better(candidate: dict, best: dict | None, key: str = "accuracy") -> bool:
+    """Checkpoint rule: higher validation ``key`` (accuracy by default), then lower validation loss.
 
     A full tie keeps the earlier checkpoint.
     """
     if best is None:
         return True
-    if candidate["accuracy"] != best["accuracy"]:
-        return candidate["accuracy"] > best["accuracy"]
+    if candidate[key] != best[key]:
+        return candidate[key] > best[key]
     return candidate["loss"] < best["loss"]
+
+
+def augment_policy(condition: str, dataset: str = "cifar100") -> str | None:
+    """Per-image augmentation policy of a condition (a key of ``data.AUGMENT_POLICIES``), or None.
+
+    AutoAugment uses the CIFAR-10 policy on CIFAR-100 and the ImageNet policy on the Stage 3 datasets.
+    """
+    policy = "randaugment" if condition in AUGMENTED_CONDITIONS else CONDITION_POLICY.get(condition)
+    if policy == "autoaugment" and dataset != "cifar100":
+        policy = "autoaugment_imagenet"
+    return policy
 
 
 def build_optimizer(model: nn.Module, recipe: dict) -> torch.optim.Optimizer:
@@ -326,6 +347,7 @@ def run_training(
         if device.type == "cuda":
             torch.cuda.reset_peak_memory_stats(device)
         interval = math.ceil(settings["steps"] / settings["evaluations"])
+        key = settings.get("selection_metric", "accuracy")
         while state.step < settings["steps"]:
             started = time.perf_counter()
             until = min((state.step // interval + 1) * interval, settings["steps"])
@@ -345,12 +367,12 @@ def run_training(
             }
             with history_path.open("a", encoding="utf-8") as history:
                 history.write(json.dumps(record) + "\n")
-            logger.info("step %d/%d: train loss %.4f, val accuracy %.2f, val loss %.4f, %.1f min",
-                        state.step, settings["steps"], train_loss, metrics["accuracy"], metrics["loss"],
-                        extra["elapsed"] / 60)
+            logger.info("step %d/%d: train loss %.4f, val accuracy %.2f, balanced %.2f, val loss %.4f, %.1f min",
+                        state.step, settings["steps"], train_loss, metrics["accuracy"], metrics["balanced_accuracy"],
+                        metrics["loss"], extra["elapsed"] / 60)
 
-            candidate = {"accuracy": metrics["accuracy"], "loss": metrics["loss"]}
-            if is_better(candidate, state.best):
+            candidate = {key: metrics[key], "loss": metrics["loss"]}
+            if is_better(candidate, state.best, key):
                 state.best = {"step": state.step, **candidate}
                 _atomic_save({"model": state.model.state_dict(), "step": state.step}, run_dir / "best.pt")
             save_checkpoint(state, last_path, extra)
@@ -362,7 +384,7 @@ def run_training(
             "run": run_dir.name,
             "best_step": best["step"],
             "best_validation": metrics,
-            "reload_check_passed": metrics["accuracy"] == state.best["accuracy"],
+            "reload_check_passed": metrics[key] == state.best[key],
             "validation_predictions": predictions,
             "cost": {"train_seconds": extra["elapsed"], "peak_memory_mb": extra["peak_memory_mb"]},
         }
@@ -387,6 +409,8 @@ def make_settings(
     steps: int | None = None,
     lr: float | None = None,
     synthetic: dict | None = None,
+    dataset: str = "cifar100",
+    num_classes: int = 100,
 ) -> dict:
     """Combine a training config with one run's choices into run settings.
 
@@ -397,6 +421,8 @@ def make_settings(
     ``"synthetic"`` only for those conditions, so the settings of real-data
     runs are unchanged and their saved runs still resume. Mixup and CutMix
     runs store their method and alpha under ``"mixing"`` in the same way.
+    Stage 3 runs (``dataset`` other than CIFAR-100) also store the dataset,
+    the checkpoint metric and the augmentation policy.
 
     Raises:
         ValueError: If the config has no step budget for ``budget`` and
@@ -414,7 +440,7 @@ def make_settings(
         "condition": condition,
         "budget": budget,
         "seed": seed,
-        "num_classes": 100,
+        "num_classes": num_classes,
         "image_size": config["image_size"],
         "batch_size": config["batch_size"],
         "steps": steps,
@@ -430,6 +456,10 @@ def make_settings(
     if condition in CONDITION_MIXING:
         method = CONDITION_MIXING[condition]
         settings["mixing"] = {"method": method, **MIXING[method]}
+    if dataset != "cifar100":
+        settings["dataset"] = dataset
+        settings["selection_metric"] = STAGE3_SELECTION_METRIC
+        settings["augment_policy"] = augment_policy(condition, dataset)
     return settings
 
 
@@ -452,17 +482,18 @@ def _git_commit() -> dict:
 
 def main() -> None:
     """Parse the command line, load the data and run one training run."""
-    parser = argparse.ArgumentParser(description="Train one CIFAR-100 benchmark run.")
+    parser = argparse.ArgumentParser(description="Train one benchmark run.")
+    parser.add_argument("--dataset", choices=DATASETS, default="cifar100")
     parser.add_argument("--config", type=Path, required=True)
     parser.add_argument("--model", choices=list(MODELS), required=True)
     parser.add_argument("--init", choices=["pretrained", "scratch"], required=True)
     parser.add_argument("--condition", choices=list(CONDITIONS), required=True)
-    parser.add_argument("--budget", choices=["5", "10", "20", "50", "full"], required=True)
+    parser.add_argument("--budget", choices=["2", "5", "10", "20", "50", "full"], required=True)
     parser.add_argument("--seed", type=int, required=True)
     parser.add_argument("--steps", type=int, help="override the config's step budget (pilot runs)")
     parser.add_argument("--lr", type=float, help="override the config's learning rate (pilot runs)")
-    parser.add_argument("--data-root", type=Path, default=Path("data/cifar100"))
-    parser.add_argument("--manifest", type=Path, default=Path("src/component/configs/splits/cifar100.json"))
+    parser.add_argument("--data-root", type=Path, help="default: data/<dataset>")
+    parser.add_argument("--manifest", type=Path, help="default: src/component/configs/splits/<dataset>.json")
     parser.add_argument("--runs-root", type=Path, default=Path("runs"))
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--synthetic-pool", type=Path,
@@ -477,28 +508,36 @@ def main() -> None:
     if not synthetic_run and args.synthetic_pool is not None:
         parser.error(f"--synthetic-pool is only used with {', '.join(SYNTHETIC_CONDITIONS)}")
 
+    args.data_root = args.data_root or Path("data") / args.dataset
+    args.manifest = args.manifest or Path("src/component/configs/splits") / f"{args.dataset}.json"
     config = json.loads(args.config.read_text(encoding="utf-8"))
-    images, labels = load_cifar100(args.data_root, train=True)
+    if config.get("dataset", "cifar100") != args.dataset:
+        parser.error(f"{args.config} is a {config.get('dataset', 'cifar100')} config, not {args.dataset}")
+    if args.dataset == "cifar100":
+        images, labels = load_cifar100(args.data_root, train=True)
+    else:
+        images, labels = load_images(args.data_root)
     manifest = load_manifest(args.manifest)
+    num_classes = manifest.get("num_classes", 100)
     if labels_sha256(labels) != manifest["labels_sha256"]:
-        raise ValueError("CIFAR-100 labels do not match the split manifest")
+        raise ValueError(f"{args.dataset} labels do not match the split manifest")
     train_images, train_labels = images, labels
     train_indices = budget_indices(manifest, args.budget)
     synthetic = None
     if synthetic_run:
-        real_per_class = len(train_indices) // 100
+        real_per_class = len(train_indices) // num_classes
         per_class = args.synthetic_ratio * real_per_class
         keep_real = args.condition not in SYNTHETIC_ONLY_CONDITIONS
         pool_images, pool_labels, pool_index = load_pool(args.synthetic_pool)
         train_images, train_labels, train_indices = add_synthetic(
-            images, labels, train_indices, pool_images, pool_labels, pool_index, per_class, 100,
+            images, labels, train_indices, pool_images, pool_labels, pool_index, per_class, num_classes,
             keep_real=keep_real,
         )
         synthetic = {
             "pool_sha256": file_sha256(args.synthetic_pool),
             "ratio": args.synthetic_ratio,
             "per_class": per_class,
-            "images": len(train_indices) - (real_per_class * 100 if keep_real else 0),
+            "images": len(train_indices) - (real_per_class * num_classes if keep_real else 0),
         }
         if not keep_real:
             synthetic["real_images"] = 0
@@ -506,13 +545,14 @@ def main() -> None:
         settings = make_settings(
             config, args.model, args.init, args.condition, args.budget, args.seed,
             args.workers, steps=args.steps, lr=args.lr, synthetic=synthetic,
+            dataset=args.dataset, num_classes=num_classes,
         )
     except ValueError as error:
         parser.error(str(error))
 
     train_set = CifarImages(
-        train_images, train_labels, train_indices, randaugment=args.condition in AUGMENTED_CONDITIONS,
-        policy=CONDITION_POLICY.get(args.condition),
+        train_images, train_labels, train_indices, randaugment=False,
+        policy=augment_policy(args.condition, args.dataset),
     )
     val_set = CifarImages(images, labels, manifest["validation_indices"], randaugment=False)
 

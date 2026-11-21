@@ -1,4 +1,4 @@
-"""One-time evaluation of completed runs on the official CIFAR-100 test set.
+"""One-time evaluation of completed runs on the test set: official CIFAR-100, or a Stage 3 test split.
 
 The test set is scored only after the training and selection protocol is
 fixed, so the command requires ``--confirm-protocol-frozen``. Each completed
@@ -7,6 +7,10 @@ its best validation checkpoint; the result is saved as ``test_result.json``
 and is never overwritten. Runs that already have one are skipped.
 
     python -m src.component.evaluate_test --root runs/stage1-pretrained --confirm-protocol-frozen
+    python -m src.component.evaluate_test --dataset ham10000 --root runs/ham10000-scratch --confirm-protocol-frozen
+
+For a Stage 3 dataset the test images are the manifest's ``test_indices``.
+Every run below ``--root`` must have been trained on that dataset.
 """
 
 import argparse
@@ -18,7 +22,9 @@ from pathlib import Path
 import torch
 
 from src.component.cifar_splits import labels_sha256
-from src.component.data import CifarImages, load_cifar100
+from src.component.data import CifarImages, load_cifar100, load_manifest
+from src.component.stage3_data import DATASETS as STAGE3_DATASETS
+from src.component.stage3_data import load_images
 from src.component.models import build_model
 from src.component.train import LOG_FORMAT, evaluate
 
@@ -42,6 +48,9 @@ def evaluate_run(run_dir: Path, test_set: CifarImages, device: torch.device, lab
         raise FileExistsError(f"{run_dir} was already evaluated on the test set")
 
     settings = json.loads((run_dir / "config.json").read_text(encoding="utf-8"))["settings"]
+    dataset = getattr(test_set, "dataset", "cifar100")
+    if settings.get("dataset", "cifar100") != dataset:
+        raise ValueError(f"{run_dir} was trained on {settings.get('dataset', 'cifar100')}, not {dataset}")
     model = build_model(settings["model"], pretrained=False, num_classes=settings["num_classes"])
     best = torch.load(run_dir / "best.pt", map_location="cpu", weights_only=True)
     model.load_state_dict(best["model"])
@@ -61,9 +70,11 @@ def evaluate_run(run_dir: Path, test_set: CifarImages, device: torch.device, lab
 
 def main() -> None:
     """Score every completed, not yet evaluated run below ``--root`` on the test set."""
-    parser = argparse.ArgumentParser(description="Evaluate completed runs on the CIFAR-100 test set once.")
+    parser = argparse.ArgumentParser(description="Evaluate completed runs on the test set once.")
+    parser.add_argument("--dataset", choices=["cifar100", *STAGE3_DATASETS], default="cifar100")
     parser.add_argument("--root", type=Path, required=True)
-    parser.add_argument("--data-root", type=Path, default=Path("data/cifar100"))
+    parser.add_argument("--data-root", type=Path, help="default: data/<dataset>")
+    parser.add_argument("--manifest", type=Path, help="Stage 3 only; default: src/component/configs/splits/<dataset>.json")
     parser.add_argument("--confirm-protocol-frozen", action="store_true",
                         help="required: confirms the training and selection protocol is final")
     args = parser.parse_args()
@@ -71,9 +82,19 @@ def main() -> None:
     if not args.confirm_protocol_frozen:
         parser.error("the test set is used once, after the protocol is fixed; pass --confirm-protocol-frozen")
 
-    images, labels = load_cifar100(args.data_root, train=False)
-    test_set = CifarImages(images, labels, list(range(len(labels))), randaugment=False)
-    labels_hash = labels_sha256(labels)
+    data_root = args.data_root or Path("data") / args.dataset
+    if args.dataset == "cifar100":
+        images, labels = load_cifar100(data_root, train=False)
+        test_indices = list(range(len(labels)))
+    else:
+        images, labels = load_images(data_root)
+        manifest = load_manifest(args.manifest or Path("src/component/configs/splits") / f"{args.dataset}.json")
+        if labels_sha256(labels) != manifest["labels_sha256"]:
+            raise ValueError(f"{args.dataset} labels do not match the split manifest")
+        test_indices = manifest["test_indices"]
+    test_set = CifarImages(images, labels, test_indices, randaugment=False)
+    test_set.dataset = args.dataset
+    labels_hash = labels_sha256([labels[i] for i in test_indices])
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     for result_path in sorted(args.root.rglob("result.json")):
@@ -82,8 +103,8 @@ def main() -> None:
             logging.info("skip %s (already evaluated)", run_dir.name)
             continue
         out = evaluate_run(run_dir, test_set, device, labels_hash)
-        logging.info("%s: test accuracy %.2f, macro-F1 %.2f", run_dir.name, out["test"]["accuracy"],
-                     out["test"]["macro_f1"])
+        logging.info("%s: test accuracy %.2f, balanced accuracy %.2f, macro-F1 %.2f", run_dir.name,
+                     out["test"]["accuracy"], out["test"]["balanced_accuracy"], out["test"]["macro_f1"])
 
 
 if __name__ == "__main__":

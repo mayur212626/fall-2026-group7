@@ -20,6 +20,7 @@ from src.component.train import (
     MIXING_CONDITIONS,
     SYNTHETIC_CONDITIONS,
     SYNTHETIC_ONLY_CONDITIONS,
+    augment_policy,
     is_better,
     load_checkpoint,
     lr_factor,
@@ -326,6 +327,44 @@ class RunTrainingTest(unittest.TestCase):
     def test_refuses_to_overwrite_a_completed_run(self) -> None:
         with self.assertRaises(FileExistsError):
             run_training(settings(), {}, fake_dataset(10), fake_dataset(6), self.run_dir, torch.device("cpu"))
+
+
+
+class Stage3SettingsTest(unittest.TestCase):
+    def make(self, **overrides: object) -> dict:
+        return MakeSettingsTest().make(**overrides)
+
+    def test_cifar_settings_are_unchanged(self) -> None:
+        self.assertEqual(set(self.make()), {"model", "init", "condition", "budget", "seed", "num_classes",
+                                            "image_size", "batch_size", "steps", "evaluations", "warmup_fraction",
+                                            "grad_clip", "label_smoothing", "workers", "recipe"})
+
+    def test_stage3_runs_store_dataset_metric_and_policy(self) -> None:
+        run = self.make(condition="autoaugment", dataset="ham10000", num_classes=7)
+        self.assertEqual((run["dataset"], run["num_classes"]), ("ham10000", 7))
+        self.assertEqual(run["selection_metric"], "balanced_accuracy")
+        self.assertEqual(run["augment_policy"], "autoaugment_imagenet")
+        self.assertIsNone(self.make(dataset="flowers102", num_classes=102)["augment_policy"])
+
+    def test_augment_policy(self) -> None:
+        self.assertEqual(augment_policy("autoaugment"), "autoaugment")
+        self.assertEqual(augment_policy("autoaugment", "flowers102"), "autoaugment_imagenet")
+        self.assertEqual(augment_policy("sd_prompt_randaugment", "ham10000"), "randaugment")
+        self.assertEqual(augment_policy("trivialaugment", "ham10000"), "trivialaugment")
+        self.assertIsNone(augment_policy("mixup", "ham10000"))
+        self.assertIsNone(augment_policy("sd_prompt"))
+
+    def test_checkpoint_rule_uses_the_given_metric(self) -> None:
+        best = {"balanced_accuracy": 50.0, "loss": 1.0}
+        self.assertTrue(is_better({"balanced_accuracy": 51.0, "loss": 2.0}, best, "balanced_accuracy"))
+        self.assertFalse(is_better({"balanced_accuracy": 49.0, "loss": 0.5}, best, "balanced_accuracy"))
+
+    def test_stage3_run_selects_by_balanced_accuracy(self) -> None:
+        run = settings(steps=2)
+        run["selection_metric"] = "balanced_accuracy"
+        with tempfile.TemporaryDirectory() as tmp:
+            result = run_training(run, {}, fake_dataset(20), fake_dataset(10), Path(tmp) / "run", torch.device("cpu"))
+        self.assertTrue(result["reload_check_passed"])
 
 
 if __name__ == "__main__":
