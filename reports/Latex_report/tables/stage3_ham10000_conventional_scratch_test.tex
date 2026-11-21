@@ -1,0 +1,23 @@
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\caption{Stage 3, HAM10000, conventional augmentation against real-only, scratch initialization: change in test balanced accuracy (percentage points), paired by training seed, mean $\pm$ sample SD over 5 seeds. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise. RA: RandAugment, TA: TrivialAugment, AA: AutoAugment (ImageNet policy); SD: Stable Diffusion class prompts at 1:1 unless a ratio is given; best conv.: the conventional augmentation with the highest mean validation balanced accuracy in that row (named in the scores table).}
+\label{tab:stage3-ham10000-conventional-scratch-test}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llrrrrrr}
+\toprule
+Model & Images/class & RA$-$real & TA$-$real & AA$-$real & AugMix$-$real & Mixup$-$real & CutMix$-$real \\
+\midrule
+ResNet-50 & 5 & -2.35 $\pm$ 1.50 $\sim$ & +4.64 $\pm$ 2.99 $\uparrow$ & -8.40 $\pm$ 5.00 $\downarrow$ & -2.25 $\pm$ 2.10 $\downarrow$ & +0.22 $\pm$ 3.11 $\sim$ & -5.08 $\pm$ 3.40 $\downarrow$ \\
+ResNet-50 & 10 & -0.69 $\pm$ 5.69 $\sim$ & +6.65 $\pm$ 2.51 $\uparrow$ & -5.50 $\pm$ 2.63 $\downarrow$ & -1.88 $\pm$ 2.66 $\sim$ & +0.18 $\pm$ 2.55 $\sim$ & -0.51 $\pm$ 1.44 $\sim$ \\
+ResNet-50 & 20 & -1.43 $\pm$ 3.28 $\sim$ & +11.72 $\pm$ 1.37 $\uparrow$ & -8.04 $\pm$ 5.05 $\downarrow$ & +1.55 $\pm$ 2.86 $\sim$ & -1.77 $\pm$ 2.39 $\sim$ & -1.61 $\pm$ 1.59 $\sim$ \\
+ResNet-50 & 50 & +6.87 $\pm$ 3.24 $\uparrow$ & +16.98 $\pm$ 4.16 $\uparrow$ & +0.23 $\pm$ 4.87 $\sim$ & +1.53 $\pm$ 2.10 $\sim$ & +0.15 $\pm$ 2.28 $\sim$ & -3.45 $\pm$ 0.93 $\downarrow$ \\
+\midrule
+ViT-B/16 & 5 & +0.75 $\pm$ 1.11 $\sim$ & +2.06 $\pm$ 2.13 $\sim$ & +1.75 $\pm$ 2.44 $\sim$ & +0.65 $\pm$ 3.04 $\sim$ & +2.57 $\pm$ 1.98 $\sim$ & -2.39 $\pm$ 4.19 $\sim$ \\
+ViT-B/16 & 10 & -0.16 $\pm$ 2.36 $\sim$ & +1.06 $\pm$ 1.39 $\sim$ & -0.72 $\pm$ 4.22 $\sim$ & +2.03 $\pm$ 1.91 $\sim$ & +0.53 $\pm$ 1.99 $\sim$ & -0.32 $\pm$ 2.80 $\sim$ \\
+ViT-B/16 & 20 & +2.59 $\pm$ 1.78 $\uparrow$ & +2.85 $\pm$ 2.83 $\sim$ & -0.16 $\pm$ 2.96 $\sim$ & +2.66 $\pm$ 1.71 $\uparrow$ & +3.36 $\pm$ 2.31 $\sim$ & +1.55 $\pm$ 1.73 $\sim$ \\
+ViT-B/16 & 50 & +3.29 $\pm$ 2.36 $\uparrow$ & +5.00 $\pm$ 2.84 $\uparrow$ & +1.72 $\pm$ 3.11 $\sim$ & +5.39 $\pm$ 2.53 $\uparrow$ & +1.26 $\pm$ 4.96 $\sim$ & +2.69 $\pm$ 1.51 $\uparrow$ \\
+\bottomrule
+\end{tabular}}
+\end{table}
