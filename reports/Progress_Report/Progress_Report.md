@@ -191,6 +191,53 @@ All of this was merged in PR [#6](https://github.com/mayur212626/fall-2026-group
 
 ---
 
+## Week 10: A third generated set, the three-set RQ3, Stage 2 runs and the test set
+
+**Planned**
+
+- RQ3 with more than two generated sets, and the sign-flip diagnostics.
+- Stage 2: a third architecture, synthetic:real ratios, Mixup/CutMix.
+- Freeze the protocol and score the test set once.
+
+**Done**
+
+- Third generated set, SD img2img (strength 0.5, edits of each budget's own images), with its pool quality against a reference without the budget's images: issue [#44](https://github.com/mayur212626/fall-2026-group7/issues/44), PR [#49](https://github.com/mayur212626/fall-2026-group7/pull/49). (MKV; reviewed by MP)
+- RQ3 over three generated sets with every pair compared: prompts > LoRA > img2img in 46 of 52 comparisons; FID and recall rank the sets backwards; precision is at chance where its verdict varies. Claim scoped to three sets: issue [#42](https://github.com/mayur212626/fall-2026-group7/issues/42), PR [#50](https://github.com/mayur212626/fall-2026-group7/pull/50), follow-ups [#52](https://github.com/mayur212626/fall-2026-group7/pull/52). (MKV; reviewed by MP)
+- SD-only condition (generated images without the real ones): PR [#45](https://github.com/mayur212626/fall-2026-group7/pull/45). (MP; reviewed by MKV)
+- Stage 2 runs, 186: ConvNeXt-T (learning rates from validation-only pilots), SD at 2:1 and 5:1, Mixup and CutMix (code from [#43](https://github.com/mayur212626/fall-2026-group7/pull/43)). (MKV)
+- Protocol frozen, then the test set scored once from each run's best validation checkpoint, Stage 1 and Stage 2. (MKV, MP)
+- Instructor Review #7 received: [#51](https://github.com/mayur212626/fall-2026-group7/issues/51); replied by MP.
+
+**Next**
+
+- Stage 2 PR with the test tables; seeds 3 and 4 for Stage 2.
+- The 11-03 session asks (see the session notes below).
+
+---
+
+## Week 11: Stage 2 merged, ensembles, stacked augmentation and a GAN
+
+**Planned**
+
+- Merge Stage 2 with five seeds and the test tables.
+- The 11-03 asks: a real + synthetic ensemble, more augmentation types, a GAN generator.
+
+**Done**
+
+- Stage 2 merged, all 150 comparisons with five paired seeds on validation and test ([`4cab400`](https://github.com/mayur212626/fall-2026-group7/commit/4cab400), [`34bd369`](https://github.com/mayur212626/fall-2026-group7/commit/34bd369), [`2e20c7f`](https://github.com/mayur212626/fall-2026-group7/commit/2e20c7f)): PR [#53](https://github.com/mayur212626/fall-2026-group7/pull/53), closing [#47](https://github.com/mayur212626/fall-2026-group7/issues/47). The sign flip holds for ResNet-50, ViT-B/16 and ConvNeXt-T; at 5:1, SD beats RandAugment from scratch in 3 of 4 cells. (MKV; reviewed by MP)
+- Seeds 3 and 4: 124 Stage 2 runs (MKV) paired with 48 Stage 1 controls, PR [#54](https://github.com/mayur212626/fall-2026-group7/pull/54) (MP; reviewed by MKV, who re-ran one control seed: identical, 71.18 at step 1500). Both sides in the pinned environment.
+- Stacked augmentation: TrivialAugment, AutoAugment and AugMix, SD on top of each, SD 5:1 + RandAugment (360 runs). On test at 5 images per class, the best SD method beats the best of six conventional augmentations: 43.0% → 58.0% (ResNet-50) and 57.6% → 70.7% (ViT-B/16) pretrained, 14.4% → 23.9% (ResNet-50) from scratch. PR [#57](https://github.com/mayur212626/fall-2026-group7/pull/57), tickets [#59](https://github.com/mayur212626/fall-2026-group7/issues/59). (MKV; reviewed by MP)
+- Ensembles: real + SD against a real + real control; real + SD wins in 23 of 25 settings on test, +6.8 to +8.1 points at 5 images per class pretrained. PR [#57](https://github.com/mayur212626/fall-2026-group7/pull/57), ticket [#58](https://github.com/mayur212626/fall-2026-group7/issues/58). (MKV, with MP's exported predictions)
+- Class-conditional StyleGAN2-ADA on the 50-per-class training images (FID 25.9 against them, no copies found): GAN images lower accuracy for pretrained models and raise it from scratch. PR [#56](https://github.com/mayur212626/fall-2026-group7/pull/56). (MP; reviewed by MKV)
+- Instructor Review #8 received: [#55](https://github.com/mayur212626/fall-2026-group7/issues/55); replied by MKV.
+
+**Next**
+
+- Merge [#54](https://github.com/mayur212626/fall-2026-group7/pull/54), [#56](https://github.com/mayur212626/fall-2026-group7/pull/56) and [#57](https://github.com/mayur212626/fall-2026-group7/pull/57); GAN decision and paper tickets.
+- Paper skeleton in `research_paper/Latex/`, journal shortlist, then results into the report and the paper by Nov 22.
+
+---
+
 ## Working-session notes
 
 **Oct 27**
@@ -198,3 +245,8 @@ All of this was merged in PR [#6](https://github.com/mayur212626/fall-2026-group
 - Deleted the stale `manoj` branch; all its commits were already on `main`. (MKV)
 - Opened [#36](https://github.com/mayur212626/fall-2026-group7/issues/36), the sign-flip and RQ3 diagnostics, and its draft PR [#37](https://github.com/mayur212626/fall-2026-group7/pull/37): per-class Improved Precision/Recall, diversity ratio and centroid gap of the SD pool against the per-class recall change. First result: no per-class measure predicts where SD helps, and the one significant SD − RandAugment correlation (scratch ResNet-50) comes from RandAugment's own per-class gain. The real-only classifiers' accuracy on the generated images is pending (it needs the real-only checkpoints). (MKV)
 - Seed-aware intervals: a 95% t-interval over training seeds beside the image bootstrap, PR [#35](https://github.com/mayur212626/fall-2026-group7/pull/35) (MP). Reviewed by MKV: re-ran the 26 tests and recomputed two intervals by hand; both matched.
+
+**Nov 3**
+
+- Instructor's notes: adding ConvNeXt-T shows the result is stable but does not improve accuracy. Asks: (1) a GAN generator, (2) a real-data + synthetic-data ensemble, (3) a lot of augmentation; two more seeds on two more instances in parallel; two weeks to improve results, then write the paper with placeholder results.
+- Followed up in Week 11: [#56](https://github.com/mayur212626/fall-2026-group7/pull/56) (GAN), [#57](https://github.com/mayur212626/fall-2026-group7/pull/57) (ensembles and stacked augmentation), seeds 3 and 4 ([#54](https://github.com/mayur212626/fall-2026-group7/pull/54), [`34bd369`](https://github.com/mayur212626/fall-2026-group7/commit/34bd369)).
