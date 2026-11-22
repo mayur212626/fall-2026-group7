@@ -9,9 +9,10 @@ The Stage 2 runs (ConvNeXt-T, the ratios, Mixup and CutMix) with seeds 0 to 2 al
 and are paired with Stage 1 controls from the pinned one; their seeds 3 and 4, the GAN runs and all Stage 3 runs
 used the pinned versions. Stage 3 has 1{,}400 runs (600 for Flowers-102, 800 for
 HAM10000) and the LoRA follow-up 280 more (120 and 160).
-% Compute on Mayur's instances: 1,812 runs with recorded training time, 732.5 GPU hours on A10G,
-% including 31.4 h of GAN training and 24.1 h of pilots, excluding pool generation and LoRA fitting.
-% TODO (Manoj): add the runs on Manoj's instances (remove overlaps), then state the total.
+Over all stages, 2{,}968 training runs (classifiers, their pilots and the GAN) have a recorded training time,
+together at least 916 GPU hours on single A10G GPUs. This includes 31 hours of GAN training and excludes image
+generation and LoRA fitting; a few groups of runs, among them the Stage 2 ratio runs with seeds 3 and 4, were not
+in the collected records, so the figure is a lower bound.
 
 \paragraph{Training recipe.}
 Every run uses batch size 128, linear warmup over the first 5\% of steps followed by cosine decay to zero, label smoothing 0.1, gradient-norm clipping at 1.0 and bf16 mixed precision. The real-only condition applies no augmentation; RandAugment applies two operations at magnitude 9 to the $32\times32$ image.
