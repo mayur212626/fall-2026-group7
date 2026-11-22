@@ -68,7 +68,23 @@ and the bootstrap holds the trained models fixed, so the two are read side by si
 	and that training image (bottom).}
 	\label{fig:flowers-lora-nearest}
 \end{figure}
-% TODO (Mayur): img2img and GAN sample grids, and the HAM10000 LoRA samples and nearest pairs, once in fig/.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{sd15_img2img_samples.pdf}
+	\caption{Real training images of ten CIFAR-100 classes and their Stable Diffusion img2img edits (strength 0.5),
+	$32\times32$ as used for training. Each edit keeps the layout and colours of its source image.}
+	\label{fig:img2img-samples}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{stylegan2ada_b50_samples.pdf}
+	\caption{Real training images of ten CIFAR-100 classes and samples of the class-conditional StyleGAN2-ADA trained
+	on the 5{,}000 images of the 50-images-per-class budget, $32\times32$.}
+	\label{fig:gan-samples}
+\end{figure}
+% TODO: HAM10000 LoRA sample grids and nearest pairs, once on main (sd15_lora_ham10000_*).
 
 \section{More result tables}
 \label{app:more-tables}

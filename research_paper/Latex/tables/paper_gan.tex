@@ -1,0 +1,22 @@
+\begin{table}[htbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\caption{CIFAR-100, class-conditional StyleGAN2-ADA images (GAN) at 50 images per class: change in test accuracy against real-only, class-prompt images (SD) and RandAugment (RA).}
+\label{tab:paper-gan}
+\begin{tabular}{llccc}
+\toprule
+Model & Img./class & \shortstack{GAN\\$-$real} & \shortstack{GAN\\$-$SD} & \shortstack{GAN\\$-$RA} \\
+\midrule
+\multicolumn{5}{l}{\textit{ImageNet-pretrained}} \\
+ResNet-50 & 50 & $-3.0$\,{\scriptsize$\pm$0.4}\,$\downarrow$ & $-5.0$\,{\scriptsize$\pm$0.3}\,$\downarrow$ & $-3.7$\,{\scriptsize$\pm$0.3}\,$\downarrow$ \\
+\addlinespace[2pt]
+ViT-B/16 & 50 & $-3.5$\,{\scriptsize$\pm$0.4}\,$\downarrow$ & $-4.4$\,{\scriptsize$\pm$0.4}\,$\downarrow$ & $-5.4$\,{\scriptsize$\pm$0.5}\,$\downarrow$ \\
+\midrule
+\multicolumn{5}{l}{\textit{Random initialization}} \\
+ResNet-50 & 50 & $+4.6$\,{\scriptsize$\pm$0.8}\,$\uparrow$ & $-4.1$\,{\scriptsize$\pm$2.8}\,$\downarrow$ & $-4.3$\,{\scriptsize$\pm$2.8}\,$\downarrow$ \\
+\addlinespace[2pt]
+ViT-B/16 & 50 & $+3.9$\,{\scriptsize$\pm$0.5}\,$\uparrow$ & $+0.6$\,{\scriptsize$\pm$0.4}\,$\uparrow$ & $-5.2$\,{\scriptsize$\pm$0.5}\,$\downarrow$ \\
+\bottomrule
+\end{tabular}
+\end{table}

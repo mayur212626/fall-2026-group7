@@ -82,7 +82,12 @@ Each budget's pool has as many images per class as the budget has real ones.
 \textbf{Image-to-image edits.} A third set, \textit{SD img2img}, edits the budget's own real images in the style of DA-Fusion~\cite{trabucco2024effective}: the same Stable Diffusion model, with the class prompts, changes each upsampled real image at strength 0.5, which keeps its layout and colours and adds detail. A run with $k$ images per class adds the edits of exactly its $k$ real images, so no other real image enters; this set covers 5 to 50 images per class.
 
 \textbf{Class-conditional GAN.} A class-conditional StyleGAN2-ADA~\cite{karras2020training} is trained from random initialization on the 5,000 real images of the 50-images-per-class budget only, in the CIFAR configuration (batch 64, R1 weight 0.01, adaptive augmentation target 0.6). It is trained until the discriminator has seen 20 million real images, and the snapshot with the lowest FID against the same 5,000 images is kept (after 8 million images, FID 25.9 with 5,000 generated images). The set has 450 images per class, sampled without truncation, and is used only at the budget it was trained on.
-% TODO (Mayur): one sentence on the GAN nearest-neighbour check, and a sample figure in the appendix.
+To check that the generator does not reproduce its training images, each of the 45{,}000 generated images was
+compared with its nearest training image, in Inception features and in pixels, against the same distance for
+held-out real images. In Inception features 0.1\% of the generated images are closer to a training image than
+the held-out 1st percentile, where 1\% would be expected by chance, and in pixels 1.5\%. The closest pairs, most
+of them in the \textit{cloud} (3.6\% of the class) and \textit{skunk} (3.3\%) classes, share pose and layout
+but are not copies. Samples of this set and of the img2img set are in Appendix~\ref{app:samples}.
 
 \subsection{Comparison and uncertainty}
 % Moved from the report.

@@ -10,10 +10,18 @@ Run from the repository root after the test tables are on main:
 
     python research_paper/Latex/make_tables.py
 
+The GAN comparison is built from the GAN run folders, which are not in the repository: with
+``--gan-runs runs`` the script first writes ``gan_paired_test.csv`` beside the report's tables from
+``runs/gan-{pretrained,scratch}/*/test_result.json``, paired by seed with the single-model test
+accuracies of real-only, class-prompt and RandAugment runs in ``ensemble_accuracy_test.csv``.
+
 The tables go to research_paper/Latex/tables/paper_<study>.tex.
 """
 
+import argparse
 import csv
+import json
+import statistics
 from pathlib import Path
 
 SOURCE = Path("reports/Latex_report/tables")
@@ -155,7 +163,58 @@ def stage3(dataset: str, display: str) -> dict[str, str]:
     return out
 
 
+GAN_CONTROLS = {"real_only": "GAN$-$real", "sd_prompt": "GAN$-$SD", "randaugment": "GAN$-$RA"}
+
+
+def gan_from_runs(runs: Path) -> Path:
+    """Paired test-accuracy changes of the GAN set (50 images per class) against its three controls."""
+    controls = {}
+    for r in read("ensemble_accuracy_test.csv"):
+        if not r["partner_seed"] and r["budget"] == "50":
+            controls[(r["init"], r["model"], r["condition"], int(r["seed"]))] = float(r["accuracy"])
+    gan = {}
+    for path in sorted(runs.glob("gan-*/*/test_result.json")):
+        run = path.parent.name
+        init, model = run.split("_")[0], next(m for m in MODELS if f"_{m}_" in run)
+        seed = int(run.rsplit("_s", 1)[1])
+        gan[(init, model, seed)] = json.loads(path.read_text(encoding="utf-8"))["test"]["accuracy"]
+    if not gan:
+        raise SystemExit(f"no GAN test results under {runs}/gan-*")
+    rows = []
+    for init, model in sorted({(i, m) for i, m, _ in gan}):
+        seeds = sorted(s for i, m, s in gan if (i, m) == (init, model))
+        for control, label in GAN_CONTROLS.items():
+            changes = [round(gan[(init, model, s)] - controls[(init, model, control, s)], 4) for s in seeds]
+            verdict = ("gain" if all(c > 0 for c in changes) else "loss" if all(c < 0 for c in changes)
+                       else "inconclusive")
+            rows.append({"treatment": "gan", "control": control, "label": label, "init": init, "model": model,
+                         "budget": "50", "seeds": " ".join(map(str, seeds)),
+                         "changes": " ".join(f"{c:g}" for c in changes),
+                         "mean": round(statistics.mean(changes), 4), "sd": round(statistics.stdev(changes), 4),
+                         "verdict": verdict})
+    path = SOURCE / "gan_paired_test.csv"
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
+    print(f"wrote {path}")
+    return path
+
+
+def gan() -> str:
+    columns = [(label, two_line(label.split("$-$")[0], "$-$" + label.split("$-$")[1]))
+               for label in GAN_CONTROLS.values()]
+    return table(read("gan_paired_test.csv"), columns,
+                 r"CIFAR-100, class-conditional StyleGAN2-ADA images (GAN) at 50 images per class: change in test "
+                 r"accuracy against real-only, class-prompt images (SD) and RandAugment (RA).", "tab:paper-gan")
+
+
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--gan-runs", type=Path, help="folder with gan-pretrained/ and gan-scratch/ run folders")
+    args = parser.parse_args()
+    if args.gan_runs:
+        gan_from_runs(args.gan_runs)
     OUT.mkdir(parents=True, exist_ok=True)
     tables = {
         "stage1": stage1(),
@@ -193,6 +252,8 @@ def main() -> None:
             r"policy, against the same policy alone.", "tab:paper-stacked"),
         "ensemble": ensemble(),
     }
+    if (SOURCE / "gan_paired_test.csv").exists():
+        tables["gan"] = gan()
     for dataset, display in (("flowers102", "Flowers-102"), ("ham10000", "HAM10000")):
         if not (SOURCE / f"stage3_{dataset}_paired_test.csv").exists():
             print(f"skip {display}: stage3_{dataset}_paired_test.csv is not on this branch yet")
