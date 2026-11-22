@@ -1,0 +1,15 @@
+{
+  "dataset": "flowers102",
+  "budget": "5",
+  "pool": "data/synthetic/sd15_lora_flowers102_b5/pool.npz",
+  "feature_model": "torchvision ResNet-50, IMAGENET1K_V2, pooled features, cosine similarity",
+  "generated_images": 510,
+  "held_out_images": 1020,
+  "generated_median": 0.701193630695343,
+  "held_out_median": 0.8135311901569366,
+  "held_out_p99": 0.9571743637323379,
+  "share_above_held_out_p99": 0.00196078431372549,
+  "near_copy_threshold": 0.95,
+  "share_near_copy": 0.00196078431372549,
+  "verdict": "no sign of copying"
+}
