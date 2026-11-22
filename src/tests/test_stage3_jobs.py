@@ -53,5 +53,21 @@ class SplitTest(unittest.TestCase):
         self.assertEqual(sj.split(self.jobs, 3), sj.split(sj.all_jobs(sj.load_steps("ham10000"), [0, 1, 2]), 3))
 
 
+class LoraGridTest(unittest.TestCase):
+    def test_lora_grid_size_and_names(self) -> None:
+        seeds = [0, 1, 2, 3, 4]
+        flowers = sj.all_jobs(sj.load_steps("flowers102"), seeds, sj.LORA_CONDITIONS)
+        ham = sj.all_jobs(sj.load_steps("ham10000"), seeds, sj.LORA_CONDITIONS)
+        self.assertEqual((len(flowers), len(ham)), (2 * 2 * 3 * 2 * 5, 2 * 2 * 4 * 2 * 5))
+        names = {j["name"] for j in ham}
+        self.assertIn("scratch_vit_b_16_sd_lora_randaugment_b50_s4", names)
+        self.assertIn("pretrained_resnet50_sd_lora_b5_s0", names)
+
+    def test_lora_names_do_not_collide_with_the_main_grid(self) -> None:
+        main = {j["name"] for j in sj.all_jobs(sj.load_steps("ham10000"), [0])}
+        lora = {j["name"] for j in sj.all_jobs(sj.load_steps("ham10000"), [0], sj.LORA_CONDITIONS)}
+        self.assertFalse(main & lora)
+
+
 if __name__ == "__main__":
     unittest.main()

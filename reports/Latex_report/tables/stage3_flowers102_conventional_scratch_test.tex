@@ -1,0 +1,21 @@
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\caption{Stage 3, Flowers-102, conventional augmentation against real-only, scratch initialization: change in test balanced accuracy (percentage points), paired by training seed, mean $\pm$ sample SD over 5 seeds. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise. RA: RandAugment, TA: TrivialAugment, AA: AutoAugment (ImageNet policy); SD: Stable Diffusion class prompts at 1:1 unless a ratio is given; LoRA: Stable Diffusion with the budget's LoRA adapter, 1:1; best conv.: the conventional augmentation with the highest mean validation balanced accuracy in that row (named in the scores table).}
+\label{tab:stage3-flowers102-conventional-scratch-test}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llrrrrrr}
+\toprule
+Model & Images/class & RA$-$real & TA$-$real & AA$-$real & AugMix$-$real & Mixup$-$real & CutMix$-$real \\
+\midrule
+ResNet-50 & 2 & +11.98 $\pm$ 0.75 $\uparrow$ & +11.28 $\pm$ 0.80 $\uparrow$ & +7.16 $\pm$ 0.38 $\uparrow$ & +3.69 $\pm$ 0.31 $\uparrow$ & -6.03 $\pm$ 0.98 $\downarrow$ & +1.86 $\pm$ 0.63 $\uparrow$ \\
+ResNet-50 & 5 & +17.93 $\pm$ 0.98 $\uparrow$ & +17.08 $\pm$ 1.48 $\uparrow$ & +11.72 $\pm$ 0.66 $\uparrow$ & +8.96 $\pm$ 1.05 $\uparrow$ & -3.18 $\pm$ 1.66 $\downarrow$ & +2.94 $\pm$ 0.78 $\uparrow$ \\
+ResNet-50 & 10 & +20.17 $\pm$ 2.60 $\uparrow$ & +19.37 $\pm$ 2.91 $\uparrow$ & +17.18 $\pm$ 2.17 $\uparrow$ & +11.41 $\pm$ 2.99 $\uparrow$ & +4.71 $\pm$ 2.84 $\uparrow$ & +2.59 $\pm$ 2.13 $\uparrow$ \\
+\midrule
+ViT-B/16 & 2 & +8.99 $\pm$ 0.55 $\uparrow$ & +8.06 $\pm$ 0.56 $\uparrow$ & +6.01 $\pm$ 0.70 $\uparrow$ & +4.56 $\pm$ 0.92 $\uparrow$ & +0.02 $\pm$ 0.59 $\sim$ & +7.97 $\pm$ 0.51 $\uparrow$ \\
+ViT-B/16 & 5 & +10.86 $\pm$ 0.79 $\uparrow$ & +9.47 $\pm$ 0.62 $\uparrow$ & +7.68 $\pm$ 1.38 $\uparrow$ & +5.72 $\pm$ 1.09 $\uparrow$ & +2.24 $\pm$ 0.83 $\uparrow$ & +6.34 $\pm$ 0.98 $\uparrow$ \\
+ViT-B/16 & 10 & +11.95 $\pm$ 0.64 $\uparrow$ & +10.82 $\pm$ 1.49 $\uparrow$ & +8.15 $\pm$ 1.24 $\uparrow$ & +6.14 $\pm$ 0.95 $\uparrow$ & +4.41 $\pm$ 1.26 $\uparrow$ & +7.66 $\pm$ 0.80 $\uparrow$ \\
+\bottomrule
+\end{tabular}}
+\end{table}

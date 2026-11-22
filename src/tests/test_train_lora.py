@@ -3,7 +3,7 @@
 import unittest
 
 from src.component.generate_sd import TEMPLATES
-from src.component.train_lora import STEPS, captions, training_plan
+from src.component.train_lora import STAGE3_STEPS, STEPS, captions, lora_steps, training_plan
 
 
 class TrainingPlanTest(unittest.TestCase):
@@ -33,6 +33,32 @@ class CaptionsTest(unittest.TestCase):
         names = ["apple", "aquarium_fish", "bear"]
         self.assertEqual(captions(names, [2, 0], [0, 0], "cfr"),
                          ["a photo of a cfr bear.", "a photo of a cfr apple."])
+
+
+class Stage3LoraTest(unittest.TestCase):
+    def test_steps_follow_the_cifar_budget(self) -> None:
+        self.assertEqual(lora_steps("cifar100", "full"), STEPS["full"])
+        self.assertEqual(lora_steps("ham10000", "50"), STEPS["50"])
+        self.assertEqual(lora_steps("flowers102", "10"), STEPS["10"])
+        self.assertEqual(lora_steps("flowers102", "2"), STEPS["5"])
+        self.assertEqual(STAGE3_STEPS["2"], STEPS["5"])
+
+    def test_budget_must_belong_to_the_dataset(self) -> None:
+        with self.assertRaises(ValueError):
+            lora_steps("flowers102", "50")
+        with self.assertRaises(ValueError):
+            lora_steps("ham10000", "2")
+
+    def test_template_indices_cover_the_dataset_templates(self) -> None:
+        plan = training_plan(30, 8, 50, seed=0, num_templates=3)
+        used = {t for step in plan for t in step["templates"]}
+        self.assertEqual(used, {0, 1, 2})
+
+    def test_captions_use_the_dataset_templates(self) -> None:
+        from src.component.stage3_data import DATASETS
+
+        templates = DATASETS["ham10000"]["templates"]
+        self.assertEqual(captions(["melanoma"], [0], [0], "cfr", templates), ["a dermoscopy image of cfr melanoma."])
 
 
 if __name__ == "__main__":

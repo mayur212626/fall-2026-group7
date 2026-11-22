@@ -131,3 +131,29 @@ python -m unittest discover -s src/tests -v
 ```
 
 The Stage 3 data, run-list and results tests use small synthetic inputs and need neither the datasets nor a GPU.
+
+## LoRA follow-up (added after the Stage 3 test results)
+
+Class-prompt Stable Diffusion images lowered accuracy on both Stage 3 datasets. For HAM10000 our explanation is the domain gap (SD 1.5 draws dermoscopy poorly); for Flowers-102 it is class fidelity (SD draws some species wrongly). Both explanations predict that a generator adapted to the real training images should do better. This follow-up tests that with the Stage 1 `sd_lora` method. It was decided **after** seeing the Stage 3 test results, so the paper reports it as a follow-up experiment, not part of the original protocol. The 1,400 Stage 3 runs are unchanged; the new runs pair with them by seed.
+
+**Fixed before any LoRA result (no tuning on the Stage 3 data):**
+- **Adapters:** one per data budget, fitted only on that budget's training images (Flowers-102: 204, 510 and 1,020 images; HAM10000: 35, 70, 140 and 350). The CIFAR-100 settings are unchanged: rank 8, learning rate 1e-4, batch 8, and the CIFAR step count of the same images-per-class budget (Flowers-102 at 2 per class uses the 5-image steps). Captions use the dataset's prompt templates with the identifier token.
+- **Pools:** 1:1, as many generated images per class as the budget has real ones.
+- **Conditions:** `sd_lora` and `sd_lora_randaugment` (RandAugment on real and generated images), with the dataset's learning rates and step budgets: 2 models × 2 initializations × budgets × 2 conditions × seeds 0–4. That is 120 runs for Flowers-102 and 160 for HAM10000.
+- **Comparisons** (paired by seed; the same verdict rule):
+  - LoRA − real-only
+  - LoRA+RA − RandAugment
+  - LoRA − class-prompt SD
+  - LoRA+RA − the best conventional augmentation, chosen on validation
+- **Memorization check:** the adapters keep CIFAR's step counts on far fewer images (HAM10000 at 5 per class is 35 images), so they may learn to reproduce them. `pool_memorization` compares each generated image's similarity to its nearest training image (ImageNet ResNet-50 features) with the same for held-out validation images. A gain from a pool that copies its training images is not reported as a gain from generation.
+- **Decision rule** (fixed in `pool_memorization.verdict` before any LoRA pool was generated): a pool is **flagged** when more than 5% of its images are above the held-out 99th percentile or more than 1% are above cosine 0.95. A gain from a flagged pool is reported as memorization, not as a gain from generation.
+- **One set of pools per dataset:** generate the adapters and pools on one instance, then copy `data/lora/sd15_lora_<dataset>_b*` and `data/synthetic/sd15_lora_<dataset>_b*` to the other instances and check that each `pool.npz` sha256 matches. Generating them on each instance may not give identical images, since the instances do not all run the same NVIDIA driver. Flowers-102 runs all its LoRA runs on one instance.
+
+```bash
+bash src/shellscripts/stage3_lora_setup.sh ham10000        # adapters, pools, memorization check, grids
+bash src/shellscripts/run_stage3_lora.sh ham10000 1 3      # one part per instance; every instance needs the same pools
+python -m src.component.evaluate_test --dataset ham10000 --root runs/ham10000-pretrained --confirm-protocol-frozen
+python -m src.component.stage3_results --dataset ham10000 --split test   # adds the stage3_<dataset>_lora_<init> tables
+```
+
+The test evaluation skips runs that already have a test result, so the original Stage 3 runs are not scored again.

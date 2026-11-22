@@ -1,0 +1,21 @@
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\caption{Stage 3, Flowers-102, conventional augmentation against real-only, pretrained initialization: change in test balanced accuracy (percentage points), paired by training seed, mean $\pm$ sample SD over 5 seeds. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise. RA: RandAugment, TA: TrivialAugment, AA: AutoAugment (ImageNet policy); SD: Stable Diffusion class prompts at 1:1 unless a ratio is given; LoRA: Stable Diffusion with the budget's LoRA adapter, 1:1; best conv.: the conventional augmentation with the highest mean validation balanced accuracy in that row (named in the scores table).}
+\label{tab:stage3-flowers102-conventional-pretrained-test}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llrrrrrr}
+\toprule
+Model & Images/class & RA$-$real & TA$-$real & AA$-$real & AugMix$-$real & Mixup$-$real & CutMix$-$real \\
+\midrule
+ResNet-50 & 2 & +4.52 $\pm$ 0.65 $\uparrow$ & +2.31 $\pm$ 1.62 $\uparrow$ & +4.31 $\pm$ 1.03 $\uparrow$ & +2.16 $\pm$ 1.37 $\uparrow$ & -7.77 $\pm$ 2.03 $\downarrow$ & -2.29 $\pm$ 0.90 $\downarrow$ \\
+ResNet-50 & 5 & +1.86 $\pm$ 1.10 $\uparrow$ & +1.09 $\pm$ 0.90 $\uparrow$ & +2.13 $\pm$ 1.08 $\uparrow$ & +0.68 $\pm$ 0.96 $\sim$ & -3.04 $\pm$ 1.79 $\downarrow$ & -1.57 $\pm$ 1.23 $\downarrow$ \\
+ResNet-50 & 10 & -0.33 $\pm$ 0.61 $\sim$ & +0.21 $\pm$ 0.28 $\sim$ & -0.33 $\pm$ 0.36 $\downarrow$ & -0.15 $\pm$ 0.41 $\sim$ & -1.70 $\pm$ 0.34 $\downarrow$ & -1.48 $\pm$ 0.59 $\downarrow$ \\
+\midrule
+ViT-B/16 & 2 & +8.04 $\pm$ 1.34 $\uparrow$ & +8.67 $\pm$ 0.79 $\uparrow$ & +8.17 $\pm$ 1.68 $\uparrow$ & +6.17 $\pm$ 1.65 $\uparrow$ & +0.48 $\pm$ 2.85 $\sim$ & +1.71 $\pm$ 2.29 $\sim$ \\
+ViT-B/16 & 5 & +3.16 $\pm$ 0.85 $\uparrow$ & +2.58 $\pm$ 0.42 $\uparrow$ & +2.92 $\pm$ 0.84 $\uparrow$ & +2.09 $\pm$ 0.48 $\uparrow$ & +0.02 $\pm$ 0.23 $\sim$ & -0.61 $\pm$ 0.72 $\sim$ \\
+ViT-B/16 & 10 & +0.26 $\pm$ 0.24 $\sim$ & +0.12 $\pm$ 0.40 $\sim$ & -0.27 $\pm$ 0.28 $\sim$ & -0.37 $\pm$ 0.13 $\downarrow$ & -0.54 $\pm$ 0.36 $\sim$ & -1.25 $\pm$ 0.42 $\downarrow$ \\
+\bottomrule
+\end{tabular}}
+\end{table}

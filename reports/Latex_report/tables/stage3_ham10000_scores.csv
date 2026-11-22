@@ -5,6 +5,8 @@ pretrained,resnet50,5,cutmix,5,0 1 2 3 4,47.9836,2.8716
 pretrained,resnet50,5,mixup,5,0 1 2 3 4,48.4438,2.3483
 pretrained,resnet50,5,randaugment,5,0 1 2 3 4,51.5258,1.6506
 pretrained,resnet50,5,real_only,5,0 1 2 3 4,48.4529,2.6779
+pretrained,resnet50,5,sd_lora,5,0 1 2 3 4,49.2728,3.0464
+pretrained,resnet50,5,sd_lora_randaugment,5,0 1 2 3 4,49.4032,4.0881
 pretrained,resnet50,5,sd_prompt,5,0 1 2 3 4,48.9119,1.3285
 pretrained,resnet50,5,sd_prompt_randaugment,5,0 1 2 3 4,51.1455,1.9312
 pretrained,resnet50,5,sd_prompt_randaugment_r5,5,0 1 2 3 4,47.7322,2.6212
@@ -15,6 +17,8 @@ pretrained,resnet50,10,cutmix,5,0 1 2 3 4,52.224,1.8539
 pretrained,resnet50,10,mixup,5,0 1 2 3 4,53.3629,2.5206
 pretrained,resnet50,10,randaugment,5,0 1 2 3 4,53.9576,2.4889
 pretrained,resnet50,10,real_only,5,0 1 2 3 4,50.422,1.6817
+pretrained,resnet50,10,sd_lora,5,0 1 2 3 4,53.6758,2.5379
+pretrained,resnet50,10,sd_lora_randaugment,5,0 1 2 3 4,52.0255,2.4469
 pretrained,resnet50,10,sd_prompt,5,0 1 2 3 4,51.2075,2.8236
 pretrained,resnet50,10,sd_prompt_randaugment,5,0 1 2 3 4,52.7213,1.5452
 pretrained,resnet50,10,sd_prompt_randaugment_r5,5,0 1 2 3 4,53.5677,2.1021
@@ -25,6 +29,8 @@ pretrained,resnet50,20,cutmix,5,0 1 2 3 4,62.2321,1.3249
 pretrained,resnet50,20,mixup,5,0 1 2 3 4,60.4368,1.0499
 pretrained,resnet50,20,randaugment,5,0 1 2 3 4,59.1401,2.5439
 pretrained,resnet50,20,real_only,5,0 1 2 3 4,59.2508,1.1098
+pretrained,resnet50,20,sd_lora,5,0 1 2 3 4,64.0969,2.3046
+pretrained,resnet50,20,sd_lora_randaugment,5,0 1 2 3 4,58.6599,2.4683
 pretrained,resnet50,20,sd_prompt,5,0 1 2 3 4,62.7651,1.5261
 pretrained,resnet50,20,sd_prompt_randaugment,5,0 1 2 3 4,57.9176,1.0792
 pretrained,resnet50,20,sd_prompt_randaugment_r5,5,0 1 2 3 4,61.0105,1.6702
@@ -35,6 +41,8 @@ pretrained,resnet50,50,cutmix,5,0 1 2 3 4,71.5215,1.8396
 pretrained,resnet50,50,mixup,5,0 1 2 3 4,67.3934,0.6979
 pretrained,resnet50,50,randaugment,5,0 1 2 3 4,66.0323,1.1681
 pretrained,resnet50,50,real_only,5,0 1 2 3 4,70.4219,1.4928
+pretrained,resnet50,50,sd_lora,5,0 1 2 3 4,70.3798,1.7357
+pretrained,resnet50,50,sd_lora_randaugment,5,0 1 2 3 4,68.8705,1.787
 pretrained,resnet50,50,sd_prompt,5,0 1 2 3 4,72.1658,2.5039
 pretrained,resnet50,50,sd_prompt_randaugment,5,0 1 2 3 4,68.2362,2.0267
 pretrained,resnet50,50,sd_prompt_randaugment_r5,5,0 1 2 3 4,67.7335,2.7275
@@ -45,6 +53,8 @@ pretrained,vit_b_16,5,cutmix,5,0 1 2 3 4,50.5238,2.1467
 pretrained,vit_b_16,5,mixup,5,0 1 2 3 4,52.1743,0.8893
 pretrained,vit_b_16,5,randaugment,5,0 1 2 3 4,54.6055,1.4158
 pretrained,vit_b_16,5,real_only,5,0 1 2 3 4,53.7329,2.6227
+pretrained,vit_b_16,5,sd_lora,5,0 1 2 3 4,50.59,1.2088
+pretrained,vit_b_16,5,sd_lora_randaugment,5,0 1 2 3 4,53.1807,0.8961
 pretrained,vit_b_16,5,sd_prompt,5,0 1 2 3 4,52.6026,3.4169
 pretrained,vit_b_16,5,sd_prompt_randaugment,5,0 1 2 3 4,53.06,1.5113
 pretrained,vit_b_16,5,sd_prompt_randaugment_r5,5,0 1 2 3 4,53.4187,1.3039
@@ -55,6 +65,8 @@ pretrained,vit_b_16,10,cutmix,5,0 1 2 3 4,51.3665,1.8645
 pretrained,vit_b_16,10,mixup,5,0 1 2 3 4,55.1597,0.8421
 pretrained,vit_b_16,10,randaugment,5,0 1 2 3 4,56.5526,2.1484
 pretrained,vit_b_16,10,real_only,5,0 1 2 3 4,54.1895,2.7034
+pretrained,vit_b_16,10,sd_lora,5,0 1 2 3 4,54.097,1.8555
+pretrained,vit_b_16,10,sd_lora_randaugment,5,0 1 2 3 4,52.8762,3.0276
 pretrained,vit_b_16,10,sd_prompt,5,0 1 2 3 4,52.7389,2.1325
 pretrained,vit_b_16,10,sd_prompt_randaugment,5,0 1 2 3 4,53.5815,1.3035
 pretrained,vit_b_16,10,sd_prompt_randaugment_r5,5,0 1 2 3 4,54.2212,2.0405
@@ -65,6 +77,8 @@ pretrained,vit_b_16,20,cutmix,5,0 1 2 3 4,60.9461,1.3208
 pretrained,vit_b_16,20,mixup,5,0 1 2 3 4,63.1759,1.4022
 pretrained,vit_b_16,20,randaugment,5,0 1 2 3 4,60.6118,1.6123
 pretrained,vit_b_16,20,real_only,5,0 1 2 3 4,62.0768,2.0837
+pretrained,vit_b_16,20,sd_lora,5,0 1 2 3 4,59.4457,1.2645
+pretrained,vit_b_16,20,sd_lora_randaugment,5,0 1 2 3 4,61.0226,1.8091
 pretrained,vit_b_16,20,sd_prompt,5,0 1 2 3 4,59.5712,1.5968
 pretrained,vit_b_16,20,sd_prompt_randaugment,5,0 1 2 3 4,61.5659,1.2517
 pretrained,vit_b_16,20,sd_prompt_randaugment_r5,5,0 1 2 3 4,59.4326,1.945
@@ -75,6 +89,8 @@ pretrained,vit_b_16,50,cutmix,5,0 1 2 3 4,71.5805,1.8512
 pretrained,vit_b_16,50,mixup,5,0 1 2 3 4,71.3144,0.7063
 pretrained,vit_b_16,50,randaugment,5,0 1 2 3 4,69.1872,1.784
 pretrained,vit_b_16,50,real_only,5,0 1 2 3 4,69.5971,1.7647
+pretrained,vit_b_16,50,sd_lora,5,0 1 2 3 4,68.0305,2.638
+pretrained,vit_b_16,50,sd_lora_randaugment,5,0 1 2 3 4,70.0092,0.6987
 pretrained,vit_b_16,50,sd_prompt,5,0 1 2 3 4,68.7051,1.621
 pretrained,vit_b_16,50,sd_prompt_randaugment,5,0 1 2 3 4,67.1764,1.3868
 pretrained,vit_b_16,50,sd_prompt_randaugment_r5,5,0 1 2 3 4,67.3789,1.6002
@@ -85,6 +101,8 @@ scratch,resnet50,5,cutmix,5,0 1 2 3 4,36.7886,1.7001
 scratch,resnet50,5,mixup,5,0 1 2 3 4,42.312,0.8156
 scratch,resnet50,5,randaugment,5,0 1 2 3 4,37.8769,3.3414
 scratch,resnet50,5,real_only,5,0 1 2 3 4,38.9983,4.0391
+scratch,resnet50,5,sd_lora,5,0 1 2 3 4,40.6607,3.0525
+scratch,resnet50,5,sd_lora_randaugment,5,0 1 2 3 4,41.321,0.9587
 scratch,resnet50,5,sd_prompt,5,0 1 2 3 4,29.1705,2.8502
 scratch,resnet50,5,sd_prompt_randaugment,5,0 1 2 3 4,39.2451,2.8517
 scratch,resnet50,5,sd_prompt_randaugment_r5,5,0 1 2 3 4,36.4055,2.2292
@@ -95,6 +113,8 @@ scratch,resnet50,10,cutmix,5,0 1 2 3 4,36.2428,1.2847
 scratch,resnet50,10,mixup,5,0 1 2 3 4,40.5056,2.5883
 scratch,resnet50,10,randaugment,5,0 1 2 3 4,32.7396,3.3362
 scratch,resnet50,10,real_only,5,0 1 2 3 4,38.5502,3.528
+scratch,resnet50,10,sd_lora,5,0 1 2 3 4,39.6561,2.238
+scratch,resnet50,10,sd_lora_randaugment,5,0 1 2 3 4,41.2355,0.4742
 scratch,resnet50,10,sd_prompt,5,0 1 2 3 4,34.6583,2.4388
 scratch,resnet50,10,sd_prompt_randaugment,5,0 1 2 3 4,39.8489,2.1848
 scratch,resnet50,10,sd_prompt_randaugment_r5,5,0 1 2 3 4,38.3913,1.6252
@@ -105,6 +125,8 @@ scratch,resnet50,20,cutmix,5,0 1 2 3 4,40.1089,1.5152
 scratch,resnet50,20,mixup,5,0 1 2 3 4,42.2144,2.8269
 scratch,resnet50,20,randaugment,5,0 1 2 3 4,41.7918,1.8297
 scratch,resnet50,20,real_only,5,0 1 2 3 4,42.3007,3.4791
+scratch,resnet50,20,sd_lora,5,0 1 2 3 4,41.7708,2.6269
+scratch,resnet50,20,sd_lora_randaugment,5,0 1 2 3 4,45.9797,2.7494
 scratch,resnet50,20,sd_prompt,5,0 1 2 3 4,34.8375,2.5242
 scratch,resnet50,20,sd_prompt_randaugment,5,0 1 2 3 4,41.6572,2.4184
 scratch,resnet50,20,sd_prompt_randaugment_r5,5,0 1 2 3 4,43.9852,1.9946
@@ -115,6 +137,8 @@ scratch,resnet50,50,cutmix,5,0 1 2 3 4,44.3508,1.0209
 scratch,resnet50,50,mixup,5,0 1 2 3 4,48.52,2.3543
 scratch,resnet50,50,randaugment,5,0 1 2 3 4,48.012,1.1497
 scratch,resnet50,50,real_only,5,0 1 2 3 4,44.9696,2.2018
+scratch,resnet50,50,sd_lora,5,0 1 2 3 4,46.6145,1.9232
+scratch,resnet50,50,sd_lora_randaugment,5,0 1 2 3 4,50.6825,1.4473
 scratch,resnet50,50,sd_prompt,5,0 1 2 3 4,38.9164,3.2049
 scratch,resnet50,50,sd_prompt_randaugment,5,0 1 2 3 4,49.8818,0.8966
 scratch,resnet50,50,sd_prompt_randaugment_r5,5,0 1 2 3 4,51.0401,0.9137
@@ -125,6 +149,8 @@ scratch,vit_b_16,5,cutmix,5,0 1 2 3 4,44.6067,1.5247
 scratch,vit_b_16,5,mixup,5,0 1 2 3 4,44.8133,0.685
 scratch,vit_b_16,5,randaugment,5,0 1 2 3 4,48.0853,2.0425
 scratch,vit_b_16,5,real_only,5,0 1 2 3 4,42.953,1.6719
+scratch,vit_b_16,5,sd_lora,5,0 1 2 3 4,39.5756,2.3484
+scratch,vit_b_16,5,sd_lora_randaugment,5,0 1 2 3 4,48.2266,1.1768
 scratch,vit_b_16,5,sd_prompt,5,0 1 2 3 4,39.8157,2.0074
 scratch,vit_b_16,5,sd_prompt_randaugment,5,0 1 2 3 4,47.7267,1.7154
 scratch,vit_b_16,5,sd_prompt_randaugment_r5,5,0 1 2 3 4,49.4936,1.7583
@@ -135,6 +161,8 @@ scratch,vit_b_16,10,cutmix,5,0 1 2 3 4,48.2748,2.9645
 scratch,vit_b_16,10,mixup,5,0 1 2 3 4,48.5605,0.9535
 scratch,vit_b_16,10,randaugment,5,0 1 2 3 4,49.242,1.747
 scratch,vit_b_16,10,real_only,5,0 1 2 3 4,44.2032,1.9812
+scratch,vit_b_16,10,sd_lora,5,0 1 2 3 4,45.9261,1.0596
+scratch,vit_b_16,10,sd_lora_randaugment,5,0 1 2 3 4,51.0126,2.0115
 scratch,vit_b_16,10,sd_prompt,5,0 1 2 3 4,42.8281,2.616
 scratch,vit_b_16,10,sd_prompt_randaugment,5,0 1 2 3 4,49.0198,0.7959
 scratch,vit_b_16,10,sd_prompt_randaugment_r5,5,0 1 2 3 4,51.0757,1.5492
@@ -145,6 +173,8 @@ scratch,vit_b_16,20,cutmix,5,0 1 2 3 4,50.6304,2.2142
 scratch,vit_b_16,20,mixup,5,0 1 2 3 4,51.9466,1.4239
 scratch,vit_b_16,20,randaugment,5,0 1 2 3 4,51.6902,1.4711
 scratch,vit_b_16,20,real_only,5,0 1 2 3 4,48.7123,2.0649
+scratch,vit_b_16,20,sd_lora,5,0 1 2 3 4,46.3453,1.6294
+scratch,vit_b_16,20,sd_lora_randaugment,5,0 1 2 3 4,52.216,1.5377
 scratch,vit_b_16,20,sd_prompt,5,0 1 2 3 4,47.1278,2.3109
 scratch,vit_b_16,20,sd_prompt_randaugment,5,0 1 2 3 4,51.4708,1.7718
 scratch,vit_b_16,20,sd_prompt_randaugment_r5,5,0 1 2 3 4,50.6059,0.8903
@@ -155,6 +185,8 @@ scratch,vit_b_16,50,cutmix,5,0 1 2 3 4,55.2197,1.2779
 scratch,vit_b_16,50,mixup,5,0 1 2 3 4,53.6382,1.0701
 scratch,vit_b_16,50,randaugment,5,0 1 2 3 4,56.295,0.8707
 scratch,vit_b_16,50,real_only,5,0 1 2 3 4,50.0473,1.9112
+scratch,vit_b_16,50,sd_lora,5,0 1 2 3 4,50.4908,1.9814
+scratch,vit_b_16,50,sd_lora_randaugment,5,0 1 2 3 4,55.8904,1.768
 scratch,vit_b_16,50,sd_prompt,5,0 1 2 3 4,50.1205,2.6992
 scratch,vit_b_16,50,sd_prompt_randaugment,5,0 1 2 3 4,55.8796,0.9337
 scratch,vit_b_16,50,sd_prompt_randaugment_r5,5,0 1 2 3 4,54.543,0.897

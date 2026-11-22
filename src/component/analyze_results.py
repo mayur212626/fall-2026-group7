@@ -36,6 +36,7 @@ CONDITION_NAMES = {
     "randaugment": "RandAugment",
     "sd_prompt": "SD class prompts",
     "sd_lora": "SD + LoRA",
+    "sd_lora_randaugment": "SD + LoRA + RandAugment",
     "sd_prompt_randaugment": "SD class prompts + RandAugment",
     "sd_prompt_only": "SD class prompts only",
     "sd_img2img": "SD img2img",
@@ -53,7 +54,7 @@ CONDITION_NAMES = {
     "sd_prompt_randaugment_cutmix": "SD class prompts + RandAugment + CutMix",
     "sd_prompt_randaugment_r5": "SD class prompts 5:1 + RandAugment",
 }
-CONDITION_LINES = {"real_only": "-", "randaugment": "--", "sd_prompt": ":", "sd_lora": "-.",
+CONDITION_LINES = {"real_only": "-", "randaugment": "--", "sd_prompt": ":", "sd_lora": "-.", "sd_lora_randaugment": "-.",
                    "sd_prompt_randaugment": (0, (3, 1, 1, 1, 1, 1)), "sd_prompt_only": (0, (1, 3)), "sd_img2img": (0, (5, 2)),
                    "sd_prompt_r2": (0, (1, 1)), "sd_prompt_r5": (0, (4, 1, 1, 1)), "mixup": (0, (6, 2)),
                    "cutmix": (0, (2, 2)), "trivialaugment": (0, (8, 2)), "autoaugment": (0, (8, 2, 2, 2)),
@@ -61,7 +62,7 @@ CONDITION_LINES = {"real_only": "-", "randaugment": "--", "sd_prompt": ":", "sd_
                    "sd_prompt_autoaugment": (0, (3, 1, 3, 3)), "sd_prompt_augmix": (0, (1, 2, 3, 2)),
                    "sd_prompt_cutmix": (0, (4, 2, 1, 2)), "sd_prompt_randaugment_cutmix": (0, (6, 1, 1, 1)),
                    "sd_prompt_randaugment_r5": (0, (5, 1))}
-CONDITION_MARKERS = {"real_only": "o", "randaugment": "o", "sd_prompt": "^", "sd_lora": "v",
+CONDITION_MARKERS = {"real_only": "o", "randaugment": "o", "sd_prompt": "^", "sd_lora": "v", "sd_lora_randaugment": "<",
                      "sd_prompt_randaugment": "s", "sd_prompt_only": "D", "sd_img2img": "P",
                      "sd_prompt_r2": "h", "sd_prompt_r5": "X", "mixup": "<", "cutmix": ">",
                      "trivialaugment": "d", "autoaugment": "p", "augmix": "*", "sd_prompt_trivialaugment": "1",

@@ -1,0 +1,21 @@
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\caption{Stage 3, Flowers-102, LoRA-adapted Stable Diffusion (follow-up experiment added after the Stage 3 test results; an adapter per budget fitted on that budget's training images only, images at 1:1) against its controls, scratch initialization: change in test balanced accuracy (percentage points), paired by training seed, mean $\pm$ sample SD over 5 seeds. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise. RA: RandAugment, TA: TrivialAugment, AA: AutoAugment (ImageNet policy); SD: Stable Diffusion class prompts at 1:1 unless a ratio is given; LoRA: Stable Diffusion with the budget's LoRA adapter, 1:1; best conv.: the conventional augmentation with the highest mean validation balanced accuracy in that row (named in the scores table).}
+\label{tab:stage3-flowers102-lora-scratch-test}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llrrrr}
+\toprule
+Model & Images/class & LoRA$-$real & LoRA+RA$-$RA & LoRA$-$SD & LoRA+RA$-$best conv. \\
+\midrule
+ResNet-50 & 2 & -1.99 $\pm$ 1.06 $\downarrow$ & -1.51 $\pm$ 0.68 $\downarrow$ & +0.74 $\pm$ 0.85 $\sim$ & -0.81 $\pm$ 0.83 $\sim$ \\
+ResNet-50 & 5 & -3.23 $\pm$ 1.95 $\downarrow$ & -4.10 $\pm$ 0.67 $\downarrow$ & +1.22 $\pm$ 1.26 $\sim$ & -4.10 $\pm$ 0.67 $\downarrow$ \\
+ResNet-50 & 10 & -3.21 $\pm$ 1.62 $\downarrow$ & -3.16 $\pm$ 0.23 $\downarrow$ & +1.09 $\pm$ 0.79 $\uparrow$ & -3.16 $\pm$ 0.23 $\downarrow$ \\
+\midrule
+ViT-B/16 & 2 & -0.28 $\pm$ 0.37 $\sim$ & -0.15 $\pm$ 0.56 $\sim$ & +0.45 $\pm$ 0.63 $\sim$ & -0.15 $\pm$ 0.56 $\sim$ \\
+ViT-B/16 & 5 & -1.00 $\pm$ 1.45 $\sim$ & -1.21 $\pm$ 1.21 $\sim$ & +0.55 $\pm$ 0.55 $\sim$ & -1.21 $\pm$ 1.21 $\sim$ \\
+ViT-B/16 & 10 & -2.62 $\pm$ 1.02 $\downarrow$ & -1.89 $\pm$ 0.82 $\downarrow$ & -0.53 $\pm$ 1.06 $\sim$ & -1.89 $\pm$ 0.82 $\downarrow$ \\
+\bottomrule
+\end{tabular}}
+\end{table}

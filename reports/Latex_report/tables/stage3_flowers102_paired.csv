@@ -1,0 +1,181 @@
+study,treatment,control,label,best,init,model,budget,seeds,changes,mean,sd,verdict
+conventional,randaugment,real_only,RA$-$real,,pretrained,resnet50,2,0 1 2 3 4,0.8824 2.1569 5.1961 3.2353 3.2353,2.9412,1.5899,gain
+conventional,trivialaugment,real_only,TA$-$real,,pretrained,resnet50,2,0 1 2 3 4,0.098 2.7451 2.9412 0.1961 1.0784,1.4118,1.3631,gain
+conventional,autoaugment,real_only,AA$-$real,,pretrained,resnet50,2,0 1 2 3 4,1.5686 1.6667 4.7059 1.4706 4.7059,2.8235,1.7197,gain
+conventional,augmix,real_only,AugMix$-$real,,pretrained,resnet50,2,0 1 2 3 4,0.7843 1.7647 3.7255 0.3922 2.7451,1.8824,1.3767,gain
+conventional,mixup,real_only,Mixup$-$real,,pretrained,resnet50,2,0 1 2 3 4,-8.3333 -7.549 -5.1961 -11.8627 -6.9608,-7.9804,2.4584,loss
+conventional,cutmix,real_only,CutMix$-$real,,pretrained,resnet50,2,0 1 2 3 4,-3.4314 -5.1961 -1.3725 -2.6471 -1.7647,-2.8824,1.5198,loss
+conventional,randaugment,real_only,RA$-$real,,pretrained,resnet50,5,0 1 2 3 4,-1.3725 2.0588 3.2353 -0.3922 0.9804,0.902,1.8464,inconclusive
+conventional,trivialaugment,real_only,TA$-$real,,pretrained,resnet50,5,0 1 2 3 4,-0.3922 0.8824 1.6667 0.0 -0.0,0.4314,0.8336,inconclusive
+conventional,autoaugment,real_only,AA$-$real,,pretrained,resnet50,5,0 1 2 3 4,0.0 1.1765 2.549 0.9804 0.4902,1.0392,0.9596,gain
+conventional,augmix,real_only,AugMix$-$real,,pretrained,resnet50,5,0 1 2 3 4,-1.6667 0.9804 0.6863 -0.098 -0.6863,-0.1569,1.0686,inconclusive
+conventional,mixup,real_only,Mixup$-$real,,pretrained,resnet50,5,0 1 2 3 4,-4.8039 -4.2157 -2.0588 -5.5882 -5.5882,-4.451,1.4568,loss
+conventional,cutmix,real_only,CutMix$-$real,,pretrained,resnet50,5,0 1 2 3 4,-3.8235 0.3922 -0.7843 -3.7255 -3.0392,-2.1961,1.8967,inconclusive
+conventional,randaugment,real_only,RA$-$real,,pretrained,resnet50,10,0 1 2 3 4,-0.2941 -0.7843 0.5882 -1.7647 0.4902,-0.3529,0.972,inconclusive
+conventional,trivialaugment,real_only,TA$-$real,,pretrained,resnet50,10,0 1 2 3 4,-0.8824 -0.2941 -0.0 -0.1961 -0.1961,-0.3137,0.3353,loss
+conventional,autoaugment,real_only,AA$-$real,,pretrained,resnet50,10,0 1 2 3 4,0.2941 -0.7843 -1.3725 -0.5882 0.0,-0.4902,0.6577,inconclusive
+conventional,augmix,real_only,AugMix$-$real,,pretrained,resnet50,10,0 1 2 3 4,-0.6863 -0.3922 0.2941 -0.2941 0.4902,-0.1176,0.4922,inconclusive
+conventional,mixup,real_only,Mixup$-$real,,pretrained,resnet50,10,0 1 2 3 4,-1.5686 -1.6667 -1.4706 -2.7451 -1.7647,-1.8431,0.516,loss
+conventional,cutmix,real_only,CutMix$-$real,,pretrained,resnet50,10,0 1 2 3 4,-2.0588 -0.5882 -1.2745 -2.549 -0.2941,-1.3529,0.9541,loss
+conventional,randaugment,real_only,RA$-$real,,pretrained,vit_b_16,2,0 1 2 3 4,8.2353 7.549 11.3725 9.5098 8.5294,9.0392,1.4826,gain
+conventional,trivialaugment,real_only,TA$-$real,,pretrained,vit_b_16,2,0 1 2 3 4,8.1373 8.6275 11.2745 8.8235 10.0,9.3725,1.2643,gain
+conventional,autoaugment,real_only,AA$-$real,,pretrained,vit_b_16,2,0 1 2 3 4,6.7647 7.6471 12.6471 8.0392 8.8235,8.7843,2.2831,gain
+conventional,augmix,real_only,AugMix$-$real,,pretrained,vit_b_16,2,0 1 2 3 4,6.2745 5.8824 9.7059 7.3529 5.4902,6.9412,1.6944,gain
+conventional,mixup,real_only,Mixup$-$real,,pretrained,vit_b_16,2,0 1 2 3 4,2.0588 -0.3922 4.6078 3.9216 0.6863,2.1765,2.1089,inconclusive
+conventional,cutmix,real_only,CutMix$-$real,,pretrained,vit_b_16,2,0 1 2 3 4,1.7647 2.3529 8.1373 4.6078 2.8431,3.9412,2.5747,gain
+conventional,randaugment,real_only,RA$-$real,,pretrained,vit_b_16,5,0 1 2 3 4,2.1569 2.549 3.5294 3.4314 3.0392,2.9412,0.5841,gain
+conventional,trivialaugment,real_only,TA$-$real,,pretrained,vit_b_16,5,0 1 2 3 4,2.9412 3.5294 3.0392 3.0392 3.6275,3.2353,0.3177,gain
+conventional,autoaugment,real_only,AA$-$real,,pretrained,vit_b_16,5,0 1 2 3 4,2.549 2.1569 3.7255 3.8235 3.2353,3.098,0.7291,gain
+conventional,augmix,real_only,AugMix$-$real,,pretrained,vit_b_16,5,0 1 2 3 4,1.0784 1.7647 2.7451 2.7451 1.4706,1.9608,0.7562,gain
+conventional,mixup,real_only,Mixup$-$real,,pretrained,vit_b_16,5,0 1 2 3 4,-0.098 0.1961 1.6667 1.4706 1.8627,1.0196,0.9028,inconclusive
+conventional,cutmix,real_only,CutMix$-$real,,pretrained,vit_b_16,5,0 1 2 3 4,-0.098 0.8824 1.2745 1.1765 -0.5882,0.5294,0.8278,inconclusive
+conventional,randaugment,real_only,RA$-$real,,pretrained,vit_b_16,10,0 1 2 3 4,0.2941 -0.1961 0.5882 0.3922 1.2745,0.4706,0.5343,inconclusive
+conventional,trivialaugment,real_only,TA$-$real,,pretrained,vit_b_16,10,0 1 2 3 4,0.0 0.2941 -0.2941 0.3922 1.2745,0.3333,0.5907,inconclusive
+conventional,autoaugment,real_only,AA$-$real,,pretrained,vit_b_16,10,0 1 2 3 4,0.4902 -0.1961 -0.6863 -1.1765 0.7843,-0.1569,0.8102,inconclusive
+conventional,augmix,real_only,AugMix$-$real,,pretrained,vit_b_16,10,0 1 2 3 4,0.3922 -0.098 -0.3922 -0.4902 0.2941,-0.0588,0.3958,inconclusive
+conventional,mixup,real_only,Mixup$-$real,,pretrained,vit_b_16,10,0 1 2 3 4,-0.098 0.0 -0.8824 -0.7843 0.0,-0.3529,0.4417,inconclusive
+conventional,cutmix,real_only,CutMix$-$real,,pretrained,vit_b_16,10,0 1 2 3 4,-1.0784 -0.3922 -0.9804 -0.3922 0.6863,-0.4314,0.7022,inconclusive
+sd,sd_prompt,real_only,SD$-$real,,pretrained,resnet50,2,0 1 2 3 4,2.549 -0.4902 2.2549 0.2941 1.7647,1.2745,1.3135,inconclusive
+sd,sd_prompt,randaugment,SD$-$RA,,pretrained,resnet50,2,0 1 2 3 4,1.6667 -2.6471 -2.9412 -2.9412 -1.4706,-1.6667,1.9596,inconclusive
+sd,sd_prompt_randaugment,randaugment,SD+RA$-$RA,,pretrained,resnet50,2,0 1 2 3 4,3.4314 0.2941 -0.9804 0.9804 0.5882,0.8627,1.613,inconclusive
+sd,sd_prompt_randaugment_r5,randaugment,SD 5:1+RA$-$RA,,pretrained,resnet50,2,0 1 2 3 4,0.3922 -0.3922 -2.2549 -3.3333 -2.0588,-1.5294,1.5039,inconclusive
+sd,sd_prompt_randaugment_r5,best_conventional,SD 5:1+RA$-$best conv.,randaugment,pretrained,resnet50,2,0 1 2 3 4,0.3922 -0.3922 -2.2549 -3.3333 -2.0588,-1.5294,1.5039,inconclusive
+sd,sd_prompt,real_only,SD$-$real,,pretrained,resnet50,5,0 1 2 3 4,-4.2157 -1.0784 -0.098 -2.6471 -2.6471,-2.1373,1.5905,loss
+sd,sd_prompt,randaugment,SD$-$RA,,pretrained,resnet50,5,0 1 2 3 4,-2.8431 -3.1373 -3.3333 -2.2549 -3.6275,-3.0392,0.5234,loss
+sd,sd_prompt_randaugment,randaugment,SD+RA$-$RA,,pretrained,resnet50,5,0 1 2 3 4,-0.4902 -3.1373 -2.7451 -1.7647 -2.3529,-2.098,1.032,loss
+sd,sd_prompt_randaugment_r5,randaugment,SD 5:1+RA$-$RA,,pretrained,resnet50,5,0 1 2 3 4,-5.2941 -7.0588 -7.0588 -4.0196 -8.1373,-6.3137,1.6385,loss
+sd,sd_prompt_randaugment_r5,best_conventional,SD 5:1+RA$-$best conv.,autoaugment,pretrained,resnet50,5,0 1 2 3 4,-6.6667 -6.1765 -6.3725 -5.3922 -7.6471,-6.451,0.8185,loss
+sd,sd_prompt,real_only,SD$-$real,,pretrained,resnet50,10,0 1 2 3 4,-1.8627 -1.8627 -2.1569 -2.9412 -1.3725,-2.0392,0.5775,loss
+sd,sd_prompt,randaugment,SD$-$RA,,pretrained,resnet50,10,0 1 2 3 4,-1.5686 -1.0784 -2.7451 -1.1765 -1.8627,-1.6863,0.67,loss
+sd,sd_prompt_randaugment,randaugment,SD+RA$-$RA,,pretrained,resnet50,10,0 1 2 3 4,-0.9804 -1.6667 -2.549 -0.098 -2.3529,-1.5294,1.0108,loss
+sd,sd_prompt_randaugment_r5,randaugment,SD 5:1+RA$-$RA,,pretrained,resnet50,10,0 1 2 3 4,-4.2157 -4.6078 -5.098 -4.0196 -5.7843,-4.7451,0.7124,loss
+sd,sd_prompt_randaugment_r5,best_conventional,SD 5:1+RA$-$best conv.,augmix,pretrained,resnet50,10,0 1 2 3 4,-3.8235 -5.0 -4.8039 -5.4902 -5.7843,-4.9804,0.7543,loss
+sd,sd_prompt,real_only,SD$-$real,,pretrained,vit_b_16,2,0 1 2 3 4,0.6863 0.3922 4.2157 0.9804 1.8627,1.6275,1.548,gain
+sd,sd_prompt,randaugment,SD$-$RA,,pretrained,vit_b_16,2,0 1 2 3 4,-7.549 -7.1569 -7.1569 -8.5294 -6.6667,-7.4118,0.6988,loss
+sd,sd_prompt_randaugment,randaugment,SD+RA$-$RA,,pretrained,vit_b_16,2,0 1 2 3 4,0.7843 2.0588 0.9804 0.4902 1.4706,1.1569,0.6177,gain
+sd,sd_prompt_randaugment_r5,randaugment,SD 5:1+RA$-$RA,,pretrained,vit_b_16,2,0 1 2 3 4,-0.2941 2.3529 -1.3725 -1.7647 -0.2941,-0.2745,1.6071,inconclusive
+sd,sd_prompt_randaugment_r5,best_conventional,SD 5:1+RA$-$best conv.,trivialaugment,pretrained,vit_b_16,2,0 1 2 3 4,-0.1961 1.2745 -1.2745 -1.0784 -1.7647,-0.6078,1.1955,inconclusive
+sd,sd_prompt,real_only,SD$-$real,,pretrained,vit_b_16,5,0 1 2 3 4,-0.6863 -1.3725 -1.7647 -0.9804 -1.0784,-1.1765,0.4101,loss
+sd,sd_prompt,randaugment,SD$-$RA,,pretrained,vit_b_16,5,0 1 2 3 4,-2.8431 -3.9216 -5.2941 -4.4118 -4.1176,-4.1176,0.8851,loss
+sd,sd_prompt_randaugment,randaugment,SD+RA$-$RA,,pretrained,vit_b_16,5,0 1 2 3 4,-0.2941 -0.3922 -1.9608 -1.4706 -1.8627,-1.1961,0.8007,loss
+sd,sd_prompt_randaugment_r5,randaugment,SD 5:1+RA$-$RA,,pretrained,vit_b_16,5,0 1 2 3 4,-6.3725 -6.0784 -8.2353 -6.4706 -6.7647,-6.7843,0.8473,loss
+sd,sd_prompt_randaugment_r5,best_conventional,SD 5:1+RA$-$best conv.,trivialaugment,pretrained,vit_b_16,5,0 1 2 3 4,-7.1569 -7.0588 -7.7451 -6.0784 -7.3529,-7.0784,0.6177,loss
+sd,sd_prompt,real_only,SD$-$real,,pretrained,vit_b_16,10,0 1 2 3 4,-1.5686 -1.7647 -2.2549 -2.2549 -1.5686,-1.8824,0.3494,loss
+sd,sd_prompt,randaugment,SD$-$RA,,pretrained,vit_b_16,10,0 1 2 3 4,-1.8627 -1.5686 -2.8431 -2.6471 -2.8431,-2.3529,0.5963,loss
+sd,sd_prompt_randaugment,randaugment,SD+RA$-$RA,,pretrained,vit_b_16,10,0 1 2 3 4,-1.9608 -0.9804 -2.451 -2.1569 -2.7451,-2.0588,0.6721,loss
+sd,sd_prompt_randaugment_r5,randaugment,SD 5:1+RA$-$RA,,pretrained,vit_b_16,10,0 1 2 3 4,-5.4902 -4.8039 -7.3529 -6.7647 -6.1765,-6.1176,1.0084,loss
+sd,sd_prompt_randaugment_r5,best_conventional,SD 5:1+RA$-$best conv.,randaugment,pretrained,vit_b_16,10,0 1 2 3 4,-5.4902 -4.8039 -7.3529 -6.7647 -6.1765,-6.1176,1.0084,loss
+lora,sd_lora,real_only,LoRA$-$real,,pretrained,resnet50,2,0 1 2 3 4,-0.098 1.0784 1.9608 0.0 -0.3922,0.5098,0.9838,inconclusive
+lora,sd_lora_randaugment,randaugment,LoRA+RA$-$RA,,pretrained,resnet50,2,0 1 2 3 4,2.2549 1.0784 0.9804 -1.4706 0.7843,0.7255,1.356,inconclusive
+lora,sd_lora,sd_prompt,LoRA$-$SD,,pretrained,resnet50,2,0 1 2 3 4,-2.6471 1.5686 -0.2941 -0.2941 -2.1569,-0.7647,1.6859,inconclusive
+lora,sd_lora_randaugment,best_conventional,LoRA+RA$-$best conv.,randaugment,pretrained,resnet50,2,0 1 2 3 4,2.2549 1.0784 0.9804 -1.4706 0.7843,0.7255,1.356,inconclusive
+lora,sd_lora,real_only,LoRA$-$real,,pretrained,resnet50,5,0 1 2 3 4,-5.2941 -1.2745 -1.4706 -1.5686 -3.5294,-2.6275,1.7475,loss
+lora,sd_lora_randaugment,randaugment,LoRA+RA$-$RA,,pretrained,resnet50,5,0 1 2 3 4,-2.7451 -3.1373 -4.8039 -1.4706 -3.8235,-3.1961,1.2413,loss
+lora,sd_lora,sd_prompt,LoRA$-$SD,,pretrained,resnet50,5,0 1 2 3 4,-1.0784 -0.1961 -1.3725 1.0784 -0.8824,-0.4902,0.9779,inconclusive
+lora,sd_lora_randaugment,best_conventional,LoRA+RA$-$best conv.,autoaugment,pretrained,resnet50,5,0 1 2 3 4,-4.1176 -2.2549 -4.1176 -2.8431 -3.3333,-3.3333,0.8114,loss
+lora,sd_lora,real_only,LoRA$-$real,,pretrained,resnet50,10,0 1 2 3 4,-1.9608 -1.6667 -1.8627 -2.3529 -1.5686,-1.8824,0.3053,loss
+lora,sd_lora_randaugment,randaugment,LoRA+RA$-$RA,,pretrained,resnet50,10,0 1 2 3 4,-1.9608 -0.5882 -3.7255 -1.5686 -1.3725,-1.8431,1.165,loss
+lora,sd_lora,sd_prompt,LoRA$-$SD,,pretrained,resnet50,10,0 1 2 3 4,-0.098 0.1961 0.2941 0.5882 -0.1961,0.1569,0.3146,inconclusive
+lora,sd_lora_randaugment,best_conventional,LoRA+RA$-$best conv.,augmix,pretrained,resnet50,10,0 1 2 3 4,-1.5686 -0.9804 -3.4314 -3.0392 -1.3725,-2.0784,1.086,loss
+lora,sd_lora,real_only,LoRA$-$real,,pretrained,vit_b_16,2,0 1 2 3 4,-0.1961 0.8824 3.5294 0.1961 0.5882,1.0,1.4712,inconclusive
+lora,sd_lora_randaugment,randaugment,LoRA+RA$-$RA,,pretrained,vit_b_16,2,0 1 2 3 4,0.5882 1.9608 2.0588 -0.7843 1.4706,1.0588,1.1834,inconclusive
+lora,sd_lora,sd_prompt,LoRA$-$SD,,pretrained,vit_b_16,2,0 1 2 3 4,-0.8824 0.4902 -0.6863 -0.7843 -1.2745,-0.6275,0.6635,inconclusive
+lora,sd_lora_randaugment,best_conventional,LoRA+RA$-$best conv.,trivialaugment,pretrained,vit_b_16,2,0 1 2 3 4,0.6863 0.8824 2.1569 -0.098 0.0,0.7255,0.9055,inconclusive
+lora,sd_lora,real_only,LoRA$-$real,,pretrained,vit_b_16,5,0 1 2 3 4,-0.0 -0.8824 -0.8824 0.4902 -1.4706,-0.549,0.7831,inconclusive
+lora,sd_lora_randaugment,randaugment,LoRA+RA$-$RA,,pretrained,vit_b_16,5,0 1 2 3 4,-1.7647 -1.7647 -0.8824 -0.9804 -1.7647,-1.4314,0.4577,loss
+lora,sd_lora,sd_prompt,LoRA$-$SD,,pretrained,vit_b_16,5,0 1 2 3 4,0.6863 0.4902 0.8824 1.4706 -0.3922,0.6275,0.6778,inconclusive
+lora,sd_lora_randaugment,best_conventional,LoRA+RA$-$best conv.,trivialaugment,pretrained,vit_b_16,5,0 1 2 3 4,-2.549 -2.7451 -0.3922 -0.5882 -2.3529,-1.7255,1.1383,loss
+lora,sd_lora,real_only,LoRA$-$real,,pretrained,vit_b_16,10,0 1 2 3 4,-2.451 -1.8627 -1.5686 -3.0392 -1.8627,-2.1569,0.5882,loss
+lora,sd_lora_randaugment,randaugment,LoRA+RA$-$RA,,pretrained,vit_b_16,10,0 1 2 3 4,-1.0784 -0.3922 -1.9608 -1.9608 -1.2745,-1.3333,0.6599,loss
+lora,sd_lora,sd_prompt,LoRA$-$SD,,pretrained,vit_b_16,10,0 1 2 3 4,-0.8824 -0.098 0.6863 -0.7843 -0.2941,-0.2745,0.6293,inconclusive
+lora,sd_lora_randaugment,best_conventional,LoRA+RA$-$best conv.,randaugment,pretrained,vit_b_16,10,0 1 2 3 4,-1.0784 -0.3922 -1.9608 -1.9608 -1.2745,-1.3333,0.6599,loss
+conventional,randaugment,real_only,RA$-$real,,scratch,resnet50,2,0 1 2 3 4,10.098 12.2549 11.3725 12.8431 10.8824,11.4902,1.0882,gain
+conventional,trivialaugment,real_only,TA$-$real,,scratch,resnet50,2,0 1 2 3 4,11.2745 11.8627 13.7255 13.1373 11.0784,12.2157,1.1654,gain
+conventional,autoaugment,real_only,AA$-$real,,scratch,resnet50,2,0 1 2 3 4,5.7843 6.3725 6.1765 7.3529 7.549,6.6471,0.767,gain
+conventional,augmix,real_only,AugMix$-$real,,scratch,resnet50,2,0 1 2 3 4,1.5686 1.7647 2.7451 3.8235 -0.1961,1.9412,1.4939,inconclusive
+conventional,mixup,real_only,Mixup$-$real,,scratch,resnet50,2,0 1 2 3 4,-6.4706 -5.4902 -8.0392 -5.7843 -5.9804,-6.3529,1.0079,loss
+conventional,cutmix,real_only,CutMix$-$real,,scratch,resnet50,2,0 1 2 3 4,4.1176 3.5294 2.2549 3.7255 2.8431,3.2941,0.7421,gain
+conventional,randaugment,real_only,RA$-$real,,scratch,resnet50,5,0 1 2 3 4,20.3922 19.7059 18.7255 18.6275 18.6275,19.2157,0.7995,gain
+conventional,trivialaugment,real_only,TA$-$real,,scratch,resnet50,5,0 1 2 3 4,17.1569 22.2549 19.3137 16.6667 18.7255,18.8235,2.2053,gain
+conventional,autoaugment,real_only,AA$-$real,,scratch,resnet50,5,0 1 2 3 4,13.0392 15.4902 15.2941 13.2353 15.3922,14.4902,1.2389,gain
+conventional,augmix,real_only,AugMix$-$real,,scratch,resnet50,5,0 1 2 3 4,9.1176 11.9608 11.0784 7.7451 9.6078,9.902,1.6565,gain
+conventional,mixup,real_only,Mixup$-$real,,scratch,resnet50,5,0 1 2 3 4,-3.5294 0.7843 -1.8627 -3.4314 -5.9804,-2.8039,2.4885,inconclusive
+conventional,cutmix,real_only,CutMix$-$real,,scratch,resnet50,5,0 1 2 3 4,2.0588 4.1176 2.451 1.1765 2.549,2.4706,1.0681,gain
+conventional,randaugment,real_only,RA$-$real,,scratch,resnet50,10,0 1 2 3 4,23.7255 17.0588 19.5098 14.4118 19.8039,18.902,3.4644,gain
+conventional,trivialaugment,real_only,TA$-$real,,scratch,resnet50,10,0 1 2 3 4,23.0392 18.0392 18.7255 14.8039 18.7255,18.6667,2.9343,gain
+conventional,autoaugment,real_only,AA$-$real,,scratch,resnet50,10,0 1 2 3 4,20.1961 15.7843 15.9804 13.4314 17.1569,16.5098,2.4643,gain
+conventional,augmix,real_only,AugMix$-$real,,scratch,resnet50,10,0 1 2 3 4,15.3922 11.2745 9.6078 6.0784 14.0196,11.2745,3.6833,gain
+conventional,mixup,real_only,Mixup$-$real,,scratch,resnet50,10,0 1 2 3 4,8.4314 3.4314 2.2549 -1.8627 4.5098,3.3529,3.7264,inconclusive
+conventional,cutmix,real_only,CutMix$-$real,,scratch,resnet50,10,0 1 2 3 4,6.0784 -0.4902 1.1765 -3.1373 0.9804,0.9216,3.3589,inconclusive
+conventional,randaugment,real_only,RA$-$real,,scratch,vit_b_16,2,0 1 2 3 4,9.0196 8.6275 8.9216 9.4118 10.098,9.2157,0.5674,gain
+conventional,trivialaugment,real_only,TA$-$real,,scratch,vit_b_16,2,0 1 2 3 4,8.8235 8.4314 8.2353 9.4118 7.8431,8.549,0.598,gain
+conventional,autoaugment,real_only,AA$-$real,,scratch,vit_b_16,2,0 1 2 3 4,6.5686 7.6471 6.6667 7.8431 5.5882,6.8627,0.9118,gain
+conventional,augmix,real_only,AugMix$-$real,,scratch,vit_b_16,2,0 1 2 3 4,4.8039 4.902 3.9216 5.2941 3.2353,4.4314,0.8359,gain
+conventional,mixup,real_only,Mixup$-$real,,scratch,vit_b_16,2,0 1 2 3 4,-0.098 -1.0784 0.098 -0.1961 0.098,-0.2353,0.4882,inconclusive
+conventional,cutmix,real_only,CutMix$-$real,,scratch,vit_b_16,2,0 1 2 3 4,8.4314 6.1765 7.1569 8.0392 7.549,7.4706,0.8697,gain
+conventional,randaugment,real_only,RA$-$real,,scratch,vit_b_16,5,0 1 2 3 4,9.6078 9.4118 10.9804 11.4706 10.2941,10.3529,0.8785,gain
+conventional,trivialaugment,real_only,TA$-$real,,scratch,vit_b_16,5,0 1 2 3 4,8.4314 8.4314 9.902 8.4314 10.1961,9.0784,0.8921,gain
+conventional,autoaugment,real_only,AA$-$real,,scratch,vit_b_16,5,0 1 2 3 4,7.549 7.1569 7.3529 6.0784 7.2549,7.0784,0.5775,gain
+conventional,augmix,real_only,AugMix$-$real,,scratch,vit_b_16,5,0 1 2 3 4,4.7059 4.6078 5.0 4.3137 6.1765,4.9608,0.7224,gain
+conventional,mixup,real_only,Mixup$-$real,,scratch,vit_b_16,5,0 1 2 3 4,-0.2941 1.3725 3.4314 1.8627 2.0588,1.6863,1.345,inconclusive
+conventional,cutmix,real_only,CutMix$-$real,,scratch,vit_b_16,5,0 1 2 3 4,4.7059 4.7059 6.8627 6.3725 8.4314,6.2157,1.5741,gain
+conventional,randaugment,real_only,RA$-$real,,scratch,vit_b_16,10,0 1 2 3 4,13.2353 12.3529 12.7451 15.5882 11.8627,13.1569,1.4499,gain
+conventional,trivialaugment,real_only,TA$-$real,,scratch,vit_b_16,10,0 1 2 3 4,10.3922 9.2157 11.1765 12.9412 10.8824,10.9216,1.3542,gain
+conventional,autoaugment,real_only,AA$-$real,,scratch,vit_b_16,10,0 1 2 3 4,8.4314 6.7647 9.0196 11.3725 9.2157,8.9608,1.6574,gain
+conventional,augmix,real_only,AugMix$-$real,,scratch,vit_b_16,10,0 1 2 3 4,6.2745 5.4902 6.0784 8.3333 5.2941,6.2941,1.2095,gain
+conventional,mixup,real_only,Mixup$-$real,,scratch,vit_b_16,10,0 1 2 3 4,3.7255 2.8431 5.2941 5.4902 3.4314,4.1569,1.1736,gain
+conventional,cutmix,real_only,CutMix$-$real,,scratch,vit_b_16,10,0 1 2 3 4,7.549 7.1569 9.1176 9.8039 7.451,8.2157,1.1711,gain
+sd,sd_prompt,real_only,SD$-$real,,scratch,resnet50,2,0 1 2 3 4,-2.549 -3.5294 -3.6275 -3.1373 -4.5098,-3.4706,0.7191,loss
+sd,sd_prompt,randaugment,SD$-$RA,,scratch,resnet50,2,0 1 2 3 4,-12.6471 -15.7843 -15.0 -15.9804 -15.3922,-14.9608,1.3471,loss
+sd,sd_prompt_randaugment,randaugment,SD+RA$-$RA,,scratch,resnet50,2,0 1 2 3 4,0.3922 -3.4314 -1.6667 -1.4706 -0.7843,-1.3922,1.3958,inconclusive
+sd,sd_prompt_randaugment_r5,randaugment,SD 5:1+RA$-$RA,,scratch,resnet50,2,0 1 2 3 4,0.3922 0.4902 1.2745 -2.549 0.0,-0.0784,1.4565,inconclusive
+sd,sd_prompt_randaugment_r5,best_conventional,SD 5:1+RA$-$best conv.,trivialaugment,scratch,resnet50,2,0 1 2 3 4,-0.7843 0.8824 -1.0784 -2.8431 -0.1961,-0.8039,1.3645,inconclusive
+sd,sd_prompt,real_only,SD$-$real,,scratch,resnet50,5,0 1 2 3 4,-6.3725 -0.9804 -5.4902 -6.1765 -5.6863,-4.9412,2.2427,loss
+sd,sd_prompt,randaugment,SD$-$RA,,scratch,resnet50,5,0 1 2 3 4,-26.7647 -20.6863 -24.2157 -24.8039 -24.3137,-24.1569,2.1962,loss
+sd,sd_prompt_randaugment,randaugment,SD+RA$-$RA,,scratch,resnet50,5,0 1 2 3 4,-5.8824 -4.8039 -1.5686 -6.4706 -2.2549,-4.1961,2.1828,loss
+sd,sd_prompt_randaugment_r5,randaugment,SD 5:1+RA$-$RA,,scratch,resnet50,5,0 1 2 3 4,-11.8627 -5.4902 -5.8824 -5.098 -6.3725,-6.9412,2.7915,loss
+sd,sd_prompt_randaugment_r5,best_conventional,SD 5:1+RA$-$best conv.,randaugment,scratch,resnet50,5,0 1 2 3 4,-11.8627 -5.4902 -5.8824 -5.098 -6.3725,-6.9412,2.7915,loss
+sd,sd_prompt,real_only,SD$-$real,,scratch,resnet50,10,0 1 2 3 4,-2.2549 -7.3529 -5.9804 -10.1961 -3.9216,-5.9412,3.0727,loss
+sd,sd_prompt,randaugment,SD$-$RA,,scratch,resnet50,10,0 1 2 3 4,-25.9804 -24.4118 -25.4902 -24.6078 -23.7255,-24.8431,0.8948,loss
+sd,sd_prompt_randaugment,randaugment,SD+RA$-$RA,,scratch,resnet50,10,0 1 2 3 4,-1.9608 -0.2941 -1.5686 -1.1765 -1.3725,-1.2745,0.6201,loss
+sd,sd_prompt_randaugment_r5,randaugment,SD 5:1+RA$-$RA,,scratch,resnet50,10,0 1 2 3 4,-5.2941 -2.7451 -5.1961 -5.2941 -4.7059,-4.6471,1.0908,loss
+sd,sd_prompt_randaugment_r5,best_conventional,SD 5:1+RA$-$best conv.,randaugment,scratch,resnet50,10,0 1 2 3 4,-5.2941 -2.7451 -5.1961 -5.2941 -4.7059,-4.6471,1.0908,loss
+sd,sd_prompt,real_only,SD$-$real,,scratch,vit_b_16,2,0 1 2 3 4,-1.8627 -2.7451 -1.5686 -1.9608 -1.6667,-1.9608,0.465,loss
+sd,sd_prompt,randaugment,SD$-$RA,,scratch,vit_b_16,2,0 1 2 3 4,-10.8824 -11.3725 -10.4902 -11.3725 -11.7647,-11.1765,0.4951,loss
+sd,sd_prompt_randaugment,randaugment,SD+RA$-$RA,,scratch,vit_b_16,2,0 1 2 3 4,-1.8627 -1.3725 -1.7647 -2.3529 -3.1373,-2.098,0.6778,loss
+sd,sd_prompt_randaugment_r5,randaugment,SD 5:1+RA$-$RA,,scratch,vit_b_16,2,0 1 2 3 4,-1.8627 -1.3725 -0.8824 -2.8431 -3.1373,-2.0196,0.9571,loss
+sd,sd_prompt_randaugment_r5,best_conventional,SD 5:1+RA$-$best conv.,randaugment,scratch,vit_b_16,2,0 1 2 3 4,-1.8627 -1.3725 -0.8824 -2.8431 -3.1373,-2.0196,0.9571,loss
+sd,sd_prompt,real_only,SD$-$real,,scratch,vit_b_16,5,0 1 2 3 4,-2.9412 -2.2549 -1.5686 -1.1765 -2.6471,-2.1176,0.7356,loss
+sd,sd_prompt,randaugment,SD$-$RA,,scratch,vit_b_16,5,0 1 2 3 4,-12.549 -11.6667 -12.549 -12.6471 -12.9412,-12.4706,0.4773,loss
+sd,sd_prompt_randaugment,randaugment,SD+RA$-$RA,,scratch,vit_b_16,5,0 1 2 3 4,-2.9412 -0.7843 -2.451 -3.2353 -1.0784,-2.098,1.1062,loss
+sd,sd_prompt_randaugment_r5,randaugment,SD 5:1+RA$-$RA,,scratch,vit_b_16,5,0 1 2 3 4,-3.6275 -2.9412 -2.3529 -5.3922 -3.0392,-3.4706,1.1654,loss
+sd,sd_prompt_randaugment_r5,best_conventional,SD 5:1+RA$-$best conv.,randaugment,scratch,vit_b_16,5,0 1 2 3 4,-3.6275 -2.9412 -2.3529 -5.3922 -3.0392,-3.4706,1.1654,loss
+sd,sd_prompt,real_only,SD$-$real,,scratch,vit_b_16,10,0 1 2 3 4,-1.3725 -4.2157 -0.3922 -0.4902 -1.7647,-1.6471,1.5492,loss
+sd,sd_prompt,randaugment,SD$-$RA,,scratch,vit_b_16,10,0 1 2 3 4,-14.6078 -16.5686 -13.1373 -16.0784 -13.6275,-14.8039,1.4949,loss
+sd,sd_prompt_randaugment,randaugment,SD+RA$-$RA,,scratch,vit_b_16,10,0 1 2 3 4,-1.5686 -2.7451 -1.8627 -4.6078 0.098,-2.1373,1.7225,inconclusive
+sd,sd_prompt_randaugment_r5,randaugment,SD 5:1+RA$-$RA,,scratch,vit_b_16,10,0 1 2 3 4,-4.1176 -2.3529 -2.7451 -5.098 -2.2549,-3.3137,1.2448,loss
+sd,sd_prompt_randaugment_r5,best_conventional,SD 5:1+RA$-$best conv.,randaugment,scratch,vit_b_16,10,0 1 2 3 4,-4.1176 -2.3529 -2.7451 -5.098 -2.2549,-3.3137,1.2448,loss
+lora,sd_lora,real_only,LoRA$-$real,,scratch,resnet50,2,0 1 2 3 4,-3.3333 -2.451 -1.7647 -0.9804 -0.9804,-1.902,1.0084,loss
+lora,sd_lora_randaugment,randaugment,LoRA+RA$-$RA,,scratch,resnet50,2,0 1 2 3 4,1.2745 -0.098 -0.8824 -1.5686 -1.8627,-0.6275,1.2624,inconclusive
+lora,sd_lora,sd_prompt,LoRA$-$SD,,scratch,resnet50,2,0 1 2 3 4,-0.7843 1.0784 1.8627 2.1569 3.5294,1.5686,1.5854,inconclusive
+lora,sd_lora_randaugment,best_conventional,LoRA+RA$-$best conv.,trivialaugment,scratch,resnet50,2,0 1 2 3 4,0.098 0.2941 -3.2353 -1.8627 -2.0588,-1.3529,1.5099,inconclusive
+lora,sd_lora,real_only,LoRA$-$real,,scratch,resnet50,5,0 1 2 3 4,-2.6471 -0.5882 -6.0784 -3.5294 -4.1176,-3.3922,2.0111,loss
+lora,sd_lora_randaugment,randaugment,LoRA+RA$-$RA,,scratch,resnet50,5,0 1 2 3 4,-5.7843 -1.9608 -2.7451 -4.2157 -4.4118,-3.8235,1.4981,loss
+lora,sd_lora,sd_prompt,LoRA$-$SD,,scratch,resnet50,5,0 1 2 3 4,3.7255 0.3922 -0.5882 2.6471 1.5686,1.549,1.7211,inconclusive
+lora,sd_lora_randaugment,best_conventional,LoRA+RA$-$best conv.,randaugment,scratch,resnet50,5,0 1 2 3 4,-5.7843 -1.9608 -2.7451 -4.2157 -4.4118,-3.8235,1.4981,loss
+lora,sd_lora,real_only,LoRA$-$real,,scratch,resnet50,10,0 1 2 3 4,-1.8627 -3.4314 -6.4706 -8.2353 -3.7255,-4.7451,2.5609,loss
+lora,sd_lora_randaugment,randaugment,LoRA+RA$-$RA,,scratch,resnet50,10,0 1 2 3 4,-3.0392 -0.1961 -4.6078 -2.2549 -2.9412,-2.6078,1.5999,loss
+lora,sd_lora,sd_prompt,LoRA$-$SD,,scratch,resnet50,10,0 1 2 3 4,0.3922 3.9216 -0.4902 1.9608 0.1961,1.1961,1.768,inconclusive
+lora,sd_lora_randaugment,best_conventional,LoRA+RA$-$best conv.,randaugment,scratch,resnet50,10,0 1 2 3 4,-3.0392 -0.1961 -4.6078 -2.2549 -2.9412,-2.6078,1.5999,loss
+lora,sd_lora,real_only,LoRA$-$real,,scratch,vit_b_16,2,0 1 2 3 4,-0.6863 -2.1569 -0.6863 -2.2549 -0.8824,-1.3333,0.8013,loss
+lora,sd_lora_randaugment,randaugment,LoRA+RA$-$RA,,scratch,vit_b_16,2,0 1 2 3 4,-1.4706 -1.7647 -1.7647 -0.098 -2.8431,-1.5882,0.9838,loss
+lora,sd_lora,sd_prompt,LoRA$-$SD,,scratch,vit_b_16,2,0 1 2 3 4,1.1765 0.5882 0.8824 -0.2941 0.7843,0.6275,0.5572,inconclusive
+lora,sd_lora_randaugment,best_conventional,LoRA+RA$-$best conv.,randaugment,scratch,vit_b_16,2,0 1 2 3 4,-1.4706 -1.7647 -1.7647 -0.098 -2.8431,-1.5882,0.9838,loss
+lora,sd_lora,real_only,LoRA$-$real,,scratch,vit_b_16,5,0 1 2 3 4,-2.3529 -3.0392 0.3922 -2.1569 -1.2745,-1.6863,1.3215,inconclusive
+lora,sd_lora_randaugment,randaugment,LoRA+RA$-$RA,,scratch,vit_b_16,5,0 1 2 3 4,-2.7451 -0.6863 -0.9804 -2.6471 -1.8627,-1.7843,0.9388,loss
+lora,sd_lora,sd_prompt,LoRA$-$SD,,scratch,vit_b_16,5,0 1 2 3 4,0.5882 -0.7843 1.9608 -0.9804 1.3725,0.4314,1.2962,inconclusive
+lora,sd_lora_randaugment,best_conventional,LoRA+RA$-$best conv.,randaugment,scratch,vit_b_16,5,0 1 2 3 4,-2.7451 -0.6863 -0.9804 -2.6471 -1.8627,-1.7843,0.9388,loss
+lora,sd_lora,real_only,LoRA$-$real,,scratch,vit_b_16,10,0 1 2 3 4,-3.3333 -3.4314 -0.8824 -1.9608 -3.6275,-2.6471,1.1866,loss
+lora,sd_lora_randaugment,randaugment,LoRA+RA$-$RA,,scratch,vit_b_16,10,0 1 2 3 4,-3.4314 -3.3333 -1.9608 -5.098 -2.2549,-3.2157,1.2351,loss
+lora,sd_lora,sd_prompt,LoRA$-$SD,,scratch,vit_b_16,10,0 1 2 3 4,-1.9608 0.7843 -0.4902 -1.4706 -1.8627,-1.0,1.1546,inconclusive
+lora,sd_lora_randaugment,best_conventional,LoRA+RA$-$best conv.,randaugment,scratch,vit_b_16,10,0 1 2 3 4,-3.4314 -3.3333 -1.9608 -5.098 -2.2549,-3.2157,1.2351,loss

@@ -1,0 +1,23 @@
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\caption{Stage 3, HAM10000, LoRA-adapted Stable Diffusion (follow-up experiment added after the Stage 3 test results; an adapter per budget fitted on that budget's training images only, images at 1:1) against its controls, scratch initialization: change in test balanced accuracy (percentage points), paired by training seed, mean $\pm$ sample SD over 5 seeds. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise. RA: RandAugment, TA: TrivialAugment, AA: AutoAugment (ImageNet policy); SD: Stable Diffusion class prompts at 1:1 unless a ratio is given; LoRA: Stable Diffusion with the budget's LoRA adapter, 1:1; best conv.: the conventional augmentation with the highest mean validation balanced accuracy in that row (named in the scores table).}
+\label{tab:stage3-ham10000-lora-scratch-test}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llrrrr}
+\toprule
+Model & Images/class & LoRA$-$real & LoRA+RA$-$RA & LoRA$-$SD & LoRA+RA$-$best conv. \\
+\midrule
+ResNet-50 & 5 & -1.35 $\pm$ 2.81 $\sim$ & +0.52 $\pm$ 2.67 $\sim$ & +7.18 $\pm$ 3.45 $\uparrow$ & -6.47 $\pm$ 1.69 $\downarrow$ \\
+ResNet-50 & 10 & +2.16 $\pm$ 1.83 $\uparrow$ & -0.08 $\pm$ 4.53 $\sim$ & +3.92 $\pm$ 3.68 $\sim$ & -7.42 $\pm$ 3.51 $\downarrow$ \\
+ResNet-50 & 20 & -0.24 $\pm$ 1.40 $\sim$ & +4.10 $\pm$ 3.89 $\uparrow$ & +5.31 $\pm$ 1.78 $\uparrow$ & -9.05 $\pm$ 1.94 $\downarrow$ \\
+ResNet-50 & 50 & +4.61 $\pm$ 2.10 $\uparrow$ & +2.02 $\pm$ 3.49 $\sim$ & +11.85 $\pm$ 2.34 $\uparrow$ & -8.09 $\pm$ 3.34 $\downarrow$ \\
+\midrule
+ViT-B/16 & 5 & -0.76 $\pm$ 1.69 $\sim$ & +0.20 $\pm$ 2.22 $\sim$ & +2.11 $\pm$ 1.46 $\uparrow$ & +0.20 $\pm$ 2.22 $\sim$ \\
+ViT-B/16 & 10 & -1.93 $\pm$ 1.98 $\sim$ & -1.02 $\pm$ 4.64 $\sim$ & +2.28 $\pm$ 1.93 $\sim$ & -3.20 $\pm$ 3.72 $\sim$ \\
+ViT-B/16 & 20 & -2.01 $\pm$ 1.85 $\sim$ & -2.67 $\pm$ 3.38 $\downarrow$ & -1.41 $\pm$ 2.73 $\sim$ & -3.43 $\pm$ 1.39 $\downarrow$ \\
+ViT-B/16 & 50 & +0.58 $\pm$ 2.76 $\sim$ & +1.27 $\pm$ 3.05 $\sim$ & +2.95 $\pm$ 2.79 $\sim$ & -0.44 $\pm$ 2.29 $\sim$ \\
+\bottomrule
+\end{tabular}}
+\end{table}

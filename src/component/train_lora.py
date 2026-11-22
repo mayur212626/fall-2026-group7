@@ -1,4 +1,4 @@
-"""LoRA adaptation of Stable Diffusion 1.5 to one CIFAR-100 data budget (condition ``sd_lora``).
+"""LoRA adaptation of Stable Diffusion 1.5 to one data budget (condition ``sd_lora``).
 
 Each data budget gets its own adapter, fitted only on that budget's real
 training images (proposal, Phase 5), so a generator never sees images the
@@ -27,6 +27,18 @@ training seed and the step. Outputs in ``--output-dir``:
     loss.jsonl                          mean loss every 50 steps
 
     python -m src.component.train_lora --budget 5 --output-dir data/lora/sd15_lora_b5
+
+Stage 3 (``--dataset flowers102`` or ``ham10000``) uses the same objective
+and the same settings as CIFAR-100, unchanged: rank 8, learning rate 1e-4,
+batch 8 and the CIFAR-100 step count of the same images-per-class budget
+(Flowers-102 at 2 images per class uses the 5-image steps, as its classifiers
+do). Each adapter sees only its budget's training images, stored at 224x224
+and upsampled to 512x512; captions use the dataset's prompt templates with
+the identifier token ("a dermoscopy image of cfr melanoma."). This LoRA
+follow-up was added after the Stage 3 test results, to test whether adapting
+the generator to the real images removes the losses of class-prompt images.
+
+    python -m src.component.train_lora --dataset ham10000 --budget 5 --output-dir data/lora/sd15_lora_ham10000_b5
 """
 
 import argparse
@@ -41,16 +53,20 @@ from typing import Sequence
 import numpy as np
 
 from src.component.generate_sd import IDENTIFIER, MODEL_ID, TEMPLATES, prompt_for
+from src.component.stage3_data import DATASETS as STAGE3_DATASETS
 
 # Optimizer steps per data budget (batch 8). About 16 passes over the 500
 # images of the smallest budget, and one pass over the 45,000 images of the
 # full training set.
 STEPS = {"5": 1000, "10": 1500, "20": 2000, "50": 3000, "full": 6000}
+# Stage 3 keeps the CIFAR-100 step count of the same images-per-class budget; 2 per class uses the 5-image steps.
+STAGE3_STEPS = {"2": STEPS["5"], **{b: STEPS[b] for b in ("5", "10", "20", "50")}}
 LORA_TARGETS = ["to_q", "to_k", "to_v", "to_out.0"]
 LOG_EVERY = 50
 
 
-def training_plan(num_items: int, batch_size: int, steps: int, seed: int) -> list[dict]:
+def training_plan(num_items: int, batch_size: int, steps: int, seed: int,
+                  num_templates: int = len(TEMPLATES)) -> list[dict]:
     """Return, for every step, the item positions, template indices and flips of its batch.
 
     Items are visited in epochs; epoch ``e`` is a permutation drawn from
@@ -68,24 +84,40 @@ def training_plan(num_items: int, batch_size: int, steps: int, seed: int) -> lis
                 order = np.random.default_rng([seed, epoch]).permutation(num_items)
             rng = np.random.default_rng([seed, 1_000_003, k])
             positions.append(int(order[k % num_items]))
-            templates.append(int(rng.integers(len(TEMPLATES))))
+            templates.append(int(rng.integers(num_templates)))
             flips.append(bool(rng.integers(2)))
         plan.append({"positions": positions, "templates": templates, "flips": flips})
     return plan
 
 
-def captions(class_names: Sequence[str], labels: Sequence[int], templates: Sequence[int], identifier: str) -> list[str]:
+def captions(class_names: Sequence[str], labels: Sequence[int], templates: Sequence[int], identifier: str,
+             prompt_templates: Sequence[str] = TEMPLATES) -> list[str]:
     """Training captions: the pool's prompt template for each image, with the identifier token."""
-    return [prompt_for(class_names[label], t, identifier) for label, t in zip(labels, templates, strict=True)]
+    return [prompt_for(class_names[label], t, identifier, tuple(prompt_templates))
+            for label, t in zip(labels, templates, strict=True)]
+
+
+def lora_steps(dataset: str, budget: str) -> int:
+    """Optimizer steps of one adapter: the CIFAR-100 count of the same images-per-class budget.
+
+    Raises:
+        ValueError: If the budget is not one of the dataset's budgets.
+    """
+    if dataset == "cifar100":
+        return STEPS[budget]
+    if budget not in STAGE3_DATASETS[dataset]["budgets"]:
+        raise ValueError(f"{dataset} has budgets {STAGE3_DATASETS[dataset]['budgets']}, not {budget}")
+    return STAGE3_STEPS[budget]
 
 
 def main() -> None:
     """Fit one LoRA adapter on one data budget and save it."""
-    parser = argparse.ArgumentParser(description="Fit a Stable Diffusion LoRA adapter to one CIFAR-100 budget.")
-    parser.add_argument("--budget", choices=list(STEPS), required=True)
+    parser = argparse.ArgumentParser(description="Fit a Stable Diffusion LoRA adapter to one data budget.")
+    parser.add_argument("--dataset", choices=["cifar100", *STAGE3_DATASETS], default="cifar100")
+    parser.add_argument("--budget", choices=["2", "5", "10", "20", "50", "full"], required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
-    parser.add_argument("--data-root", type=Path, default=Path("data/cifar100"))
-    parser.add_argument("--manifest", type=Path, default=Path("src/component/configs/splits/cifar100.json"))
+    parser.add_argument("--data-root", type=Path, help="default: data/<dataset>")
+    parser.add_argument("--manifest", type=Path, help="default: src/component/configs/splits/<dataset>.json")
     parser.add_argument("--model", default=MODEL_ID)
     parser.add_argument("--revision", help="model commit; default: the current one, recorded in lora.json")
     parser.add_argument("--rank", type=int, default=8, help="LoRA rank (planned range 4-16)")
@@ -102,6 +134,13 @@ def main() -> None:
         print(f"{out} already has an adapter; delete it to fit again")
         return
 
+    try:
+        default_steps = lora_steps(args.dataset, args.budget)
+    except (KeyError, ValueError) as error:
+        parser.error(str(error))
+    args.data_root = args.data_root or Path("data") / args.dataset
+    args.manifest = args.manifest or Path("src/component/configs/splits") / f"{args.dataset}.json"
+
     import torch
     import torch.nn.functional as F
     from diffusers import AutoencoderKL, DDPMScheduler, StableDiffusionPipeline, UNet2DConditionModel
@@ -109,20 +148,30 @@ def main() -> None:
     from huggingface_hub import model_info
     from peft import LoraConfig
     from peft.utils import get_peft_model_state_dict
-    from torchvision.datasets import CIFAR100
     from transformers import CLIPTextModel, CLIPTokenizer
 
     from src.component.cifar_splits import labels_sha256
     from src.component.data import budget_indices, load_manifest
 
-    dataset = CIFAR100(args.data_root, train=True, download=False)
     manifest = load_manifest(args.manifest)
-    if labels_sha256(dataset.targets) != manifest["labels_sha256"]:
-        raise ValueError("CIFAR-100 labels do not match the split manifest")
+    if args.dataset == "cifar100":
+        from torchvision.datasets import CIFAR100
+
+        dataset = CIFAR100(args.data_root, train=True, download=False)
+        all_images, all_labels, class_names = dataset.data, dataset.targets, dataset.classes
+        prompt_templates, source_size = TEMPLATES, 32
+    else:
+        from src.component.stage3_data import load_images
+
+        all_images, all_labels = load_images(args.data_root)
+        spec = STAGE3_DATASETS[args.dataset]
+        class_names, prompt_templates, source_size = spec["classes"], spec["templates"], all_images.shape[1]
+    if labels_sha256(all_labels) != manifest["labels_sha256"]:
+        raise ValueError(f"{args.dataset} labels do not match the split manifest")
     indices = budget_indices(manifest, args.budget)
-    images = torch.from_numpy(dataset.data[indices]).permute(0, 3, 1, 2).contiguous()  # (N, 3, 32, 32) uint8
-    labels = [dataset.targets[i] for i in indices]
-    steps = args.steps or STEPS[args.budget]
+    images = torch.from_numpy(np.array(all_images[indices])).permute(0, 3, 1, 2).contiguous()  # (N, 3, H, W) uint8
+    labels = [all_labels[i] for i in indices]
+    steps = args.steps or default_steps
 
     device = torch.device("cuda")
     torch.manual_seed(args.seed)
@@ -146,7 +195,7 @@ def main() -> None:
     warmup = max(1, steps // 20)
     scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lambda s: min(1.0, (s + 1) / warmup))
 
-    plan = training_plan(len(indices), args.batch_size, steps, args.seed)
+    plan = training_plan(len(indices), args.batch_size, steps, args.seed, len(prompt_templates))
     out.mkdir(parents=True, exist_ok=True)
     loss_log = (out / "loss.jsonl").open("w", encoding="utf-8")
     generator = torch.Generator(device=device).manual_seed(args.seed)
@@ -159,8 +208,8 @@ def main() -> None:
         x = torch.where(flip, x.flip(-1), x)
         x = F.interpolate(x, size=(args.resolution, args.resolution), mode="bicubic", align_corners=False)
         x = (x.clamp(0, 1) * 2 - 1)
-        prompts = captions(dataset.classes, [labels[p] for p in batch["positions"]], batch["templates"],
-                           args.identifier)
+        prompts = captions(class_names, [labels[p] for p in batch["positions"]], batch["templates"],
+                           args.identifier, prompt_templates)
         tokens = tokenizer(prompts, padding="max_length", max_length=tokenizer.model_max_length,
                            truncation=True, return_tensors="pt").input_ids.to(device)
         with torch.no_grad():
@@ -198,6 +247,7 @@ def main() -> None:
 
     meta = {
         "name": out.name,
+        "dataset": args.dataset,
         "budget": args.budget,
         "train_images": len(indices),
         "train_indices_sha256": hashlib.sha256(np.asarray(indices, dtype=np.int64).tobytes()).hexdigest(),
@@ -215,7 +265,8 @@ def main() -> None:
         "weight_decay": 1e-2,
         "grad_clip": 1.0,
         "resolution": args.resolution,
-        "augmentation": "bicubic upsampling from 32x32, random horizontal flip",
+        "augmentation": f"bicubic upsampling from {source_size}x{source_size}, random horizontal flip",
+        "templates": list(prompt_templates),
         "seed": args.seed,
         "final_loss": record["loss"],
         "train_seconds": seconds,
