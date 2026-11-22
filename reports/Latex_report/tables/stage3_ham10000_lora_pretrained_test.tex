@@ -1,0 +1,23 @@
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\caption{Stage 3, HAM10000, LoRA-adapted Stable Diffusion (follow-up experiment added after the Stage 3 test results; an adapter per budget fitted on that budget's training images only, images at 1:1) against its controls, pretrained initialization: change in test balanced accuracy (percentage points), paired by training seed, mean $\pm$ sample SD over 5 seeds. $\uparrow$ gain and $\downarrow$ loss when every seed agrees in sign, $\sim$ inconclusive otherwise. RA: RandAugment, TA: TrivialAugment, AA: AutoAugment (ImageNet policy); SD: Stable Diffusion class prompts at 1:1 unless a ratio is given; LoRA: Stable Diffusion with the budget's LoRA adapter, 1:1; best conv.: the conventional augmentation with the highest mean validation balanced accuracy in that row (named in the scores table).}
+\label{tab:stage3-ham10000-lora-pretrained-test}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llrrrr}
+\toprule
+Model & Images/class & LoRA$-$real & LoRA+RA$-$RA & LoRA$-$SD & LoRA+RA$-$best conv. \\
+\midrule
+ResNet-50 & 5 & +0.51 $\pm$ 3.01 $\sim$ & -1.12 $\pm$ 2.90 $\sim$ & +0.06 $\pm$ 1.67 $\sim$ & -3.62 $\pm$ 5.27 $\sim$ \\
+ResNet-50 & 10 & +0.40 $\pm$ 1.40 $\sim$ & -2.61 $\pm$ 2.88 $\sim$ & -1.80 $\pm$ 2.20 $\downarrow$ & -5.24 $\pm$ 4.12 $\sim$ \\
+ResNet-50 & 20 & +2.39 $\pm$ 2.41 $\sim$ & -4.32 $\pm$ 3.43 $\sim$ & +1.51 $\pm$ 2.20 $\sim$ & -6.91 $\pm$ 5.49 $\sim$ \\
+ResNet-50 & 50 & +1.47 $\pm$ 2.70 $\sim$ & +2.13 $\pm$ 2.86 $\sim$ & -0.12 $\pm$ 2.53 $\sim$ & -6.12 $\pm$ 2.21 $\downarrow$ \\
+\midrule
+ViT-B/16 & 5 & -0.37 $\pm$ 2.55 $\sim$ & -0.73 $\pm$ 2.68 $\sim$ & -0.41 $\pm$ 2.48 $\sim$ & -0.73 $\pm$ 2.68 $\sim$ \\
+ViT-B/16 & 10 & -3.97 $\pm$ 1.54 $\downarrow$ & -5.47 $\pm$ 2.83 $\downarrow$ & -2.14 $\pm$ 2.59 $\sim$ & -5.47 $\pm$ 2.83 $\downarrow$ \\
+ViT-B/16 & 20 & -4.34 $\pm$ 1.05 $\downarrow$ & +0.61 $\pm$ 2.79 $\sim$ & -1.56 $\pm$ 1.48 $\sim$ & -3.35 $\pm$ 2.20 $\downarrow$ \\
+ViT-B/16 & 50 & -2.28 $\pm$ 1.76 $\sim$ & +0.48 $\pm$ 1.25 $\sim$ & -1.17 $\pm$ 2.29 $\sim$ & -1.60 $\pm$ 2.86 $\sim$ \\
+\bottomrule
+\end{tabular}}
+\end{table}
