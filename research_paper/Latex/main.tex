@@ -16,6 +16,12 @@
 \usepackage{xcolor}
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 
+\usepackage{adjustbox}
+\usepackage{etoolbox}
+% The generated tables were sized for the report; shrink any tabular that is wider than the text.
+\BeforeBeginEnvironment{tabular}{\begin{adjustbox}{max width=\linewidth}}
+\AfterEndEnvironment{tabular}{\end{adjustbox}}
+
 \graphicspath{{../../reports/Latex_report/fig/}{Fig/}}
 \newcommand{\tabledir}{../../reports/Latex_report/tables}
 
@@ -25,6 +31,9 @@
   \IfFileExists{\tabledir/#1.tex}{\input{\tabledir/#1.tex}}{%
     \begin{center}\fbox{\parbox{0.9\linewidth}{\centering\small\textcolor{red}{%
       Table pending: \texttt{\detokenize{#1}.tex}}}}\end{center}}}
+
+% Compact tables written by make_tables.py (one table per study, both initializations).
+\newcommand{\papertable}[1]{\input{tables/paper_#1.tex}}
 
 % Marks text still to be written; remove every \todo before submission.
 \newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}

@@ -1,0 +1,30 @@
+\begin{table}[htbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\caption{Flowers-102: change in test balanced accuracy from each conventional augmentation against real-only. RA: RandAugment, TA: TrivialAugment, AA: AutoAugment (ImageNet policy).}
+\label{tab:paper-flowers102-conventional}
+\begin{tabular}{llcccccc}
+\toprule
+Model & Img./class & \shortstack{RA\\$-$real} & \shortstack{TA\\$-$real} & \shortstack{AA\\$-$real} & \shortstack{AugMix\\$-$real} & \shortstack{Mixup\\$-$real} & \shortstack{CutMix\\$-$real} \\
+\midrule
+\multicolumn{8}{l}{\textit{ImageNet-pretrained}} \\
+ResNet-50 & 2 & $+4.5$\,{\scriptsize$\pm$0.6}\,$\uparrow$ & $+2.3$\,{\scriptsize$\pm$1.6}\,$\uparrow$ & $+4.3$\,{\scriptsize$\pm$1.0}\,$\uparrow$ & $+2.2$\,{\scriptsize$\pm$1.4}\,$\uparrow$ & $-7.8$\,{\scriptsize$\pm$2.0}\,$\downarrow$ & $-2.3$\,{\scriptsize$\pm$0.9}\,$\downarrow$ \\
+ & 5 & $+1.9$\,{\scriptsize$\pm$1.1}\,$\uparrow$ & $+1.1$\,{\scriptsize$\pm$0.9}\,$\uparrow$ & $+2.1$\,{\scriptsize$\pm$1.1}\,$\uparrow$ & $+0.7$\,{\scriptsize$\pm$1.0}\,$\sim$ & $-3.0$\,{\scriptsize$\pm$1.8}\,$\downarrow$ & $-1.6$\,{\scriptsize$\pm$1.2}\,$\downarrow$ \\
+ & 10 & $-0.3$\,{\scriptsize$\pm$0.6}\,$\sim$ & $+0.2$\,{\scriptsize$\pm$0.3}\,$\sim$ & $-0.3$\,{\scriptsize$\pm$0.4}\,$\downarrow$ & $-0.1$\,{\scriptsize$\pm$0.4}\,$\sim$ & $-1.7$\,{\scriptsize$\pm$0.3}\,$\downarrow$ & $-1.5$\,{\scriptsize$\pm$0.6}\,$\downarrow$ \\
+\addlinespace[2pt]
+ViT-B/16 & 2 & $+8.0$\,{\scriptsize$\pm$1.3}\,$\uparrow$ & $+8.7$\,{\scriptsize$\pm$0.8}\,$\uparrow$ & $+8.2$\,{\scriptsize$\pm$1.7}\,$\uparrow$ & $+6.2$\,{\scriptsize$\pm$1.6}\,$\uparrow$ & $+0.5$\,{\scriptsize$\pm$2.8}\,$\sim$ & $+1.7$\,{\scriptsize$\pm$2.3}\,$\sim$ \\
+ & 5 & $+3.2$\,{\scriptsize$\pm$0.9}\,$\uparrow$ & $+2.6$\,{\scriptsize$\pm$0.4}\,$\uparrow$ & $+2.9$\,{\scriptsize$\pm$0.8}\,$\uparrow$ & $+2.1$\,{\scriptsize$\pm$0.5}\,$\uparrow$ & $0.0$\,{\scriptsize$\pm$0.2}\,$\sim$ & $-0.6$\,{\scriptsize$\pm$0.7}\,$\sim$ \\
+ & 10 & $+0.3$\,{\scriptsize$\pm$0.2}\,$\sim$ & $+0.1$\,{\scriptsize$\pm$0.4}\,$\sim$ & $-0.3$\,{\scriptsize$\pm$0.3}\,$\sim$ & $-0.4$\,{\scriptsize$\pm$0.1}\,$\downarrow$ & $-0.5$\,{\scriptsize$\pm$0.4}\,$\sim$ & $-1.3$\,{\scriptsize$\pm$0.4}\,$\downarrow$ \\
+\midrule
+\multicolumn{8}{l}{\textit{Random initialization}} \\
+ResNet-50 & 2 & $+12.0$\,{\scriptsize$\pm$0.7}\,$\uparrow$ & $+11.3$\,{\scriptsize$\pm$0.8}\,$\uparrow$ & $+7.2$\,{\scriptsize$\pm$0.4}\,$\uparrow$ & $+3.7$\,{\scriptsize$\pm$0.3}\,$\uparrow$ & $-6.0$\,{\scriptsize$\pm$1.0}\,$\downarrow$ & $+1.9$\,{\scriptsize$\pm$0.6}\,$\uparrow$ \\
+ & 5 & $+17.9$\,{\scriptsize$\pm$1.0}\,$\uparrow$ & $+17.1$\,{\scriptsize$\pm$1.5}\,$\uparrow$ & $+11.7$\,{\scriptsize$\pm$0.7}\,$\uparrow$ & $+9.0$\,{\scriptsize$\pm$1.0}\,$\uparrow$ & $-3.2$\,{\scriptsize$\pm$1.7}\,$\downarrow$ & $+2.9$\,{\scriptsize$\pm$0.8}\,$\uparrow$ \\
+ & 10 & $+20.2$\,{\scriptsize$\pm$2.6}\,$\uparrow$ & $+19.4$\,{\scriptsize$\pm$2.9}\,$\uparrow$ & $+17.2$\,{\scriptsize$\pm$2.2}\,$\uparrow$ & $+11.4$\,{\scriptsize$\pm$3.0}\,$\uparrow$ & $+4.7$\,{\scriptsize$\pm$2.8}\,$\uparrow$ & $+2.6$\,{\scriptsize$\pm$2.1}\,$\uparrow$ \\
+\addlinespace[2pt]
+ViT-B/16 & 2 & $+9.0$\,{\scriptsize$\pm$0.6}\,$\uparrow$ & $+8.1$\,{\scriptsize$\pm$0.6}\,$\uparrow$ & $+6.0$\,{\scriptsize$\pm$0.7}\,$\uparrow$ & $+4.6$\,{\scriptsize$\pm$0.9}\,$\uparrow$ & $0.0$\,{\scriptsize$\pm$0.6}\,$\sim$ & $+8.0$\,{\scriptsize$\pm$0.5}\,$\uparrow$ \\
+ & 5 & $+10.9$\,{\scriptsize$\pm$0.8}\,$\uparrow$ & $+9.5$\,{\scriptsize$\pm$0.6}\,$\uparrow$ & $+7.7$\,{\scriptsize$\pm$1.4}\,$\uparrow$ & $+5.7$\,{\scriptsize$\pm$1.1}\,$\uparrow$ & $+2.2$\,{\scriptsize$\pm$0.8}\,$\uparrow$ & $+6.3$\,{\scriptsize$\pm$1.0}\,$\uparrow$ \\
+ & 10 & $+11.9$\,{\scriptsize$\pm$0.6}\,$\uparrow$ & $+10.8$\,{\scriptsize$\pm$1.5}\,$\uparrow$ & $+8.1$\,{\scriptsize$\pm$1.2}\,$\uparrow$ & $+6.1$\,{\scriptsize$\pm$0.9}\,$\uparrow$ & $+4.4$\,{\scriptsize$\pm$1.3}\,$\uparrow$ & $+7.7$\,{\scriptsize$\pm$0.8}\,$\uparrow$ \\
+\bottomrule
+\end{tabular}
+\end{table}

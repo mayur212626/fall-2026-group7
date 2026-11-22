@@ -1,0 +1,38 @@
+\begin{table}[htbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\caption{CIFAR-100, Stage 1: change in test accuracy from class-prompt (SD) and LoRA images, against real-only and against RandAugment (RA).}
+\label{tab:paper-stage1}
+\begin{tabular}{llcccc}
+\toprule
+Model & Img./class & \shortstack{SD\\$-$real} & \shortstack{SD\\$-$RA} & \shortstack{LoRA\\$-$RA} & \shortstack{SD+RA\\$-$RA} \\
+\midrule
+\multicolumn{6}{l}{\textit{ImageNet-pretrained}} \\
+ResNet-50 & 5 & $+11.3$\,{\scriptsize$\pm$0.9}\,$\uparrow$ & $+3.4$\,{\scriptsize$\pm$0.9}\,$\uparrow$ & $+2.1$\,{\scriptsize$\pm$1.4}\,$\uparrow$$^\dagger$ & $+8.9$\,{\scriptsize$\pm$0.5}\,$\uparrow$ \\
+ & 10 & $+7.2$\,{\scriptsize$\pm$1.0}\,$\uparrow$ & $+3.2$\,{\scriptsize$\pm$1.0}\,$\uparrow$ & $+0.9$\,{\scriptsize$\pm$0.8}\,$\uparrow$$^\dagger$ & $+6.6$\,{\scriptsize$\pm$0.7}\,$\uparrow$ \\
+ & 20 & $+5.6$\,{\scriptsize$\pm$0.4}\,$\uparrow$ & $+2.3$\,{\scriptsize$\pm$0.5}\,$\uparrow$ & $+1.3$\,{\scriptsize$\pm$0.8}\,$\uparrow$$^\dagger$ & $+3.6$\,{\scriptsize$\pm$0.8}\,$\uparrow$ \\
+ & 50 & $+2.0$\,{\scriptsize$\pm$0.3}\,$\uparrow$ & $+1.2$\,{\scriptsize$\pm$0.3}\,$\uparrow$ & $-0.3$\,{\scriptsize$\pm$0.4}\,$\sim$$^\dagger$ & $+1.9$\,{\scriptsize$\pm$0.3}\,$\uparrow$$^\dagger$ \\
+ & full & $+0.2$\,{\scriptsize$\pm$0.4}\,$\sim$ & $-0.8$\,{\scriptsize$\pm$0.3}\,$\downarrow$ & $-0.9$\,{\scriptsize$\pm$0.3}\,$\downarrow$$^\dagger$ & $+0.3$\,{\scriptsize$\pm$0.2}\,$\uparrow$$^\dagger$ \\
+\addlinespace[2pt]
+ViT-B/16 & 5 & $+14.2$\,{\scriptsize$\pm$1.3}\,$\uparrow$ & $+3.6$\,{\scriptsize$\pm$0.9}\,$\uparrow$ & $+0.9$\,{\scriptsize$\pm$1.1}\,$\sim$$^\dagger$ & $+10.8$\,{\scriptsize$\pm$1.3}\,$\uparrow$ \\
+ & 10 & $+9.0$\,{\scriptsize$\pm$0.9}\,$\uparrow$ & $+1.5$\,{\scriptsize$\pm$0.6}\,$\uparrow$ & $-1.2$\,{\scriptsize$\pm$0.3}\,$\downarrow$$^\dagger$ & $+5.2$\,{\scriptsize$\pm$0.6}\,$\uparrow$ \\
+ & 20 & $+3.9$\,{\scriptsize$\pm$0.3}\,$\uparrow$ & $-0.2$\,{\scriptsize$\pm$0.4}\,$\sim$ & $-1.4$\,{\scriptsize$\pm$0.2}\,$\downarrow$$^\dagger$ & $+2.1$\,{\scriptsize$\pm$0.4}\,$\uparrow$ \\
+ & 50 & $+0.9$\,{\scriptsize$\pm$0.3}\,$\uparrow$ & $-1.0$\,{\scriptsize$\pm$0.5}\,$\downarrow$ & $-2.3$\,{\scriptsize$\pm$0.6}\,$\downarrow$$^\dagger$ & $+0.1$\,{\scriptsize$\pm$0.1}\,$\uparrow$$^\dagger$ \\
+ & full & $+0.1$\,{\scriptsize$\pm$0.1}\,$\uparrow$ & $-1.2$\,{\scriptsize$\pm$0.1}\,$\downarrow$ & $-1.8$\,{\scriptsize$\pm$0.2}\,$\downarrow$$^\dagger$ & $-0.4$\,{\scriptsize$\pm$0.4}\,$\downarrow$$^\dagger$ \\
+\midrule
+\multicolumn{6}{l}{\textit{Random initialization}} \\
+ResNet-50 & 5 & $+1.8$\,{\scriptsize$\pm$0.7}\,$\uparrow$ & $-3.6$\,{\scriptsize$\pm$0.6}\,$\downarrow$ & $-4.4$\,{\scriptsize$\pm$0.6}\,$\downarrow$$^\dagger$ & $+3.0$\,{\scriptsize$\pm$0.3}\,$\uparrow$$^\dagger$ \\
+ & 10 & $+2.9$\,{\scriptsize$\pm$0.3}\,$\uparrow$$^\dagger$ & $-6.2$\,{\scriptsize$\pm$0.9}\,$\downarrow$$^\dagger$ & $-6.9$\,{\scriptsize$\pm$0.8}\,$\downarrow$$^\dagger$ & $+5.5$\,{\scriptsize$\pm$3.8}\,$\uparrow$$^\dagger$ \\
+ & 20 & $+5.6$\,{\scriptsize$\pm$1.8}\,$\uparrow$$^\dagger$ & $-4.6$\,{\scriptsize$\pm$1.0}\,$\downarrow$$^\dagger$ & $-4.0$\,{\scriptsize$\pm$2.7}\,$\downarrow$$^\dagger$ & $+3.4$\,{\scriptsize$\pm$0.5}\,$\uparrow$$^\dagger$ \\
+ & 50 & $+8.7$\,{\scriptsize$\pm$2.9}\,$\uparrow$ & $-0.2$\,{\scriptsize$\pm$2.2}\,$\sim$ & $-2.0$\,{\scriptsize$\pm$3.7}\,$\sim$$^\dagger$ & $+5.2$\,{\scriptsize$\pm$5.7}\,$\sim$$^\dagger$ \\
+ & full & $+4.1$\,{\scriptsize$\pm$1.2}\,$\uparrow$$^\dagger$ & $-5.8$\,{\scriptsize$\pm$1.8}\,$\downarrow$$^\dagger$ & $-3.4$\,{\scriptsize$\pm$1.5}\,$\downarrow$$^\dagger$ & $-0.8$\,{\scriptsize$\pm$0.4}\,$\downarrow$$^\dagger$ \\
+\addlinespace[2pt]
+ViT-B/16 & 5 & $+1.5$\,{\scriptsize$\pm$0.1}\,$\uparrow$ & $-0.8$\,{\scriptsize$\pm$0.5}\,$\downarrow$ & $-1.3$\,{\scriptsize$\pm$0.1}\,$\downarrow$$^\dagger$ & $+1.6$\,{\scriptsize$\pm$0.2}\,$\uparrow$$^\dagger$ \\
+ & 10 & $+1.5$\,{\scriptsize$\pm$0.1}\,$\uparrow$$^\dagger$ & $-1.8$\,{\scriptsize$\pm$0.3}\,$\downarrow$$^\dagger$ & $-1.7$\,{\scriptsize$\pm$0.1}\,$\downarrow$$^\dagger$ & $+2.6$\,{\scriptsize$\pm$0.6}\,$\uparrow$$^\dagger$ \\
+ & 20 & $+2.4$\,{\scriptsize$\pm$0.7}\,$\uparrow$$^\dagger$ & $-3.1$\,{\scriptsize$\pm$0.4}\,$\downarrow$$^\dagger$ & $-3.1$\,{\scriptsize$\pm$0.3}\,$\downarrow$$^\dagger$ & $+2.6$\,{\scriptsize$\pm$0.3}\,$\uparrow$$^\dagger$ \\
+ & 50 & $+3.2$\,{\scriptsize$\pm$0.2}\,$\uparrow$ & $-5.8$\,{\scriptsize$\pm$0.4}\,$\downarrow$ & $-6.3$\,{\scriptsize$\pm$0.6}\,$\downarrow$$^\dagger$ & $+2.7$\,{\scriptsize$\pm$0.5}\,$\uparrow$$^\dagger$ \\
+ & full & $+3.9$\,{\scriptsize$\pm$0.7}\,$\uparrow$$^\dagger$ & $-10.3$\,{\scriptsize$\pm$0.7}\,$\downarrow$$^\dagger$ & $-8.2$\,{\scriptsize$\pm$1.0}\,$\downarrow$$^\dagger$ & $+2.4$\,{\scriptsize$\pm$0.9}\,$\uparrow$$^\dagger$ \\
+\bottomrule
+\end{tabular}
+\end{table}

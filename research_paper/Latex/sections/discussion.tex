@@ -1,11 +1,49 @@
 \section{Discussion}
 \label{sec:discussion}
 
-% One message per paragraph:
-%   1. A practical rule: when to add generated images (pretrained backbone, small budget) and when a
-%      conventional policy is the better use of the step budget (random initialization).
-%   2. What the quality measures miss, and what to measure instead.
-%   3. What the GAN set adds: a generator with no outside knowledge shows the same pattern, so the
-%      flip is not specific to Stable Diffusion's pretraining data.
-%   4. Where the explanations stop: what is tested and what is only consistent with the data.
-\todo{discussion, four paragraphs as planned above}
+\paragraph{A practical rule, with a caveat.}
+On CIFAR-100 the results give a simple rule. With an ImageNet-pretrained backbone and up to about 20 images per
+class, adding class-prompt images helps, and it helps most at several generated images per real image and on top
+of a conventional policy: chosen on validation, such a condition beat the best conventional augmentation in 8 of
+10 pretrained cells, by up to 14.9 points. With a randomly initialized classifier, a conventional policy should
+come first, and generated images help only on top of it or at a high ratio. With the full training set, generated
+images cost accuracy. The caveat is Stage 3. On fine-grained flowers and on dermoscopy images, the recipe that won
+on CIFAR-100 lost to conventional augmentation, and LoRA adaptation did not close the gap, although from random initialization it
+recovered 5 to 12 points over class-prompt images for ResNet-50 on HAM10000. The rule therefore does not
+carry to a new dataset on its own: a short validation pilot against the best conventional policy should decide
+whether generated images are worth adding.
+
+\paragraph{What the quality measures miss.}
+FID and recall reward a generated set for being close to the real data, and in the scarce-data setting the sets
+closest to the budget's real images helped least (Section~\ref{sec:pool-utility}). A set helps by adding what the
+few real images lack, provided each added image still shows its class. The two Stage 3 failures break that
+proviso in two ways that a distribution-level score summarizes poorly: images that are not of the domain
+(HAM10000) and realistic images of the wrong species (Flowers-102). Both are visible at a glance in a per-class
+grid of generated images next to real ones, and a per-class measure of class fidelity, such as how well a
+classifier trained on the real images recognizes the generated ones (Table~\ref{tab:synthetic-accuracy}), is
+closer to what matters than a distance between distributions. We did not test whether such a measure predicts
+the gain in Stage 3; it is the measure we would compute first.
+
+\paragraph{What the GAN set adds.}
+Stable Diffusion images combine two things: knowledge from outside the dataset, and a pixel distribution that
+differs from the training images. The GAN images have neither, because the generator saw only the 5{,}000 real
+images, and their effect depends on initialization in the opposite direction: they help classifiers trained from
+scratch and hurt pretrained ones. One reading, consistent with the distribution-shift results of
+Section~\ref{sec:sign-flip} but not tested directly, is that a pretrained backbone can use images from a shifted
+distribution, which add variety the few real images lack, whereas a classifier trained from scratch gains most
+from more images like its training images, which the GAN supplies and Stable Diffusion does not. For pretrained
+classifiers, the GAN images would then add little that the real images do not already give, while their artefacts
+(FID 25.9 against the training images) cost accuracy. The GAN set also shows that the flip is not specific to
+Stable Diffusion: whether generated images help depends on how the classifier was initialized for both
+generators.
+
+\paragraph{Where the explanations stop.}
+Several parts of the explanation are tested. The flip does not come from the diversity or the per-class distance
+of the generated images; real-only classifiers trained from scratch recognize the generated images less well; a
+classifier trained on generated images alone transfers to real images less well from scratch; and an ensemble
+shows that the scratch classifiers still learn something useful from the generated images. Other parts are only
+consistent with the data: that the pretrained backbone bridges a distribution shift, that the GAN helps from
+scratch because it matches the training images, and that the Stage 3 failures come from class fidelity and the
+domain gap rather than from the number of classes, the class imbalance or the metric, which also differ between
+the datasets. Each would need its own controlled test, such as filtering generated images by a real-data
+classifier's confidence, or a medical dataset with many classes.

@@ -1,0 +1,13 @@
+treatment,control,label,init,model,budget,seeds,changes,mean,sd,verdict
+gan,real_only,GAN$-$real,pretrained,resnet50,50,0 1 2 3 4,-2.75 -3.64 -3.11 -2.53 -2.83,-2.972,0.4272,loss
+gan,sd_prompt,GAN$-$SD,pretrained,resnet50,50,0 1 2 3 4,-4.94 -5.28 -5.12 -4.86 -4.6,-4.96,0.2588,loss
+gan,randaugment,GAN$-$RA,pretrained,resnet50,50,0 1 2 3 4,-3.42 -3.8 -4.04 -3.88 -3.39,-3.706,0.2882,loss
+gan,real_only,GAN$-$real,pretrained,vit_b_16,50,0 1 2 3 4,-3.33 -3.38 -3.49 -4.11 -3.19,-3.5,0.3576,loss
+gan,sd_prompt,GAN$-$SD,pretrained,vit_b_16,50,0 1 2 3 4,-4.26 -4.04 -4.02 -5.07 -4.55,-4.388,0.4371,loss
+gan,randaugment,GAN$-$RA,pretrained,vit_b_16,50,0 1 2 3 4,-6 -5.17 -4.83 -5.76 -5.24,-5.4,0.4725,loss
+gan,real_only,GAN$-$real,scratch,resnet50,50,0 1 2 3 4,4.24 4.66 4.93 5.58 3.56,4.594,0.7556,gain
+gan,sd_prompt,GAN$-$SD,scratch,resnet50,50,0 1 2 3 4,-0.21 -2.61 -6.74 -3.81 -6.89,-4.052,2.8363,loss
+gan,randaugment,GAN$-$RA,scratch,resnet50,50,0 1 2 3 4,-3.31 -1.47 -8.8 -2.88 -4.96,-4.284,2.8147,loss
+gan,real_only,GAN$-$real,scratch,vit_b_16,50,0 1 2 3 4,3.59 4.75 3.4 4.02 3.69,3.89,0.5307,gain
+gan,sd_prompt,GAN$-$SD,scratch,vit_b_16,50,0 1 2 3 4,0.6 1.37 0.29 0.43 0.52,0.642,0.4229,gain
+gan,randaugment,GAN$-$RA,scratch,vit_b_16,50,0 1 2 3 4,-5.76 -4.71 -5.6 -4.83 -5.04,-5.188,0.4678,loss

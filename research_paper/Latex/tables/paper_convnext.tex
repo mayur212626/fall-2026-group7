@@ -1,0 +1,21 @@
+\begin{table}[htbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\caption{CIFAR-100, ConvNeXt-T: change in test accuracy from class-prompt images (SD) and RandAugment (RA).}
+\label{tab:paper-convnext}
+\begin{tabular}{llcccc}
+\toprule
+Model & Img./class & \shortstack{SD\\$-$real} & \shortstack{RA\\$-$real} & \shortstack{SD\\$-$RA} & \shortstack{SD+RA\\$-$RA} \\
+\midrule
+\multicolumn{6}{l}{\textit{ImageNet-pretrained}} \\
+ConvNeXt-T & 5 & $+14.0$\,{\scriptsize$\pm$1.3}\,$\uparrow$ & $+5.3$\,{\scriptsize$\pm$0.6}\,$\uparrow$ & $+8.7$\,{\scriptsize$\pm$0.9}\,$\uparrow$ & $+12.5$\,{\scriptsize$\pm$0.4}\,$\uparrow$ \\
+ & 20 & $+3.6$\,{\scriptsize$\pm$0.7}\,$\uparrow$ & $+1.9$\,{\scriptsize$\pm$0.5}\,$\uparrow$ & $+1.7$\,{\scriptsize$\pm$0.2}\,$\uparrow$ & $+2.6$\,{\scriptsize$\pm$0.1}\,$\uparrow$ \\
+ & full & $-0.1$\,{\scriptsize$\pm$0.2}\,$\sim$ & $+0.3$\,{\scriptsize$\pm$0.3}\,$\sim$ & $-0.4$\,{\scriptsize$\pm$0.2}\,$\downarrow$ & $-0.3$\,{\scriptsize$\pm$0.2}\,$\downarrow$ \\
+\midrule
+\multicolumn{6}{l}{\textit{Random initialization}} \\
+ConvNeXt-T & 5 & $+1.1$\,{\scriptsize$\pm$0.3}\,$\uparrow$ & $+7.0$\,{\scriptsize$\pm$0.1}\,$\uparrow$ & $-5.9$\,{\scriptsize$\pm$0.4}\,$\downarrow$ & -- \\
+ & 50 & $+8.8$\,{\scriptsize$\pm$1.3}\,$\uparrow$ & $+13.7$\,{\scriptsize$\pm$2.3}\,$\uparrow$ & $-4.9$\,{\scriptsize$\pm$1.4}\,$\downarrow$ & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
