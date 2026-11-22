@@ -1,13 +1,20 @@
 \begin{abstract}
-% Write last, once Results are final. Five sentences:
-% (1) what this study shows, (2) why the question is hard and matters, (3) how it is tested,
-% (4) the evidence, (5) the most important number.
-% Every claim here must match a result in Section~\ref{sec:results}, on the test set.
-% Candidate claims (each needs its test-set number before it goes in):
-%   - Synthetic images beat RandAugment for ImageNet-pretrained classifiers at small budgets but lose
-%     to it from random initialization (ResNet-50, ViT-B/16, ConvNeXt-T; 5 seeds; validation and test).
-%   - Generator-quality measures (FID, precision, recall) rank the generated sets opposite to their
-%     usefulness.
-%   - A class-conditional GAN trained on the 5,000 real images shows the same sign flip.
-\todo{abstract, five sentences, written last}
+% Five sentences: (1) what this study shows, (2) why the question matters, (3) how it is tested,
+% (4) the evidence, (5) the most important number. Every claim matches a test-set result in
+% Section~\ref{sec:results}.
+Diffusion-generated images help few-shot image classifiers under narrower conditions than their low cost
+suggests: on CIFAR-100 they help pretrained classifiers and add to conventional augmentation, but they lose to it
+when they replace it from random initialization, and on a fine-grained and a medical dataset they do not beat
+it. Generated images are cheap and come with labels, but they differ from real images
+in ways that standard quality measures miss, and earlier studies compared them under mixed protocols. We train
+ResNet-50, ViT-B/16 and ConvNeXt-T from ImageNet weights and from random initialization on CIFAR-100 with 5 to 50
+images per class, compare four generated sets with six conventional augmentations at matched training cost,
+paired over three to five seeds, and repeat the study on Flowers-102 and HAM10000. With pretrained classifiers,
+Stable Diffusion class-prompt images raise test accuracy by up to 14.2 points at 5 images per class, while from
+random initialization they lose to RandAugment in 9 of 10 cells; FID and recall rank the generated sets in the
+opposite order to their usefulness, and on Flowers-102 and HAM10000 neither class-prompt nor LoRA images, with RandAugment,
+beat the best conventional augmentation in any cell. The largest gain, 14.9 points over the best conventional augmentation chosen on
+validation (ResNet-50, 5 images per class), comes from adding five generated images per real image on top of
+RandAugment, so generated images are best used to extend conventional augmentation, after a validation pilot on
+the target data.
 \end{abstract}

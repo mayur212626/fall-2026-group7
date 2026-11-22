@@ -8,10 +8,37 @@
 % Moved from the report's protocol paragraph.
 The study uses CIFAR-100~\cite{krizhevsky2009learning}. The split is fixed by a manifest with seed 42: 50 images per class (5,000 in total) are held out from the training pool for validation, and the 5, 10, 20 and 50 images-per-class budgets are nested subsets of the remaining 45,000 images, which form the full budget. The official 10,000-image test set is scored once per run, after the training and selection protocol was fixed.
 
+\subsection{Stage 3 datasets}
+\label{sec:method-stage3}
+To test whether the CIFAR-100 findings hold at a realistic resolution and in other domains, Stage 3 repeats the
+protocol on two datasets at different distances from what Stable Diffusion draws well.
+\textit{Flowers-102}~\cite{nilsback2008automated} has 8{,}189 photographs of 102 flower species, a subject Stable
+Diffusion draws well but a fine-grained one; we keep its official split (10 training and 10 validation images per
+class, 6{,}149 test images) and use budgets of 2, 5 and 10 images per class. \textit{HAM10000}~\cite{tschandl2018ham10000}
+has 10{,}015 dermoscopy images of seven kinds of skin lesion, a domain Stable Diffusion 1.5 draws poorly. One
+lesion often has several photographs, so we split by lesion, stratified by class (seed 42): 70\% training,
+10\% validation (1{,}003 images) and 20\% test (2{,}006 images), so that no test lesion is seen in training.
+Budgets are 5, 10, 20 and 50 images per class, nested, and the small budgets take as many different lesions as
+possible. Images are stored at $224\times224$ (short side to 256 with antialiased bicubic resampling, then a
+centre crop), and generated images go through the same function.
+
+Both test sets are imbalanced (about two-thirds of HAM10000 is one class, melanocytic nevus), so the main metric
+in Stage 3 is balanced accuracy, the mean recall over classes (for Flowers-102 the usual mean per-class accuracy).
+It also selects the checkpoint and the learning rate. The classifiers are ResNet-50 and ViT-B/16, pretrained and
+from random initialization, under ten conditions: real-only, the six conventional augmentations above
+(AutoAugment with its ImageNet policy), and class-prompt images at 1:1, at 1:1 with RandAugment, and at 5:1 with
+RandAugment. The class-prompt pools have 50 images per class for Flowers-102 and 250 for HAM10000, each from eight
+dataset-specific templates (for example, ``a photo of a \{class\}, a type of flower.'' and ``a dermoscopy image of
+\{class\}.''). The best conventional augmentation of each cell is chosen by mean validation balanced accuracy, so
+the test comparison is the one a practitioner would make.
+
 \subsection{Classifiers}
 % Moved from the report.
 ResNet-50~\cite{he2016deep} and ViT-B/16~\cite{dosovitskiy2021image} are trained with all layers updated, either from ImageNet weights (torchvision \texttt{IMAGENET1K\_V2} and \texttt{IMAGENET1K\_V1}) or from random initialization. Images stay at $32\times32$ until they are upsampled to $224\times224$ on the GPU and normalized with the ImageNet statistics.
-% TODO: ConvNeXt-T (Stage 2 check of the sign flip), with a verified reference.
+ConvNeXt-T~\cite{liu2022convnet} (torchvision \texttt{IMAGENET1K\_V1}), a convolutional network with
+Transformer-style design choices, is added as a third architecture to test whether the effect of initialization
+holds beyond the first two; it is trained at 5, 20 and 50 images per class and on the full set (pretrained) and
+at 5 and 50 (random initialization).
 
 \subsection{Training conditions}
 % Moved from the report.
@@ -19,27 +46,57 @@ Each condition is defined as one change to the real-only control. \textit{Real-o
 
 Generated images are resized to $32\times32$ before training and then follow exactly the same preprocessing as the real images, so a classifier cannot separate the two by resolution or sharpness. Batches sample the combined pool uniformly, so about half of each batch is generated. Because the step budget stays the same as for real-only training, each image is seen about half as often as in the real-only run. Every run records a fingerprint of the generated pool, the synthetic:real ratio and the number of generated images it used.
 
-% TODO: one sentence each for the other conditions in the results: SD-only (generated images
-% alone), 2:1 and 5:1 ratios, Mixup and CutMix, TrivialAugment, AutoAugment and AugMix alone and
-% combined with SD, and the GAN set below.
+The other conditions each change one thing. \textit{SD-only} trains on class-prompt images alone, as many per
+class as the real budget has, and is validated on real images; it measures how well the generated images stand in
+for real ones. \textit{Ratios} 2:1 and 5:1 add two or five class-prompt images per real image. \textit{Mixup}
+($\alpha = 0.2$)~\cite{zhang2018mixup} and \textit{CutMix} ($\alpha = 1.0$)~\cite{yun2019cutmix} mix each batch
+with a shuffled copy of itself and train on the mixed labels. \textit{TrivialAugment}~\cite{muller2021trivialaugment},
+\textit{AutoAugment}~\cite{cubuk2019autoaugment} (its CIFAR-10 policy on CIFAR-100, its ImageNet policy in
+Stage 3) and \textit{AugMix}~\cite{hendrycks2020augmix} use the torchvision defaults. The \textit{stacked}
+conditions add class-prompt images to each of these policies (SD + policy, against the policy alone), and also
+SD + RandAugment + CutMix and SD 5:1 + RandAugment. Finally, \textit{ensembles} average the softmax outputs of
+two trained classifiers with equal weights; an ensemble of a real-data and a generated-data classifier is
+compared with an ensemble of two real-data classifiers of different seeds, since any two averaged classifiers
+tend to beat one.
 
 \subsection{Generated sets}
 \label{sec:generated-sets}
-\textbf{Class prompts.} \todo{Stable Diffusion 1.5, 25 steps, guidance 7.5, the eight prompt templates and the negative prompt; 450 images per class at $512\times512$, reduced to $32\times32$.}
+\textbf{Class prompts.} Stable Diffusion 1.5~\cite{rombach2022high}, used as released, generates 450 images per
+class at $512\times512$ with the DPM-Solver++ scheduler (25 steps, guidance scale 7.5). Image $i$ of a class uses
+prompt template $i \bmod 8$ of eight templates (for example, ``a photo of a \{class\}.''), with the negative
+prompt ``text, watermark, logo, cartoon, drawing, illustration, painting, blurry, low quality''; a few ambiguous
+class names are rewritten (for example, \textit{ray} as \textit{stingray}). Every image is reduced to $32\times32$
+with antialiased bicubic resampling, and each image's seed is a fixed function of the generation seed, its class
+and its index. All settings were fixed before any image was generated, and no pool was chosen by looking at
+classifier results.
 
-\textbf{LoRA.} \todo{rank 8 on the U-Net attention projections, one adapter per budget fitted on that budget's real images only, with an identifier token.}
+\textbf{LoRA.} A LoRA adapter~\cite{hu2022lora} of rank 8 is fitted to the query, key, value and output
+projections of the U-Net attention layers, with the rest of the model frozen. There is one adapter per budget,
+fitted only on that budget's real training images (500 for 5 images per class up to 45{,}000 for the full set),
+upsampled to $512\times512$. In DreamBooth style~\cite{ruiz2023dreambooth}, each image is captioned with one of
+the prompt templates and an identifier token before the class name (``a photo of a cfr bear.''). Training uses
+AdamW at learning rate $10^{-4}$, batch size 8, and 1{,}000 to 6{,}000 steps from the smallest to the full budget.
+Each budget's pool has as many images per class as the budget has real ones.
 
 % Moved from the report.
 \textbf{Image-to-image edits.} A third set, \textit{SD img2img}, edits the budget's own real images in the style of DA-Fusion~\cite{trabucco2024effective}: the same Stable Diffusion model, with the class prompts, changes each upsampled real image at strength 0.5, which keeps its layout and colours and adds detail. A run with $k$ images per class adds the edits of exactly its $k$ real images, so no other real image enters; this set covers 5 to 50 images per class.
 
 \textbf{Class-conditional GAN.} A class-conditional StyleGAN2-ADA~\cite{karras2020training} is trained from random initialization on the 5,000 real images of the 50-images-per-class budget only, in the CIFAR configuration (batch 64, R1 weight 0.01, adaptive augmentation target 0.6). It is trained until the discriminator has seen 20 million real images, and the snapshot with the lowest FID against the same 5,000 images is kept (after 8 million images, FID 25.9 with 5,000 generated images). The set has 450 images per class, sampled without truncation, and is used only at the budget it was trained on.
-% TODO: one sentence on the nearest-neighbour check (no copied training images) and a sample figure.
+% TODO (Mayur): one sentence on the GAN nearest-neighbour check, and a sample figure in the appendix.
 
 \subsection{Comparison and uncertainty}
 % Moved from the report.
-We compare conditions by the paired change for each training seed: the treatment score minus the control score of the same seed, in percentage points. A change counts as a gain or a loss only when every seed agrees in sign; otherwise it is reported as inconclusive.
-% TODO: tables now use five seeds (0-4) in every reported cell; update this sentence and add the
-% seed t-interval and the image bootstrap (moved to the appendix with their tables).
+We compare conditions by the paired change for each training seed: the treatment score minus the control
+score of the same seed, in percentage points. A change counts as a gain or a loss only when every seed agrees in
+sign; otherwise it is reported as inconclusive. Training seeds 0 to 4 are used for the comparisons behind the main
+claims: the Stage 1 real-only, RandAugment and class-prompt conditions (pretrained at every budget, from random
+initialization at 5 and 50 images per class), every Stage 2 and augmentation-policy comparison, the GAN set and
+all of Stage 3. The remaining Stage 1 cells (LoRA, img2img and SD-only, SD with RandAugment at 50 images per
+class and on the full set, and the random-initialization budgets of 10 and 20 images per class and the full
+set) have seeds 0 to 2. Every table states its seed count. With five seeds, the chance that all five agree in
+sign when the true change is zero is $2 \times 0.5^5 \approx 0.06$; with three, 0.25. The test set is scored
+once per run, after the training and selection protocol was fixed. Appendix~\ref{app:bootstrap} gives a second
+measure of uncertainty that resamples the validation images.
 
 \begin{figure}[htbp]
 	\centering

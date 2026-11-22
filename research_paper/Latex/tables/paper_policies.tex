@@ -1,0 +1,26 @@
+\begin{table}[htbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\caption{CIFAR-100: change in test accuracy from each conventional augmentation policy against real-only. RA: RandAugment, TA: TrivialAugment, AA: AutoAugment (CIFAR-10 policy).}
+\label{tab:paper-policies}
+\begin{tabular}{llcccc}
+\toprule
+Model & Img./class & \shortstack{RA\\$-$real} & \shortstack{TA\\$-$real} & \shortstack{AA\\$-$real} & \shortstack{AugMix\\$-$real} \\
+\midrule
+\multicolumn{6}{l}{\textit{ImageNet-pretrained}} \\
+ResNet-50 & 5 & $+7.8$\,{\scriptsize$\pm$0.9}\,$\uparrow$ & $+6.7$\,{\scriptsize$\pm$0.7}\,$\uparrow$ & $+7.2$\,{\scriptsize$\pm$0.6}\,$\uparrow$ & $+4.1$\,{\scriptsize$\pm$0.8}\,$\uparrow$ \\
+ & 20 & $+3.4$\,{\scriptsize$\pm$0.7}\,$\uparrow$ & $+4.4$\,{\scriptsize$\pm$0.7}\,$\uparrow$ & $+4.0$\,{\scriptsize$\pm$0.6}\,$\uparrow$ & $+1.2$\,{\scriptsize$\pm$0.3}\,$\uparrow$ \\
+ & 50 & $+0.7$\,{\scriptsize$\pm$0.4}\,$\uparrow$ & $+2.3$\,{\scriptsize$\pm$0.4}\,$\uparrow$ & $+1.8$\,{\scriptsize$\pm$0.8}\,$\uparrow$ & $-0.5$\,{\scriptsize$\pm$0.5}\,$\sim$ \\
+\addlinespace[2pt]
+ViT-B/16 & 5 & $+10.7$\,{\scriptsize$\pm$0.7}\,$\uparrow$ & $+10.1$\,{\scriptsize$\pm$0.9}\,$\uparrow$ & $+11.3$\,{\scriptsize$\pm$0.9}\,$\uparrow$ & $+8.5$\,{\scriptsize$\pm$0.8}\,$\uparrow$ \\
+ & 20 & $+4.1$\,{\scriptsize$\pm$0.6}\,$\uparrow$ & $+4.5$\,{\scriptsize$\pm$0.5}\,$\uparrow$ & $+4.5$\,{\scriptsize$\pm$0.8}\,$\uparrow$ & $+3.0$\,{\scriptsize$\pm$0.5}\,$\uparrow$ \\
+ & 50 & $+1.9$\,{\scriptsize$\pm$0.5}\,$\uparrow$ & $+2.0$\,{\scriptsize$\pm$0.4}\,$\uparrow$ & $+2.2$\,{\scriptsize$\pm$0.5}\,$\uparrow$ & $+1.1$\,{\scriptsize$\pm$0.5}\,$\uparrow$ \\
+\midrule
+\multicolumn{6}{l}{\textit{Random initialization}} \\
+ResNet-50 & 5 & $+5.4$\,{\scriptsize$\pm$0.5}\,$\uparrow$ & $+2.6$\,{\scriptsize$\pm$0.5}\,$\uparrow$ & $+2.6$\,{\scriptsize$\pm$0.6}\,$\uparrow$ & $+2.7$\,{\scriptsize$\pm$0.8}\,$\uparrow$ \\
+\addlinespace[2pt]
+ViT-B/16 & 5 & $+2.3$\,{\scriptsize$\pm$0.5}\,$\uparrow$ & $+1.2$\,{\scriptsize$\pm$0.4}\,$\uparrow$ & $+1.5$\,{\scriptsize$\pm$0.4}\,$\uparrow$ & $+0.9$\,{\scriptsize$\pm$0.4}\,$\uparrow$ \\
+\bottomrule
+\end{tabular}
+\end{table}

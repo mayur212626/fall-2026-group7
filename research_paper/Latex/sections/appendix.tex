@@ -3,16 +3,24 @@
 
 % Validation tables moved from the report; the main text uses the test set.
 
-\resulttable{stage1_pretrained_accuracy}
-\resulttable{stage1_scratch_accuracy}
-\resulttable{stage1_pretrained_accuracy_sd_prompt}
 \resulttable{stage1_pretrained_accuracy_vs_randaugment}
 \resulttable{stage1_scratch_accuracy_vs_randaugment}
 
 \section{Seed intervals and image bootstrap}
 \label{app:bootstrap}
 % Moved from the report's error analysis (validation predictions; no retraining, test set unused).
-\todo{move the report's uncertainty paragraph here, updated to five seeds}
+% The counts below describe the two bootstrap tables as they were generated (Stage 1 validation runs).
+The verdicts from the seed rule hold up under a second, image-level measure of uncertainty, computed from the
+validation predictions stored with every Stage 1 run (no retraining; the test set is not used).
+Tables~\ref{tab:stage1-pretrained-bootstrap} and~\ref{tab:stage1-scratch-bootstrap} give each paired change with a
+95\% percentile bootstrap interval over the 5{,}000 validation images (10{,}000 resamples, the same images for
+every seed and both conditions). The interval measures image-sampling noise, while the seed SD in the paired
+tables measures training noise. The two agree in 115 of 120 model, budget and comparison cells; in the other
+five the mean change is below 2.5 points, and below one point in the pretrained arm. The 95\% t-interval over
+training seeds, shown under each row, is stricter when there are only three seeds ($t=4.30$): it confirms the
+verdict of all 30 cells with five seeds and of 72 of the 90 cells with three, and the other 18 become
+inconclusive. Neither interval is the total uncertainty: the seed interval holds the validation images fixed
+and the bootstrap holds the trained models fixed, so the two are read side by side rather than combined.
 
 \resulttable{stage1_pretrained_bootstrap}
 \resulttable{stage1_scratch_bootstrap}
@@ -37,4 +45,42 @@
 	\caption{Samples of the class-prompt pool (pretrained Stable Diffusion 1.5, 32$\times$32 as used for training).}
 	\label{fig:sd-samples}
 \end{figure}
-% TODO: LoRA, img2img and GAN samples side by side.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{sd15_lora_b5_samples.pdf}
+	\caption{Samples of the LoRA pool of the 5-images-per-class budget (CIFAR-100, 32$\times$32 as used for training).}
+	\label{fig:lora-samples}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{sd15_lora_flowers102_b5_samples.pdf}
+	\caption{Flowers-102: real training images and samples of the LoRA pool of the 5-images-per-class budget.}
+	\label{fig:flowers-lora-samples}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{sd15_lora_flowers102_b5_nearest.pdf}
+	\caption{Memorization check, Flowers-102 LoRA pool at 5 images per class: the eight generated images most
+	similar to a training image of their class (top, with the cosine similarity of ImageNet ResNet-50 features)
+	and that training image (bottom).}
+	\label{fig:flowers-lora-nearest}
+\end{figure}
+% TODO (Mayur): img2img and GAN sample grids, and the HAM10000 LoRA samples and nearest pairs, once in fig/.
+
+\section{More result tables}
+\label{app:more-tables}
+% Test-set tables referred to in the main text.
+
+% Same legend as the Results tables.
+\papertable{policies}
+\papertable{mixing}
+\papertable{ensemble}
+\resulttable{stage1_pretrained_test_accuracy_sd_prompt_only}
+\resulttable{stage1_scratch_test_accuracy_sd_prompt_only}
+\papertable{flowers102_conventional}
+\papertable{flowers102_sd}
+\papertable{ham10000_conventional}
+\papertable{ham10000_sd}

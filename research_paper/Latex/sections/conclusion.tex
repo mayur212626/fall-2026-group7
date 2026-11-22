@@ -1,5 +1,22 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-% A short answer to each research question, each tied to its result section; no new claims.
-\todo{conclusion: one short answer per research question}
+We asked when diffusion-generated images help a classifier trained on few real images, and the answer depends on
+the classifier, the control and the domain.
+\begin{itemize}
+	\item \textbf{Initialization decides whether they beat RandAugment.} With ImageNet-pretrained
+	classifiers, class-prompt images raise CIFAR-100 test accuracy at every budget up to 50 images per class and
+	beat RandAugment at the smallest; from random initialization they lose to RandAugment in 9 of 10 cells. ResNet-50,
+	ViT-B/16 and ConvNeXt-T show the same pattern (Sections~\ref{sec:results-pretrained} and~\ref{sec:results-flip}).
+	\item \textbf{Generated images extend conventional augmentation.} Stacked on a policy and at
+	higher ratios, the best generated-image condition chosen on validation beats the best conventional augmentation in
+	16 of 20 CIFAR-100 cells (Sections~\ref{sec:results-ratio} and~\ref{sec:results-augment}).
+	\item \textbf{Generator-quality measures do not predict usefulness.} FID and recall rank the three generated sets
+	in the opposite order to their gain, and precision does no better than chance once the advantage of the
+	class-prompt set is set aside (Section~\ref{sec:pool-utility}).
+	\item \textbf{The benefit does not transfer to every domain.} On Flowers-102 and HAM10000, class-prompt images at
+	5:1 with RandAugment never beat the best conventional augmentation, and LoRA adaptation did not change that
+	(Section~\ref{sec:results-stage3}).
+\end{itemize}
+Generated images are worth trying when the classifier is pretrained and the real data is scarce, used on top of a
+conventional policy, and only after a validation pilot on the target dataset shows that they help.

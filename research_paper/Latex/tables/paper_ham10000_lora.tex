@@ -1,0 +1,34 @@
+\begin{table}[htbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\caption{HAM10000, LoRA follow-up: change in test balanced accuracy from images of a LoRA adapter fitted to each budget's training images (1:1) against their controls.}
+\label{tab:paper-ham10000-lora}
+\begin{tabular}{llcccc}
+\toprule
+Model & Img./class & \shortstack{LoRA\\$-$real} & \shortstack{LoRA+RA\\$-$RA} & \shortstack{LoRA\\$-$SD} & \shortstack{LoRA+RA\\$-$best conv.} \\
+\midrule
+\multicolumn{6}{l}{\textit{ImageNet-pretrained}} \\
+ResNet-50 & 5 & $+0.5$\,{\scriptsize$\pm$3.0}\,$\sim$ & $-1.1$\,{\scriptsize$\pm$2.9}\,$\sim$ & $+0.1$\,{\scriptsize$\pm$1.7}\,$\sim$ & $-3.6$\,{\scriptsize$\pm$5.3}\,$\sim$ \\
+ & 10 & $+0.4$\,{\scriptsize$\pm$1.4}\,$\sim$ & $-2.6$\,{\scriptsize$\pm$2.9}\,$\sim$ & $-1.8$\,{\scriptsize$\pm$2.2}\,$\downarrow$ & $-5.2$\,{\scriptsize$\pm$4.1}\,$\sim$ \\
+ & 20 & $+2.4$\,{\scriptsize$\pm$2.4}\,$\sim$ & $-4.3$\,{\scriptsize$\pm$3.4}\,$\sim$ & $+1.5$\,{\scriptsize$\pm$2.2}\,$\sim$ & $-6.9$\,{\scriptsize$\pm$5.5}\,$\sim$ \\
+ & 50 & $+1.5$\,{\scriptsize$\pm$2.7}\,$\sim$ & $+2.1$\,{\scriptsize$\pm$2.9}\,$\sim$ & $-0.1$\,{\scriptsize$\pm$2.5}\,$\sim$ & $-6.1$\,{\scriptsize$\pm$2.2}\,$\downarrow$ \\
+\addlinespace[2pt]
+ViT-B/16 & 5 & $-0.4$\,{\scriptsize$\pm$2.6}\,$\sim$ & $-0.7$\,{\scriptsize$\pm$2.7}\,$\sim$ & $-0.4$\,{\scriptsize$\pm$2.5}\,$\sim$ & $-0.7$\,{\scriptsize$\pm$2.7}\,$\sim$ \\
+ & 10 & $-4.0$\,{\scriptsize$\pm$1.5}\,$\downarrow$ & $-5.5$\,{\scriptsize$\pm$2.8}\,$\downarrow$ & $-2.1$\,{\scriptsize$\pm$2.6}\,$\sim$ & $-5.5$\,{\scriptsize$\pm$2.8}\,$\downarrow$ \\
+ & 20 & $-4.3$\,{\scriptsize$\pm$1.0}\,$\downarrow$ & $+0.6$\,{\scriptsize$\pm$2.8}\,$\sim$ & $-1.6$\,{\scriptsize$\pm$1.5}\,$\sim$ & $-3.3$\,{\scriptsize$\pm$2.2}\,$\downarrow$ \\
+ & 50 & $-2.3$\,{\scriptsize$\pm$1.8}\,$\sim$ & $+0.5$\,{\scriptsize$\pm$1.2}\,$\sim$ & $-1.2$\,{\scriptsize$\pm$2.3}\,$\sim$ & $-1.6$\,{\scriptsize$\pm$2.9}\,$\sim$ \\
+\midrule
+\multicolumn{6}{l}{\textit{Random initialization}} \\
+ResNet-50 & 5 & $-1.4$\,{\scriptsize$\pm$2.8}\,$\sim$ & $+0.5$\,{\scriptsize$\pm$2.7}\,$\sim$ & $+7.2$\,{\scriptsize$\pm$3.5}\,$\uparrow$ & $-6.5$\,{\scriptsize$\pm$1.7}\,$\downarrow$ \\
+ & 10 & $+2.2$\,{\scriptsize$\pm$1.8}\,$\uparrow$ & $-0.1$\,{\scriptsize$\pm$4.5}\,$\sim$ & $+3.9$\,{\scriptsize$\pm$3.7}\,$\sim$ & $-7.4$\,{\scriptsize$\pm$3.5}\,$\downarrow$ \\
+ & 20 & $-0.2$\,{\scriptsize$\pm$1.4}\,$\sim$ & $+4.1$\,{\scriptsize$\pm$3.9}\,$\uparrow$ & $+5.3$\,{\scriptsize$\pm$1.8}\,$\uparrow$ & $-9.0$\,{\scriptsize$\pm$1.9}\,$\downarrow$ \\
+ & 50 & $+4.6$\,{\scriptsize$\pm$2.1}\,$\uparrow$ & $+2.0$\,{\scriptsize$\pm$3.5}\,$\sim$ & $+11.9$\,{\scriptsize$\pm$2.3}\,$\uparrow$ & $-8.1$\,{\scriptsize$\pm$3.3}\,$\downarrow$ \\
+\addlinespace[2pt]
+ViT-B/16 & 5 & $-0.8$\,{\scriptsize$\pm$1.7}\,$\sim$ & $+0.2$\,{\scriptsize$\pm$2.2}\,$\sim$ & $+2.1$\,{\scriptsize$\pm$1.5}\,$\uparrow$ & $+0.2$\,{\scriptsize$\pm$2.2}\,$\sim$ \\
+ & 10 & $-1.9$\,{\scriptsize$\pm$2.0}\,$\sim$ & $-1.0$\,{\scriptsize$\pm$4.6}\,$\sim$ & $+2.3$\,{\scriptsize$\pm$1.9}\,$\sim$ & $-3.2$\,{\scriptsize$\pm$3.7}\,$\sim$ \\
+ & 20 & $-2.0$\,{\scriptsize$\pm$1.9}\,$\sim$ & $-2.7$\,{\scriptsize$\pm$3.4}\,$\downarrow$ & $-1.4$\,{\scriptsize$\pm$2.7}\,$\sim$ & $-3.4$\,{\scriptsize$\pm$1.4}\,$\downarrow$ \\
+ & 50 & $+0.6$\,{\scriptsize$\pm$2.8}\,$\sim$ & $+1.3$\,{\scriptsize$\pm$3.1}\,$\sim$ & $+2.9$\,{\scriptsize$\pm$2.8}\,$\sim$ & $-0.4$\,{\scriptsize$\pm$2.3}\,$\sim$ \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,34 @@
+\begin{table}[htbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\caption{HAM10000: change in test balanced accuracy from each conventional augmentation against real-only. RA: RandAugment, TA: TrivialAugment, AA: AutoAugment (ImageNet policy).}
+\label{tab:paper-ham10000-conventional}
+\begin{tabular}{llcccccc}
+\toprule
+Model & Img./class & \shortstack{RA\\$-$real} & \shortstack{TA\\$-$real} & \shortstack{AA\\$-$real} & \shortstack{AugMix\\$-$real} & \shortstack{Mixup\\$-$real} & \shortstack{CutMix\\$-$real} \\
+\midrule
+\multicolumn{8}{l}{\textit{ImageNet-pretrained}} \\
+ResNet-50 & 5 & $-0.9$\,{\scriptsize$\pm$4.1}\,$\sim$ & $+2.3$\,{\scriptsize$\pm$1.6}\,$\uparrow$ & $-4.3$\,{\scriptsize$\pm$2.9}\,$\downarrow$ & $+1.6$\,{\scriptsize$\pm$5.0}\,$\sim$ & $-2.0$\,{\scriptsize$\pm$2.9}\,$\sim$ & $+0.4$\,{\scriptsize$\pm$2.6}\,$\sim$ \\
+ & 10 & $-3.9$\,{\scriptsize$\pm$2.1}\,$\downarrow$ & $+1.2$\,{\scriptsize$\pm$2.4}\,$\sim$ & $-3.8$\,{\scriptsize$\pm$1.5}\,$\downarrow$ & $-1.3$\,{\scriptsize$\pm$2.6}\,$\sim$ & $+1.3$\,{\scriptsize$\pm$3.5}\,$\sim$ & $+2.2$\,{\scriptsize$\pm$2.3}\,$\sim$ \\
+ & 20 & $-1.3$\,{\scriptsize$\pm$1.2}\,$\sim$ & $+1.2$\,{\scriptsize$\pm$4.5}\,$\sim$ & $-6.7$\,{\scriptsize$\pm$4.6}\,$\sim$ & $-1.4$\,{\scriptsize$\pm$2.7}\,$\sim$ & $+0.9$\,{\scriptsize$\pm$2.5}\,$\sim$ & $+2.9$\,{\scriptsize$\pm$1.4}\,$\uparrow$ \\
+ & 50 & $-5.7$\,{\scriptsize$\pm$2.9}\,$\downarrow$ & $+2.0$\,{\scriptsize$\pm$4.6}\,$\sim$ & $-5.2$\,{\scriptsize$\pm$2.2}\,$\downarrow$ & $-1.9$\,{\scriptsize$\pm$3.4}\,$\sim$ & $-2.8$\,{\scriptsize$\pm$4.1}\,$\sim$ & $+2.6$\,{\scriptsize$\pm$3.3}\,$\sim$ \\
+\addlinespace[2pt]
+ViT-B/16 & 5 & $+1.0$\,{\scriptsize$\pm$2.9}\,$\sim$ & $+2.4$\,{\scriptsize$\pm$2.1}\,$\sim$ & $-2.2$\,{\scriptsize$\pm$3.6}\,$\sim$ & $+1.4$\,{\scriptsize$\pm$0.7}\,$\uparrow$ & $+1.2$\,{\scriptsize$\pm$2.8}\,$\sim$ & $-0.4$\,{\scriptsize$\pm$2.6}\,$\sim$ \\
+ & 10 & $-1.3$\,{\scriptsize$\pm$1.8}\,$\sim$ & $-3.3$\,{\scriptsize$\pm$4.3}\,$\sim$ & $-7.5$\,{\scriptsize$\pm$2.8}\,$\downarrow$ & $-1.2$\,{\scriptsize$\pm$1.8}\,$\sim$ & $+2.1$\,{\scriptsize$\pm$2.0}\,$\sim$ & $-1.5$\,{\scriptsize$\pm$2.1}\,$\sim$ \\
+ & 20 & $-2.7$\,{\scriptsize$\pm$2.0}\,$\sim$ & $-2.4$\,{\scriptsize$\pm$2.4}\,$\sim$ & $-6.0$\,{\scriptsize$\pm$1.4}\,$\downarrow$ & $-1.0$\,{\scriptsize$\pm$0.6}\,$\sim$ & $+1.3$\,{\scriptsize$\pm$1.1}\,$\uparrow$ & $-1.6$\,{\scriptsize$\pm$2.4}\,$\sim$ \\
+ & 50 & $-0.3$\,{\scriptsize$\pm$2.3}\,$\sim$ & $+0.1$\,{\scriptsize$\pm$1.5}\,$\sim$ & $-3.2$\,{\scriptsize$\pm$3.0}\,$\downarrow$ & $-0.6$\,{\scriptsize$\pm$1.6}\,$\sim$ & $+1.7$\,{\scriptsize$\pm$2.5}\,$\sim$ & $+1.8$\,{\scriptsize$\pm$2.0}\,$\sim$ \\
+\midrule
+\multicolumn{8}{l}{\textit{Random initialization}} \\
+ResNet-50 & 5 & $-2.3$\,{\scriptsize$\pm$1.5}\,$\sim$ & $+4.6$\,{\scriptsize$\pm$3.0}\,$\uparrow$ & $-8.4$\,{\scriptsize$\pm$5.0}\,$\downarrow$ & $-2.3$\,{\scriptsize$\pm$2.1}\,$\downarrow$ & $+0.2$\,{\scriptsize$\pm$3.1}\,$\sim$ & $-5.1$\,{\scriptsize$\pm$3.4}\,$\downarrow$ \\
+ & 10 & $-0.7$\,{\scriptsize$\pm$5.7}\,$\sim$ & $+6.6$\,{\scriptsize$\pm$2.5}\,$\uparrow$ & $-5.5$\,{\scriptsize$\pm$2.6}\,$\downarrow$ & $-1.9$\,{\scriptsize$\pm$2.7}\,$\sim$ & $+0.2$\,{\scriptsize$\pm$2.5}\,$\sim$ & $-0.5$\,{\scriptsize$\pm$1.4}\,$\sim$ \\
+ & 20 & $-1.4$\,{\scriptsize$\pm$3.3}\,$\sim$ & $+11.7$\,{\scriptsize$\pm$1.4}\,$\uparrow$ & $-8.0$\,{\scriptsize$\pm$5.0}\,$\downarrow$ & $+1.5$\,{\scriptsize$\pm$2.9}\,$\sim$ & $-1.8$\,{\scriptsize$\pm$2.4}\,$\sim$ & $-1.6$\,{\scriptsize$\pm$1.6}\,$\sim$ \\
+ & 50 & $+6.9$\,{\scriptsize$\pm$3.2}\,$\uparrow$ & $+17.0$\,{\scriptsize$\pm$4.2}\,$\uparrow$ & $+0.2$\,{\scriptsize$\pm$4.9}\,$\sim$ & $+1.5$\,{\scriptsize$\pm$2.1}\,$\sim$ & $+0.2$\,{\scriptsize$\pm$2.3}\,$\sim$ & $-3.5$\,{\scriptsize$\pm$0.9}\,$\downarrow$ \\
+\addlinespace[2pt]
+ViT-B/16 & 5 & $+0.8$\,{\scriptsize$\pm$1.1}\,$\sim$ & $+2.1$\,{\scriptsize$\pm$2.1}\,$\sim$ & $+1.7$\,{\scriptsize$\pm$2.4}\,$\sim$ & $+0.7$\,{\scriptsize$\pm$3.0}\,$\sim$ & $+2.6$\,{\scriptsize$\pm$2.0}\,$\sim$ & $-2.4$\,{\scriptsize$\pm$4.2}\,$\sim$ \\
+ & 10 & $-0.2$\,{\scriptsize$\pm$2.4}\,$\sim$ & $+1.1$\,{\scriptsize$\pm$1.4}\,$\sim$ & $-0.7$\,{\scriptsize$\pm$4.2}\,$\sim$ & $+2.0$\,{\scriptsize$\pm$1.9}\,$\sim$ & $+0.5$\,{\scriptsize$\pm$2.0}\,$\sim$ & $-0.3$\,{\scriptsize$\pm$2.8}\,$\sim$ \\
+ & 20 & $+2.6$\,{\scriptsize$\pm$1.8}\,$\uparrow$ & $+2.8$\,{\scriptsize$\pm$2.8}\,$\sim$ & $-0.2$\,{\scriptsize$\pm$3.0}\,$\sim$ & $+2.7$\,{\scriptsize$\pm$1.7}\,$\uparrow$ & $+3.4$\,{\scriptsize$\pm$2.3}\,$\sim$ & $+1.6$\,{\scriptsize$\pm$1.7}\,$\sim$ \\
+ & 50 & $+3.3$\,{\scriptsize$\pm$2.4}\,$\uparrow$ & $+5.0$\,{\scriptsize$\pm$2.8}\,$\uparrow$ & $+1.7$\,{\scriptsize$\pm$3.1}\,$\sim$ & $+5.4$\,{\scriptsize$\pm$2.5}\,$\uparrow$ & $+1.3$\,{\scriptsize$\pm$5.0}\,$\sim$ & $+2.7$\,{\scriptsize$\pm$1.5}\,$\uparrow$ \\
+\bottomrule
+\end{tabular}
+\end{table}

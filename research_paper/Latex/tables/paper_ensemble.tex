@@ -1,0 +1,45 @@
+\begin{table}[htbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\caption{CIFAR-100, ensembles: change in test accuracy of an equal-weight ensemble of two classifiers against an ensemble of two real-data classifiers of different seeds. Members are named by their training data: real, RA (real with RandAugment), SD (real with class-prompt images), SD-only (class-prompt images alone), SD+RA (both, with RandAugment).}
+\label{tab:paper-ensemble}
+\begin{tabular}{llccccc}
+\toprule
+Model & Img./class & \shortstack{real+SD\\$-$real+real} & \shortstack{real+SD-only\\$-$real+real} & \shortstack{RA+SD\\$-$RA+RA} & \shortstack{RA+SD-only\\$-$RA+RA} & \shortstack{RA+(SD+RA)\\$-$RA+RA} \\
+\midrule
+\multicolumn{7}{l}{\textit{ImageNet-pretrained}} \\
+ResNet-50 & 5 & $+8.1$\,{\scriptsize$\pm$0.9}\,$\uparrow$ & $+0.8$\,{\scriptsize$\pm$0.5}\,$\uparrow$$^\dagger$ & $+3.0$\,{\scriptsize$\pm$0.6}\,$\uparrow$ & $-0.5$\,{\scriptsize$\pm$1.0}\,$\sim$$^\dagger$ & $+6.6$\,{\scriptsize$\pm$1.0}\,$\uparrow$ \\
+ & 10 & $+5.3$\,{\scriptsize$\pm$0.4}\,$\uparrow$ & $-1.6$\,{\scriptsize$\pm$0.7}\,$\downarrow$$^\dagger$ & $+3.2$\,{\scriptsize$\pm$0.5}\,$\uparrow$ & $-0.8$\,{\scriptsize$\pm$0.5}\,$\downarrow$$^\dagger$ & $+4.6$\,{\scriptsize$\pm$0.4}\,$\uparrow$ \\
+ & 20 & $+4.0$\,{\scriptsize$\pm$0.2}\,$\uparrow$ & $-3.1$\,{\scriptsize$\pm$0.3}\,$\downarrow$$^\dagger$ & $+2.2$\,{\scriptsize$\pm$0.7}\,$\uparrow$ & $-2.6$\,{\scriptsize$\pm$0.3}\,$\downarrow$$^\dagger$ & $+2.5$\,{\scriptsize$\pm$0.7}\,$\uparrow$ \\
+ & 50 & $+1.3$\,{\scriptsize$\pm$0.2}\,$\uparrow$ & $-4.8$\,{\scriptsize$\pm$0.5}\,$\downarrow$$^\dagger$ & $+1.4$\,{\scriptsize$\pm$0.3}\,$\uparrow$ & $-3.9$\,{\scriptsize$\pm$0.4}\,$\downarrow$$^\dagger$ & $+1.3$\,{\scriptsize$\pm$0.2}\,$\uparrow$$^\dagger$ \\
+ & full & $+0.3$\,{\scriptsize$\pm$0.2}\,$\sim$ & $-5.3$\,{\scriptsize$\pm$0.4}\,$\downarrow$$^\dagger$ & $+0.3$\,{\scriptsize$\pm$0.3}\,$\sim$ & $-5.2$\,{\scriptsize$\pm$0.2}\,$\downarrow$$^\dagger$ & $+0.3$\,{\scriptsize$\pm$0.2}\,$\uparrow$$^\dagger$ \\
+\addlinespace[2pt]
+ViT-B/16 & 5 & $+6.7$\,{\scriptsize$\pm$1.0}\,$\uparrow$ & $+0.2$\,{\scriptsize$\pm$1.2}\,$\sim$$^\dagger$ & $+1.9$\,{\scriptsize$\pm$1.3}\,$\uparrow$ & $-0.6$\,{\scriptsize$\pm$1.8}\,$\sim$$^\dagger$ & $+6.8$\,{\scriptsize$\pm$1.0}\,$\uparrow$ \\
+ & 10 & $+4.3$\,{\scriptsize$\pm$0.6}\,$\uparrow$ & $-1.8$\,{\scriptsize$\pm$0.3}\,$\downarrow$$^\dagger$ & $+1.3$\,{\scriptsize$\pm$0.8}\,$\uparrow$ & $-1.0$\,{\scriptsize$\pm$0.9}\,$\downarrow$$^\dagger$ & $+3.0$\,{\scriptsize$\pm$0.5}\,$\uparrow$ \\
+ & 20 & $+1.6$\,{\scriptsize$\pm$0.6}\,$\uparrow$ & $-2.4$\,{\scriptsize$\pm$0.5}\,$\downarrow$$^\dagger$ & $+0.7$\,{\scriptsize$\pm$0.4}\,$\sim$ & $-0.7$\,{\scriptsize$\pm$0.5}\,$\downarrow$$^\dagger$ & $+1.3$\,{\scriptsize$\pm$0.3}\,$\uparrow$ \\
+ & 50 & $+0.2$\,{\scriptsize$\pm$0.1}\,$\uparrow$ & $-2.3$\,{\scriptsize$\pm$0.4}\,$\downarrow$$^\dagger$ & $0.0$\,{\scriptsize$\pm$0.1}\,$\sim$ & $-1.3$\,{\scriptsize$\pm$0.4}\,$\downarrow$$^\dagger$ & $0.0$\,{\scriptsize$\pm$0.3}\,$\sim$$^\dagger$ \\
+ & full & $+0.1$\,{\scriptsize$\pm$0.2}\,$\sim$ & $-3.0$\,{\scriptsize$\pm$0.8}\,$\downarrow$$^\dagger$ & $-0.2$\,{\scriptsize$\pm$0.2}\,$\sim$ & $-3.3$\,{\scriptsize$\pm$0.9}\,$\downarrow$$^\dagger$ & $-0.2$\,{\scriptsize$\pm$0.1}\,$\downarrow$$^\dagger$ \\
+\addlinespace[2pt]
+ConvNeXt-T & 5 & $+7.6$\,{\scriptsize$\pm$0.5}\,$\uparrow$ & -- & $+4.9$\,{\scriptsize$\pm$0.5}\,$\uparrow$ & -- & $+8.3$\,{\scriptsize$\pm$0.4}\,$\uparrow$ \\
+ & 20 & $+1.8$\,{\scriptsize$\pm$0.5}\,$\uparrow$ & -- & $+1.5$\,{\scriptsize$\pm$0.4}\,$\uparrow$ & -- & $+1.6$\,{\scriptsize$\pm$0.3}\,$\uparrow$ \\
+ & full & $+0.1$\,{\scriptsize$\pm$0.0}\,$\uparrow$ & -- & $+0.2$\,{\scriptsize$\pm$0.1}\,$\uparrow$ & -- & $+0.1$\,{\scriptsize$\pm$0.3}\,$\sim$ \\
+\midrule
+\multicolumn{7}{l}{\textit{Random initialization}} \\
+ResNet-50 & 5 & $+1.9$\,{\scriptsize$\pm$0.4}\,$\uparrow$ & $-0.6$\,{\scriptsize$\pm$0.0}\,$\downarrow$$^\dagger$ & $+0.3$\,{\scriptsize$\pm$0.3}\,$\sim$ & $-0.9$\,{\scriptsize$\pm$0.3}\,$\downarrow$$^\dagger$ & $+2.9$\,{\scriptsize$\pm$0.7}\,$\uparrow$$^\dagger$ \\
+ & 10 & $+2.9$\,{\scriptsize$\pm$0.3}\,$\uparrow$$^\dagger$ & $-3.1$\,{\scriptsize$\pm$0.4}\,$\downarrow$$^\dagger$ & $0.0$\,{\scriptsize$\pm$0.4}\,$\sim$$^\dagger$ & $-3.5$\,{\scriptsize$\pm$0.5}\,$\downarrow$$^\dagger$ & $+5.2$\,{\scriptsize$\pm$2.8}\,$\uparrow$$^\dagger$ \\
+ & 20 & $+5.2$\,{\scriptsize$\pm$1.3}\,$\uparrow$$^\dagger$ & $-4.8$\,{\scriptsize$\pm$0.2}\,$\downarrow$$^\dagger$ & $+0.3$\,{\scriptsize$\pm$2.3}\,$\sim$$^\dagger$ & $-3.9$\,{\scriptsize$\pm$1.6}\,$\downarrow$$^\dagger$ & $+3.1$\,{\scriptsize$\pm$2.6}\,$\uparrow$$^\dagger$ \\
+ & 50 & $+6.5$\,{\scriptsize$\pm$2.7}\,$\uparrow$ & $-5.4$\,{\scriptsize$\pm$0.8}\,$\downarrow$$^\dagger$ & $+0.6$\,{\scriptsize$\pm$1.9}\,$\sim$ & $-3.7$\,{\scriptsize$\pm$2.6}\,$\downarrow$$^\dagger$ & $+3.9$\,{\scriptsize$\pm$3.9}\,$\uparrow$$^\dagger$ \\
+ & full & $+2.7$\,{\scriptsize$\pm$1.4}\,$\uparrow$$^\dagger$ & $-8.2$\,{\scriptsize$\pm$1.3}\,$\downarrow$$^\dagger$ & $-0.4$\,{\scriptsize$\pm$0.6}\,$\sim$$^\dagger$ & $-6.5$\,{\scriptsize$\pm$0.8}\,$\downarrow$$^\dagger$ & $+0.8$\,{\scriptsize$\pm$0.8}\,$\sim$$^\dagger$ \\
+\addlinespace[2pt]
+ViT-B/16 & 5 & $+0.8$\,{\scriptsize$\pm$0.3}\,$\uparrow$ & $-0.1$\,{\scriptsize$\pm$0.2}\,$\sim$$^\dagger$ & $+0.2$\,{\scriptsize$\pm$0.3}\,$\uparrow$ & $-0.7$\,{\scriptsize$\pm$0.3}\,$\downarrow$$^\dagger$ & $+1.1$\,{\scriptsize$\pm$0.2}\,$\uparrow$$^\dagger$ \\
+ & 10 & $+1.1$\,{\scriptsize$\pm$0.4}\,$\uparrow$$^\dagger$ & $-1.3$\,{\scriptsize$\pm$0.3}\,$\downarrow$$^\dagger$ & $+0.3$\,{\scriptsize$\pm$0.2}\,$\uparrow$$^\dagger$ & $-1.7$\,{\scriptsize$\pm$0.3}\,$\downarrow$$^\dagger$ & $+1.7$\,{\scriptsize$\pm$0.7}\,$\uparrow$$^\dagger$ \\
+ & 20 & $+1.7$\,{\scriptsize$\pm$0.3}\,$\uparrow$$^\dagger$ & $-2.3$\,{\scriptsize$\pm$0.2}\,$\downarrow$$^\dagger$ & $+0.2$\,{\scriptsize$\pm$0.3}\,$\sim$$^\dagger$ & $-3.3$\,{\scriptsize$\pm$0.3}\,$\downarrow$$^\dagger$ & $+2.0$\,{\scriptsize$\pm$0.4}\,$\uparrow$$^\dagger$ \\
+ & 50 & $+2.3$\,{\scriptsize$\pm$0.3}\,$\uparrow$ & $-7.9$\,{\scriptsize$\pm$0.9}\,$\downarrow$$^\dagger$ & $-1.3$\,{\scriptsize$\pm$0.4}\,$\downarrow$ & $-12.5$\,{\scriptsize$\pm$2.3}\,$\downarrow$$^\dagger$ & $+2.1$\,{\scriptsize$\pm$0.1}\,$\uparrow$$^\dagger$ \\
+ & full & $+2.1$\,{\scriptsize$\pm$0.1}\,$\uparrow$$^\dagger$ & $-10.9$\,{\scriptsize$\pm$0.5}\,$\downarrow$$^\dagger$ & $-3.7$\,{\scriptsize$\pm$0.2}\,$\downarrow$$^\dagger$ & $-14.4$\,{\scriptsize$\pm$1.9}\,$\downarrow$$^\dagger$ & $+1.8$\,{\scriptsize$\pm$0.2}\,$\uparrow$$^\dagger$ \\
+\addlinespace[2pt]
+ConvNeXt-T & 5 & $+1.1$\,{\scriptsize$\pm$0.2}\,$\uparrow$ & -- & $-0.8$\,{\scriptsize$\pm$0.5}\,$\downarrow$ & -- & -- \\
+ & 50 & $+6.8$\,{\scriptsize$\pm$1.0}\,$\uparrow$ & -- & $-2.6$\,{\scriptsize$\pm$1.4}\,$\downarrow$ & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
