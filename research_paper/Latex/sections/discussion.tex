@@ -8,7 +8,8 @@ of a conventional policy: chosen on validation, such a condition beat the best c
 10 pretrained cells, by up to 14.9 points. With a randomly initialized classifier, a conventional policy should
 come first, and generated images help only on top of it or at a high ratio. With the full training set, generated
 images cost accuracy. The caveat is Stage 3. On fine-grained flowers and on dermoscopy images, the recipe that won
-on CIFAR-100 lost to conventional augmentation, and LoRA adaptation did not rescue it. The rule therefore does not
+on CIFAR-100 lost to conventional augmentation, and LoRA adaptation did not close the gap, although from random initialization it
+recovered 5 to 12 points over class-prompt images for ResNet-50 on HAM10000. The rule therefore does not
 carry to a new dataset on its own: a short validation pilot against the best conventional policy should decide
 whether generated images are worth adding.
 

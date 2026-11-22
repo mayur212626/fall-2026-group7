@@ -301,8 +301,8 @@ cells, and AutoAugment's ImageNet policy lowers balanced accuracy in 9. Its seed
 (standard deviations of the paired change of 2 to 5 points are common), so many of its cells are
 inconclusive.
 
-The sample grids show two different failures (Figure~\ref{fig:stage3-samples}). The HAM10000 images are not
-dermoscopy at all: Stable Diffusion draws skin close-ups, faces and unrelated textures for the lesion names. The
+The sample grids show two different failures (Figure~\ref{fig:stage3-samples}). In our samples the HAM10000 images
+are not dermoscopy: Stable Diffusion draws skin close-ups, faces and unrelated textures for the lesion names. The
 Flowers-102 images are realistic flowers, but for some classes not the named species: the hard-leaved pocket
 orchid comes out as a generic purple orchid, and the common dandelion often as a white seed head where the real
 images show the yellow flower. In a fine-grained task, an image that is a convincing flower of the wrong kind

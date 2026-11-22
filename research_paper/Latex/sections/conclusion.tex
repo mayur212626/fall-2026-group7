@@ -15,7 +15,8 @@ the classifier, the control and the domain.
 	in the opposite order to their gain, and precision does no better than chance once the advantage of the
 	class-prompt set is set aside (Section~\ref{sec:pool-utility}).
 	\item \textbf{The benefit does not transfer to every domain.} On Flowers-102 and HAM10000, class-prompt images at
-	5:1 with RandAugment never beat the best conventional augmentation, and LoRA adaptation did not change that
+	5:1 with RandAugment never beat the best conventional augmentation, and LoRA adaptation did not change that, although
+	from random initialization it improved on class-prompt images on HAM10000
 	(Section~\ref{sec:results-stage3}).
 \end{itemize}
 Generated images are worth trying when the classifier is pretrained and the real data is scarce, used on top of a
