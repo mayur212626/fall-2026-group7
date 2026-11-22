@@ -1,0 +1,15 @@
+{
+  "dataset": "ham10000",
+  "budget": "5",
+  "pool": "data/synthetic/sd15_lora_ham10000_b5/pool.npz",
+  "feature_model": "torchvision ResNet-50, IMAGENET1K_V2, pooled features, cosine similarity",
+  "generated_images": 35,
+  "held_out_images": 1003,
+  "generated_median": 0.5997684597969055,
+  "held_out_median": 0.7115108966827393,
+  "held_out_p99": 0.9182685959339143,
+  "share_above_held_out_p99": 0.0,
+  "near_copy_threshold": 0.95,
+  "share_near_copy": 0.0,
+  "verdict": "no sign of copying"
+}
