@@ -102,6 +102,31 @@ set) have seeds 0 to 2. Every table states its seed count. With five seeds, the 
 sign when the true change is zero is $2 \times 0.5^5 \approx 0.06$; with three, 0.25. The test set is scored
 once per run, after the training and selection protocol was fixed. Appendix~\ref{app:bootstrap} gives a second
 measure of uncertainty that resamples the validation images.
+Algorithm~\ref{alg:protocol} summarizes the protocol for one dataset, budget and classifier.
+
+\begin{algorithm}[htbp]
+	\caption{Study protocol for one dataset, budget $b$ and classifier}
+	\label{alg:protocol}
+	\begin{algorithmic}[1]
+		\State Split the training data once with a recorded seed: $b$ images per class for training, a fixed
+		validation set; keep the official test set aside
+		\For{each generator (class prompt, LoRA, img2img, GAN)}
+			\State Generate a pool from the $b$ real images per class only
+			\State Memorization check: compare each generated image with its nearest training image
+			(ResNet-50 cosine) against the held-out reference
+		\EndFor
+		\State Choose the best conventional augmentation on validation balanced accuracy
+		\For{seed $s = 0, \dots, 4$}
+			\State Train the control (real only, or real with the chosen augmentation)
+			\For{each generated pool and mixing ratio}
+				\State Train with real and generated images, same seed $s$ and schedule
+			\EndFor
+		\EndFor
+		\State Fix the protocol, then score every run once on the test set
+		\State For each treatment, compute the paired change $\Delta_s$ = treatment $-$ control per seed
+		\State Call it a gain if every $\Delta_s > 0$, a loss if every $\Delta_s < 0$, otherwise inconclusive
+	\end{algorithmic}
+\end{algorithm}
 
 \begin{figure}[htbp]
 	\centering

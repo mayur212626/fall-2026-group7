@@ -321,7 +321,8 @@ held-out 99th percentile, or more than 1\% exceed a cosine similarity of 0.95. N
 0.0\%, 0.2\% and 0.3\% of the images are above the held-out 99th percentile at 2, 5 and 10 images per class, and
 the median similarity of the generated images (0.67 to 0.72) is below that of the held-out ones (0.76 to 0.84).
 No HAM10000 pool was flagged either: at 5, 10, 20 and 50 images per class, none of its images is closer to a
-training image than the held-out 99th percentile.
+training image than the held-out 99th percentile. Samples and the closest pairs are in
+Appendix~\ref{app:samples} (Figures~\ref{fig:flowers-lora-nearest} and~\ref{fig:ham-lora-nearest}).
 
 On Flowers-102 the LoRA images are about as useful as the class-prompt ones: LoRA minus class-prompt images is a
 gain in 2 of 12 cells and inconclusive in 10, and LoRA images with RandAugment remain below the best
