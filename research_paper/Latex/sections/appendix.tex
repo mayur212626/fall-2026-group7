@@ -42,28 +42,28 @@ and the bootstrap holds the trained models fixed, so the two are read side by si
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{sd15_prompt_samples.pdf}
-	\caption{Samples of the class-prompt pool (pretrained Stable Diffusion 1.5, 32$\times$32 as used for training).}
+	\caption{Example images (not a plot): samples of the class-prompt pool (pretrained Stable Diffusion 1.5, 32$\times$32 as used for training).}
 	\label{fig:sd-samples}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{sd15_lora_b5_samples.pdf}
-	\caption{Samples of the LoRA pool of the 5-images-per-class budget (CIFAR-100, 32$\times$32 as used for training).}
+	\caption{Example images (not a plot): samples of the LoRA pool of the 5-images-per-class budget (CIFAR-100, 32$\times$32 as used for training).}
 	\label{fig:lora-samples}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{sd15_lora_flowers102_b5_samples.pdf}
-	\caption{Flowers-102: real training images and samples of the LoRA pool of the 5-images-per-class budget.}
+	\caption{Example images (not a plot), Flowers-102: real training images and samples of the LoRA pool of the 5-images-per-class budget.}
 	\label{fig:flowers-lora-samples}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{sd15_lora_flowers102_b5_nearest.pdf}
-	\caption{Memorization check, Flowers-102 LoRA pool at 5 images per class: the eight generated images most
+	\caption{Example images (not a plot). Memorization check, Flowers-102 LoRA pool at 5 images per class: the eight generated images most
 	similar to a training image of their class (top, with the cosine similarity of ImageNet ResNet-50 features)
 	and that training image (bottom).}
 	\label{fig:flowers-lora-nearest}
@@ -72,7 +72,7 @@ and the bootstrap holds the trained models fixed, so the two are read side by si
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{sd15_img2img_samples.pdf}
-	\caption{Real training images of ten CIFAR-100 classes and their Stable Diffusion img2img edits (strength 0.5),
+	\caption{Example images (not a plot): real training images of ten CIFAR-100 classes and their Stable Diffusion img2img edits (strength 0.5),
 	$32\times32$ as used for training. Each edit keeps the layout and colours of its source image.}
 	\label{fig:img2img-samples}
 \end{figure}
@@ -80,11 +80,28 @@ and the bootstrap holds the trained models fixed, so the two are read side by si
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{stylegan2ada_b50_samples.pdf}
-	\caption{Real training images of ten CIFAR-100 classes and samples of the class-conditional StyleGAN2-ADA trained
+	\caption{Example images (not a plot): real training images of ten CIFAR-100 classes and samples of the class-conditional StyleGAN2-ADA trained
 	on the 5{,}000 images of the 50-images-per-class budget, $32\times32$.}
 	\label{fig:gan-samples}
 \end{figure}
-% TODO: HAM10000 LoRA sample grids and nearest pairs, once on main (sd15_lora_ham10000_*).
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{sd15_lora_ham10000_b50_samples.pdf}
+	\caption{Example images (not a plot), HAM10000: real training images of the seven classes (left) and samples of
+	the LoRA pool of the 50-images-per-class budget (right).}
+	\label{fig:ham-lora-samples}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{sd15_lora_ham10000_b50_nearest.pdf}
+	\caption{Example images (not a plot). Memorization check, HAM10000 LoRA pool at 50 images per class: the eight
+	generated images most similar to a training image of their class (top, with the cosine similarity of ImageNet
+	ResNet-50 features) and that training image (bottom). The highest similarity is 0.87; no generated image at any
+	budget (5, 10, 20, 50) is above the held-out 99th percentile (0.92 to 0.93) or the 0.95 near-copy threshold.
+	The grids for 5 images per class and the nearest pairs for 5, 10 and 20 are in the repository.}
+	\label{fig:ham-lora-nearest}
+\end{figure}
 
 \section{More result tables}
 \label{app:more-tables}

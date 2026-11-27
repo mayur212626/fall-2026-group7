@@ -14,6 +14,9 @@ This report is updated every week. Each week lists what was planned, what was do
 | 7 | Synthetic-data results and literature review | [#24](https://github.com/mayur212626/fall-2026-group7/pull/24)–[#28](https://github.com/mayur212626/fall-2026-group7/pull/28) |
 | 8 | Error analysis and uncertainty (Fall break) | [#30](https://github.com/mayur212626/fall-2026-group7/pull/30) |
 | 9 | Preliminary presentation | [#32](https://github.com/mayur212626/fall-2026-group7/pull/32), [#33](https://github.com/mayur212626/fall-2026-group7/pull/33) |
+| 10 | A third generated set, the three-set RQ3, Stage 2 runs and the test set | [#45](https://github.com/mayur212626/fall-2026-group7/pull/45), [#49](https://github.com/mayur212626/fall-2026-group7/pull/49), [#50](https://github.com/mayur212626/fall-2026-group7/pull/50), [#52](https://github.com/mayur212626/fall-2026-group7/pull/52) |
+| 11 | Stage 2 merged, ensembles, stacked augmentation and a GAN | [#53](https://github.com/mayur212626/fall-2026-group7/pull/53), [#54](https://github.com/mayur212626/fall-2026-group7/pull/54), [#56](https://github.com/mayur212626/fall-2026-group7/pull/56), [#57](https://github.com/mayur212626/fall-2026-group7/pull/57) |
+| 12-13 | Stage 3 (Flowers-102, HAM10000), LoRA follow-up with memorization checks, paper draft | [#61](https://github.com/mayur212626/fall-2026-group7/pull/61), [#62](https://github.com/mayur212626/fall-2026-group7/pull/62), [#64](https://github.com/mayur212626/fall-2026-group7/pull/64), [#65](https://github.com/mayur212626/fall-2026-group7/pull/65), [#66](https://github.com/mayur212626/fall-2026-group7/pull/66), [#67](https://github.com/mayur212626/fall-2026-group7/pull/67) |
 
 ---
 
@@ -235,6 +238,34 @@ All of this was merged in PR [#6](https://github.com/mayur212626/fall-2026-group
 
 - Merge [#54](https://github.com/mayur212626/fall-2026-group7/pull/54), [#56](https://github.com/mayur212626/fall-2026-group7/pull/56) and [#57](https://github.com/mayur212626/fall-2026-group7/pull/57); GAN decision and paper tickets.
 - Paper skeleton in `research_paper/Latex/`, journal shortlist, then results into the report and the paper by Nov 22.
+
+---
+
+## Weeks 12-13: Stage 3 on Flowers-102 and HAM10000, LoRA follow-up and the paper draft
+
+**Planned**
+
+- Merge [#54](https://github.com/mayur212626/fall-2026-group7/pull/54), [#56](https://github.com/mayur212626/fall-2026-group7/pull/56) and [#57](https://github.com/mayur212626/fall-2026-group7/pull/57).
+- Repeat the study on a fine-grained and a medical dataset (Stage 3).
+- Paper skeleton, then every test-set result into the paper by Nov 22.
+
+**Done**
+
+- Paper skeleton in `research_paper/Latex/`, journal-neutral, one file per section: PR [#62](https://github.com/mayur212626/fall-2026-group7/pull/62). (MP)
+- Weeks 10-11 added to this report: PR [#60](https://github.com/mayur212626/fall-2026-group7/pull/60). (MKV)
+- Stage 3 data: Flowers-102 and HAM10000 splits at the CIFAR-100 budgets, SD class-prompt pools, learning-rate pilots on validation only, run scripts ([`28f3cd8`](https://github.com/mayur212626/fall-2026-group7/commit/28f3cd8), [`c374e2a`](https://github.com/mayur212626/fall-2026-group7/commit/c374e2a), [`6de0d17`](https://github.com/mayur212626/fall-2026-group7/commit/6de0d17)). (MKV for Flowers-102, MP for HAM10000)
+- Stage 3 runs with five seeds, scored on validation and test: Flowers-102, 600 runs ([`87707ff`](https://github.com/mayur212626/fall-2026-group7/commit/87707ff), MKV); HAM10000, 800 runs, balanced accuracy ([`a1887b3`](https://github.com/mayur212626/fall-2026-group7/commit/a1887b3), MP). PRs [#61](https://github.com/mayur212626/fall-2026-group7/pull/61) and [#64](https://github.com/mayur212626/fall-2026-group7/pull/64). On neither dataset do class-prompt images with RandAugment beat the best conventional augmentation in any cell.
+- LoRA follow-up: one SD 1.5 adapter per dataset and budget, fitted only on that budget's training images, 280 more runs (Flowers-102 120, MKV; HAM10000 160, MP), PR [#65](https://github.com/mayur212626/fall-2026-group7/pull/65). Before training, each pool went through a memorization check fixed in advance ([`aa50d39`](https://github.com/mayur212626/fall-2026-group7/commit/aa50d39)): nearest training image in ImageNet ResNet-50 features against held-out images. No pool flagged; on HAM10000 no generated image is above the held-out 99th percentile at any budget. On Flowers-102 LoRA minus class-prompt images is a gain in 2 of 12 cells and inconclusive in 10.
+- Paper draft with every test-set result, compact tables generated from the report CSVs (`make_tables.py`), Stage 3 and LoRA sections, discussion, conclusion, introduction and abstract: PR [#66](https://github.com/mayur212626/fall-2026-group7/pull/66), including the GAN results table and the GAN memorization check (from MP), the HAM10000 pilot text (MP) and the compute total: 2,968 training runs, at least 916 GPU hours on A10G. (MKV; reviewed by MP)
+- Study-design figure for the paper: PR [#67](https://github.com/mayur212626/fall-2026-group7/pull/67). (MP; reviewed by MKV)
+- Instructor Review #9 received: [#63](https://github.com/mayur212626/fall-2026-group7/issues/63). Instructor Review #10 received; its fixes (protocol algorithm in the method section, HAM10000 LoRA sample and nearest-pair figures, sample figures labelled as images, this entry) are in the Review #10 PR. (MKV)
+
+**Next**
+
+- Journal choice and template with Dr. Jafari by Nov 24; title and author order.
+- Move the paper to the journal template; final read of every number against the report tables.
+- Poster by Nov 29, slide deck by Dec 1, videos and final submission by Dec 8.
+- Delete the merged branches.
 
 ---
 
