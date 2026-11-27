@@ -105,12 +105,11 @@ measure of uncertainty that resamples the validation images.
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=\textwidth]{pipeline-2-classification.pdf}
-	\caption{Classification study design. Each data tier is split once with recorded seeds, and the official
-	test set is held out until the final evaluation. Every classifier, pretrained and randomly initialized,
-	is trained under three conditions: real images only, real images with conventional augmentation, and
-	real images with generated images, which are resized to the dataset's resolution first. Boxes with a
-	bold border are part of Stage 1. \todo{redraw for the paper: only the CIFAR-100 tier and the
-	classifiers and conditions that were run, plus the GAN set; drop the ``Stage 1'' wording}}
+	\includegraphics[width=\textwidth]{pipeline-study.pdf}
+	\caption{Study pipeline. Each dataset is split once by a seeded manifest into nested budgets and a fixed
+	validation set, and its test set is scored once per run. Each training condition changes one thing in the
+	real-only control; the generated image sets (shaded) enter at 1:1, 2:1 or 5:1, with or without a
+	conventional policy, after the same resizing as the real images. ConvNeXt-T and the StyleGAN2-ADA set
+	(50 images per class) are used on CIFAR-100 only. SD-only training and the ensembles are not drawn.}
 	\label{fig:classification-design}
 \end{figure}
