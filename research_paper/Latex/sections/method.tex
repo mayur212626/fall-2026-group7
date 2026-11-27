@@ -109,16 +109,15 @@ Algorithm~\ref{alg:protocol} summarizes the protocol for one dataset, budget and
 	\label{alg:protocol}
 	\begin{algorithmic}[1]
 		\State Split the training data once with a recorded seed: $b$ images per class for training, a fixed
-		validation set; keep the official test set aside
-		\For{each generator (class prompt, LoRA, img2img, GAN)}
-			\State Generate a pool from the $b$ real images per class only
-			\State Memorization check: compare each generated image with its nearest training image
-			(ResNet-50 cosine) against the held-out reference
-		\EndFor
-		\State Choose the best conventional augmentation on validation balanced accuracy
-		\For{seed $s = 0, \dots, 4$}
+		validation set; keep the test set aside
+		\State Generate the image sets: class prompts use no real images; LoRA, img2img and the GAN use only
+		the budget's $b$ real images per class (img2img on CIFAR-100, the GAN at 50 per class)
+		\State Memorization check on the LoRA pools (ResNet-50 cosine against the held-out 99th percentile and
+		0.95) and the GAN set (Inception features and pixels against the held-out 1st percentile)
+		\State Choose the best conventional augmentation on validation accuracy (balanced accuracy in Stage 3)
+		\For{each training seed $s$}
 			\State Train the control (real only, or real with the chosen augmentation)
-			\For{each generated pool and mixing ratio}
+			\For{each generated set and mixing ratio}
 				\State Train with real and generated images, same seed $s$ and schedule
 			\EndFor
 		\EndFor
